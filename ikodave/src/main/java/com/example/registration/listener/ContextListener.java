@@ -1,4 +1,12 @@
 package com.example.registration.listener;
 
-public class ContextListener {
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+
+import javax.servlet.ServletContextListener;
+
+public class ContextListener implements ServletContextListener {
+    BasicDataSource dataSource;
+
+
+
 }
