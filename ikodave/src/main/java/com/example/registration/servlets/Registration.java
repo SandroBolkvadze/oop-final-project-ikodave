@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static com.example.util.Constants.USER_DAO_KEY;
 
-public class LogInServlet extends HttpServlet {
+public class Registration extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
