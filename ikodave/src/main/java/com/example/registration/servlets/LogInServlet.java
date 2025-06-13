@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.util.Constants.*;
+import static com.example.util.Constants.USER_DAO_KEY;
 
 public class LogInServlet extends HttpServlet {
     @Override
@@ -22,10 +22,11 @@ public class LogInServlet extends HttpServlet {
         if (user.getUsername() == null || user.getPassword() == null
                 || user.getUsername().isEmpty()
                 || user.getPassword().isEmpty()
-                || !userDao.authenticate(user)) {
-            response.sendRedirect("login-failed.html");
+                || userDao.userExists(user.getUsername())) {
+            //TODO handle failed login
         } else {
-            //TODO
+            userDao.addUser(user);
+            //TODO handle successful login
         }
     }
 }
