@@ -3,10 +3,9 @@ package com.example.listener;
 import com.example.registration.dao.MySQLUserDao;
 import com.example.registration.dao.UserDao;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import static com.example.util.Constants.*;
 
 import javax.servlet.ServletContextListener;
-
-import static com.example.util.Constants.*;
 
 public class ContextListener implements ServletContextListener {
     private BasicDataSource dataSource;
