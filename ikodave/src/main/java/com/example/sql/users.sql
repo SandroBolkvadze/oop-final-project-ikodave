@@ -3,3 +3,4 @@ create table if not exists Ikodave.users (
     username varchar(50) not null unique,
     password varchar(255) not null
 )
+
