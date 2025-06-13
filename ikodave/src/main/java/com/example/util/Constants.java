@@ -1,4 +1,4 @@
-package com.example.registration.util;
+package com.example.util;
 
 public class Constants {
     public static final String URL = "jdbc:mysql://localhost:3306/Ikodave";

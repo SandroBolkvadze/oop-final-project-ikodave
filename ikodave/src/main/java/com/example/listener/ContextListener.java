@@ -1,22 +1,26 @@
-package com.example.registration.listener;
+package com.example.listener;
 
+import com.example.registration.dao.MySQLUserDao;
+import com.example.registration.dao.UserDao;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import javax.servlet.ServletContextListener;
 
+import static com.example.util.Constants.*;
+
 public class ContextListener implements ServletContextListener {
-    BasicDataSource dataSource;
+    private BasicDataSource dataSource;
 
     @Override
     public void contextInitialized(javax.servlet.ServletContextEvent sce) {
         dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/registration");
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUsername("root");
-        dataSource.setPassword("password");
+        dataSource.setUrl(URL);
+        dataSource.setDriverClassName(DRIVER);
+        dataSource.setUsername(DATABASE_USER);
+        dataSource.setPassword(DATABASE_PASSWORD);
 
-        // Store the DataSource in the servlet context for global access
-        sce.getServletContext().setAttribute("dataSource", dataSource);
+        UserDao userDao = new MySQLUserDao(dataSource);
+        sce.getServletContext().setAttribute(USER_DAO_KEY, userDao);
     }
 
     @Override
@@ -29,6 +33,5 @@ public class ContextListener implements ServletContextListener {
             throw new RuntimeException("Error closing the database connection pool", e);
         }
     }
-
 
 }
