@@ -47,7 +47,7 @@ public class DatabaseConstants {
     public static final class ProblemStatus {
         public static final String TABLE_NAME = "problem_status";
         public static final String COL_ID = "id";
-        public static final String COL_USER_ID = "status_id";
+        public static final String COL_STATUS_ID = "status";
     }
 
 }
