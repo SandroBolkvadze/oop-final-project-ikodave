@@ -31,4 +31,12 @@
     <url-pattern>/signin</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>ProblemsServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemsServlet</servlet-name>
+    <url-pattern>/problems</url-pattern>
+  </servlet-mapping>
 </web-app>
