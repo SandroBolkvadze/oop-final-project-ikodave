@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS Ikodave.problems (
     id INT PRIMARY KEY,
     problem_name VARCHAR(100),
     problem_description TEXT,
-    difficulty_level ENUM('easy', 'medium', 'hard') NOT NULL,
+    difficulty_level ENUM('easy', 'medium', 'hard') NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Ikodave.problem_solutions (
