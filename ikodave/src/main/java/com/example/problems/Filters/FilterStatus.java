@@ -25,6 +25,7 @@ public class FilterStatus implements Filter {
                 Submissions.COL_PROBLEM_ID,
                 Problems.TABLE_NAME,
                 Problems.COL_ID,
+
                 ProblemStatus.TABLE_NAME,
                 ProblemStatus.TABLE_NAME,
                 ProblemStatus.COL_STATUS_ID,
