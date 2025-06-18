@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS Ikodave.problem_solutions (
     solution_code TEXT,
     solution_language VARCHAR(50),
     FOREIGN KEY (problem_id) REFERENCES Ikodave.problems(id),
-    FOREIGN KEY (user_id) REFERENCES Ikodave.users(id)
+    FOREIGN KEY (user_id) REFERENCES Ikodave.users(id),
+    verdict ENUM('ACCEPT', 'REJECT') NOT NULL
 );
