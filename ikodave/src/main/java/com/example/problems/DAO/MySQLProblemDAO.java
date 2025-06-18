@@ -2,6 +2,7 @@ package com.example.problems.DAO;
 
 import com.example.problems.DTO.Problem;
 import com.example.problems.Filters.Filter;
+import com.example.util.DatabaseConstants;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,8 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.problems.utils.StringToEnum.stringToEnum;
-import static com.example.util.Constants.DATABASE_PROBLEMS_TABLE;
+import static java.lang.String.format;
 
 public class MySQLProblemDAO implements ProblemDAO {
 
@@ -23,7 +23,8 @@ public class MySQLProblemDAO implements ProblemDAO {
 
     @Override
     public List<Problem> getProblemsByFilter(Filter filter) {
-        String sqlStatement = "SELECT * FROM " + DATABASE_PROBLEMS_TABLE + " WHERE " + filter.toString();
+        String sqlStatement = filter.toString();
+
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlStatement);
@@ -33,7 +34,7 @@ public class MySQLProblemDAO implements ProblemDAO {
                 problem.setId(Integer.parseInt(resultSet.getString(1)));
                 problem.setTitle(resultSet.getString(2));
                 problem.setDescription(resultSet.getString(3));
-                problem.setProblemDifficulty(stringToEnum(resultSet.getString(4)));
+                problem.setDifficultyId(resultSet.getInt(4));
                 problems.add(problem);
             }
             return problems;

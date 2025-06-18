@@ -4,17 +4,17 @@ public class Problem {
     private int id;
     private String title;
     private String description;
-    private ProblemDifficulty problemDifficulty;
+    private int difficultyId;
 
     public Problem() {
 
     }
 
-    public Problem(int id, String title, String description, ProblemDifficulty problemDifficulty) {
+    public Problem(int id, String title, String description, int difficultyId) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.problemDifficulty = problemDifficulty;
+        this.difficultyId = difficultyId;
     }
 
     public int getId() {
@@ -41,11 +41,11 @@ public class Problem {
         this.description = description;
     }
 
-    public ProblemDifficulty getProblemDifficulty() {
-        return problemDifficulty;
+    public int getDifficultyId() {
+        return difficultyId;
     }
 
-    public void setProblemDifficulty(ProblemDifficulty problemDifficulty) {
-        this.problemDifficulty = problemDifficulty;
+    public void setDifficultyId(int difficultyId) {
+        this.difficultyId = difficultyId;
     }
 }

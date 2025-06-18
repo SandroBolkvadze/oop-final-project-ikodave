@@ -1,9 +1,9 @@
 create schema if not exists Ikodave;
 
-create table if not exists users (
-    id int auto_increment primary key,
-    username varchar(50) not null unique,
-    password varchar(255) not null
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
 );
 
 -- problems
@@ -41,10 +41,16 @@ CREATE TABLE IF NOT EXISTS submissions (
     id INT PRIMARY KEY,
     user_id INT,
     problem_id INT,
+    status_id INT,
     solution_code TEXT,
     FOREIGN KEY (problem_id) REFERENCES problems(id),
     FOREIGN KEY (user_id) REFERENCES users(id),
-    verdict ENUM('TODO', 'ATTEMPTED', 'SOLVED') NOT NULL
+    FOREIGN KEY (status_id) REFERENCES problem_status(id)
+);
+
+CREATE TABLE IF NOT EXISTS problem_status (
+    id INT PRIMARY KEY,
+    status varchar(16)
 );
 --
 
