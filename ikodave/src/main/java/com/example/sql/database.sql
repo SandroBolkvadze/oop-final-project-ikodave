@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS problem_status (
 -- problems
 CREATE TABLE IF NOT EXISTS problems (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    problem_name VARCHAR(100) UNIQUE NOT NULL,
+    problem_title VARCHAR(100) UNIQUE NOT NULL,
     problem_description TEXT,
     difficulty_id INT,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty(id)

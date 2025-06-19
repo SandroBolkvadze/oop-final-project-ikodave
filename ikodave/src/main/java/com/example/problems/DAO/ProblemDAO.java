@@ -20,6 +20,6 @@ public interface ProblemDAO {
 
     String getProblemName(int problemId);
 
-    int getProblemId(String problemName);
+    int getProblemId(String problemTitle);
 
 }

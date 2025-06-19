@@ -5,6 +5,10 @@ public class Difficulty {
     public int id;
     private String difficulty;
 
+    public Difficulty() {
+
+    }
+
     public Difficulty(int id, String difficulty) {
         this.id = id;
         this.difficulty = difficulty;
