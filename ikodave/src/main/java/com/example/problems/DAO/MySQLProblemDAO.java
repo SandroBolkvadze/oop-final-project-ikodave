@@ -1,13 +1,13 @@
 package com.example.problems.DAO;
 
+import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Problem;
+import com.example.problems.DTO.Status;
+import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.Filter;
 import com.example.util.DatabaseConstants;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class MySQLProblemDAO implements ProblemDAO {
 
     @Override
     public List<Problem> getProblemsByFilter(Filter filter) {
-        String sqlStatement = filter.toString();
+        String sqlStatement = filter.toSQLStatement();
 
         try {
             Statement statement = connection.createStatement();
@@ -41,6 +41,39 @@ public class MySQLProblemDAO implements ProblemDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Topic> getProblemTopics(int problemId) {
+        String sqlStatement = "SELECT ? FROM ? WHERE ? = ?;";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return List.of();
+    }
+
+    @Override
+    public Difficulty getProblemDifficulty(int problemId) {
+        return null;
+    }
+
+    @Override
+    public Status getProblemStatus(int problemId, int userId) {
+        return null;
+    }
+
+    @Override
+    public String getProblemName(int problemId) {
+        return "";
+    }
+
+    @Override
+    public int getProblemId(String problemName) {
+        return 0;
     }
 
 

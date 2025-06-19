@@ -2,33 +2,51 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Problem Filters</title>
 </head>
 <body>
+    <h1>Filter Problems</h1>
 
-    <form id="filter-form">
-        <label>
-            Difficulty:
-            <select name="difficulty">
-                <option value="">All</option>
-                <option value="1">Easy</option>
-                <option value="2">Medium</option>
-                <option value="3">Hard</option>
-            </select>
-        </label>
+    <!-- Name filter -->
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Search by problem name...">
+    </div>
 
-        <fieldset>
-            <legend>Tags:</legend>
-            <label><input type="checkbox" name="tag" value="arrays" /> Arrays</label>
-            <label><input type="checkbox" name="tag" value="graphs" /> Graphs</label>
-            <label><input type="checkbox" name="tag" value="dp"     /> Dynamic Programming</label>
-        </fieldset>
+    <!-- Difficulty filter -->
+    <div>
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty">
+            <option value="">All</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
 
-        <button type="submit">Apply Filters</button>
-    </form>
+    <!-- Status filter -->
+    <div>
+        <label for="status">Status:</label>
+        <select id="status">
+            <option value="">All</option>
+            <option value="solved">Solved</option>
+            <option value="attempted">Attempted</option>
+            <option value="unsolved">Unsolved</option>
+        </select>
+    </div>
 
+    <!-- Topic filter -->
+    <div>
+        <label for="topics">Topics:</label>
+        <select id="topics" name="topics" multiple size="4">
+            <option value="arrays">Arrays</option>
+            <option value="graphs">Graphs</option>
+            <option value="dp">Dynamic Programming</option>
+            <option value="trees">Trees</option>
+            <option value="greedy">Greedy</option>
+        </select>
+    </div>
 
-    <script src="../js/problems.js"></script>
-
+    <button id="filter-button">Apply Filters</button>
 </body>
 </html>

@@ -2,6 +2,10 @@ package com.example.problems.Filters;
 
 public interface Filter {
 
-    String toString();
+    String joinStatement();
+
+    String whereStatement();
+
+    String toSQLStatement();
 
 }
