@@ -76,7 +76,7 @@ public class FilterAnd implements Filter{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+
 
 
 }
