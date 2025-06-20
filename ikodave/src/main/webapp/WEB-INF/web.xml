@@ -33,7 +33,7 @@
 
   <servlet>
     <servlet-name>ProblemsServlet</servlet-name>
-    <servlet-class>com.example.problems.servlets.ProblemsServlet</servlet-class>
+    <servlet-class>com.example.problems.servlets.ProblemsListServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ProblemsServlet</servlet-name>

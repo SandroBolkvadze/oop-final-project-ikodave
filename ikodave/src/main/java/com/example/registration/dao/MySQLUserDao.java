@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class MySQLUserDao implements UserDao{
-    private BasicDataSource dataSource;
+    private final BasicDataSource dataSource;
 
     public MySQLUserDao(BasicDataSource dataSource) {
         this.dataSource = dataSource;

@@ -1,8 +1,5 @@
 package com.example.problems.Filters;
 
-
-import com.example.problems.DTO.Status;
-import com.example.registration.model.User;
 import com.example.util.DatabaseConstants.*;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
@@ -13,41 +10,24 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class FilterStatus implements Filter {
+public class FilterTitle implements Filter {
 
-    private final User user;
-    private final Status status;
+    private final String title;
+
     private final BasicDataSource basicDataSource;
 
-    public FilterStatus(BasicDataSource basicDataSource, User user, Status status) {
-        this.user = user;
-        this.status = status;
+    public FilterTitle(BasicDataSource basicDataSource, String title) {
+        this.title = "%" + title + "%";
         this.basicDataSource = basicDataSource;
     }
 
+    @Override
     public String toSQLStatement() {
         return format(
-                "SELECT * FROM %s " +
-                        "JOIN %s ON %s.%s = %s.%s JOIN %s ON %s.%s = %s.%s" +
-                        "WHERE %s.%s = ? AND %s.%s = ?",
+                "SELECT * FROM %s WHERE %s.%s LIKE ?",
                 Problems.TABLE_NAME,
-
-                Submissions.TABLE_NAME,
-                Submissions.TABLE_NAME,
-                Submissions.COL_PROBLEM_ID,
                 Problems.TABLE_NAME,
-                Problems.COL_ID,
-
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.COL_STATUS_ID,
-                Submissions.TABLE_NAME,
-                Submissions.COL_STATUS_ID,
-
-                Submissions.TABLE_NAME,
-                Submissions.COL_USER_ID,
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.COL_STATUS_ID
+                Problems.COL_TITLE
         );
     }
 
@@ -69,6 +49,8 @@ public class FilterStatus implements Filter {
 
     @Override
     public List<String> getParameters() {
-        return List.of(user.getUsername(), status.getStatus());
+        return List.of(title);
     }
+
+
 }
