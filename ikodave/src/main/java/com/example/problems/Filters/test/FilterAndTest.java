@@ -5,6 +5,7 @@ import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.FilterAnd;
 import com.example.problems.Filters.FilterDifficulty;
 import com.example.problems.Filters.FilterTopic;
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.List;
 public class FilterAndTest {
 
     public static void main(String[] args) {
-        Connection connection = null;
-        FilterDifficulty filterDifficulty = new FilterDifficulty(connection, new Difficulty(1, "MEDIUM"));
+        BasicDataSource basicDataSource = null;
+        FilterDifficulty filterDifficulty = new FilterDifficulty(basicDataSource, new Difficulty(1, "MEDIUM"));
         FilterTopic filterTopic = new FilterTopic( null,
                 List.of(new Topic(0, "A"),
                         new Topic(1, "B"),
