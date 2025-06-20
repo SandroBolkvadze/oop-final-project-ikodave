@@ -1,6 +1,5 @@
 package com.example.problems.utils;
 
-import com.example.problems.servlets.ProblemsServlet;
 import com.example.util.DatabaseConstants.*;
 
 import static java.lang.String.format;
