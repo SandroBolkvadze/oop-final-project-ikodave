@@ -1,6 +1,8 @@
 package com.example.problems.Filters;
 
 import com.example.problems.DTO.Difficulty;
+import com.example.problems.Filters.Parameters.Parameter;
+import com.example.problems.Filters.Parameters.ParameterString;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
@@ -44,8 +46,8 @@ public class FilterDifficulty implements Filter {
         try (Connection connection = basicDataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
-            for (String parameter : getParameters()) {
-                preparedStatement.setString(index++, parameter);
+            for (Parameter parameter : getParameters()) {
+                parameter.setParameter(index++, preparedStatement);
             }
             return preparedStatement;
         } catch (SQLException e) {
@@ -53,8 +55,8 @@ public class FilterDifficulty implements Filter {
         }
     }
 
-    public List<String> getParameters() {
-        return List.of(difficulty.getDifficulty());
+    public List<Parameter> getParameters() {
+        return List.of(new ParameterString(difficulty.getDifficulty()));
     }
 
 }

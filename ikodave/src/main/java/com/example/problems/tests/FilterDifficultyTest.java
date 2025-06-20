@@ -1,10 +1,8 @@
-package com.example.problems.Filters.test;
+package com.example.problems.tests;
 
 import com.example.problems.DTO.Difficulty;
 import com.example.problems.Filters.FilterDifficulty;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
-
-import java.sql.Connection;
 
 public class FilterDifficultyTest {
 

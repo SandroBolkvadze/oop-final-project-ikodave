@@ -2,13 +2,14 @@ package com.example.problems.Filters;
 
 
 import com.example.problems.DTO.Topic;
+import com.example.problems.Filters.Parameters.Parameter;
+import com.example.problems.Filters.Parameters.ParameterString;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.example.util.DatabaseConstants.*;
@@ -66,8 +67,8 @@ public class FilterTopic implements Filter {
         try (Connection connection = basicDataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
-            for (String parameter : getParameters()) {
-                preparedStatement.setString(index++, parameter);
+            for (Parameter parameter : getParameters()) {
+                parameter.setParameter(index++, preparedStatement);
             }
             return preparedStatement;
         } catch (SQLException e) {
@@ -77,10 +78,10 @@ public class FilterTopic implements Filter {
 
 
     @Override
-    public List<String> getParameters() {
-        List<String> parameters = new ArrayList<>();
+    public List<Parameter> getParameters() {
+        List<Parameter> parameters = new ArrayList<>();
         for (Topic topic : topics) {
-            parameters.add(topic.getTopic());
+            parameters.add(new ParameterString(topic.getTopic()));
         }
         return parameters;
     }

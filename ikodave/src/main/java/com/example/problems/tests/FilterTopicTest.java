@@ -1,4 +1,4 @@
-package com.example.problems.Filters.test;
+package com.example.problems.tests;
 
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.FilterTopic;

@@ -1,4 +1,4 @@
-package com.example.problems.Filters.test;
+package com.example.problems.tests;
 
 import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Topic;
@@ -7,7 +7,6 @@ import com.example.problems.Filters.FilterDifficulty;
 import com.example.problems.Filters.FilterTopic;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
-import java.sql.Connection;
 import java.util.List;
 
 public class FilterAndTest {

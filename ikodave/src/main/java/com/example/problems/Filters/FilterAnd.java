@@ -1,5 +1,6 @@
 package com.example.problems.Filters;
 
+import com.example.problems.Filters.Parameters.Parameter;
 import com.example.util.DatabaseConstants.*;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
@@ -67,9 +68,9 @@ public class FilterAnd implements Filter{
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
             for (Filter filter : filters) {
-                List<String> parameters = filter.getParameters();
-                for (String parameter : parameters) {
-                    preparedStatement.setString(index++, parameter);
+                List<Parameter> parameters = filter.getParameters();
+                for (Parameter parameter : parameters) {
+                    parameter.setParameter(index++, preparedStatement);
                 }
             }
             return preparedStatement;
@@ -77,6 +78,11 @@ public class FilterAnd implements Filter{
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public List<Parameter> getParameters() {
+        return List.of();
     }
 
 }
