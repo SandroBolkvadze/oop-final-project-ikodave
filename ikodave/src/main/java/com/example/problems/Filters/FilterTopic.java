@@ -2,6 +2,7 @@ package com.example.problems.Filters;
 
 
 import com.example.problems.DTO.Topic;
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,11 +17,11 @@ import static java.lang.String.format;
 public class FilterTopic implements Filter {
 
     private final List<Topic> topics;
-    private final Connection connection;
+    private final BasicDataSource basicDataSource;
 
     public FilterTopic(Connection connection, List<Topic> topics) {
         this.topics = topics;
-        this.connection = connection;
+        this.basicDataSource = new BasicDataSource();
     }
 
     private String getTopicList() {
@@ -62,7 +63,7 @@ public class FilterTopic implements Filter {
     public PreparedStatement toSQLPreparedStatement() {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try {
+        try (Connection connection = basicDataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
             for (String parameter : getParameters()) {

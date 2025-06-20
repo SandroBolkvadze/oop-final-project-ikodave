@@ -1,6 +1,7 @@
 package com.example.problems.Filters;
 
 import com.example.problems.DTO.Difficulty;
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,11 +15,11 @@ public class FilterDifficulty implements Filter {
 
     private final Difficulty difficulty;
 
-    private final Connection connection;
+    private final BasicDataSource basicDataSource;
 
-    public FilterDifficulty(Connection connection, Difficulty difficulty) {
+    public FilterDifficulty(BasicDataSource basicDataSource, Difficulty difficulty) {
         this.difficulty = difficulty;
-        this.connection = connection;
+        this.basicDataSource = basicDataSource;
     }
 
     @Override
@@ -40,7 +41,7 @@ public class FilterDifficulty implements Filter {
     public PreparedStatement toSQLPreparedStatement() {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try {
+        try (Connection connection = basicDataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
             for (String parameter : getParameters()) {

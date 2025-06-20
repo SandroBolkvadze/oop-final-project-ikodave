@@ -1,6 +1,7 @@
 package com.example.problems.Filters;
 
 import com.example.util.DatabaseConstants.*;
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,11 +14,11 @@ public class FilterTitle implements Filter {
 
     private final String title;
 
-    private final Connection connection;
+    private final BasicDataSource basicDataSource;
 
-    public FilterTitle(Connection connection, String title) {
+    public FilterTitle(BasicDataSource basicDataSource, String title) {
         this.title = "%" + title + "%";
-        this.connection = connection;
+        this.basicDataSource = basicDataSource;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class FilterTitle implements Filter {
     public PreparedStatement toSQLPreparedStatement() {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try {
+        try (Connection connection = basicDataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
             for (String parameter : getParameters()) {

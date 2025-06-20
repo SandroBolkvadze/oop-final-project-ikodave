@@ -5,6 +5,7 @@ import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.Filter;
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,17 +16,17 @@ import static com.example.problems.utils.ToSQL.*;
 
 public class SQLProblemDAO implements ProblemDAO {
 
-    private final Connection connection;
+    private final BasicDataSource basicDataSource;
 
-    public SQLProblemDAO(Connection connection) {
-        this.connection = connection;
+    public SQLProblemDAO(BasicDataSource basicDataSource) {
+        this.basicDataSource = basicDataSource;
     }
 
     @Override
     public List<Problem> getProblemsByFilter(Filter filter) {
         String sqlStatement = filter.toSQLStatement();
 
-        try {
+        try (Connection connection = basicDataSource.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlStatement);
             List<Problem> problems = new ArrayList<>();
@@ -42,7 +43,7 @@ public class SQLProblemDAO implements ProblemDAO {
     public List<Topic> getProblemTopics(int problemId) {
         String sqlStatement = toProblemTopicsSQL();
 
-        try {
+        try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, problemId);
 
@@ -63,7 +64,7 @@ public class SQLProblemDAO implements ProblemDAO {
     public Difficulty getProblemDifficulty(int problemId) {
         String sqlStatement = toProblemDifficultySQL();
 
-        try {
+        try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, problemId);
 
@@ -77,7 +78,7 @@ public class SQLProblemDAO implements ProblemDAO {
     @Override
     public Status getProblemStatus(int problemId, int userId) {
         String sqlStatement = toProblemStatusSQL();
-        try {
+        try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, problemId);
             preparedStatement.setInt(2, userId);
@@ -91,7 +92,7 @@ public class SQLProblemDAO implements ProblemDAO {
     @Override
     public String getProblemTitle(int problemId) {
         String sqlStatement = toProblemTitleSQL();
-        try {
+        try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, problemId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -104,7 +105,7 @@ public class SQLProblemDAO implements ProblemDAO {
     @Override
     public int getProblemId(String problemTitle) {
         String sqlStatement = toProblemTitleSQL();
-        try {
+        try (Connection connection = basicDataSource.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, problemTitle);
             ResultSet resultSet = preparedStatement.executeQuery();

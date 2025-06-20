@@ -4,6 +4,7 @@ package com.example.problems.Filters;
 import com.example.problems.DTO.Status;
 import com.example.registration.model.User;
 import com.example.util.DatabaseConstants.*;
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,12 +17,12 @@ public class FilterStatus implements Filter {
 
     private final User user;
     private final Status status;
-    private final Connection connection;
+    private final BasicDataSource basicDataSource;
 
-    public FilterStatus(Connection connection, User user, Status status) {
+    public FilterStatus(BasicDataSource basicDataSource, User user, Status status) {
         this.user = user;
         this.status = status;
-        this.connection = connection;
+        this.basicDataSource = basicDataSource;
     }
 
     public String toSQLStatement() {
@@ -54,7 +55,7 @@ public class FilterStatus implements Filter {
     public PreparedStatement toSQLPreparedStatement() {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try {
+        try (Connection connection = basicDataSource.getConnection()) {
             preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
             for (String parameter : getParameters()) {

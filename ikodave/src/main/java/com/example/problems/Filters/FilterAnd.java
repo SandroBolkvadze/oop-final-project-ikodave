@@ -1,6 +1,7 @@
 package com.example.problems.Filters;
 
 import com.example.util.DatabaseConstants.*;
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,11 +14,11 @@ public class FilterAnd implements Filter{
 
     private final List<Filter> filters;
 
-    private final Connection connection;
+    private final BasicDataSource basicDataSource;
 
-    public FilterAnd(Connection connection, List<Filter> filters) {
+    public FilterAnd(BasicDataSource basicDataSource, List<Filter> filters) {
         this.filters = filters;
-        this.connection = connection;
+        this.basicDataSource = new BasicDataSource();
     }
 
     @Override
@@ -62,7 +63,7 @@ public class FilterAnd implements Filter{
     public PreparedStatement toSQLPreparedStatement() {
         String sqlStatement = toSQLStatement();
 
-        try {
+        try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
             for (Filter filter : filters) {
