@@ -62,6 +62,7 @@ public class SQLProblemDAO implements ProblemDAO {
     @Override
     public Difficulty getProblemDifficulty(int problemId) {
         String sqlStatement;
+        return null;
     }
 
     @Override
