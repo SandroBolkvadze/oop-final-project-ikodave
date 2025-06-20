@@ -61,7 +61,7 @@ public class SQLProblemDAO implements ProblemDAO {
 
     @Override
     public Difficulty getProblemDifficulty(int problemId) {
-        String sqlStatement;
+
         return null;
     }
 
@@ -79,6 +79,5 @@ public class SQLProblemDAO implements ProblemDAO {
     public int getProblemId(String problemName) {
         return 0;
     }
-
 
 }

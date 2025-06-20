@@ -1,38 +1,32 @@
 package com.example.problems.Filters;
 
-import com.example.problems.DTO.Difficulty;
+import com.example.util.DatabaseConstants.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.example.util.DatabaseConstants.*;
 import static java.lang.String.format;
 
-public class FilterDifficulty implements Filter {
+public class FilterTitle implements Filter {
 
-    private final Difficulty difficulty;
+    private final String title;
 
     private final Connection connection;
 
-    public FilterDifficulty(Connection connection, Difficulty difficulty) {
-        this.difficulty = difficulty;
+    public FilterTitle(Connection connection, String title) {
+        this.title = "%" + title + "%";
         this.connection = connection;
     }
 
     @Override
     public String toSQLStatement() {
         return format(
-                "SELECT * FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ?",
+                "SELECT * FROM %s WHERE %s.%s LIKE ?",
                 Problems.TABLE_NAME,
-                ProblemDifficulty.TABLE_NAME,
                 Problems.TABLE_NAME,
-                Problems.COL_DIFFICULTY_ID,
-                ProblemDifficulty.TABLE_NAME,
-                ProblemDifficulty.COL_ID,
-                ProblemDifficulty.TABLE_NAME,
-                ProblemDifficulty.COL_DIFFICULTY
+                Problems.COL_TITLE
         );
     }
 
@@ -52,8 +46,10 @@ public class FilterDifficulty implements Filter {
         }
     }
 
+    @Override
     public List<String> getParameters() {
-        return List.of(difficulty.getDifficulty());
+        return List.of(title);
     }
+
 
 }
