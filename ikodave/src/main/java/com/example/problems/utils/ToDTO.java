@@ -55,5 +55,20 @@ public class ToDTO {
             throw new RuntimeException(e);
         }
     }
+    public static String toTitle(ResultSet resultSet) {
+        try {
+            return resultSet.getString(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int toId(ResultSet resultSet) {
+        try {
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

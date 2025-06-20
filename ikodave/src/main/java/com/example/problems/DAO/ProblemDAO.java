@@ -18,7 +18,7 @@ public interface ProblemDAO {
 
     Status getProblemStatus(int problemId, int userId);
 
-    String getProblemName(int problemId);
+    String getProblemTitle(int problemId);
 
     int getProblemId(String problemTitle);
 

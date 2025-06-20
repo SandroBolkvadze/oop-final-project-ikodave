@@ -89,14 +89,29 @@ public class SQLProblemDAO implements ProblemDAO {
     }
 
     @Override
-    public String getProblemName(int problemId) {
-
-        return "";
+    public String getProblemTitle(int problemId) {
+        String sqlStatement = toProblemTitleSQL();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, problemId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return toTitle(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public int getProblemId(String problemName) {
-        return 0;
+    public int getProblemId(String problemTitle) {
+        String sqlStatement = toProblemTitleSQL();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, problemTitle);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return toId(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
