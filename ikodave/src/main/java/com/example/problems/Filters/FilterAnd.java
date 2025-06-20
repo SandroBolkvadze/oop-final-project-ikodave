@@ -2,7 +2,7 @@ package com.example.problems.Filters;
 
 import java.util.List;
 
-public class FilterAnd {
+public class FilterAnd implements Filter{
 
     private final List<Filter> filters;
 
@@ -10,8 +10,18 @@ public class FilterAnd {
         this.filters = filters;
     }
 
-    public String toString() {
+    @Override
+    public String joinStatement() {
         return "";
     }
 
+    @Override
+    public String whereStatement() {
+        return "";
+    }
+
+    @Override
+    public String toSQLStatement() {
+        return "";
+    }
 }

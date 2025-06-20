@@ -41,7 +41,7 @@ public class FilterDifficulty implements Filter {
     }
 
     @Override
-    public String toString() {
+    public String toSQLStatement() {
         return format("SELECT * FROM %s %s WHERE %s;",
                 Problems.TABLE_NAME,
                 joinStatement(),

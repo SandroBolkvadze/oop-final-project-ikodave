@@ -9,27 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ProblemsServlet extends HttpServlet {
 
-    private final Gson gson = new Gson();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
-
-        Filter filter;
-        request.getAttribute("");
-        Filter DifficultFilter;
-        Filter StatusFilter;
-
-//        if(difficultFilter != null){
-//            view ((select * from
-//                    problems join dificulties
-//            ) + difficultFilter)
-//        }
-//        if(statusFilter != null){
-//            view ((select * from
-//                    problems join statusFilter
-//            ) + statusFitler)
-//        }
     }
 
 }
