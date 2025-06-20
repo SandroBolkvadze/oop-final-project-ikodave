@@ -10,17 +10,17 @@ public class FilterAnd implements Filter{
         this.filters = filters;
     }
 
-    @Override
+//    @Override
     public String joinStatement() {
         return "";
     }
 
-    @Override
+//    @Override
     public String whereStatement() {
         return "";
     }
 
-    @Override
+//    @Override
     public String toSQLStatement() {
         return "";
     }
