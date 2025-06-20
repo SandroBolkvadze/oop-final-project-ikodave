@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.problems.utils.ToDTO.*;
-import static com.example.problems.utils.ToSQL.toProblemTopicsSQL;
+import static com.example.problems.utils.ToSQL.*;
 
 public class SQLProblemDAO implements ProblemDAO {
 
@@ -61,17 +61,36 @@ public class SQLProblemDAO implements ProblemDAO {
 
     @Override
     public Difficulty getProblemDifficulty(int problemId) {
+        String sqlStatement = toProblemDifficultySQL();
 
-        return null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, problemId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return toDifficulty(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public Status getProblemStatus(int problemId, int userId) {
-        return null;
+        String sqlStatement = toProblemStatusSQL();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, problemId);
+            preparedStatement.setInt(2, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return toStatus(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public String getProblemName(int problemId) {
+
         return "";
     }
 
