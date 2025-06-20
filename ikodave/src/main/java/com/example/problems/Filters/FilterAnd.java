@@ -77,6 +77,6 @@ public class FilterAnd implements Filter{
             throw new RuntimeException(e);
         }
 
-
+    }
 
 }
