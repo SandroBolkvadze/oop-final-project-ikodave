@@ -1,17 +1,20 @@
 package com.example.listener;
 
+import com.example.problems.DAO.ProblemDAO;
+import com.example.problems.DAO.SQLProblemDAO;
 import com.example.registration.dao.MySQLUserDao;
 import com.example.registration.dao.UserDao;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import static com.example.util.Constants.*;
 
+import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 public class ContextListener implements ServletContextListener {
     private BasicDataSource dataSource;
 
     @Override
-    public void contextInitialized(javax.servlet.ServletContextEvent sce) {
+    public void contextInitialized(ServletContextEvent sce) {
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
         dataSource.setDriverClassName(DRIVER);
@@ -20,6 +23,11 @@ public class ContextListener implements ServletContextListener {
 
         UserDao userDao = new MySQLUserDao(dataSource);
         sce.getServletContext().setAttribute(USER_DAO_KEY, userDao);
+
+        ProblemDAO problemDAO = new SQLProblemDAO(dataSource);
+        sce.getServletContext().setAttribute(PROBLEM_DAO_KEY, problemDAO);
+
+        sce.getServletContext().setAttribute();
     }
 
     @Override

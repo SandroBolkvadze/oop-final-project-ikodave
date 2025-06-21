@@ -3,6 +3,7 @@ package com.example.problems.Filters;
 
 import com.example.problems.DTO.Status;
 import com.example.problems.Filters.Parameters.Parameter;
+import com.example.problems.Filters.Parameters.ParameterInteger;
 import com.example.problems.Filters.Parameters.ParameterString;
 import com.example.registration.model.User;
 import com.example.util.DatabaseConstants.*;
@@ -29,9 +30,7 @@ public class FilterStatus implements Filter {
 
     public String toSQLStatement() {
         return format(
-                "SELECT * FROM %s " +
-                        "JOIN %s ON %s.%s = %s.%s JOIN %s ON %s.%s = %s.%s" +
-                        "WHERE %s.%s = ? AND %s.%s = ?",
+                "SELECT * FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ? AND %s.%s = ?",
                 Problems.TABLE_NAME,
 
                 Submissions.TABLE_NAME,
@@ -40,16 +39,10 @@ public class FilterStatus implements Filter {
                 Problems.TABLE_NAME,
                 Problems.COL_ID,
 
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.COL_STATUS_ID,
-                Submissions.TABLE_NAME,
-                Submissions.COL_STATUS_ID,
-
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.COL_STATUS_ID
+                Submissions.TABLE_NAME,
+                Submissions.COL_STATUS_ID
         );
     }
 
@@ -71,6 +64,6 @@ public class FilterStatus implements Filter {
 
     @Override
     public List<Parameter> getParameters() {
-        return List.of(new ParameterString(user.getUsername()), new ParameterString(status.getStatus()));
+        return List.of(new ParameterInteger(user.getId()), new ParameterInteger(status.getId()));
     }
 }

@@ -22,4 +22,9 @@ public interface ProblemDAO {
 
     int getProblemId(String problemTitle);
 
+
+    int getDifficultyId(String difficulty);
+
+    int getStatusId(String status);
+
 }

@@ -22,6 +22,7 @@ public class SQLProblemDAO implements ProblemDAO {
         this.basicDataSource = basicDataSource;
     }
 
+
     @Override
     public List<Problem> getProblemsByFilter(Filter filter) {
         String sqlStatement = filter.toSQLStatement();
@@ -113,6 +114,16 @@ public class SQLProblemDAO implements ProblemDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public int getDifficultyId(String difficulty) {
+        return 0;
+    }
+
+    @Override
+    public int getStatusId(String status) {
+        return 0;
     }
 
 }

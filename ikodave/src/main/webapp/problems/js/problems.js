@@ -5,8 +5,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function filter() {
+    let title = "";
+    let difficulty = "";
+    let status = "";
+    let topics = [];
 
-    const filters = getFilters();
+    const filters =  {
+        title,
+        difficulty,
+        status,
+        topics
+    };
 
     const response = await fetch(FETCH_API, {
         method: 'POST',
@@ -15,10 +24,11 @@ async function filter() {
     });
 
     const data = await response.json();
-    console.log(data);
+
+    let list = document.querySelector('#list');
+
+    data.forEach((problem) => {
+        list.append(problem);
+    });
 }
 
-function getFilters() {
-    name = document.getElementById('name').value;
-    return name;
-}

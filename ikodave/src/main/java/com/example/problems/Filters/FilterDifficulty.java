@@ -2,6 +2,7 @@ package com.example.problems.Filters;
 
 import com.example.problems.DTO.Difficulty;
 import com.example.problems.Filters.Parameters.Parameter;
+import com.example.problems.Filters.Parameters.ParameterInteger;
 import com.example.problems.Filters.Parameters.ParameterString;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
@@ -27,15 +28,10 @@ public class FilterDifficulty implements Filter {
     @Override
     public String toSQLStatement() {
         return format(
-                "SELECT * FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ?",
+                "SELECT * FROM %s WHERE %s.%s = ?",
                 Problems.TABLE_NAME,
-                ProblemDifficulty.TABLE_NAME,
                 Problems.TABLE_NAME,
-                Problems.COL_DIFFICULTY_ID,
-                ProblemDifficulty.TABLE_NAME,
-                ProblemDifficulty.COL_ID,
-                ProblemDifficulty.TABLE_NAME,
-                ProblemDifficulty.COL_DIFFICULTY
+                Problems.COL_DIFFICULTY_ID
         );
     }
 
@@ -56,7 +52,7 @@ public class FilterDifficulty implements Filter {
     }
 
     public List<Parameter> getParameters() {
-        return List.of(new ParameterString(difficulty.getDifficulty()));
+        return List.of(new ParameterInteger(difficulty.getId()));
     }
 
 }
