@@ -8,7 +8,7 @@ import java.util.concurrent.*;
 import static java.lang.reflect.Modifier.isStatic;
 
 public class CodeRunner {
-    private static final int NUM_THREADS = 10;
+    private static final int NUM_THREADS = 20;
 
     private final ExecutorService pool = Executors.newFixedThreadPool(NUM_THREADS);
 
