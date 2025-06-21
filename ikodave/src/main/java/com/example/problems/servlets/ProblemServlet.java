@@ -29,7 +29,7 @@ public class ProblemServlet extends HttpServlet {
 
         Gson gson = new Gson();
         FilterRequest filterRequest = gson.fromJson(request.getReader(), FilterRequest.class);
-        Filter filter = filterRequest.toFilter();
+        Filter filter = filterRequest.toFilter(problemDAO, basicDataSource);
         List<Problem> problems = problemDAO.getProblemsByFilter(filter);
 
         response.setContentType("application/json");

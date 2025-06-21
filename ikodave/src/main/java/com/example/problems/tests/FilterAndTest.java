@@ -19,8 +19,9 @@ public class FilterAndTest {
                         new Topic(1, "B"),
                         new Topic(2, "C")));
 
-        FilterAnd filterAnd = new FilterAnd(
-                null, List.of(filterDifficulty, filterTopic));
+        FilterAnd filterAnd = new FilterAnd(null);
+        filterAnd.addFilter(filterDifficulty);
+        filterAnd.addFilter(filterTopic);
 
         System.out.println(filterAnd.toSQLStatement());
     }

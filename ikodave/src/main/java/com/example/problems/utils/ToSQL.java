@@ -71,7 +71,7 @@ public class ToSQL {
 
 
     public static String toDifficultyId() {
-        return format("SELECT %s FROM %s WHERE %s.%s = ?;")
+        return "";
     }
 
 }

@@ -7,6 +7,7 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -17,9 +18,13 @@ public class FilterAnd implements Filter{
 
     private final BasicDataSource basicDataSource;
 
-    public FilterAnd(BasicDataSource basicDataSource, List<Filter> filters) {
-        this.filters = filters;
+    public FilterAnd(BasicDataSource basicDataSource) {
         this.basicDataSource = new BasicDataSource();
+        filters = new ArrayList<>();
+    }
+
+    public void addFilter(Filter filter) {
+        filters.add(filter);
     }
 
     @Override
