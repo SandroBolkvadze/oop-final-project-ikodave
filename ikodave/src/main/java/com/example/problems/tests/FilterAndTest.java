@@ -13,13 +13,13 @@ public class FilterAndTest {
 
     public static void main(String[] args) {
         BasicDataSource basicDataSource = null;
-        FilterDifficulty filterDifficulty = new FilterDifficulty(basicDataSource, new Difficulty(1, "MEDIUM"));
-        FilterTopic filterTopic = new FilterTopic( null,
+        FilterDifficulty filterDifficulty = new FilterDifficulty(new Difficulty(1, "MEDIUM"));
+        FilterTopic filterTopic = new FilterTopic(
                 List.of(new Topic(0, "A"),
                         new Topic(1, "B"),
                         new Topic(2, "C")));
 
-        FilterAnd filterAnd = new FilterAnd(null);
+        FilterAnd filterAnd = new FilterAnd();
         filterAnd.addFilter(filterDifficulty);
         filterAnd.addFilter(filterTopic);
 

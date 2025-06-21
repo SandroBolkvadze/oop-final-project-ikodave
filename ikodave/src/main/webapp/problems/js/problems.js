@@ -1,14 +1,14 @@
 const FETCH_API = 'https://localhost:8080/problems';
 
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('filter-button').addEventListener("submit", filter);
-});
+document.addEventListener('DOMContentLoaded', filter);
 
 async function filter() {
-    let title = "";
-    let difficulty = "";
-    let status = "";
-    let topics = [];
+    console.log('here');
+
+    let title = 'add-numbers';
+    let difficulty = 'MEDIUM';
+    let status = 'solved';
+    let topics = ['graph', 'dp', 'math'];
 
     const filters =  {
         title,
@@ -25,10 +25,5 @@ async function filter() {
 
     const data = await response.json();
 
-    let list = document.querySelector('#list');
-
-    data.forEach((problem) => {
-        list.append(problem);
-    });
 }
 

@@ -12,14 +12,11 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class FilterAnd implements Filter{
+public class FilterAnd implements Filter {
 
     private final List<Filter> filters;
 
-    private final BasicDataSource basicDataSource;
-
-    public FilterAnd(BasicDataSource basicDataSource) {
-        this.basicDataSource = new BasicDataSource();
+    public FilterAnd() {
         filters = new ArrayList<>();
     }
 
@@ -66,10 +63,10 @@ public class FilterAnd implements Filter{
     }
 
     @Override
-    public PreparedStatement toSQLPreparedStatement() {
+    public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
 
-        try (Connection connection = basicDataSource.getConnection()) {
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
             for (Filter filter : filters) {

@@ -10,7 +10,7 @@ public interface Filter {
 
     String toSQLStatement();
 
-    PreparedStatement toSQLPreparedStatement();
+    PreparedStatement toSQLPreparedStatement(Connection connection);
 
     List<Parameter> getParameters();
 

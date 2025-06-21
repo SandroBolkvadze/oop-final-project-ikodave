@@ -8,7 +8,7 @@ import java.util.List;
 public class FilterTopicTest {
 
     public static void main(String[] args) {
-        FilterTopic filterTopic = new FilterTopic( null,
+        FilterTopic filterTopic = new FilterTopic(
                 List.of(new Topic(0, "A"),
                         new Topic(1, "B"),
                         new Topic(2, "C")));

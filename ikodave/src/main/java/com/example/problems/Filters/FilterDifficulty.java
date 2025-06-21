@@ -18,11 +18,8 @@ public class FilterDifficulty implements Filter {
 
     private final Difficulty difficulty;
 
-    private final BasicDataSource basicDataSource;
-
-    public FilterDifficulty(BasicDataSource basicDataSource, Difficulty difficulty) {
+    public FilterDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
-        this.basicDataSource = basicDataSource;
     }
 
     @Override
@@ -36,10 +33,10 @@ public class FilterDifficulty implements Filter {
     }
 
     @Override
-    public PreparedStatement toSQLPreparedStatement() {
+    public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try (Connection connection = basicDataSource.getConnection()) {
+        try {
             preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
             for (Parameter parameter : getParameters()) {
