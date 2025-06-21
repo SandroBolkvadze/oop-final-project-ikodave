@@ -70,7 +70,7 @@ public class CodeRunnerTest {
         Object[] args = new Object[] {1, 2};
         Class<?>[] paramTypes = new Class<?>[] {int.class, int.class};
         int expected = 3;
-        long timeoutMillis = 1000;
+        long timeoutMillis = 200;
 
         try {
             Object actual = codeRunner.runWithTimeout(

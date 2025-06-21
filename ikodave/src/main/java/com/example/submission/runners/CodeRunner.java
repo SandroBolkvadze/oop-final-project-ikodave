@@ -20,9 +20,16 @@ public class CodeRunner {
             Class<?>[] paramTypes,
             long timeoutMillis) throws TimeoutException, ExecutionException, InterruptedException {
 
+        Class<?> tmpCls = null;
+        try {
+            tmpCls = InMemoryJavaCompiler.newInstance().compile(className, sourceCode);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        Class<?> cls = tmpCls;
         Future<Object> future = pool.submit(() -> {
             try {
-                Class<?> cls = InMemoryJavaCompiler.newInstance().compile(className, sourceCode);
                 Method method = cls.getMethod(methodName, paramTypes);
 
                 Object instance = null;
