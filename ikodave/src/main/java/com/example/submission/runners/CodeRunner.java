@@ -12,6 +12,8 @@ public class CodeRunner {
 
     private final ExecutorService pool = Executors.newFixedThreadPool(NUM_THREADS);
 
+    private final InMemoryJavaCompiler compiler = InMemoryJavaCompiler.newInstance();
+
     public Object runWithTimeout(
             String className,
             String sourceCode,
@@ -22,12 +24,12 @@ public class CodeRunner {
 
         Class<?> tmpCls = null;
         try {
-            tmpCls = InMemoryJavaCompiler.newInstance().compile(className, sourceCode);
+            tmpCls = compiler.compile(className, sourceCode);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        Class<?> cls = tmpCls;
+        final Class<?> cls = tmpCls;
         Future<Object> future = pool.submit(() -> {
             try {
                 Method method = cls.getMethod(methodName, paramTypes);
