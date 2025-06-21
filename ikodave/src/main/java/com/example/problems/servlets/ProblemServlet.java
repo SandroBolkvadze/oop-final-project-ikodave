@@ -32,6 +32,7 @@ public class ProblemServlet extends HttpServlet {
         Filter filter = filterRequest.toFilter(problemDAO, basicDataSource);
         List<Problem> problems = problemDAO.getProblemsByFilter(filter);
 
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(gson.toJson(problems));

@@ -3,6 +3,7 @@ package com.example.problems.utils;
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.Filters.Filter;
 import com.example.problems.Filters.FilterAnd;
+import com.example.problems.Filters.FilterStatus;
 import com.example.problems.Filters.FilterTitle;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
@@ -31,6 +32,9 @@ public class FilterRequest {
             filterAnd.addFilter(filterTitle);
         }
 
-        return null;
+        if (!status.isEmpty()) {
+        }
+
+        return filterAnd;
     }
 }

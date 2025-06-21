@@ -27,7 +27,7 @@ public class ContextListener implements ServletContextListener {
         ProblemDAO problemDAO = new SQLProblemDAO(dataSource);
         sce.getServletContext().setAttribute(PROBLEM_DAO_KEY, problemDAO);
 
-        sce.getServletContext().setAttribute();
+        sce.getServletContext().setAttribute(BASIC_DATASOURCE_KEY, dataSource);
     }
 
     @Override
