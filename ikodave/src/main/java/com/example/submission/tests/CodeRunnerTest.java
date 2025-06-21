@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class CodeRunnerTest {
 
     private CodeRunner codeRunner;
@@ -37,10 +39,11 @@ public class CodeRunnerTest {
                     1000
              );
 
-            System.out.println("Answer is " + (Integer) answer);
+            assertEquals(3, (Integer) answer);
         } catch (TimeoutException | InterruptedException | ExecutionException e) {
-            System.out.println("Failed to execute");
+            throw new RuntimeException(e);
         }
     }
+
 
 }
