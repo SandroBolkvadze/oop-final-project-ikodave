@@ -3,9 +3,11 @@ package com.example.listener;
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.SQLProblemDAO;
 import com.example.registration.dao.MySQLUserDao;
-import com.example.registration.dao.UserDao;
+import com.example.registration.dao.UserDAO;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
-import static com.example.util.Constants.*;
+
+import static com.example.util.AttributeConstants.*;
+import static com.example.util.DBConnectionConstants.*;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -21,7 +23,7 @@ public class ContextListener implements ServletContextListener {
         dataSource.setUsername(DATABASE_USER);
         dataSource.setPassword(DATABASE_PASSWORD);
 
-        UserDao userDao = new MySQLUserDao(dataSource);
+        UserDAO userDao = new MySQLUserDao(dataSource);
         sce.getServletContext().setAttribute(USER_DAO_KEY, userDao);
 
         ProblemDAO problemDAO = new SQLProblemDAO(dataSource);

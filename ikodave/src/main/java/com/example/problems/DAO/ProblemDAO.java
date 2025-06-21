@@ -27,4 +27,5 @@ public interface ProblemDAO {
 
     int getStatusId(String status);
 
+    int getTopicId(String topic);
 }

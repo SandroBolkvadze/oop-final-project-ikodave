@@ -126,4 +126,9 @@ public class SQLProblemDAO implements ProblemDAO {
         return 0;
     }
 
+    @Override
+    public int getTopicId(String topic) {
+        return 0;
+    }
+
 }
