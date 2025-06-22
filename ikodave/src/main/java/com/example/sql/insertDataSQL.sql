@@ -46,3 +46,4 @@ INSERT INTO submissions (id, user_id, problem_id, status_id, solution_code) VALU
 INSERT INTO submissions (id, user_id, problem_id, status_id, solution_code) VALUES(11, 4, 1,1,'...');
 INSERT INTO submissions (id, user_id, problem_id, status_id, solution_code) VALUES(12, 4, 5,1,'...');
 INSERT INTO submissions (id, user_id, problem_id, status_id, solution_code) VALUES(13, 4, 4,2,'...');
+INSERT INTO submissions (id, user_id, problem_id, status_id, solution_code) VALUES(14, 3, 4,3,'...');

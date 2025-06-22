@@ -29,8 +29,10 @@ public class FilterAnd implements Filter{
 
     @Override
     public String toSQLStatement() {
-        StringBuilder sqlStatement = new StringBuilder("WITH ");
-
+        StringBuilder sqlStatement = new StringBuilder();
+        if (!filters.isEmpty()) {
+            sqlStatement.append("WITH ");
+        }
         for (int i = 0; i < filters.size(); i++) {
             sqlStatement.append(format("t%d AS ", i));
             sqlStatement.append("(");

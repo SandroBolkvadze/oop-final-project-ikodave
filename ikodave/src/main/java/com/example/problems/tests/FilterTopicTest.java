@@ -57,12 +57,29 @@ public class FilterTopicTest extends TestCase {
         FilterTopic filter = new FilterTopic(dataSource, topics);
 
         List<Problem> problems = dao.getProblemsByFilter(filter);
-        int cnt1 = 0, cnt4 = 0, cnt5 = 0;
+        int cnt =0;
         for (Problem problem : problems) {
-            if(problem.getId() == 1)cnt1++;
-            if(problem.getId() == 4)cnt4++;
+            if(problem.getId() == 1)cnt++;
+            if(problem.getId() == 3)cnt++;
+            if(problem.getId() == 4)cnt++;
+            if(problem.getId() == 5)cnt++;
+        }
+        assertEquals(4, problems.size());
+        assertEquals(4, cnt);
+    }
+    public void testFilterMultipleTopics() throws SQLException {
+        setup();
+        List<Topic> topics = new ArrayList<Topic>();
+        topics.add(new Topic(1, "dp"));
+        topics.add(new Topic(3, "graphs"));
+        FilterTopic filter = new FilterTopic(dataSource, topics);
+        List<Problem> problems = dao.getProblemsByFilter(filter);
+        int cnt3 =0, cnt5 = 0;
+        for (Problem problem : problems) {
+            if(problem.getId() == 3)cnt3++;
             if(problem.getId() == 5)cnt5++;
         }
-        assertEquals(3, cnt1 + cnt4 + cnt5);
+        assertEquals(2, problems.size());
+        assertEquals(2, cnt3 + cnt5);
     }
 }

@@ -38,7 +38,7 @@ public class FilterTitleTest extends TestCase {
         setup();
         FilterTitle ft = new FilterTitle(dataSource,"ic");
         List<Problem> problems = new ArrayList<>();
-        problems =dao.getProblemsByFilter(ft);
+        problems = dao.getProblemsByFilter(ft);
         assertEquals(2,problems.size());
         int k2 = 0, k4 = 0;
         for (Problem problem : problems) {
@@ -47,5 +47,12 @@ public class FilterTitleTest extends TestCase {
         }
         assertEquals(1, k2);
         assertEquals(1, k4);
+    }
+    public void testTitleFilterNoProblems() throws SQLException {
+        setup();
+        FilterTitle ft = new FilterTitle(dataSource,"ick");
+        List<Problem> problems = new ArrayList<>();
+        problems = dao.getProblemsByFilter(ft);
+        assertEquals(0,problems.size());
     }
 }
