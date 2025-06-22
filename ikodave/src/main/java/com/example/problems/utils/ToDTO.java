@@ -35,6 +35,7 @@ public class ToDTO {
     }
 
     public static Difficulty toDifficulty(ResultSet resultSet) {
+
         try {
             Difficulty difficulty = new Difficulty();
             difficulty.setId(resultSet.getInt(1));
