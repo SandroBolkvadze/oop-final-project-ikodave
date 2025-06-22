@@ -17,6 +17,8 @@ public class Registration extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+
+
         User user = new User(username, password);
         UserDAO userDao = (UserDAO) request.getServletContext().getAttribute(USER_DAO_KEY);
 

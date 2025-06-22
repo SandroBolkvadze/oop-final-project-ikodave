@@ -15,11 +15,9 @@
 </head>
 <body>
 <div id="navbar-container"></div>
-<script>
-    fetch('/ikodave_war/shared_html/navbar.html')
-        .then(res => res.text())
-        .then(html => document.getElementById('navbar-container').innerHTML = html);
-</script>
+<script src="/ikodave_war/shared_html/navbar.js"></script>
+<script>loadNavbar();</script>
+
 
 <div id="error-msg"></div>
 <script>

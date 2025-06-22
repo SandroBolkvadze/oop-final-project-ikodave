@@ -39,4 +39,14 @@
     <servlet-name>ProblemsListServlet</servlet-name>
     <url-pattern>/problems</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>UserSessionServlet</servlet-name>
+    <servlet-class>com.example.registration.servlets.UserSessionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserSessionServlet</servlet-name>
+    <url-pattern>/user-session</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
