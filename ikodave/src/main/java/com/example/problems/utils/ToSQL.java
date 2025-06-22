@@ -7,8 +7,8 @@ import static java.lang.String.format;
 public class ToSQL {
 
     public static String toProblemTopicsSQL() {
-        return format("SELECT %s FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ?;",
-                ProblemTopic.COL_TOPIC,
+        return format("SELECT %s.* FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ?;",
+                ProblemTopic.TABLE_NAME,
                 ProblemTopic.TABLE_NAME,
                 ProblemManyToManyTopic.TABLE_NAME,
                 ProblemManyToManyTopic.TABLE_NAME,
@@ -67,6 +67,11 @@ public class ToSQL {
                 Problems.TABLE_NAME,
                 Problems.COL_TITLE
         );
+    }
+
+
+    public static String toDifficultyId() {
+        return "";
     }
 
 }

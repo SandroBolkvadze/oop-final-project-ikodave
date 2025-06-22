@@ -1,8 +1,11 @@
 package com.example.problems.Filters;
 
+import com.example.problems.Filters.Parameters.Parameter;
+import com.example.problems.Filters.Parameters.ParameterString;
 import com.example.util.DatabaseConstants.*;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
+import java.security.PrivilegedAction;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -14,11 +17,8 @@ public class FilterTitle implements Filter {
 
     private final String title;
 
-    private final BasicDataSource basicDataSource;
-
-    public FilterTitle(BasicDataSource basicDataSource, String title) {
+    public FilterTitle(String title) {
         this.title = "%" + title + "%";
-        this.basicDataSource = basicDataSource;
     }
 
     @Override
@@ -32,14 +32,14 @@ public class FilterTitle implements Filter {
     }
 
     @Override
-    public PreparedStatement toSQLPreparedStatement() {
+    public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try (Connection connection = basicDataSource.getConnection()) {
+        try  {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
-            for (String parameter : getParameters()) {
-                preparedStatement.setString(index++, parameter);
+            int index = 1;
+            for (Parameter parameter : getParameters()) {
+                parameter.setParameter(index++, preparedStatement);
             }
             return preparedStatement;
         } catch (SQLException e) {
@@ -48,8 +48,8 @@ public class FilterTitle implements Filter {
     }
 
     @Override
-    public List<String> getParameters() {
-        return List.of(title);
+    public List<Parameter> getParameters() {
+        return List.of(new ParameterString(title));
     }
 
 

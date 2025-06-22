@@ -2,6 +2,9 @@ package com.example.problems.Filters;
 
 
 import com.example.problems.DTO.Status;
+import com.example.problems.Filters.Parameters.Parameter;
+import com.example.problems.Filters.Parameters.ParameterInteger;
+import com.example.problems.Filters.Parameters.ParameterString;
 import com.example.registration.model.User;
 import com.example.util.DatabaseConstants.*;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
@@ -17,19 +20,15 @@ public class FilterStatus implements Filter {
 
     private final User user;
     private final Status status;
-    private final BasicDataSource basicDataSource;
 
-    public FilterStatus(BasicDataSource basicDataSource, User user, Status status) {
+    public FilterStatus(User user, Status status) {
         this.user = user;
         this.status = status;
-        this.basicDataSource = basicDataSource;
     }
 
     public String toSQLStatement() {
         return format(
-                "SELECT * FROM %s " +
-                        "JOIN %s ON %s.%s = %s.%s JOIN %s ON %s.%s = %s.%s" +
-                        "WHERE %s.%s = ? AND %s.%s = ?",
+                "SELECT * FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ? AND %s.%s = ?",
                 Problems.TABLE_NAME,
 
                 Submissions.TABLE_NAME,
@@ -38,28 +37,22 @@ public class FilterStatus implements Filter {
                 Problems.TABLE_NAME,
                 Problems.COL_ID,
 
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.COL_STATUS_ID,
-                Submissions.TABLE_NAME,
-                Submissions.COL_STATUS_ID,
-
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.COL_STATUS_ID
+                Submissions.TABLE_NAME,
+                Submissions.COL_STATUS_ID
         );
     }
 
     @Override
-    public PreparedStatement toSQLPreparedStatement() {
+    public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try (Connection connection = basicDataSource.getConnection()) {
+        try {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
-            for (String parameter : getParameters()) {
-                preparedStatement.setString(index++, parameter);
+            int index = 1;
+            for (Parameter parameter : getParameters()) {
+                parameter.setParameter(index++, preparedStatement);
             }
             return preparedStatement;
         } catch (SQLException e) {
@@ -68,7 +61,7 @@ public class FilterStatus implements Filter {
     }
 
     @Override
-    public List<String> getParameters() {
-        return List.of(user.getUsername(), status.getStatus());
+    public List<Parameter> getParameters() {
+        return List.of(new ParameterInteger(user.getId()), new ParameterInteger(status.getId()));
     }
 }
