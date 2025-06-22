@@ -4,11 +4,24 @@ import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Topic;
+import com.example.registration.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ToDTO {
+
+    public static User toUser(ResultSet resultSet) {
+        try {
+            User user = new User();
+            user.setId(resultSet.getInt(1));
+            user.setUsername(resultSet.getString(2));
+            user.setPassword(resultSet.getString(3));
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static Topic toTopic(ResultSet resultSet) {
         try {
@@ -22,6 +35,7 @@ public class ToDTO {
     }
 
     public static Difficulty toDifficulty(ResultSet resultSet) {
+
         try {
             Difficulty difficulty = new Difficulty();
             difficulty.setId(resultSet.getInt(1));

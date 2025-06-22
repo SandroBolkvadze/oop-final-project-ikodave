@@ -1,6 +1,9 @@
 package com.example.problems.Filters;
 
 import com.example.problems.DTO.Difficulty;
+import com.example.problems.Filters.Parameters.Parameter;
+import com.example.problems.Filters.Parameters.ParameterInteger;
+import com.example.problems.Filters.Parameters.ParameterString;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
@@ -15,37 +18,29 @@ public class FilterDifficulty implements Filter {
 
     private final Difficulty difficulty;
 
-    private final BasicDataSource basicDataSource;
-
-    public FilterDifficulty(BasicDataSource basicDataSource, Difficulty difficulty) {
+    public FilterDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
-        this.basicDataSource = basicDataSource;
     }
 
     @Override
     public String toSQLStatement() {
         return format(
-                "SELECT * FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ?",
+                "SELECT * FROM %s WHERE %s.%s = ?",
                 Problems.TABLE_NAME,
-                ProblemDifficulty.TABLE_NAME,
                 Problems.TABLE_NAME,
-                Problems.COL_DIFFICULTY_ID,
-                ProblemDifficulty.TABLE_NAME,
-                ProblemDifficulty.COL_ID,
-                ProblemDifficulty.TABLE_NAME,
-                ProblemDifficulty.COL_DIFFICULTY
+                Problems.COL_DIFFICULTY_ID
         );
     }
 
     @Override
-    public PreparedStatement toSQLPreparedStatement() {
+    public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try (Connection connection = basicDataSource.getConnection()) {
+        try {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
-            for (String parameter : getParameters()) {
-                preparedStatement.setString(index++, parameter);
+            int index = 1;
+            for (Parameter parameter : getParameters()) {
+                parameter.setParameter(index++, preparedStatement);
             }
             return preparedStatement;
         } catch (SQLException e) {
@@ -53,8 +48,8 @@ public class FilterDifficulty implements Filter {
         }
     }
 
-    public List<String> getParameters() {
-        return List.of(difficulty.getDifficulty());
+    public List<Parameter> getParameters() {
+        return List.of(new ParameterInteger(difficulty.getId()));
     }
 
 }

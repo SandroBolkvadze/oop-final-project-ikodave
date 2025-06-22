@@ -2,13 +2,14 @@ package com.example.problems.Filters;
 
 
 import com.example.problems.DTO.Topic;
+import com.example.problems.Filters.Parameters.Parameter;
+import com.example.problems.Filters.Parameters.ParameterString;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.example.util.DatabaseConstants.*;
@@ -17,11 +18,9 @@ import static java.lang.String.format;
 public class FilterTopic implements Filter {
 
     private final List<Topic> topics;
-    private final BasicDataSource basicDataSource;
 
-    public FilterTopic(Connection connection, List<Topic> topics) {
+    public FilterTopic(List<Topic> topics) {
         this.topics = topics;
-        this.basicDataSource = new BasicDataSource();
     }
 
     private String getTopicList() {
@@ -60,14 +59,14 @@ public class FilterTopic implements Filter {
     }
 
     @Override
-    public PreparedStatement toSQLPreparedStatement() {
+    public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try (Connection connection = basicDataSource.getConnection()) {
+        try {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
-            for (String parameter : getParameters()) {
-                preparedStatement.setString(index++, parameter);
+            int index = 1; // index 1
+            for (Parameter parameter : getParameters()) {
+                parameter.setParameter(index++, preparedStatement);
             }
             return preparedStatement;
         } catch (SQLException e) {
@@ -77,10 +76,10 @@ public class FilterTopic implements Filter {
 
 
     @Override
-    public List<String> getParameters() {
-        List<String> parameters = new ArrayList<>();
+    public List<Parameter> getParameters() {
+        List<Parameter> parameters = new ArrayList<>();
         for (Topic topic : topics) {
-            parameters.add(topic.getTopic());
+            parameters.add(new ParameterString(topic.getTopic()));
         }
         return parameters;
     }

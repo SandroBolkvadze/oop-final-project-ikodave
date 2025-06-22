@@ -1,11 +1,13 @@
 package com.example.problems.Filters;
 
+import com.example.problems.Filters.Parameters.Parameter;
 import com.example.util.DatabaseConstants.*;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -14,11 +16,12 @@ public class FilterAnd implements Filter{
 
     private final List<Filter> filters;
 
-    private final BasicDataSource basicDataSource;
+    public FilterAnd() {
+        filters = new ArrayList<>();
+    }
 
-    public FilterAnd(BasicDataSource basicDataSource, List<Filter> filters) {
-        this.filters = filters;
-        this.basicDataSource = new BasicDataSource();
+    public void addFilter(Filter filter) {
+        filters.add(filter);
     }
 
     @Override
@@ -28,7 +31,7 @@ public class FilterAnd implements Filter{
         for (int i = 0; i < filters.size(); i++) {
             sqlStatement.append(format("t%d AS ", i));
             sqlStatement.append("(");
-            sqlStatement.append(filters.get(0).toSQLStatement());
+            sqlStatement.append(filters.get(i).toSQLStatement());
             sqlStatement.append(")");
             if (i < filters.size() - 1) {
                 sqlStatement.append(",");
@@ -60,16 +63,16 @@ public class FilterAnd implements Filter{
     }
 
     @Override
-    public PreparedStatement toSQLPreparedStatement() {
+    public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
 
-        try (Connection connection = basicDataSource.getConnection()) {
+        try  {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
+            int index = 1;
             for (Filter filter : filters) {
-                List<String> parameters = filter.getParameters();
-                for (String parameter : parameters) {
-                    preparedStatement.setString(index++, parameter);
+                List<Parameter> parameters = filter.getParameters();
+                for (Parameter parameter : parameters) {
+                    parameter.setParameter(index++, preparedStatement);
                 }
             }
             return preparedStatement;
@@ -77,6 +80,11 @@ public class FilterAnd implements Filter{
             throw new RuntimeException(e);
         }
 
+    }
 
+    @Override
+    public List<Parameter> getParameters() {
+        return List.of();
+    }
 
 }
