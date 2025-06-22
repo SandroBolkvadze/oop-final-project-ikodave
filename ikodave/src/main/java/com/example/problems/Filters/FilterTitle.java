@@ -17,11 +17,8 @@ public class FilterTitle implements Filter {
 
     private final String title;
 
-    private final BasicDataSource basicDataSource;
-
-    public FilterTitle(BasicDataSource basicDataSource, String title) {
+    public FilterTitle(String title) {
         this.title = "%" + title + "%";
-        this.basicDataSource = basicDataSource;
     }
 
     @Override

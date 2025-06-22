@@ -2,25 +2,16 @@ package com.example.problems.tests;
 
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.SQLProblemDAO;
-import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Problem;
-
-import com.example.problems.DTO.Status;
-import com.example.problems.DTO.Topic;
-import com.example.problems.Filters.FilterStatus;
 import com.example.problems.Filters.FilterTitle;
-import com.example.problems.utils.ToSQL;
-import com.example.registration.model.User;
 import junit.framework.TestCase;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static com.example.util.Constants.*;
-import static com.example.util.Constants.DATABASE_USER;
+import static com.example.util.DBConnectionConstants.*;
 
 public class FilterTitleTest extends TestCase {
 
@@ -36,7 +27,7 @@ public class FilterTitleTest extends TestCase {
     }
     public void testTitleFilter() throws SQLException {
         setup();
-        FilterTitle ft = new FilterTitle(dataSource,"ic");
+        FilterTitle ft = new FilterTitle("ic");
         List<Problem> problems = new ArrayList<>();
         problems =dao.getProblemsByFilter(ft);
         assertEquals(2,problems.size());

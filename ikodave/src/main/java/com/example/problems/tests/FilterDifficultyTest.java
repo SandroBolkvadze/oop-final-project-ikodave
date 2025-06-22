@@ -15,8 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
-import static com.example.util.Constants.*;
-import static com.example.util.Constants.DATABASE_USER;
+import static com.example.util.DBConnectionConstants.*;
 
 public class FilterDifficultyTest extends TestCase {
 
@@ -39,7 +38,7 @@ public class FilterDifficultyTest extends TestCase {
     }
     public void testFilterDifficulty() throws SQLException {
         setup();
-        FilterDifficulty filter = new FilterDifficulty(dataSource, new Difficulty(3, "HARD"));
+        FilterDifficulty filter = new FilterDifficulty(new Difficulty(3, "HARD"));
         List<Problem> problems = dao.getProblemsByFilter(filter);
         int k = 0;
         for(Problem problem : problems){

@@ -16,10 +16,7 @@ public class FilterAnd implements Filter{
 
     private final List<Filter> filters;
 
-    private final BasicDataSource basicDataSource;
-
-    public FilterAnd(BasicDataSource basicDataSource) {
-        this.basicDataSource = basicDataSource;
+    public FilterAnd() {
         filters = new ArrayList<>();
     }
 

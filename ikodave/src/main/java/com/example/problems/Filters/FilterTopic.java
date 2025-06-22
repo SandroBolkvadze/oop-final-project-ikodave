@@ -18,11 +18,9 @@ import static java.lang.String.format;
 public class FilterTopic implements Filter {
 
     private final List<Topic> topics;
-    private final BasicDataSource basicDataSource;
 
-    public FilterTopic(BasicDataSource basicDataSource, List<Topic> topics) {
+    public FilterTopic(List<Topic> topics) {
         this.topics = topics;
-        this.basicDataSource = basicDataSource;
     }
 
     private String getTopicList() {

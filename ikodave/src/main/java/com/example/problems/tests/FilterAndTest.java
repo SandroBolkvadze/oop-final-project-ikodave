@@ -14,14 +14,11 @@ import com.example.problems.utils.ToSQL;
 import junit.framework.TestCase;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static com.example.util.Constants.*;
-import static com.example.util.Constants.DATABASE_USER;
+import static com.example.util.DBConnectionConstants.*;
 
 public class FilterAndTest extends TestCase {
 
@@ -34,7 +31,7 @@ public class FilterAndTest extends TestCase {
         dataSource.setDriverClassName(DRIVER);
         dataSource.setUsername(DATABASE_USER);
         dataSource.setPassword(DATABASE_PASSWORD);
-        filterand = new FilterAnd(dataSource);
+        filterand = new FilterAnd();
         dao = new SQLProblemDAO(dataSource);
 
     }
@@ -43,8 +40,8 @@ public class FilterAndTest extends TestCase {
         List<Topic> topics = new ArrayList<Topic>();
         topics.add(new Topic(1, "dp"));
         topics.add(new Topic(2, "greedy"));
-        FilterTopic filter1 = new FilterTopic(dataSource, topics);
-        FilterDifficulty filter2 = new FilterDifficulty(dataSource, new Difficulty(2, "MEDIUM"));
+        FilterTopic filter1 = new FilterTopic(topics);
+        FilterDifficulty filter2 = new FilterDifficulty(new Difficulty(2, "MEDIUM"));
         filterand.addFilter(filter1);
         filterand.addFilter(filter2);
         List<Problem> problems=dao.getProblemsByFilter(filterand);

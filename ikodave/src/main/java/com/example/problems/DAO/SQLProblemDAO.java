@@ -25,9 +25,8 @@ public class SQLProblemDAO implements ProblemDAO {
 
     @Override
     public List<Problem> getProblemsByFilter(Filter filter) {
-        // changed
         try (Connection connection = basicDataSource.getConnection();
-             PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
+            PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Problem> problems = new ArrayList<>();
             while (resultSet.next()) {
@@ -147,6 +146,11 @@ public class SQLProblemDAO implements ProblemDAO {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public int getTopicId(String topic) {
+        return 0;
     }
 
 }

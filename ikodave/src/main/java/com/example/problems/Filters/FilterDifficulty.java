@@ -18,11 +18,8 @@ public class FilterDifficulty implements Filter {
 
     private final Difficulty difficulty;
 
-    private final BasicDataSource basicDataSource;
-
-    public FilterDifficulty(BasicDataSource basicDataSource, Difficulty difficulty) {
+    public FilterDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
-        this.basicDataSource = basicDataSource;
     }
 
     @Override

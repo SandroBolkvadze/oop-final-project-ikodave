@@ -20,12 +20,10 @@ public class FilterStatus implements Filter {
 
     private final User user;
     private final Status status;
-    private final BasicDataSource basicDataSource;
 
-    public FilterStatus(BasicDataSource basicDataSource, User user, Status status) {
+    public FilterStatus(User user, Status status) {
         this.user = user;
         this.status = status;
-        this.basicDataSource = basicDataSource;
     }
 
     public String toSQLStatement() {

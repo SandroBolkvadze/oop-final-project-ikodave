@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.util.DBConnectionConstants.*;
-import static com.example.util.DBConnectionConstants.DATABASE_USER;
 
 public class FilterTopicTest extends TestCase {
 
@@ -54,7 +53,7 @@ public class FilterTopicTest extends TestCase {
         setup();
         List<Topic> topics = new ArrayList<Topic>();
         topics.add(new Topic(1, "dp"));
-        FilterTopic filter = new FilterTopic(dataSource, topics);
+        FilterTopic filter = new FilterTopic(topics);
 
         List<Problem> problems = dao.getProblemsByFilter(filter);
         int cnt1 = 0, cnt4 = 0, cnt5 = 0;

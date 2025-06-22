@@ -2,23 +2,17 @@ package com.example.problems.tests;
 
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.SQLProblemDAO;
-import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Problem;
-
 import com.example.problems.DTO.Status;
-import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.FilterStatus;
-import com.example.problems.utils.ToSQL;
 import com.example.registration.model.User;
 import junit.framework.TestCase;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 
-import static com.example.util.Constants.*;
-import static com.example.util.Constants.DATABASE_USER;
+import static com.example.util.DBConnectionConstants.*;
 
 public class FilterStatusTest extends TestCase {
 
@@ -43,7 +37,7 @@ public class FilterStatusTest extends TestCase {
         user3.setId(3);
         user4.setId(4);
         Status status = new Status(1, "ACCEPTED");
-        FilterStatus filterStatus = new FilterStatus(dataSource, user1, status);
+        FilterStatus filterStatus = new FilterStatus(user1, status);
         List<Problem> problems = dao.getProblemsByFilter(filterStatus);
         assertNotNull(problems);
         assertEquals(2,problems.size());
