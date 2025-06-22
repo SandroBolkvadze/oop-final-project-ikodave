@@ -2,6 +2,7 @@ package com.example.registration.servlets;
 
 import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
+import com.example.util.SessionConstants;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +24,10 @@ public class SignInServlet extends HttpServlet {
                 || user.getUsername().isEmpty()
                 || user.getPassword().isEmpty()
                 || !userDao.authenticate(user)) {
-            // TODO: Handle failed sign-in
+            response.sendRedirect(request.getContextPath() + "/authentication/signin.html?error=1");
         } else {
-            // TODO: Handle successful sign-in
+            request.getSession().setAttribute(SessionConstants.USER_ID_KEY, user);
+            response.sendRedirect(request.getContextPath() + "/problems/html/problems.html");
         }
     }
 
