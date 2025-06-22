@@ -20,7 +20,6 @@ public class ProcessCodeRunner {
             }
             """;
 
-    // Wrapper to invoke Solution.solve
     private static final String testRunnerCode = """
                 import java.util.*;
                 public class TestRunner {
@@ -88,8 +87,6 @@ public class ProcessCodeRunner {
             outputBuilder.append(line);
         }
         String output = outputBuilder.toString().trim();
-
-        System.out.println(output);
     }
 
 
