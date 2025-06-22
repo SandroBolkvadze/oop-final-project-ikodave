@@ -11,8 +11,8 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.example.util.Constants.*;
-import static com.example.util.Constants.DATABASE_USER;
+import static com.example.util.DBConnectionConstants.*;
+import static com.example.util.DBConnectionConstants.DATABASE_USER;
 
 public class FilterTopicTest extends TestCase {
 

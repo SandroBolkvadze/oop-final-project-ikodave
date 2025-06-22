@@ -61,9 +61,8 @@ public class FilterTopic implements Filter {
     @Override
     public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
-        PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.prepareStatement(sqlStatement);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 0;
             for (Parameter parameter : getParameters()) {
                 parameter.setParameter(index++, preparedStatement);

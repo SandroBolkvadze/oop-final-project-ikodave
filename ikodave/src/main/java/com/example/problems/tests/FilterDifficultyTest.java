@@ -3,19 +3,14 @@ package com.example.problems.tests;
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.SQLProblemDAO;
 import com.example.problems.DTO.Difficulty;
-import com.example.problems.DTO.Problem;
 
-import com.example.problems.DTO.Topic;
-import com.example.problems.utils.ToSQL;
 import junit.framework.TestCase;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
 
-import static com.example.util.Constants.*;
-import static com.example.util.Constants.DATABASE_USER;
+import static com.example.util.DBConnectionConstants.*;
+import static com.example.util.DBConnectionConstants.DATABASE_USER;
 
 public class FilterDifficultyTest extends TestCase {
 
