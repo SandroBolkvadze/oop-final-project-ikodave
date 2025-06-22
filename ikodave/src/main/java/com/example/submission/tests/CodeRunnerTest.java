@@ -1,6 +1,6 @@
 package com.example.submission.tests;
 
-import com.example.submission.runners.CodeRunner;
+import com.example.submission.runners.InMemoryCodeRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -58,11 +58,11 @@ public class CodeRunnerTest {
                 }
             """;
 
-    private CodeRunner codeRunner;
+    private InMemoryCodeRunner codeRunner;
 
     @BeforeEach
     public void setUp() {
-        codeRunner = new CodeRunner();
+        codeRunner = new InMemoryCodeRunner();
     }
 
     @Test
