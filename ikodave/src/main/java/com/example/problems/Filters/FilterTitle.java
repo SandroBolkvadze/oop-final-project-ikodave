@@ -17,8 +17,11 @@ public class FilterTitle implements Filter {
 
     private final String title;
 
-    public FilterTitle(String title) {
+    private final BasicDataSource basicDataSource;
+
+    public FilterTitle(BasicDataSource basicDataSource, String title) {
         this.title = "%" + title + "%";
+        this.basicDataSource = basicDataSource;
     }
 
     @Override
@@ -34,9 +37,10 @@ public class FilterTitle implements Filter {
     @Override
     public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
+        PreparedStatement preparedStatement = null;
+        try  {
+            preparedStatement = connection.prepareStatement(sqlStatement);
+            int index = 1;
             for (Parameter parameter : getParameters()) {
                 parameter.setParameter(index++, preparedStatement);
             }

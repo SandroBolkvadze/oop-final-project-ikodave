@@ -20,10 +20,12 @@ public class FilterStatus implements Filter {
 
     private final User user;
     private final Status status;
+    private final BasicDataSource basicDataSource;
 
-    public FilterStatus(User user, Status status) {
+    public FilterStatus(BasicDataSource basicDataSource, User user, Status status) {
         this.user = user;
         this.status = status;
+        this.basicDataSource = basicDataSource;
     }
 
     public String toSQLStatement() {
@@ -47,9 +49,10 @@ public class FilterStatus implements Filter {
     @Override
     public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
+        PreparedStatement preparedStatement = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
+            preparedStatement = connection.prepareStatement(sqlStatement);
+            int index = 1;
             for (Parameter parameter : getParameters()) {
                 parameter.setParameter(index++, preparedStatement);
             }

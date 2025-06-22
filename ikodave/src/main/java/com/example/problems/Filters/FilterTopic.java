@@ -18,9 +18,11 @@ import static java.lang.String.format;
 public class FilterTopic implements Filter {
 
     private final List<Topic> topics;
+    private final BasicDataSource basicDataSource;
 
-    public FilterTopic(List<Topic> topics) {
+    public FilterTopic(BasicDataSource basicDataSource, List<Topic> topics) {
         this.topics = topics;
+        this.basicDataSource = basicDataSource;
     }
 
     private String getTopicList() {
@@ -61,9 +63,10 @@ public class FilterTopic implements Filter {
     @Override
     public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
+        PreparedStatement preparedStatement = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
+            preparedStatement = connection.prepareStatement(sqlStatement);
+            int index = 1; // index 1
             for (Parameter parameter : getParameters()) {
                 parameter.setParameter(index++, preparedStatement);
             }

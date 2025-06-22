@@ -12,11 +12,14 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class FilterAnd implements Filter {
+public class FilterAnd implements Filter{
 
     private final List<Filter> filters;
 
-    public FilterAnd() {
+    private final BasicDataSource basicDataSource;
+
+    public FilterAnd(BasicDataSource basicDataSource) {
+        this.basicDataSource = basicDataSource;
         filters = new ArrayList<>();
     }
 
@@ -31,7 +34,7 @@ public class FilterAnd implements Filter {
         for (int i = 0; i < filters.size(); i++) {
             sqlStatement.append(format("t%d AS ", i));
             sqlStatement.append("(");
-            sqlStatement.append(filters.get(0).toSQLStatement());
+            sqlStatement.append(filters.get(i).toSQLStatement());
             sqlStatement.append(")");
             if (i < filters.size() - 1) {
                 sqlStatement.append(",");
@@ -66,9 +69,9 @@ public class FilterAnd implements Filter {
     public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
 
-        try {
+        try  {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
+            int index = 1;
             for (Filter filter : filters) {
                 List<Parameter> parameters = filter.getParameters();
                 for (Parameter parameter : parameters) {
