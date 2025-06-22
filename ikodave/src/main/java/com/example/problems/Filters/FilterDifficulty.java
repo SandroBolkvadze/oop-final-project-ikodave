@@ -36,12 +36,12 @@ public class FilterDifficulty implements Filter {
     }
 
     @Override
-    public PreparedStatement toSQLPreparedStatement() {
+    public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try (Connection connection = basicDataSource.getConnection()) {
+        try {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
+            int index = 1;
             for (Parameter parameter : getParameters()) {
                 parameter.setParameter(index++, preparedStatement);
             }

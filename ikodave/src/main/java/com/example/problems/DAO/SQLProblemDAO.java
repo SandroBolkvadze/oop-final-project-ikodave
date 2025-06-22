@@ -25,16 +25,16 @@ public class SQLProblemDAO implements ProblemDAO {
 
     @Override
     public List<Problem> getProblemsByFilter(Filter filter) {
-        String sqlStatement = filter.toSQLStatement();
-
-        try (Connection connection = basicDataSource.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sqlStatement);
+        // changed
+        try (Connection connection = basicDataSource.getConnection();
+             PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
             List<Problem> problems = new ArrayList<>();
             while (resultSet.next()) {
                 problems.add(toProblem(resultSet));
             }
             return problems;
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -122,12 +122,31 @@ public class SQLProblemDAO implements ProblemDAO {
 
     @Override
     public int getDifficultyId(String difficulty) {
-        return 0;
+        String sqlStatement = toProblemDifficultySQL();
+        try (Connection connection = basicDataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, difficulty);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return toId(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public int getStatusId(String status) {
-        return 0;
+        String sqlStatement = toProblemStatusSQL();
+        try (Connection connection = basicDataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, status);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return toId(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

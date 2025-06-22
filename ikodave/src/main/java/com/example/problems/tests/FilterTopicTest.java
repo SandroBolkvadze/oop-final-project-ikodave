@@ -5,10 +5,12 @@ import com.example.problems.DAO.SQLProblemDAO;
 import com.example.problems.DTO.Problem;
 
 import com.example.problems.DTO.Topic;
+import com.example.problems.Filters.FilterTopic;
 import junit.framework.TestCase;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.util.Constants.*;
@@ -27,7 +29,7 @@ public class FilterTopicTest extends TestCase {
         dataSource.setPassword(DATABASE_PASSWORD);
         dao = new SQLProblemDAO(dataSource);
     }
-    public void testFilterTopic() throws SQLException {
+    public void testTopicUserId() throws SQLException {
         setup();
         List<Topic> topics = dao.getProblemTopics(1);
         int cnt1 = 0, cnt2 = 0, cnt3 = 0;
@@ -47,5 +49,20 @@ public class FilterTopicTest extends TestCase {
         }else{
             assertFalse(false);
         }
+    }
+    public void testFilterTopic() throws SQLException {
+        setup();
+        List<Topic> topics = new ArrayList<Topic>();
+        topics.add(new Topic(1, "dp"));
+        FilterTopic filter = new FilterTopic(dataSource, topics);
+
+        List<Problem> problems = dao.getProblemsByFilter(filter);
+        int cnt1 = 0, cnt4 = 0, cnt5 = 0;
+        for (Problem problem : problems) {
+            if(problem.getId() == 1)cnt1++;
+            if(problem.getId() == 4)cnt4++;
+            if(problem.getId() == 5)cnt5++;
+        }
+        assertEquals(3, cnt1 + cnt4 + cnt5);
     }
 }

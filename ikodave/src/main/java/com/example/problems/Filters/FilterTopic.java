@@ -20,9 +20,9 @@ public class FilterTopic implements Filter {
     private final List<Topic> topics;
     private final BasicDataSource basicDataSource;
 
-    public FilterTopic(Connection connection, List<Topic> topics) {
+    public FilterTopic(BasicDataSource basicDataSource, List<Topic> topics) {
         this.topics = topics;
-        this.basicDataSource = new BasicDataSource();
+        this.basicDataSource = basicDataSource;
     }
 
     private String getTopicList() {
@@ -61,12 +61,12 @@ public class FilterTopic implements Filter {
     }
 
     @Override
-    public PreparedStatement toSQLPreparedStatement() {
+    public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
         PreparedStatement preparedStatement = null;
-        try (Connection connection = basicDataSource.getConnection()) {
+        try {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            int index = 0;
+            int index = 1; // index 1
             for (Parameter parameter : getParameters()) {
                 parameter.setParameter(index++, preparedStatement);
             }
