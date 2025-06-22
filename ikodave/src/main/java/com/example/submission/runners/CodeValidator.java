@@ -42,26 +42,6 @@ public class CodeValidator {
                 throw new SecurityException("Dangerous pattern detected: " + pattern);
             }
         }
-        
-        if (containsInfiniteLoop(normalizedCode)) {
-            throw new SecurityException("Potential infinite loop detected");
-        }
-        
-        if (containsExcessiveMemory(normalizedCode)) {
-            throw new SecurityException("Excessive memory usage detected");
-        }
     }
-    
-    private static boolean containsInfiniteLoop(String code) {
-        return code.contains("while(true)") || 
-               code.contains("for(;;)") ||
-               code.contains("while (true)") ||
-               code.contains("for (;;)");
-    }
-    
-    private static boolean containsExcessiveMemory(String code) {
-        return (code.contains("new byte[") && code.contains("1000000")) ||
-               (code.contains("new int[") && code.contains("1000000")) ||
-               (code.contains("new string[") && code.contains("1000000"));
-    }
+
 } 
