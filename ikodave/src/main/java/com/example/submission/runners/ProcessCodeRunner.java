@@ -1,5 +1,7 @@
 package com.example.submission.runners;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +45,7 @@ public class ProcessCodeRunner {
         Files.writeString(WORKDIR.resolve("Solution.java"), userCode);
         Files.writeString(WORKDIR.resolve("TestRunner.java"), testRunnerCode);
 
+
         CodeValidator.validateCode(userCode);
 
         Process compile = new ProcessBuilder("javac", "Solution.java", "TestRunner.java")
@@ -61,7 +64,8 @@ public class ProcessCodeRunner {
 
         List<String> runCommands = Arrays.asList(
                 "java",
-                "-cp", WORKDIR.toString(),
+                "-cp",
+                WORKDIR.toString(),
                 "TestRunner",
                 testInput
         );
@@ -88,6 +92,8 @@ public class ProcessCodeRunner {
         }
         String output = outputBuilder.toString().trim();
         System.out.println(output);
+
+        FileUtils.deleteDirectory(WORKDIR.toFile());
     }
 
 
