@@ -32,8 +32,8 @@ public class ProcessCodeRunner {
                 }
             """;
 
-    private static final Path WORKDIR =
-            Paths.get("C:\\Users\\User\\Desktop", "runner");
+    private static final Path WORKDIR = Paths.get(
+            System.getProperty("java.io.tmpdir"), "submission-runner");
 
     private static final long TIMEOUT_SEC = 3;
 
@@ -87,6 +87,7 @@ public class ProcessCodeRunner {
             outputBuilder.append(line);
         }
         String output = outputBuilder.toString().trim();
+        System.out.println(output);
     }
 
 
