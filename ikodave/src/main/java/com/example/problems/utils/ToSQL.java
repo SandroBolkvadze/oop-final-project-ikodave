@@ -69,7 +69,6 @@ public class ToSQL {
         );
     }
 
-
     public static String toDifficultyId() {
         return "";
     }
