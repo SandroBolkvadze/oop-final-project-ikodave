@@ -93,6 +93,7 @@ public class DockerCodeRunner {
                 "--memory=256m",
                 "--cpus=0.5",
                 "--cap-drop=ALL",
+                "--cap-add=DAC_READ_SEARCH",
                 "--security-opt", "no-new-privileges",
                 "-v", WORKDIR + ":/app:ro",
                 "-w", "/app",
@@ -104,7 +105,7 @@ public class DockerCodeRunner {
                 .redirectErrorStream(true)
                 .start();
 
-        boolean finished = process.waitFor(2, TimeUnit.SECONDS);
+        boolean finished = process.waitFor(10, TimeUnit.SECONDS);
 
         if (!finished) {
             System.out.println("time limit exceeded");
