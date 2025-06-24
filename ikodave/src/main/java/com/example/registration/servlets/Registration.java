@@ -3,6 +3,8 @@ package com.example.registration.servlets;
 import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
 import com.example.util.SessionConstants;
+import com.password4j.types.Bcrypt;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +19,9 @@ public class Registration extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-
-        User user = new User(username, password);
+        User user = new User(username, hashedPassword);
         UserDAO userDao = (UserDAO) request.getServletContext().getAttribute(USER_DAO_KEY);
 
         if (user.getUsername() == null || user.getPassword() == null
