@@ -7,6 +7,8 @@ import java.util.concurrent.*;
 
 import static java.lang.reflect.Modifier.isStatic;
 
+import java.util.concurrent.*;
+
 public class InMemoryCodeRunner {
     private static final int NUM_THREADS = 20;
 
