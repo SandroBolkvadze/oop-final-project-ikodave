@@ -26,8 +26,8 @@ public class FilterAndTest extends TestCase {
     static FilterAnd filterand;
     static ProblemDAO dao;
     static List<Topic> topics;
-    static FilterTopic filter1;
-    static FilterDifficulty filter2;
+    static FilterTopic filterTopic;
+    static FilterDifficulty filterDifficulty;
     static void setup() throws SQLException {
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
@@ -39,13 +39,13 @@ public class FilterAndTest extends TestCase {
         topics = new ArrayList<Topic>();
         topics.add(new Topic(1, "dp"));
         topics.add(new Topic(2, "greedy"));
-        filter1 = new FilterTopic(dataSource, topics);
-        filter2 = new FilterDifficulty(dataSource, new Difficulty(2, "MEDIUM"));
+        filterTopic = new FilterTopic(dataSource, topics);
+        filterDifficulty = new FilterDifficulty(dataSource, new Difficulty(2, "MEDIUM"));
     }
     public void testFilterAnd() throws SQLException {
         setup();
-        filterand.addFilter(filter1);
-        filterand.addFilter(filter2);
+        filterand.addFilter(filterTopic);
+        filterand.addFilter(filterDifficulty);
         List<Problem> problems = dao.getProblemsByFilter(filterand);
         boolean problem4 = false, problem5 = false;
         for (Problem problem : problems) {
@@ -66,8 +66,8 @@ public class FilterAndTest extends TestCase {
     public void testAllFilter() throws SQLException {
         setup();
         FilterTitle filter3 = new FilterTitle(dataSource, "ic");
-        filterand.addFilter(filter1);
-        filterand.addFilter(filter2);
+        filterand.addFilter(filterTopic);
+        filterand.addFilter(filterDifficulty);
         filterand.addFilter(filter3);
         List<Problem> problems = dao.getProblemsByFilter(filterand);
         assertEquals(1, problems.size());
@@ -76,8 +76,8 @@ public class FilterAndTest extends TestCase {
     public void testFilterNoProblems() throws SQLException {
         setup();
         FilterTitle filter3 = new FilterTitle(dataSource, "ick");
-        filterand.addFilter(filter1);
-        filterand.addFilter(filter2);
+        filterand.addFilter(filterTopic);
+        filterand.addFilter(filterDifficulty);
         filterand.addFilter(filter3);
         List<Problem> problems = dao.getProblemsByFilter(filterand);
         assertEquals(0, problems.size());

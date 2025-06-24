@@ -32,23 +32,22 @@ public class FilterTopicTest extends TestCase {
     public void testTopicUserId() throws SQLException {
         setup();
         List<Topic> topics = dao.getProblemTopics(1);
-        int cnt1 = 0, cnt2 = 0, cnt3 = 0;
+        boolean problemFound1 = false, problemFound2 = false, problemFound4 = false;
         for (Topic topic : topics) {
             if (topic.getId() == 1) {
-                cnt1++;
+                problemFound1 = true;
             }
             if (topic.getId() == 2) {
-                cnt2++;
+                problemFound2 = true;
             }
             if (topic.getId() == 4) {
-                cnt3++;
+                problemFound4 = true;
             }
         }
-        if(cnt1 ==1 && cnt2 ==1 && cnt3 ==1){
-            assertTrue(true);
-        }else{
-            assertFalse(false);
-        }
+        assertTrue(problemFound1);
+        assertTrue(problemFound2);
+        assertTrue(problemFound4);
+        assertEquals(3,topics.size());
     }
     public void testFilterTopic() throws SQLException {
         setup();
@@ -57,7 +56,7 @@ public class FilterTopicTest extends TestCase {
         FilterTopic filter = new FilterTopic(dataSource, topics);
 
         List<Problem> problems = dao.getProblemsByFilter(filter);
-        int cnt =0;
+        int cnt = 0;
         for (Problem problem : problems) {
             if(problem.getId() == 1)cnt++;
             if(problem.getId() == 3)cnt++;
@@ -74,12 +73,17 @@ public class FilterTopicTest extends TestCase {
         topics.add(new Topic(3, "graphs"));
         FilterTopic filter = new FilterTopic(dataSource, topics);
         List<Problem> problems = dao.getProblemsByFilter(filter);
-        int cnt3 =0, cnt5 = 0;
+        boolean problemFound3 = false, problemFound4 = false;
         for (Problem problem : problems) {
-            if(problem.getId() == 3)cnt3++;
-            if(problem.getId() == 5)cnt5++;
+            if(problem.getId() == 3){
+                problemFound3 = true;
+            }
+            if(problem.getId() == 5){
+                problemFound4 = true;
+            }
         }
         assertEquals(2, problems.size());
-        assertEquals(2, cnt3 + cnt5);
+        assertTrue(problemFound3);
+        assertTrue(problemFound4);
     }
 }
