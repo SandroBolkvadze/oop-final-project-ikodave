@@ -1,5 +1,7 @@
 package com.example.submission.runners;
 
+import com.example.submission.DTO.TestCase;
+import com.example.submission.Utils.Command;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 
 import java.io.*;
@@ -7,54 +9,51 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class DockerCodeRunner {
+public class DockerCodeRunner implements CodeRunner {
 
-    private static final String solutionCode = """
-            import java.util.*;
-            public class Solution {
-                public static void main(String[] args) {
-                    Scanner sc = new Scanner(System.in);
-                    int n = sc.nextInt(); // Read the length of the array
-                    int sum = 0;
-                    for (int i = 0; i < n; i++) {
-                        sum += sc.nextInt(); // Read each number and add to sum
-                    }
-                    System.out.println(sum); // Output the sum
-                }
-            }
-        """;
+    private ExecutorService pool;
 
-    private Path WORKDIR;
+    private static final String IMAGE = "openjdk:21-slim";
 
-    private final String IMAGE = "openjdk:21-slim";
+    private static final String WORKDIR_PREFIX = "Runner";
 
-    public void runDockerProcess(String solutionCode) throws IOException, InterruptedException {
-        WORKDIR = Files.createTempDirectory("runner-");
-        Files.writeString(WORKDIR.resolve("Solution.java"), solutionCode);
+    private static final String JAVA_FILE_NAME = "Solution.java";
 
-        compileDocker();
-        runDocker("3\n1 2 3\n", 2);
-        FileUtils.deleteDirectory(WORKDIR.toFile());
+    private static final long COMPILE_TIMEOUT_MILLIS = 5000;
+
+    private String getOutput(String solutionCode, String input, long executionTimeoutMillis) {
+        try {
+            Path workDir = Files.createTempDirectory(WORKDIR_PREFIX + "-");
+            Files.writeString(workDir.resolve(JAVA_FILE_NAME), solutionCode);
+            compileUserCode(workDir);
+            String output = executeUserCode(workDir, input, executionTimeoutMillis);
+            cleanUp(workDir);
+            return output;
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void compileDocker() throws IOException, InterruptedException {
-        List<String> cmd = List.of(
+    private void compileUserCode(Path workDir) throws IOException, InterruptedException {
+        List<String> command = List.of(
                 "docker",
                 "run",
                 "--rm",
-                "-v", WORKDIR + ":/app",
+                "-v", workDir + ":/app",
                 "-w", "/app",
                 IMAGE,
                 "javac", "Solution.java"
         );
 
-        Process process = new ProcessBuilder(cmd)
+        Process process = new ProcessBuilder(command)
                 .redirectErrorStream(true)
                 .start();
 
-        boolean finished = process.waitFor(10, TimeUnit.SECONDS);
+        boolean finished = process.waitFor(COMPILE_TIMEOUT_MILLIS, TimeUnit.SECONDS);
 
         if (!finished) {
             System.out.println("error compiling");
@@ -71,8 +70,8 @@ public class DockerCodeRunner {
         }
     }
 
-    private void runDocker(String input, long timeoutMillis) throws IOException, InterruptedException {
-        List<String> cmd = List.of(
+    private String executeUserCode(Path workDir, String input, long executeTimeoutMillis) throws IOException, InterruptedException {
+        List<String> command = List.of(
                 "docker",
                 "run",
                 "-i",
@@ -84,13 +83,13 @@ public class DockerCodeRunner {
                 "--cap-drop=ALL",
                 "--cap-add=DAC_READ_SEARCH",
                 "--security-opt", "no-new-privileges",
-                "-v", WORKDIR + ":/app:ro",
+                "-v", workDir + ":/app:ro",
                 "-w", "/app",
                 IMAGE,
                 "java", "-cp", ".", "Solution"
         );
 
-        Process process = new ProcessBuilder(cmd)
+        Process process = new ProcessBuilder(command)
                 .redirectErrorStream(true)
                 .start();
 
@@ -103,7 +102,7 @@ public class DockerCodeRunner {
 
         if (!finished) {
             System.out.println("time limit exceeded");
-            return;
+            return "";
         }
 
         int code = process.exitValue();
@@ -113,24 +112,48 @@ public class DockerCodeRunner {
         } else {
             String out = new String(process.getInputStream().readAllBytes());
             System.out.println("error running:\n" + out);
+            return "";
         }
 
-        getRunResult(process.getInputStream());
+        return readInputStream(process.getInputStream());
     }
 
-    private void getRunResult(InputStream inputStream) throws IOException {
+    private String readInputStream(InputStream inputStream) {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        StringBuilder current = new StringBuilder();
-        String line = "";
-        while ((line = bufferedReader.readLine()) != null) {
-            current.append(line);
+        StringBuilder output = new StringBuilder();
+            try {
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    output.append(line);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        return output.toString();
+    }
+
+    private void cleanUp(Path workDir) {
+        try {
+            FileUtils.deleteDirectory(workDir.toFile());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        System.out.println(current);
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
-        dockerCodeRunner.runDockerProcess(solutionCode);
+    @Override
+    public boolean testCodeMultipleTests(String solutionCode, long timeoutMillis, List<TestCase> testcases) {
+        for (int i = 0; i < testcases.size(); i++) {
+            if (!testCodeSingleTest(solutionCode, timeoutMillis, testcases.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
+    @Override
+    public boolean testCodeSingleTest(String solutionCode, long timeoutMillis, TestCase test) {
+        String output = getOutput(solutionCode, test.getProblemInput(), timeoutMillis);
+        System.out.println(output);
+        return test.checkOutput(output);
+    }
 }

@@ -16,6 +16,10 @@ public class TestCase {
         this.problemInput = problemInput;
     }
 
+    public boolean checkOutput(String output) {
+        return problemOutput.equals(output);
+    }
+
     public int getId() {
         return id;
     }
