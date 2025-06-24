@@ -9,7 +9,9 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 public class DockerCodeRunner {
@@ -93,6 +95,7 @@ public class DockerCodeRunner {
                 "--memory=256m",
                 "--cpus=0.5",
                 "--cap-drop=ALL",
+                "--cap-add=DAC_READ_SEARCH",
                 "--security-opt", "no-new-privileges",
                 "-v", WORKDIR + ":/app:ro",
                 "-w", "/app",
@@ -124,7 +127,6 @@ public class DockerCodeRunner {
     }
 
     private void getRunResult(InputStream inputStream) throws IOException {
-
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder current = new StringBuilder();
         String line = "";
@@ -135,8 +137,11 @@ public class DockerCodeRunner {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
-        dockerCodeRunner.runDockerProcess(userCode, testRunnerCode);
+//        DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
+//        dockerCodeRunner.runDockerProcess(userCode, testRunnerCode);
+        List<Integer> list = List.of(1, 2, 3);
+        System.out.println(list);
+
     }
 
 }
