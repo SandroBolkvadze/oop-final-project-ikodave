@@ -18,7 +18,9 @@ public class DockerCodeRunner {
         import java.util.List;
         public class Solution {
             public static int solve(List<Integer> nums) {
-                return solve(nums);
+                int sum = 0;
+                for (int num : nums) sum += num;
+                return sum;
             }
         }
         """;
