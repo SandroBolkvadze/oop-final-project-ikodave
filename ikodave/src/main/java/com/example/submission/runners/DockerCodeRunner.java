@@ -37,13 +37,12 @@ public class DockerCodeRunner {
         """;
 
 
-    private static final Path WORKDIR = Paths.get(
-            System.getProperty("java.io.tmpdir"), "runner");
+    private Path WORKDIR;
 
     private final String IMAGE = "openjdk:21-slim";
 
     public void runDockerProcess(String userCode, String testRunnerCode) throws IOException, InterruptedException {
-        Files.createDirectories(WORKDIR);
+        WORKDIR = Files.createTempDirectory("runner-");
         Files.writeString(WORKDIR.resolve("Solution.java"), userCode);
         Files.writeString(WORKDIR.resolve("TestRunner.java"), testRunnerCode);
 
