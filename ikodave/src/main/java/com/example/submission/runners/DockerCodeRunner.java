@@ -18,9 +18,7 @@ public class DockerCodeRunner {
         import java.util.List;
         public class Solution {
             public static int solve(List<Integer> nums) {
-                int sum = 0;
-                for (int n : nums) sum += n;
-                return sum;
+                return solve(nums);
             }
         }
         """;
@@ -68,15 +66,19 @@ public class DockerCodeRunner {
                 .start();
 
         boolean finished = process.waitFor(10, TimeUnit.SECONDS);
-        int code = process.exitValue();
 
         if (!finished) {
-            System.err.println("Compilation timed out");
-        } else if (code == 0) {
+            System.out.println("error compiling");
+            return;
+        }
+
+        int code = process.exitValue();
+
+        if (code == 0) {
             System.out.println("success compiling");
         } else {
             String out = new String(process.getInputStream().readAllBytes());
-            System.err.println("error compiling:\n" + out);
+            System.out.println("error running:\n" + out);
         }
     }
 
@@ -101,16 +103,20 @@ public class DockerCodeRunner {
                 .redirectErrorStream(true)
                 .start();
 
-        boolean finished = process.waitFor(10, TimeUnit.SECONDS);
-        int code = process.exitValue();
+        boolean finished = process.waitFor(2, TimeUnit.SECONDS);
 
         if (!finished) {
-            System.err.println("Running timed out");
-        } else if (code == 0) {
+            System.out.println("time limit exceeded");
+            return;
+        }
+
+        int code = process.exitValue();
+
+        if (code == 0) {
             System.out.println("success Running");
         } else {
             String out = new String(process.getInputStream().readAllBytes());
-            System.err.println("error running:\n" + out);
+            System.out.println("error running:\n" + out);
         }
 
         getRunResult(process.getInputStream());
@@ -130,7 +136,6 @@ public class DockerCodeRunner {
     public static void main(String[] args) throws IOException, InterruptedException {
         DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
         dockerCodeRunner.runDockerProcess(userCode, testRunnerCode);
-
     }
 
 }
