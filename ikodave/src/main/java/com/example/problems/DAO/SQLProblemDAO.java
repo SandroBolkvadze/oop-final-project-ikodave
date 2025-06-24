@@ -40,9 +40,10 @@ public class SQLProblemDAO implements ProblemDAO {
     }
     @Override
     public Problem getProblemByTitle(String title) {
-        String query = "SELECT * FROM problem WHERE title LIKE ?";
+        String sqlStatement = toProblemByTitle();
+
         try (Connection connection = basicDataSource.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, title);
             ResultSet resultSet = preparedStatement.executeQuery();
             return toProblem(resultSet);
