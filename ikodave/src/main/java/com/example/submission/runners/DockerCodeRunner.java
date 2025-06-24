@@ -17,29 +17,12 @@ import java.util.concurrent.TimeUnit;
 public class DockerCodeRunner {
 
     private static final String userCode = """
-            import java.io.BufferedReader;
-            import java.io.IOException;
-            import java.io.InputStream;
-            import java.io.InputStreamReader;
-            import java.net.HttpURLConnection;
-            import java.net.URL;
-            import java.nio.file.Files;
-            import java.nio.file.Path;
-            import java.nio.file.Paths;
-            import java.util.List;
-            import java.util.concurrent.TimeUnit;
+        import java.util.List;
         public class Solution {
             public static int solve(List<Integer> nums) {
-                try {
-                    System.out.println("\\\\n[Test 3] Attempting to connect to http://example.com...");
-                    URL url = new URL("http://example.com");
-                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                    con.getResponseCode();
-                    System.out.println("==> FAILURE: Network connection succeeded.");
-                } catch (Exception e) {
-                    System.out.println("==> SUCCESS: Blocked from making a network connection. Error: " + e.getClass().getName() + ": " + e.getMessage());
-                }
-                return 0;
+                int sum = 0;
+                for (int n : nums) sum += n;
+                return sum;
             }
         }
         """;
