@@ -21,7 +21,16 @@ public class SignInServlet extends HttpServlet {
         UserDAO userDao = (UserDAO) request.getServletContext().getAttribute(USER_DAO_KEY);
         User user = userDao.getUserByUsername(username); // fetch user with stored hash
 
-        if (user == null || !BCrypt.checkpw(rawPassword, user.getPassword())) {
+        boolean authOK = false;
+        if (user != null) {
+            try {
+                authOK = BCrypt.checkpw(rawPassword, user.getPassword());
+            } catch (IllegalArgumentException e) {
+                // invalid hash format → treat as auth failure
+            }
+        }
+
+        if (!authOK) {
             response.sendRedirect(request.getContextPath() + "/authentication/signin.html?error=1");
         } else {
             request.getSession().setAttribute(SessionConstants.USER_ID_KEY, user);
