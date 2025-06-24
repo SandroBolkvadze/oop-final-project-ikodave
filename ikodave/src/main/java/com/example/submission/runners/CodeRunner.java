@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface CodeRunner {
 
-    void testCodeMultipleTests(String runnerCode,
+    boolean testCodeMultipleTests(String runnerCode,
                                String userCode,
                                long timeoutMillis,
                                List<TestCase> testcases);
 
 
-    void testCodeSingleTest(String runnerCode,
+    boolean testCodeSingleTest(String runnerCode,
                             String userCode,
                             long timeoutMillis,
                             TestCase test);
