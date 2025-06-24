@@ -2,54 +2,44 @@ package com.example.submission.runners;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class DockerCodeRunner {
 
-    private static final String userCode = """
-        import java.util.List;
-        public class Solution {
-            public static int solve(List<Integer> nums) {
-                int sum = 0;
-                for (int num : nums) sum += num;
-                return sum;
-            }
-        }
-        """;
-
-    private static final String testRunnerCode = """
+    private static final String solutionCode = """
             import java.util.*;
-            public class TestRunner {
+            public class Solution {
                 public static void main(String[] args) {
-                    List<Integer> input = Arrays.stream(args[0].split(","))                                               .map(Integer::parseInt)
-                                               .toList();
-                    System.out.println(Solution.solve(input));
+                    Scanner sc = new Scanner(System.in);
+                    int n = sc.nextInt(); // Read the length of the array
+                    int sum = 0;
+                    for (int i = 0; i < n; i++) {
+                        sum += sc.nextInt(); // Read each number and add to sum
+                    }
+                    System.out.println(sum); // Output the sum
                 }
             }
         """;
-
 
     private Path WORKDIR;
 
     private final String IMAGE = "openjdk:21-slim";
 
-    public void runDockerProcess(String userCode, String testRunnerCode) throws IOException, InterruptedException {
+    public void runDockerProcess(String solutionCode) throws IOException, InterruptedException {
         WORKDIR = Files.createTempDirectory("runner-");
-        Files.writeString(WORKDIR.resolve("Solution.java"), userCode);
-        Files.writeString(WORKDIR.resolve("TestRunner.java"), testRunnerCode);
+        Files.writeString(WORKDIR.resolve("Solution.java"), solutionCode);
 
         compileDocker();
-        runDocker("1,2,3", 2);
+        runDocker("3\n1 2 3\n", 2);
         FileUtils.deleteDirectory(WORKDIR.toFile());
     }
 
@@ -61,7 +51,7 @@ public class DockerCodeRunner {
                 "-v", WORKDIR + ":/app",
                 "-w", "/app",
                 IMAGE,
-                "javac", "Solution.java", "TestRunner.java"
+                "javac", "Solution.java"
         );
 
         Process process = new ProcessBuilder(cmd)
@@ -89,6 +79,7 @@ public class DockerCodeRunner {
         List<String> cmd = List.of(
                 "docker",
                 "run",
+                "-i",
                 "--rm",
                 "--read-only",
                 "--network=none",
@@ -100,12 +91,17 @@ public class DockerCodeRunner {
                 "-v", WORKDIR + ":/app:ro",
                 "-w", "/app",
                 IMAGE,
-                "java", "-cp", ".", "TestRunner", input
+                "java", "-cp", ".", "Solution"
         );
 
         Process process = new ProcessBuilder(cmd)
                 .redirectErrorStream(true)
                 .start();
+
+        try (OutputStream os = process.getOutputStream()) {
+            os.write(input.getBytes(StandardCharsets.UTF_8));
+            os.flush();
+        }
 
         boolean finished = process.waitFor(2, TimeUnit.SECONDS);
 
@@ -137,11 +133,8 @@ public class DockerCodeRunner {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-//        DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
-//        dockerCodeRunner.runDockerProcess(userCode, testRunnerCode);
-        List<Integer> list = List.of(1, 2, 3);
-        System.out.println(list);
-
+        DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
+        dockerCodeRunner.runDockerProcess(solutionCode);
     }
 
 }
