@@ -28,9 +28,9 @@ public class FilterStatus implements Filter {
 
     public String toSQLStatement() {
         return format(
-                "SELECT * FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ? AND %s.%s = ?",
+                "SELECT %s.* FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ? AND %s.%s = ?",
                 Problems.TABLE_NAME,
-
+                Problems.TABLE_NAME,
                 Submissions.TABLE_NAME,
                 Submissions.TABLE_NAME,
                 Submissions.COL_PROBLEM_ID,
