@@ -17,7 +17,6 @@ public class UserSessionServlet extends HttpServlet {
         if(request.getSession(false) != null){
             user = (User) request.getSession().getAttribute(USER_ID_KEY);
         }
-
         String json;
         if(user != null){
             json = "{\"loggedIn\":true,\"username\":\"" + user.getUsername() + "\"}";
