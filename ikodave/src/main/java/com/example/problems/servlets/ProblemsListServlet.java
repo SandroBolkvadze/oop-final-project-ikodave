@@ -3,6 +3,7 @@ package com.example.problems.servlets;
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Status;
+import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.*;
 import com.example.problems.utils.FilterCriteria;
@@ -72,14 +73,11 @@ public class ProblemsListServlet extends HttpServlet {
             FilterTopic filterTopic = new FilterTopic(topics);
             filterAnd.addFilter(filterTopic);
         }
-
         System.out.println(filterAnd.toSQLStatement());
-
-        //List<Problem> problems = problemDAO.getProblemsByFilter(filterAnd);
-
-        //response.setContentType("application/json");
-        //response.setCharacterEncoding("UTF-8");
-        //response.getWriter().write(gson.toJson(problems));
+        List<Problem> problems = problemDAO.getProblemsByFilter(filterAnd);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(gson.toJson(problems));
     }
 
 }

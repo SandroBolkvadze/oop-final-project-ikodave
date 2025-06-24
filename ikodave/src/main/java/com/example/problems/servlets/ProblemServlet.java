@@ -30,6 +30,8 @@ public class ProblemServlet extends HttpServlet {
             return;
         }
         Problem problem = problemDao.getProblemByTitle(title);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.getWriter().write(gson.toJson(problem));
     }
 
