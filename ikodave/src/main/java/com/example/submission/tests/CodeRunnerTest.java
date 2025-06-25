@@ -2,6 +2,8 @@ package com.example.submission.tests;
 
 import com.example.submission.DTO.TestCase;
 import com.example.submission.runners.DockerCodeRunner;
+import com.example.submission.Utils.SubmissionResult.SubmissionResult;
+import com.example.submission.Utils.SubmissionResult.SubmissionSuccess;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,8 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CodeRunnerTest {
 
@@ -24,7 +25,7 @@ public class CodeRunnerTest {
         dockerCodeRunner.startContainers();
         System.out.println("docker initialized!!!");
         try {
-            Thread.sleep(10000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -53,8 +54,20 @@ public class CodeRunnerTest {
             }
             """;
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "6", "3\n1 2 3\n"));
-        assertTrue(dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases));
+        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases);
+        assertTrue(result.isSuccess());
+        assertInstanceOf(SubmissionSuccess.class, result);
         System.out.println("end test basic");
+    }
+
+    @Test
+    public void testCompileError() throws IOException, InterruptedException {
+        System.out.println("start compile error test");
+        String solutionCode = "public class Solution { public static void main(String[] args) { int x = ; } }"; // Syntax error
+        List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "0", "1\n0\n"));
+        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases);
+        assertFalse(result.isSuccess());
+        System.out.println("end compile error test");
     }
 
     @Test
@@ -83,7 +96,8 @@ public class CodeRunnerTest {
         for (int i = 0; i < numberOfSubmissions; i++) {
             Thread thread = new Thread(() -> {
                 try {
-                    if (dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases)) {
+                    SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases);
+                    if (result.isSuccess()) {
                         successfulSubmissions.incrementAndGet();
                     }
                 } catch (IOException | InterruptedException e) {
@@ -198,7 +212,8 @@ public class CodeRunnerTest {
                 try {
                     String solutionCode = solutionCodes.get(index);
                     List<TestCase> testCases = testCasesList.get(index);
-                    if (dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases)) {
+                    SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases);
+                    if (result.isSuccess()) {
                         successfulSubmissions.incrementAndGet();
                     }
                 } catch (IOException | InterruptedException e) {

@@ -1,7 +1,12 @@
 package com.example.submission.runners;
 
 import com.example.submission.DTO.TestCase;
+import com.example.submission.Utils.CompileResult.CompileErrorResult;
+import com.example.submission.Utils.CompileResult.CompileResult;
+import com.example.submission.Utils.CompileResult.CompileSuccessResult;
 import com.example.submission.Utils.Container;
+import com.example.submission.Utils.SubmissionResult.*;
+import com.example.submission.Utils.TestCaseResult.*;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -10,12 +15,9 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.*;
 
 public class DockerCodeRunner implements CodeRunner {
-
-    private BlockingQueue<Container> containersPool;
 
     private static final int NUM_CONTAINERS = 5;
 
@@ -24,6 +26,8 @@ public class DockerCodeRunner implements CodeRunner {
     private static final String WORKDIR_PREFIX = "Runner";
 
     private static final long COMPILE_TIMEOUT_MILLIS = 5000;
+
+    private BlockingQueue<Container> containersPool;
 
     public void startContainers() {
         containersPool = new ArrayBlockingQueue<>(NUM_CONTAINERS);
@@ -52,26 +56,32 @@ public class DockerCodeRunner implements CodeRunner {
         }
     }
 
-    private boolean executeAllTestCases(String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
+    private SubmissionResult executeAllTestCases(String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
         Container container = containersPool.take();
         Files.writeString(container.getWorkDir().resolve(JAVA_FILE_NAME), solutionCode);
-        compileUserCode(container.getContainerName());
+        CompileResult compileResult = compileUserCode(container.getContainerName());
+        if (!compileResult.isSuccess()) {
+            return compileResult;
+        }
 
         for (TestCase testCase : testCases) {
-            if (!executeUserCode(container.getContainerName(), executionTimeoutMillis, testCase)) {
+            TestCaseResult testCaseResult = executeUserCode(container.getContainerName(), executionTimeoutMillis, testCase);
+
+            if (!testCaseResult.isSuccess()) {
                 container.cleanContainer();
                 containersPool.put(container);
-                return false;
+                return testCaseResult;
             }
+
         }
 
         container.cleanContainer();
         containersPool.put(container);
-        return true;
+        return new SubmissionSuccess();
     }
 
 
-    private void compileUserCode(String containerName) throws IOException, InterruptedException {
+    private CompileResult compileUserCode(String containerName) throws IOException, InterruptedException {
         List<String> command = List.of(
                 "docker", "exec", containerName,
                 "javac", JAVA_FILE_NAME
@@ -81,26 +91,25 @@ public class DockerCodeRunner implements CodeRunner {
                 .redirectErrorStream(false)
                 .start();
 
-        ProcessHandle processHandle = process.toHandle();
+//        ProcessHandle processHandle = process.toHandle();
 
         boolean finished = process.waitFor(COMPILE_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
 
         if (!finished || process.exitValue() != 0) {
-            System.out.println("error compiling");
+            return new CompileErrorResult(readInputStream(process.getErrorStream()));
         }
         else {
-
-            ProcessHandle.Info info = processHandle.info();
-            Optional<Duration> cpuDuration = info.totalCpuDuration();
-            long cpuTimeMillis = cpuDuration.orElse(Duration.ZERO).toMillis();
-
-            System.out.println("success Compile, execution time " + cpuTimeMillis);
-            System.out.println("success compiling");
+//            ProcessHandle.Info info = processHandle.info();
+//            Optional<Duration> cpuDuration = info.totalCpuDuration();
+//            long cpuTimeMillis = cpuDuration.orElse(Duration.ZERO).toMillis();
+//            System.out.println("success Compile, execution time " + cpuTimeMillis);
+//            System.out.println("success compiling");
+            return new CompileSuccessResult();
         }
     }
 
 
-    private boolean executeUserCode(String containerName, long executeTimeoutMillis, TestCase testCase) throws IOException, InterruptedException {
+    private TestCaseResult executeUserCode(String containerName, long executeTimeoutMillis, TestCase testCase) throws IOException, InterruptedException {
         List<String> command = List.of(
                 "docker", "exec", "-i", containerName,
                 "java", "-cp", "/app", "Solution"
@@ -117,30 +126,31 @@ public class DockerCodeRunner implements CodeRunner {
             os.flush();
         }
 
-        boolean finished = process.waitFor(executeTimeoutMillis + 2000, TimeUnit.MILLISECONDS);
+        boolean finished = process.waitFor(executeTimeoutMillis, TimeUnit.MILLISECONDS);
 
         if (!finished) {
-            System.out.println("time limit exceeded");
-            return false;
+            return new TestCaseTimeLimitExceeded(testCase.getOrderNum(), executeTimeoutMillis, "Time limit exceeded");
         }
 
         if (process.exitValue() != 0) {
-            System.out.println("error running");
-            return false;
+            return new TestCaseRuntimeError(testCase.getOrderNum(), readInputStream(process.getErrorStream()));
         }
 
         ProcessHandle.Info info = processHandle.info();
         Optional<Duration> cpuDuration = info.totalCpuDuration();
         long cpuTimeMillis = cpuDuration.orElse(Duration.ZERO).toMillis();
 
-        System.out.println("success Running, execution time " + cpuTimeMillis);
         if (cpuTimeMillis > executeTimeoutMillis) {
-            System.out.println("time limit exceeded");
-            return false;
+            return new TestCaseTimeLimitExceeded(testCase.getOrderNum(), executeTimeoutMillis, "Time limit exceeded");
         }
         String output = readInputStream(process.getInputStream());
-        System.out.println("output: " + output);
-        return output.equals(testCase.getProblemOutput());
+
+        if (output.equals(testCase.getProblemOutput())) {
+            return new TestCaseSuccess(testCase.getOrderNum(), cpuTimeMillis);
+        }
+        else {
+            return new TestCaseWrongAnswer(testCase.getOrderNum(), testCase.getProblemOutput(), output, "Wrong answer");
+        }
     }
 
     private String readInputStream(InputStream inputStream) {
@@ -159,7 +169,7 @@ public class DockerCodeRunner implements CodeRunner {
 
 
     @Override
-    public boolean testCodeMultipleTests(String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
+    public SubmissionResult testCodeMultipleTests(String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
         return executeAllTestCases(solutionCode, executionTimeoutMillis, testCases);
     }
 
