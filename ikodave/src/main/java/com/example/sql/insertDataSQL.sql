@@ -1,3 +1,5 @@
+USE Ikodave;
+
 -- 1) seed user_rank
 INSERT INTO user_rank (id, user_rank)
 VALUES (1, 'Member'),

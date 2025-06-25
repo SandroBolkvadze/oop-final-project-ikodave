@@ -2,6 +2,13 @@ CREATE SCHEMA IF NOT EXISTS Ikodave;
 
 USE Ikodave;
 
+
+CREATE TABLE IF NOT EXISTS user_rank
+(
+    id        INT AUTO_INCREMENT PRIMARY KEY,
+    user_rank VARCHAR(32)
+);
+
 CREATE TABLE IF NOT EXISTS users
 (
     id            INT AUTO_INCREMENT PRIMARY KEY,
@@ -12,11 +19,6 @@ CREATE TABLE IF NOT EXISTS users
     FOREIGN KEY (rank_id) REFERENCES user_rank (id)
 );
 
-CREATE TABLE IF NOT EXISTS user_rank
-(
-    id        INT AUTO_INCREMENT PRIMARY KEY,
-    user_rank VARCHAR(32)
-);
 
 CREATE TABLE IF NOT EXISTS problem_difficulty
 (
