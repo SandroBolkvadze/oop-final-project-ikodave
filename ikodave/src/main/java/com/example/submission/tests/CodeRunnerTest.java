@@ -22,6 +22,12 @@ public class CodeRunnerTest {
     public static void setUp() {
         dockerCodeRunner = new DockerCodeRunner();
         dockerCodeRunner.startContainers();
+        System.out.println("docker initialized!!!");
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @AfterAll
@@ -31,6 +37,7 @@ public class CodeRunnerTest {
 
     @Test
     public void testBasicArraySum() throws IOException, InterruptedException {
+        System.out.println("start test basic");
         String solutionCode = """
             import java.util.*;
             public class Solution {
@@ -47,10 +54,12 @@ public class CodeRunnerTest {
             """;
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "6", "3\n1 2 3\n"));
         assertTrue(dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases));
+        System.out.println("end test basic");
     }
 
     @Test
     public void testMultipleSubmissionsWithThreads() throws InterruptedException {
+        System.out.println("start threads test");
         int numberOfSubmissions = 10;
         AtomicInteger successfulSubmissions = new AtomicInteger(0);
         List<Thread> threads = new ArrayList<>();
@@ -90,10 +99,12 @@ public class CodeRunnerTest {
         }
 
         assertEquals(numberOfSubmissions, successfulSubmissions.get());
+        System.out.println("end threads test");
     }
 
     @Test
     public void testMultipleUsersDifferentProblems() throws InterruptedException {
+        System.out.println("start different codes");
         List<String> solutionCodes = new ArrayList<>();
         List<List<TestCase>> testCasesList = new ArrayList<>();
 
@@ -203,5 +214,6 @@ public class CodeRunnerTest {
         }
 
         assertEquals(solutionCodes.size(), successfulSubmissions.get());
+        System.out.println("end different codes");
     }
 }

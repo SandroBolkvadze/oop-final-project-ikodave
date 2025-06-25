@@ -29,7 +29,7 @@ public class Container {
                 "--read-only",
                 "--network=none",
                 "--memory=256m",
-                "--cpus=2.5",
+                "--cpus=3.0",
                 "--cap-drop=ALL",
                 "--cap-add=DAC_READ_SEARCH",
                 "--security-opt", "no-new-privileges",
