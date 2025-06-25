@@ -29,14 +29,21 @@ public class FilterTitleTest extends TestCase {
         setup();
         FilterTitle ft = new FilterTitle("ic");
         List<Problem> problems = new ArrayList<>();
-        problems =dao.getProblemsByFilter(ft);
+        problems = dao.getProblemsByFilter(ft);
         assertEquals(2,problems.size());
-        int k2 = 0, k4 = 0;
+        boolean problemFound2 = false, problemFound4 = false;
         for (Problem problem : problems) {
-            if(problem.getId() == 2) k2++;
-            if(problem.getId() == 4) k4++;
+            if(problem.getId() == 2) problemFound2 = true;
+            if(problem.getId() == 4) problemFound4 = true;
         }
-        assertEquals(1, k2);
-        assertEquals(1, k4);
+        assertTrue(problemFound2);
+        assertTrue(problemFound4);
+    }
+    public void testTitleFilterNoProblems() throws SQLException {
+        setup();
+        FilterTitle ft = new FilterTitle("ick");
+        List<Problem> problems = new ArrayList<>();
+        problems = dao.getProblemsByFilter(ft);
+        assertEquals(0,problems.size());
     }
 }

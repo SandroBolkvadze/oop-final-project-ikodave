@@ -68,7 +68,7 @@ public class ToSQL {
                 Problems.COL_TITLE
         );
     }
-    public static String toProblemByTitle(){
+    public static String toProblemByTitleSQL(){
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 Problems.TABLE_NAME,
                 Problems.TABLE_NAME,

@@ -40,7 +40,7 @@ public class SQLProblemDAO implements ProblemDAO {
     }
     @Override
     public Problem getProblemByTitle(String title) {
-        String sqlStatement = toProblemByTitle();
+        String sqlStatement = toProblemByTitleSQL();
 
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
