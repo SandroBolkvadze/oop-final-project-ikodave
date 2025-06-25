@@ -1,28 +1,34 @@
-package com.example.registration.servlets;
+package com.example.user_profile.servlets;
 
+import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
+import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.example.util.AttributeConstants.USER_DAO_KEY;
 import static com.example.util.SessionConstants.USER_ID_KEY;
 
-public class UserSessionServlet extends HttpServlet {
+public class UserProfileServlet extends HttpServlet {
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json");
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = null;
         if(request.getSession(false) != null){
             user = (User) request.getSession().getAttribute(USER_ID_KEY);
         }
+
         String json;
-        if(user != null){
-            json = "{\"loggedIn\":true,\"username\":\"" + user.getUsername() + "\"}";
+        if (user != null) {
+            json = new Gson().toJson(user.getUsername());
         } else {
-            json = "{\"loggedIn\":false}";
+            json = new Gson().toJson(null);
         }
+
         response.getWriter().write(json);
     }
 }
+
