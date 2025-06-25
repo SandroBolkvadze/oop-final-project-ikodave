@@ -16,7 +16,7 @@ public class ToDTO {
             user.setId(rs.getInt(Users.COL_ID));
             user.setUsername(rs.getString(Users.COL_USERNAME));
             user.setPassword(rs.getString(Users.COL_PASSWORD));
-            user.setRank_id(rs.getInt(Users.COL_RANK_ID));
+            user.setRankId(rs.getInt(Users.COL_RANK_ID));
             user.setRegisterDate(rs.getDate(Users.COL_REGISTER_DATE));
             return user;
         } catch (SQLException e) {

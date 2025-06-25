@@ -40,11 +40,11 @@ public class User {
         this.password = password;
     }
 
-    public int getRank_id() {
+    public int getRankId() {
         return rankId;
     }
 
-    public void setRank_id(int rank_id) {
+    public void setRankId(int rank_id) {
         this.rankId = rank_id;
     }
 
