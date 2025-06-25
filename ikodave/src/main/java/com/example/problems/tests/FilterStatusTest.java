@@ -72,10 +72,17 @@ public class FilterStatusTest extends TestCase {
         List<Problem> problems = dao.getProblemsByFilter(filterStatus);
         assertNotNull(problems);
         assertEquals(1 ,problems.size());
-        boolean problemFound = false;
-        for (Problem problem : problems) {
-            if (problem.getId() == 4) problemFound = true;
-        }
-        assertTrue(problemFound);
+        Problem problem = problems.get(0);
+        assertEquals(4, problem.getId());
+    }
+    public void testProblemTODO() throws SQLException {
+        setup();
+        Status status = new Status(4, "TODO");
+        FilterStatus filterStatus = new FilterStatus(user1, status);
+        List<Problem> problems = dao.getProblemsByFilter(filterStatus);
+        assertNotNull(problems);
+        assertEquals(1, problems.size());
+        Problem problem = problems.get(0);
+        assertEquals(4, problem.getId());
     }
 }

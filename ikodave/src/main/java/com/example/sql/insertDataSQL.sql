@@ -23,7 +23,8 @@ VALUES (1, 'dp'),
 INSERT INTO problem_status (id, status)
 VALUES (1, 'ACCEPTED'),
        (2, 'WRONG'),
-       (3, 'PENDING');
+       (3, 'PENDING'),
+       (4, 'TO-DO');
 
 -- 5) problems (now with create_date and explicit time_limit)
 INSERT INTO problems (id, problem_title, problem_description, difficulty_id, create_date, time_limit)
