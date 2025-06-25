@@ -52,6 +52,7 @@ public class User {
         return registerDate;
     }
 
+
     public void setRegisterDate(Date registerDate) {
         this.registerDate = registerDate;
     }
