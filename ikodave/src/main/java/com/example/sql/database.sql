@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS users
     rank_id       INT,
     username      VARCHAR(50)  NOT NULL UNIQUE,
     password      VARCHAR(255) NOT NULL,
-    register_date Date,
+    register_date DATE,
     FOREIGN KEY (rank_id) REFERENCES user_rank (id)
 );
 
@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS problems
     problem_title       VARCHAR(100) UNIQUE NOT NULL,
     problem_description TEXT,
     difficulty_id       INT,
-    create_date         Date,
-    time_limit          INT DEFAULT 20000,
+    create_date         DATE,
+    time_limit          LONG DEFAULT 20000,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty (id)
 );
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS submissions
     problem_id    INT,
     status_id     INT,
     solution_code TEXT,
-    submit_date   Date,
+    submit_date   DATE,
     log           TEXT,
     FOREIGN KEY (problem_id) REFERENCES problems (id),
     FOREIGN KEY (user_id) REFERENCES users (id),
