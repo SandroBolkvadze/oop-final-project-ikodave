@@ -6,8 +6,8 @@ public class User {
     int id;
     private String username;
     private String password;
-    private int rank_id;
-    private Date register_date;
+    private int rankId;
+    private Date registerDate;
 
     public User() {}
 
@@ -41,18 +41,18 @@ public class User {
     }
 
     public int getRank_id() {
-        return rank_id;
+        return rankId;
     }
 
     public void setRank_id(int rank_id) {
-        this.rank_id = rank_id;
+        this.rankId = rank_id;
     }
 
-    public Date getRegister_date() {
-        return register_date;
+    public Date getRegisterDate() {
+        return registerDate;
     }
 
-    public void setRegister_date(Date register_date) {
-        this.register_date = register_date;
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
     }
 }
