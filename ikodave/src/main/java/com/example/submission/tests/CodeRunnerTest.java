@@ -2,25 +2,31 @@ package com.example.submission.tests;
 
 import com.example.submission.DTO.TestCase;
 import com.example.submission.runners.DockerCodeRunner;
-import com.example.submission.runners.InMemoryCodeRunner;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CodeRunnerTest {
 
-    private DockerCodeRunner dockerCodeRunner;
+    private static DockerCodeRunner dockerCodeRunner;
 
-    @BeforeEach
-    public void setUp() {
+    @BeforeAll
+    public static void setUp() {
         dockerCodeRunner = new DockerCodeRunner();
+        dockerCodeRunner.startContainers();
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        dockerCodeRunner.destroyContainers();
     }
 
     @Test
@@ -39,14 +45,16 @@ public class CodeRunnerTest {
                 }
             }
             """;
-        
-        TestCase testCase = new TestCase(1, 1, 1, "6", "3\n1 2 3\n");
-        boolean result = dockerCodeRunner.testCodeSingleTest(solutionCode, 5000, testCase);
-        assertTrue(result);
+        List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "6", "3\n1 2 3\n"));
+        assertTrue(dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases));
     }
 
     @Test
-    public void testEdgeCaseZeroArray() throws IOException, InterruptedException {
+    public void testMultipleSubmissionsWithThreads() throws InterruptedException {
+        int numberOfSubmissions = 10;
+        AtomicInteger successfulSubmissions = new AtomicInteger(0);
+        List<Thread> threads = new ArrayList<>();
+
         String solutionCode = """
             import java.util.*;
             public class Solution {
@@ -61,15 +69,36 @@ public class CodeRunnerTest {
                 }
             }
             """;
-        
-        TestCase testCase = new TestCase(2, 1, 2, "0", "0\n");
-        boolean result = dockerCodeRunner.testCodeSingleTest(solutionCode, 5000, testCase);
-        assertTrue(result, "Empty array test should pass");
+        List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "6", "3\n1 2 3\n"));
+
+        for (int i = 0; i < numberOfSubmissions; i++) {
+            Thread thread = new Thread(() -> {
+                try {
+                    if (dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases)) {
+                        successfulSubmissions.incrementAndGet();
+                    }
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            threads.add(thread);
+            thread.start();
+        }
+
+        for (Thread thread : threads) {
+            thread.join();
+        }
+
+        assertEquals(numberOfSubmissions, successfulSubmissions.get());
     }
 
     @Test
-    public void testComplexInputWithNegativeNumbers() throws IOException, InterruptedException {
-        String solutionCode = """
+    public void testMultipleUsersDifferentProblems() throws InterruptedException {
+        List<String> solutionCodes = new ArrayList<>();
+        List<List<TestCase>> testCasesList = new ArrayList<>();
+
+        // Submission 1: Array Sum
+        solutionCodes.add("""
             import java.util.*;
             public class Solution {
                 public static void main(String[] args) {
@@ -82,51 +111,97 @@ public class CodeRunnerTest {
                     System.out.println(sum);
                 }
             }
-            """;
-        
-        TestCase testCase = new TestCase(3, 1, 3, "-3", "6\n0 -1 2 -3 4 -5\n");
-        boolean result = dockerCodeRunner.testCodeSingleTest(solutionCode, 5000, testCase);
-        assertTrue(result, "Negative numbers test should pass");
-    }
+            """);
+        testCasesList.add(List.of(new TestCase(1, 1, 1, "6", "3\n1 2 3\n"),
+                new TestCase(2, 2, 2, "15", "5\n1 2 3 4 5\n")));
 
-
-    @Test
-    public void testFindMaximumElementMultipleThreads() throws IOException, InterruptedException {
-        String solutionCode = """
+        // Submission 2: Find Max
+        solutionCodes.add("""
             import java.util.*;
             public class Solution {
                 public static void main(String[] args) {
                     Scanner sc = new Scanner(System.in);
                     int n = sc.nextInt();
                     int max = Integer.MIN_VALUE;
-                    for (int i = 0; i < n; i++) {
-                        int num = sc.nextInt();
-                        if (num > max) {
-                            max = num;
+                    if (n > 0) {
+                        for (int i = 0; i < n; i++) {
+                            int current = sc.nextInt();
+                            if (current > max) {
+                                max = current;
+                            }
                         }
                     }
                     System.out.println(max);
                 }
             }
-            """;
+            """);
+        testCasesList.add(List.of(new TestCase(2, 1, 1, "99", "5\n1 5 99 2 4\n"),
+                new TestCase(6, 2, 1, "10", "5\n-5 -1 10 0 4\n")));
 
-        int numThreads = 5;
+        // Submission 3: Echo String
+        solutionCodes.add("""
+            import java.util.*;
+            public class Solution {
+                public static void main(String[] args) {
+                    Scanner sc = new Scanner(System.in);
+                    String line = sc.nextLine();
+                    System.out.println(line);
+                }
+            }
+            """);
+        testCasesList.add(List.of(new TestCase(3, 1, 1, "hello world", "hello world\n"),
+                new TestCase(7, 2, 1, "another test", "another test\n")));
 
-        Thread[] threads = new Thread[numThreads];
+        // Submission 4: Simple Addition
+        solutionCodes.add("""
+            import java.util.*;
+            public class Solution {
+                public static void main(String[] args) {
+                    Scanner sc = new Scanner(System.in);
+                    int a = sc.nextInt();
+                    int b = sc.nextInt();
+                    System.out.println(a + b);
+                }
+            }
+            """);
+        testCasesList.add(List.of(new TestCase(4, 1, 1, "5", "2 3\n"),
+                new TestCase(8, 2, 1, "-1", "5 -6\n")));
 
-        for (int i = 0; i < numThreads; i++) {
-            threads[i] = new Thread(() -> {
-                TestCase testCase = new TestCase(4, 1, 4, "42", "5\n10 5 42 8 15\n");
-                boolean result = dockerCodeRunner.testCodeSingleTest(solutionCode, 5000, testCase);
-                System.out.println(result ? "True" : "False");
+        // Submission 5: Hello World
+        solutionCodes.add("""
+            public class Solution {
+                public static void main(String[] args) {
+                    System.out.println("Hello World!");
+                }
+            }
+            """);
+        testCasesList.add(List.of(new TestCase(5, 1, 1, "Hello World!", ""),
+                new TestCase(9, 2, 1, "Hello World!", "dummy input")));
+
+        AtomicInteger successfulSubmissions = new AtomicInteger(0);
+        List<Thread> threads = new ArrayList<>();
+
+        for (int i = 0; i < solutionCodes.size(); i++) {
+            final int index = i;
+            Thread thread = new Thread(() -> {
+                try {
+                    String solutionCode = solutionCodes.get(index);
+                    List<TestCase> testCases = testCasesList.get(index);
+                    if (dockerCodeRunner.testCodeMultipleTests(solutionCode, 2000, testCases)) {
+                        successfulSubmissions.incrementAndGet();
+                    }
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
             });
-            threads[i].start();
+            threads.add(thread);
+            thread.start();
         }
 
         for (Thread thread : threads) {
             thread.join();
         }
+
+        assertEquals(solutionCodes.size(), successfulSubmissions.get());
     }
-
-
 }

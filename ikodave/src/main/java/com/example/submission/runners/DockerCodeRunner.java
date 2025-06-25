@@ -1,121 +1,146 @@
 package com.example.submission.runners;
 
 import com.example.submission.DTO.TestCase;
-import com.example.submission.Utils.Command;
+import com.example.submission.Utils.Container;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.*;
 
 public class DockerCodeRunner implements CodeRunner {
 
-    private ExecutorService pool;
+    private BlockingQueue<Container> containersPool;
 
-    private static final String IMAGE = "openjdk:21-slim";
-
-    private static final String WORKDIR_PREFIX = "Runner";
+    private static final int NUM_CONTAINERS = 5;
 
     private static final String JAVA_FILE_NAME = "Solution.java";
 
+    private static final String WORKDIR_PREFIX = "Runner";
+
     private static final long COMPILE_TIMEOUT_MILLIS = 5000;
 
-    private String getOutput(String solutionCode, String input, long executionTimeoutMillis) {
-        try {
-            Path workDir = Files.createTempDirectory(WORKDIR_PREFIX + "-");
-            Files.writeString(workDir.resolve(JAVA_FILE_NAME), solutionCode);
-            compileUserCode(workDir);
-            String output = executeUserCode(workDir, input, executionTimeoutMillis);
-            cleanUp(workDir);
-            return output;
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+    public void startContainers() {
+        containersPool = new ArrayBlockingQueue<>(NUM_CONTAINERS);
+        for (int i = 0; i < NUM_CONTAINERS; i++) {
+            try {
+                Path workDir = Files.createTempDirectory(WORKDIR_PREFIX + "-");
+//                Path workDir = Files.createDirectories(Path.of("C:\\Users\\User\\Desktop\\runner" + UUID.randomUUID()));
+                Container container = new Container(workDir);
+                container.startContainer();
+                containersPool.put(container);
+            } catch (InterruptedException | IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    private void compileUserCode(Path workDir) throws IOException, InterruptedException {
+    public void destroyContainers() {
+        for (int i = 0; i < NUM_CONTAINERS; i++) {
+            try {
+                Container container = containersPool.take();
+                container.destroyContainer();
+                FileUtils.deleteDirectory(container.getWorkDir().toFile());
+            } catch (InterruptedException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private boolean executeAllTestCases(String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
+        Container container = containersPool.take();
+        Files.writeString(container.getWorkDir().resolve(JAVA_FILE_NAME), solutionCode);
+        compileUserCode(container.getContainerName());
+
+        for (TestCase testCase : testCases) {
+            if (!executeUserCode(container.getContainerName(), executionTimeoutMillis, testCase)) {
+                container.cleanContainer();
+                containersPool.put(container);
+                return false;
+            }
+        }
+
+        container.cleanContainer();
+        containersPool.put(container);
+        return true;
+    }
+
+
+    private void compileUserCode(String containerName) throws IOException, InterruptedException {
         List<String> command = List.of(
-                "docker",
-                "run",
-                "--rm",
-                "-v", workDir + ":/app",
-                "-w", "/app",
-                IMAGE,
-                "javac", "Solution.java"
+                "docker", "exec", containerName,
+                "javac", JAVA_FILE_NAME
         );
 
         Process process = new ProcessBuilder(command)
-                .redirectErrorStream(true)
+                .redirectErrorStream(false)
                 .start();
 
-        boolean finished = process.waitFor(COMPILE_TIMEOUT_MILLIS, TimeUnit.SECONDS);
+        ProcessHandle processHandle = process.toHandle();
 
-        if (!finished) {
+        boolean finished = process.waitFor(COMPILE_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+
+        if (!finished || process.exitValue() != 0) {
             System.out.println("error compiling");
-            return;
         }
+        else {
 
-        int code = process.exitValue();
+            ProcessHandle.Info info = processHandle.info();
+            Optional<Duration> cpuDuration = info.totalCpuDuration();
+            long cpuTimeMillis = cpuDuration.orElse(Duration.ZERO).toMillis();
 
-        if (code == 0) {
+            System.out.println("success Compile, execution time " + cpuTimeMillis);
             System.out.println("success compiling");
-        } else {
-            String out = new String(process.getInputStream().readAllBytes());
-            System.out.println("error running:\n" + out);
         }
     }
 
-    private String executeUserCode(Path workDir, String input, long executeTimeoutMillis) throws IOException, InterruptedException {
+
+    private boolean executeUserCode(String containerName, long executeTimeoutMillis, TestCase testCase) throws IOException, InterruptedException {
         List<String> command = List.of(
-                "docker",
-                "run",
-                "-i",
-                "--rm",
-                "--read-only",
-                "--network=none",
-                "--memory=256m",
-                "--cpus=0.5",
-                "--cap-drop=ALL",
-                "--cap-add=DAC_READ_SEARCH",
-                "--security-opt", "no-new-privileges",
-                "-v", workDir + ":/app:ro",
-                "-w", "/app",
-                IMAGE,
-                "java", "-cp", ".", "Solution"
+                "docker", "exec", "-i", containerName,
+                "java", "-cp", "/app", "Solution"
         );
 
         Process process = new ProcessBuilder(command)
-                .redirectErrorStream(true)
+                .redirectErrorStream(false)
                 .start();
+
+        ProcessHandle processHandle = process.toHandle();
 
         try (OutputStream os = process.getOutputStream()) {
-            os.write(input.getBytes(StandardCharsets.UTF_8));
+            os.write(testCase.getProblemInput().getBytes(StandardCharsets.UTF_8));
             os.flush();
         }
 
-        boolean finished = process.waitFor(2, TimeUnit.SECONDS);
+        boolean finished = process.waitFor(executeTimeoutMillis + 2000, TimeUnit.MILLISECONDS);
 
         if (!finished) {
             System.out.println("time limit exceeded");
-            return "";
+            return false;
         }
 
-        int code = process.exitValue();
-
-        if (code == 0) {
-            System.out.println("success Running");
-        } else {
-            String out = new String(process.getInputStream().readAllBytes());
-            System.out.println("error running:\n" + out);
-            return "";
+        if (process.exitValue() != 0) {
+            System.out.println("error running");
+            return false;
         }
 
-        return readInputStream(process.getInputStream());
+        ProcessHandle.Info info = processHandle.info();
+        Optional<Duration> cpuDuration = info.totalCpuDuration();
+        long cpuTimeMillis = cpuDuration.orElse(Duration.ZERO).toMillis();
+
+        System.out.println("success Running, execution time " + cpuTimeMillis);
+        if (cpuTimeMillis > executeTimeoutMillis) {
+            System.out.println("time limit exceeded");
+            return false;
+        }
+        String output = readInputStream(process.getInputStream());
+        System.out.println("output: " + output);
+        return output.equals(testCase.getProblemOutput());
     }
 
     private String readInputStream(InputStream inputStream) {
@@ -132,28 +157,10 @@ public class DockerCodeRunner implements CodeRunner {
         return output.toString();
     }
 
-    private void cleanUp(Path workDir) {
-        try {
-            FileUtils.deleteDirectory(workDir.toFile());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
-    public boolean testCodeMultipleTests(String solutionCode, long timeoutMillis, List<TestCase> testcases) {
-        for (int i = 0; i < testcases.size(); i++) {
-            if (!testCodeSingleTest(solutionCode, timeoutMillis, testcases.get(i))) {
-                return false;
-            }
-        }
-        return true;
+    public boolean testCodeMultipleTests(String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
+        return executeAllTestCases(solutionCode, executionTimeoutMillis, testCases);
     }
 
-    @Override
-    public boolean testCodeSingleTest(String solutionCode, long timeoutMillis, TestCase test) {
-        String output = getOutput(solutionCode, test.getProblemInput(), timeoutMillis);
-        System.out.println(output);
-        return test.checkOutput(output);
-    }
 }
