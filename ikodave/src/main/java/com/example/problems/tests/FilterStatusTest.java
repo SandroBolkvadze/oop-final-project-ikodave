@@ -73,7 +73,7 @@ public class FilterStatusTest extends TestCase {
         assertNotNull(problems);
         assertEquals(1 ,problems.size());
         Problem problem = problems.get(0);
-        assertEquals(4, problem.getId());
+        assertEquals(3, problem.getId());
     }
     public void testProblemTODO() throws SQLException {
         setup();

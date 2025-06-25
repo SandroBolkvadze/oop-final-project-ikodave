@@ -64,6 +64,8 @@ public class ToDTO {
             problem.setTitle(resultSet.getString(2));
             problem.setDescription(resultSet.getString(3));
             problem.setDifficultyId(resultSet.getInt(4));
+            problem.setCreateDate(resultSet.getDate(5).toLocalDate());
+            problem.setTimeLimit(resultSet.getInt(6));
             return problem;
         } catch (SQLException e) {
             throw new RuntimeException(e);

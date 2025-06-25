@@ -29,7 +29,7 @@ public class FilterStatus implements Filter {
     public String toSQLStatement() {
         return format(
                 "SELECT %s.* FROM %s LEFT JOIN %s ON %s.%s = %s.%s AND %s.%s = ? " +
-                        "WHERE (? = 4 AND %s.%s IS NULL) OR (? <> 4 AND %s.%s = ?)",
+                        "WHERE (? = %d AND %s.%s IS NULL) OR (? <> %d AND %s.%s = ?)",
                 Problems.TABLE_NAME,
                 Problems.TABLE_NAME,
                 Submissions.TABLE_NAME,
@@ -39,9 +39,10 @@ public class FilterStatus implements Filter {
                 Problems.COL_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
-
+                Submissions.TO_DO_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_STATUS_ID,
+                Submissions.TO_DO_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_STATUS_ID
         );
