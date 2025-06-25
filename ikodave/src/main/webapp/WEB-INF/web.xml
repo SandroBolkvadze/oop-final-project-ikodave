@@ -32,6 +32,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>ProfileServlet</servlet-name>
+    <servlet-class>com.example.user_profile.servlets.UserProfileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProfileServlet</servlet-name>
+    <url-pattern>/profile</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>ProblemsListServlet</servlet-name>
     <servlet-class>com.example.problems.servlets.ProblemsListServlet</servlet-class>
   </servlet>
