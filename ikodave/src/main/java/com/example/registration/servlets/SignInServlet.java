@@ -34,7 +34,7 @@ public class SignInServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/authentication/signin.html?error=1");
         } else {
             request.getSession().setAttribute(SessionConstants.USER_ID_KEY, user);
-            response.sendRedirect(request.getContextPath() + "/problems/html/problems.html");
+            response.sendRedirect(request.getContextPath() + "/problems/problems.html");
         }
     }
 }

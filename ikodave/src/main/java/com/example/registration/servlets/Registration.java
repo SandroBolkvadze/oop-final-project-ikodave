@@ -32,7 +32,7 @@ public class Registration extends HttpServlet {
         } else {
             userDao.addUser(user);
             request.getSession().setAttribute(SessionConstants.USER_ID_KEY, user);
-            response.sendRedirect(request.getContextPath() + "/problems/html/problems.html");
+            response.sendRedirect(request.getContextPath() + "/problems/problems.html");
         }
     }
 }

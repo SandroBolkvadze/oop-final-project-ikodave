@@ -9,14 +9,19 @@
 
 <div id="navbar-container"></div>
 
-<script src="/ikodave_war/shared_html/navbar.js"></script>
+<script src="/shared_html/navbar.js"></script>
 <script>loadNavbar();</script>
 
 <div class="container mt-4">
-    <h1>Welcome to the profile, <span id="username-placeholder"></span></h1>
+    <h1>Welcome to the profile, <span id="username-placeholder">Loading...</span></h1>
+    <div class="mt-3" id="profile-info">
+        <p><strong>User ID:</strong> <span id="user-id">Loading...</span></p>
+    </div>
+    <div id="error" class="text-danger"></div>
 </div>
 
-<script src="/ikodave_war/profile/profile_page.js"></script>
+<!-- Profile logic -->
+<script src="/profile/profile_page.js"></script>
 <script>
     load_profile();
 </script>

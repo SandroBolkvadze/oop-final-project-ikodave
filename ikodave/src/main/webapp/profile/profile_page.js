@@ -1,8 +1,18 @@
-function load_profile(){
-    fetch('/ikodave_war/profile')
-        .then(res => res.json())
-        .then(username => {
-            document.getElementById('username-placeholder').textContent = username || "Guest";
+function load_profile() {
+    fetch("/profile")
+        .then(res => {
+            if (!res.ok) throw new Error("Not logged in");
+            return res.json();
         })
-        .catch(err => console.error("Failed to load user", err));
+        .then(data => {
+            document.getElementById("username-placeholder").textContent = data.username;
+            document.getElementById("user-id").textContent = data.userId;
+        })
+        .catch(err => {
+            document.getElementById("error").textContent = "Please log in to view your profile. Redirecting to login page...";
+            document.getElementById("profile-info").style.display = "none";
+            setTimeout(() => {
+                window.location.href = "/authentication/signin.html";
+            }, 3000);
+        });
 }
