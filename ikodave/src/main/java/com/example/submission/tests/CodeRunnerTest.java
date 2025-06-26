@@ -25,7 +25,7 @@ public class CodeRunnerTest {
         dockerCodeRunner.startContainers();
         System.out.println("docker initialized!!!");
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -127,13 +127,13 @@ public class CodeRunnerTest {
             import java.util.*;
             public class Solution {
                 public static void main(String[] args) {
-                    Scanner sc = new Scanner(System.in);
-                    int n = sc.nextInt();
+                    //Scanner sc = new Scanner(System.in);
+                    //int n = sc.nextInt();
                     int sum = 0;
                     for (int i = 0; i < n; i++) {
-                        sum += sc.nextInt();
+                        //sum += sc.nextInt();
                     }
-                    System.out.println(sum);
+                    System.out.println(0);
                 }
             }
             """);
@@ -228,7 +228,7 @@ public class CodeRunnerTest {
             thread.join();
         }
 
-        assertEquals(solutionCodes.size(), successfulSubmissions.get());
+        assertEquals(solutionCodes.size() - 1, successfulSubmissions.get());
         System.out.println("end different codes");
     }
 }

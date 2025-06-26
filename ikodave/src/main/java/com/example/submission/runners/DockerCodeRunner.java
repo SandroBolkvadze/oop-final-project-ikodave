@@ -59,29 +59,28 @@ public class DockerCodeRunner implements CodeRunner {
     private SubmissionResult executeAllTestCases(String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
         Container container = containersPool.take();
         Files.writeString(container.getWorkDir().resolve(JAVA_FILE_NAME), solutionCode);
-        CompileResult compileResult = compileUserCode(container.getContainerName());
-        if (!compileResult.isSuccess()) {
-            return compileResult;
-        }
-
-        for (TestCase testCase : testCases) {
-            TestCaseResult testCaseResult = executeUserCode(container.getContainerName(), executionTimeoutMillis, testCase);
-
-            if (!testCaseResult.isSuccess()) {
-                container.cleanContainer();
-                containersPool.put(container);
-                return testCaseResult;
+        try {
+            CompileResult compileResult = compileUserCode(container.getContainerName());
+            if (!compileResult.isSuccess()) {
+                return compileResult;
             }
 
-        }
+            for (TestCase testCase : testCases) {
+                TestCaseResult testCaseResult = executeUserCode(container.getContainerName(), executionTimeoutMillis, testCase);
+                if (!testCaseResult.isSuccess()) {
+                    return testCaseResult;
+                }
+            }
 
-        container.cleanContainer();
-        containersPool.put(container);
-        return new SubmissionSuccess();
+            return new SubmissionSuccess();
+        } finally {
+            container.cleanContainer();
+            containersPool.put(container);
+        }
     }
 
 
-    private CompileResult compileUserCode(String containerName) throws IOException, InterruptedException {
+    private CompileResult compileUserCode(String containerName) throws InterruptedException, IOException {
         List<String> command = List.of(
                 "docker", "exec", containerName,
                 "javac", JAVA_FILE_NAME
