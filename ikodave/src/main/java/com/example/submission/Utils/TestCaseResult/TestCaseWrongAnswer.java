@@ -4,9 +4,9 @@ import static java.lang.String.format;
 
 public class TestCaseWrongAnswer implements TestCaseResult {
 
-    private int testIndex;
+    private final int testIndex;
 
-    private String expected;
+    private final String expected;
 
     private final String actual;
 

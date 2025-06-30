@@ -8,7 +8,7 @@ public class TestCaseTimeLimitExceeded implements TestCaseResult {
 
     private final long time;
 
-    private String log;
+    private final String log;
 
     public TestCaseTimeLimitExceeded(int testIndex, long time, String log) {
         this.testIndex = testIndex;

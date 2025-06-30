@@ -4,7 +4,7 @@ import static java.lang.String.format;
 
 public class TestCaseRuntimeError implements TestCaseResult {
 
-    private int testIndex;
+    private final int testIndex;
 
     private final String log;
 
