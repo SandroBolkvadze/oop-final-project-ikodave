@@ -4,7 +4,8 @@ import com.example.submission.DTO.TestCase;
 import com.example.submission.Utils.CompileResult.CompileErrorResult;
 import com.example.submission.Utils.CompileResult.CompileResult;
 import com.example.submission.Utils.CompileResult.CompileSuccessResult;
-import com.example.submission.Utils.Container;
+import com.example.submission.Utils.Container.Container;
+import com.example.submission.Utils.Language.CodeLanguage;
 import com.example.submission.Utils.SubmissionResult.*;
 import com.example.submission.Utils.TestCaseResult.*;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -20,8 +21,6 @@ import java.util.concurrent.*;
 public class DockerCodeRunner implements CodeRunner {
 
     private static final int NUM_CONTAINERS = 5;
-
-    private static final String JAVA_FILE_NAME = "Solution.java";
 
     private static final String WORKDIR_PREFIX = "Runner";
 
@@ -56,35 +55,39 @@ public class DockerCodeRunner implements CodeRunner {
         }
     }
 
-    private SubmissionResult executeAllTestCases(String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
+    private SubmissionResult executeAllTestCases(CodeLanguage codeLanguage, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
         Container container = containersPool.take();
-        Files.writeString(container.getWorkDir().resolve(JAVA_FILE_NAME), solutionCode);
+        codeLanguage.createFiles(container.getWorkDir(), solutionCode);
+
         try {
-            CompileResult compileResult = compileUserCode(container.getContainerName());
+            CompileResult compileResult = compileUserCode(codeLanguage, container.getContainerName());
             if (!compileResult.isSuccess()) {
+                System.out.println(compileResult.submissionInfo());
                 return compileResult;
             }
 
             for (TestCase testCase : testCases) {
-                TestCaseResult testCaseResult = executeUserCode(container.getContainerName(), executionTimeoutMillis, testCase);
+                TestCaseResult testCaseResult = executeUserCode(codeLanguage, container.getContainerName(), executionTimeoutMillis, testCase);
                 if (!testCaseResult.isSuccess()) {
+                    System.out.println(testCaseResult.submissionInfo());
                     return testCaseResult;
                 }
             }
-
-            return new SubmissionSuccess();
+            SubmissionSuccess submissionSuccess = new SubmissionSuccess();
+            System.out.println(submissionSuccess.submissionInfo());
+            return submissionSuccess;
         } finally {
             container.cleanContainer();
             containersPool.put(container);
         }
     }
 
+    private CompileResult compileUserCode(CodeLanguage codeLanguage, String containerName) throws InterruptedException, IOException {
+        List<String> command = codeLanguage.compileCommand(containerName);
 
-    private CompileResult compileUserCode(String containerName) throws InterruptedException, IOException {
-        List<String> command = List.of(
-                "docker", "exec", containerName,
-                "javac", JAVA_FILE_NAME
-        );
+        if (command.isEmpty()) {
+            return new CompileSuccessResult();
+        }
 
         Process process = new ProcessBuilder(command)
                 .redirectErrorStream(false)
@@ -108,11 +111,8 @@ public class DockerCodeRunner implements CodeRunner {
     }
 
 
-    private TestCaseResult executeUserCode(String containerName, long executeTimeoutMillis, TestCase testCase) throws IOException, InterruptedException {
-        List<String> command = List.of(
-                "docker", "exec", "-i", containerName,
-                "java", "-cp", "/app", "Solution"
-        );
+    private TestCaseResult executeUserCode(CodeLanguage codeLanguage, String containerName, long executeTimeoutMillis, TestCase testCase) throws IOException, InterruptedException {
+        List<String> command = codeLanguage.executeCommand(containerName);
 
         Process process = new ProcessBuilder(command)
                 .redirectErrorStream(false)
@@ -144,7 +144,7 @@ public class DockerCodeRunner implements CodeRunner {
         }
         String output = readInputStream(process.getInputStream());
 
-        if (output.equals(testCase.getProblemOutput())) {
+        if (output.strip().equals(testCase.getProblemOutput())) {
             return new TestCaseSuccess(testCase.getOrderNum(), cpuTimeMillis);
         }
         else {
@@ -158,7 +158,7 @@ public class DockerCodeRunner implements CodeRunner {
             try {
                 String line = "";
                 while ((line = bufferedReader.readLine()) != null) {
-                    output.append(line);
+                    output.append(line).append("\n");
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -168,8 +168,8 @@ public class DockerCodeRunner implements CodeRunner {
 
 
     @Override
-    public SubmissionResult testCodeMultipleTests(String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
-        return executeAllTestCases(solutionCode, executionTimeoutMillis, testCases);
+    public SubmissionResult testCodeMultipleTests(CodeLanguage codeLanguage, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
+        return executeAllTestCases(codeLanguage, solutionCode, executionTimeoutMillis, testCases);
     }
 
 }

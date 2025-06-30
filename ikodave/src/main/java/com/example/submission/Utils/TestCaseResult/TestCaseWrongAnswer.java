@@ -1,5 +1,7 @@
 package com.example.submission.Utils.TestCaseResult;
 
+import static java.lang.String.format;
+
 public class TestCaseWrongAnswer implements TestCaseResult {
 
     private int testIndex;
@@ -20,5 +22,10 @@ public class TestCaseWrongAnswer implements TestCaseResult {
     @Override
     public boolean isSuccess() {
         return false;
+    }
+
+    @Override
+    public String submissionInfo() {
+        return format("Wrong answer on test %d", testIndex);
     }
 }

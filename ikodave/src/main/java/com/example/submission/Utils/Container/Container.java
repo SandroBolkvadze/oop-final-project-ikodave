@@ -1,7 +1,6 @@
-package com.example.submission.Utils;
+package com.example.submission.Utils.Container;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
@@ -9,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Container {
 
-    private static final String IMAGE = "openjdk:21-slim";
+    private static final String IMAGE = "sandbox-code-executor";
 
     private static final String CONTAINER_PREFIX = "Sandbox";
 
@@ -29,7 +28,7 @@ public class Container {
                 "--read-only",
                 "--network=none",
                 "--memory=256m",
-                "--cpus=3.0",
+                "--cpus=4.0",
                 "--cap-drop=ALL",
                 "--cap-add=DAC_READ_SEARCH",
                 "--security-opt", "no-new-privileges",

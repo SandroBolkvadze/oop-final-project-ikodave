@@ -12,4 +12,9 @@ public class CompileErrorResult implements CompileResult {
     public boolean isSuccess() {
         return false;
     }
+
+    @Override
+    public String submissionInfo() {
+        return log;
+    }
 }

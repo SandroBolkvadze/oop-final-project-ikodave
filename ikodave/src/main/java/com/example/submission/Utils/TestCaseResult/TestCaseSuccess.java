@@ -1,5 +1,7 @@
 package com.example.submission.Utils.TestCaseResult;
 
+import static java.lang.String.format;
+
 public class TestCaseSuccess implements TestCaseResult {
 
     private final int testIndex;
@@ -14,6 +16,11 @@ public class TestCaseSuccess implements TestCaseResult {
     @Override
     public boolean isSuccess() {
         return true;
+    }
+
+    @Override
+    public String submissionInfo() {
+        return format("Test %d passed. Execution time: %d", testIndex, time);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.example.submission.Utils.TestCaseResult;
 
+import static java.lang.String.format;
+
 public class TestCaseTimeLimitExceeded implements TestCaseResult {
 
     private final int testIndex;
@@ -18,4 +20,11 @@ public class TestCaseTimeLimitExceeded implements TestCaseResult {
     public boolean isSuccess() {
         return false;
     }
+
+    @Override
+    public String submissionInfo() {
+        return format("Time limit exceeded on test %d.\n Execution time: %d ms", testIndex, time);
+    }
+
+
 }

@@ -5,4 +5,9 @@ public class CompileSuccessResult implements CompileResult {
     public boolean isSuccess() {
         return true;
     }
+
+    @Override
+    public String submissionInfo() {
+        return "Compilation Success";
+    }
 }
