@@ -484,8 +484,10 @@ public class CodeRunnerTest {
     public void testBasicPythonSum() throws IOException, InterruptedException {
         System.out.println("start test basic python");
         String solutionCode = """
-            a, b = map(int, input().split())
-            print(a + b)
+            def main():
+                a, b = map(int, input().split())
+                print(a + b)
+            main()
             """;
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "5", "2 3\n"));
         SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new PythonLanguage(), solutionCode, 2000, testCases);

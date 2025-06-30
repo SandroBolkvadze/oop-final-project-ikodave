@@ -4,7 +4,7 @@ import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.Filters.Filter;
 import com.example.problems.Filters.FilterAnd;
 import com.example.problems.Filters.FilterTitle;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.SQLProblemDAO;
 import com.example.registration.dao.MySQLUserDao;
 import com.example.registration.dao.UserDAO;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import static com.example.util.AttributeConstants.*;
 import static com.example.util.DBConnectionConstants.*;

@@ -6,21 +6,24 @@ import com.example.problems.DTO.Problem;
 
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.FilterTopic;
-import junit.framework.TestCase;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.util.DBConnectionConstants.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class FilterTopicTest extends TestCase {
+public class FilterTopicTest {
 
     static List<Problem> allProblems;
     static BasicDataSource dataSource;
     static ProblemDAO dao;
-    static void setup() throws SQLException {
+    @BeforeEach
+    void setup() throws SQLException {
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
         dataSource.setDriverClassName(DRIVER);
@@ -28,8 +31,8 @@ public class FilterTopicTest extends TestCase {
         dataSource.setPassword(DATABASE_PASSWORD);
         dao = new SQLProblemDAO(dataSource);
     }
-    public void testTopicUserId() throws SQLException {
-        setup();
+    @Test
+    void testTopicUserId() throws SQLException {
         List<Topic> topics = dao.getProblemTopics(1);
         int cnt1 = 0, cnt2 = 0, cnt3 = 0;
         for (Topic topic : topics) {
@@ -49,8 +52,8 @@ public class FilterTopicTest extends TestCase {
             assertFalse(false);
         }
     }
-    public void testFilterTopic() throws SQLException {
-        setup();
+    @Test
+    void testFilterTopic() throws SQLException {
         List<Topic> topics = new ArrayList<Topic>();
         topics.add(new Topic(1, "dp"));
         FilterTopic filter = new FilterTopic(topics);

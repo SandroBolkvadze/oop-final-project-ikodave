@@ -5,7 +5,7 @@ import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.Filter;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;

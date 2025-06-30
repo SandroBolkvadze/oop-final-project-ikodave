@@ -6,19 +6,22 @@ import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Status;
 import com.example.problems.Filters.FilterStatus;
 import com.example.registration.model.User;
-import junit.framework.TestCase;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.SQLException;
 import java.util.List;
 
 import static com.example.util.DBConnectionConstants.*;
 
-public class FilterStatusTest extends TestCase {
+public class FilterStatusTest {
 
     static BasicDataSource dataSource;
     static ProblemDAO dao;
-    static void setup() throws SQLException {
+    @BeforeEach
+    void setup() throws SQLException {
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
         dataSource.setDriverClassName(DRIVER);
@@ -26,8 +29,8 @@ public class FilterStatusTest extends TestCase {
         dataSource.setPassword(DATABASE_PASSWORD);
         dao = new SQLProblemDAO(dataSource);
     }
-    public void testStatusFilter() throws SQLException {
-        setup();
+    @Test
+    void testStatusFilter() throws SQLException {
         User user1 = new User("bolkvadze","sbolk23");
         User user2 = new User("losaberidze","slosa23");
         User user3 = new User("endeladze","kende23");
