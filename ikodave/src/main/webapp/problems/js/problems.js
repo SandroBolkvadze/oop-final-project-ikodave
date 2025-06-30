@@ -1,12 +1,21 @@
 const FETCH_API = 'https://localhost:8080/problems';
 
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('filter-button').addEventListener("submit", filter);
-});
+document.addEventListener('DOMContentLoaded', filter);
 
 async function filter() {
+    console.log('here');
 
-    const filters = getFilters();
+    let title = 'add-numbers';
+    let difficulty = 'MEDIUM';
+    let status = 'solved';
+    let topics = ['graph', 'dp', 'math'];
+
+    const filters =  {
+        title,
+        difficulty,
+        status,
+        topics
+    };
 
     const response = await fetch(FETCH_API, {
         method: 'POST',
@@ -15,10 +24,6 @@ async function filter() {
     });
 
     const data = await response.json();
-    console.log(data);
+
 }
 
-function getFilters() {
-    name = document.getElementById('name').value;
-    return name;
-}

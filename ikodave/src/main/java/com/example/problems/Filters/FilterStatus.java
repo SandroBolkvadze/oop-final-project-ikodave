@@ -2,8 +2,17 @@ package com.example.problems.Filters;
 
 
 import com.example.problems.DTO.Status;
+import com.example.problems.Filters.Parameters.Parameter;
+import com.example.problems.Filters.Parameters.ParameterInteger;
+import com.example.problems.Filters.Parameters.ParameterString;
 import com.example.registration.model.User;
 import com.example.util.DatabaseConstants.*;
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
 
 import static java.lang.String.format;
 
@@ -17,41 +26,42 @@ public class FilterStatus implements Filter {
         this.status = status;
     }
 
-    public String joinStatement() {
+    public String toSQLStatement() {
         return format(
-                "JOIN %s ON %s.%s = %s.%s JOIN %s ON %s.%s = %s.%s",
+                "SELECT * FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ? AND %s.%s = ?",
+                Problems.TABLE_NAME,
+
                 Submissions.TABLE_NAME,
                 Submissions.TABLE_NAME,
                 Submissions.COL_PROBLEM_ID,
                 Problems.TABLE_NAME,
                 Problems.COL_ID,
 
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.COL_STATUS_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_USER_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_STATUS_ID
         );
     }
 
-    public String whereStatement() {
-        return format(
-                "%s.%s = %s AND %s.%s = %s",
-                Submissions.TABLE_NAME,
-                Submissions.COL_USER_ID,
-                user.getId(),
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.COL_STATUS_ID,
-                status.getStatus()
-        );
+    @Override
+    public PreparedStatement toSQLPreparedStatement(Connection connection) {
+        String sqlStatement = toSQLStatement();
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sqlStatement);
+            int index = 1;
+            for (Parameter parameter : getParameters()) {
+                parameter.setParameter(index++, preparedStatement);
+            }
+            return preparedStatement;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public String toSQLStatement() {
-        return format(
-                "SELECT * FROM %s %s WHERE %s;",
-                Problems.TABLE_NAME,
-                joinStatement(),
-                whereStatement()
-        );
+    @Override
+    public List<Parameter> getParameters() {
+        return List.of(new ParameterInteger(user.getId()), new ParameterInteger(status.getId()));
     }
 }
