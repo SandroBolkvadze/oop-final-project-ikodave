@@ -12,4 +12,21 @@ async function loadNavbar() {
     } else {
         document.getElementById("nav-profile").style.display = "none";
     }
+
+    // ✅ Fix the registration link to route through servlet
+    const regLink = document.querySelector('#nav-register a');
+    if (regLink) {
+        regLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            window.location.href = "/ikodave_war/registration";
+        });
+    }
+
+    const signLink = document.querySelector('#nav-signin a');
+    if(signLink){
+        signLink.addEventListener('click', function (e){
+            e.preventDefault();
+            window.location.href = "/ikodave_war/signin";
+        })
+    }
 }

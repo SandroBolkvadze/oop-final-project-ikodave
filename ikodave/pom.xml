@@ -95,7 +95,11 @@
             <version>4.13.2</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version> <!-- or the latest -->
+        </dependency>
     </dependencies>
 
 
