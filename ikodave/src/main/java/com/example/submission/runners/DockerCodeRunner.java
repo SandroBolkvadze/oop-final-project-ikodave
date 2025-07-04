@@ -24,7 +24,7 @@ public class DockerCodeRunner implements CodeRunner {
 
     private static final String WORKDIR_PREFIX = "Runner";
 
-    private static final long COMPILE_TIMEOUT_MILLIS = 5000;
+    private static final long PROCESS_TIMEOUT_MILLIS = 5000;
 
     private BlockingQueue<Container> containersPool;
 
@@ -76,7 +76,8 @@ public class DockerCodeRunner implements CodeRunner {
             SubmissionSuccess submissionSuccess = new SubmissionSuccess();
             System.out.println(submissionSuccess.submissionInfo());
             return submissionSuccess;
-        } finally {
+        }
+        finally {
             container.cleanContainer();
             containersPool.put(container);
         }
@@ -93,19 +94,12 @@ public class DockerCodeRunner implements CodeRunner {
                 .redirectErrorStream(false)
                 .start();
 
-//        ProcessHandle processHandle = process.toHandle();
-
-        boolean finished = process.waitFor(COMPILE_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        boolean finished = process.waitFor(PROCESS_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
 
         if (!finished || process.exitValue() != 0) {
             return new CompileErrorResult(readInputStream(process.getErrorStream()));
         }
         else {
-//            ProcessHandle.Info info = processHandle.info();
-//            Optional<Duration> cpuDuration = info.totalCpuDuration();
-//            long cpuTimeMillis = cpuDuration.orElse(Duration.ZERO).toMillis();
-//            System.out.println("success Compile, execution time " + cpuTimeMillis);
-//            System.out.println("success compiling");
             return new CompileSuccessResult();
         }
     }
@@ -125,12 +119,11 @@ public class DockerCodeRunner implements CodeRunner {
             os.flush();
         }
 
-        boolean finished = process.waitFor(executeTimeoutMillis, TimeUnit.MILLISECONDS);
+        boolean finished = process.waitFor(executeTimeoutMillis + 500, TimeUnit.MILLISECONDS);
 
         if (!finished) {
             return new TestCaseTimeLimitExceeded(testCase.getOrderNum(), executeTimeoutMillis, "Time limit exceeded");
         }
-
         if (process.exitValue() != 0) {
             return new TestCaseRuntimeError(testCase.getOrderNum(), readInputStream(process.getErrorStream()));
         }
@@ -155,14 +148,14 @@ public class DockerCodeRunner implements CodeRunner {
     private String readInputStream(InputStream inputStream) {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder output = new StringBuilder();
-            try {
-                String line = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    output.append(line).append("\n");
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        try {
+            String line = "";
+            while ((line = bufferedReader.readLine()) != null) {
+                output.append(line).append("\n");
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return output.toString();
     }
 

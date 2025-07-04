@@ -23,6 +23,30 @@ public class Problem {
         this.timeLimit = timeLimit;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDifficultyId(int difficultyId) {
+        this.difficultyId = difficultyId;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public void setTimeLimit(long timeLimit) {
+        this.timeLimit = timeLimit;
+    }
+
     public int getId() {
         return id;
     }

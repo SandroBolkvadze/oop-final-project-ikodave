@@ -32,7 +32,7 @@ public class CodeRunnerTest {
         dockerCodeRunner.startContainers();
         System.out.println("docker initialized!!!");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

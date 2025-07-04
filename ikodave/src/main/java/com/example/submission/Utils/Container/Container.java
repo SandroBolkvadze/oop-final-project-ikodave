@@ -1,5 +1,8 @@
 package com.example.submission.Utils.Container;
 
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.model.Statistics;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -63,14 +66,14 @@ public class Container {
     }
 
     public void cleanContainer() {
-        List<String> cmd = List.of(
+        List<String> command = List.of(
                 "docker", "exec", containerName,
                 "bash", "-lc",
                 "rm -rf /app/* /app/.* 2>/dev/null || true"
         );
 
         try {
-            Process process = new ProcessBuilder(cmd).start();
+            Process process = new ProcessBuilder(command).start();
             if (!process.waitFor(5, TimeUnit.SECONDS) || process.exitValue() != 0) {
                 throw new RuntimeException("Failed to clean /app in container " + containerName);
             }
