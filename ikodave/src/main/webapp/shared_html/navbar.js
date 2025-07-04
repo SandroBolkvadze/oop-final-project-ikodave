@@ -1,9 +1,9 @@
 async function loadNavbar() {
-    const navbarRes = await fetch('/ikodave_war/shared_html/navbar.html');
+    const navbarRes = await fetch('/shared_html/navbar.html');
     const html = await navbarRes.text();
     document.getElementById('navbar-container').innerHTML = html;
 
-    const sessionRes = await fetch('/ikodave_war/user-session');
+    const sessionRes = await fetch('/user-session');
     const data = await sessionRes.json();
 
     if (data.loggedIn) {
