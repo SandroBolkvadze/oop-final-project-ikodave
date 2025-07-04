@@ -29,4 +29,19 @@ async function loadNavbar() {
             window.location.href = "/ikodave_war/signin";
         })
     }
+
+    const profileLink = document.querySelector('#nav-profile a');
+    if(profileLink){
+        profileLink.addEventListener('click', function(e){
+            e.preventDefault();
+            window.location.href = "/ikodave_war/profile_page"
+        })
+    }
+    const problemLink = document.querySelector('#nav-profile a');
+    if(problemLink){
+        problemLink.addEventListener('click', function(e){
+            e.preventDefault();
+            window.location.href = "/ikodave_war/problems"
+        })
+    }
 }

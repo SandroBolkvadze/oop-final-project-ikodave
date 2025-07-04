@@ -12,7 +12,7 @@ import java.io.IOException;
 import static com.example.util.SessionConstants.USER_ID_KEY;
 
 public class Helper {
-    protected static boolean redirectProfileIfRegistered(HttpServletRequest request, HttpServletResponse response)
+    public static boolean redirectProfileIfRegistered(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         User user = (User) request.getSession().getAttribute(USER_ID_KEY);
         if (user == null) {
