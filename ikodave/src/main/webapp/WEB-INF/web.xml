@@ -51,7 +51,7 @@
   
   <servlet>
     <servlet-name>UserSessionServlet</servlet-name>
-    <servlet-class>com.example.registration.servlets.UserSessionServlet</servlet-class>
+    <servlet-class>com.example.general_servlets.UserSessionServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>UserSessionServlet</servlet-name>
