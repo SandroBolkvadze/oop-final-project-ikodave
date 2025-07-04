@@ -13,7 +13,6 @@ import java.io.IOException;
 import static com.example.registration.servlets.Helper.redirectProfileIfRegistered;
 import static com.example.util.SessionConstants.USER_ID_KEY;
 
-@WebServlet("/profile_page")
 public class ProfilePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
