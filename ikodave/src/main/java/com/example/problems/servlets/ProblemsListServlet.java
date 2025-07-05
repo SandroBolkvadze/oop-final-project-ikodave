@@ -12,6 +12,7 @@ import com.example.registration.model.User;
 import com.google.gson.Gson;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +27,9 @@ import static com.example.util.SessionConstants.USER_ID_KEY;
 public class ProblemsListServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect("/problems.html");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        request.getRequestDispatcher("/problems/html/problems.html")
+                .forward(request, response);
     }
 
     @Override

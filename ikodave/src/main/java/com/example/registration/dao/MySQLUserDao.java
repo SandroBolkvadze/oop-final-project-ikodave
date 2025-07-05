@@ -98,4 +98,25 @@ public class MySQLUserDao implements UserDAO {
         }
     }
 
+    @Override
+    public User getUserByUsername(String username) {
+        String sqlStatement = format("SELECT * FROM %s WHERE %s.%s = ?;",
+                    Users.TABLE_NAME,
+                    Users.TABLE_NAME,
+                    Users.COL_USERNAME
+        );
+
+        try (Connection connection = dataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return toUser(resultSet);
+            } else {
+                return null; // User not found
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
