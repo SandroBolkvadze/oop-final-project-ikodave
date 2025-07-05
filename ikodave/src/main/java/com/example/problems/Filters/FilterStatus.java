@@ -28,17 +28,21 @@ public class FilterStatus implements Filter {
 
     public String toSQLStatement() {
         return format(
-                "SELECT * FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ? AND %s.%s = ?",
+                "SELECT %s.* FROM %s LEFT JOIN %s ON %s.%s = %s.%s AND %s.%s = ? " +
+                        "WHERE (? = %d AND %s.%s IS NULL) OR (? <> %d AND %s.%s = ?)",
                 Problems.TABLE_NAME,
-
+                Problems.TABLE_NAME,
                 Submissions.TABLE_NAME,
                 Submissions.TABLE_NAME,
                 Submissions.COL_PROBLEM_ID,
                 Problems.TABLE_NAME,
                 Problems.COL_ID,
-
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
+                Submissions.TO_DO_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_STATUS_ID,
+                Submissions.TO_DO_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_STATUS_ID
         );
@@ -62,6 +66,10 @@ public class FilterStatus implements Filter {
 
     @Override
     public List<Parameter> getParameters() {
-        return List.of(new ParameterInteger(user.getId()), new ParameterInteger(status.getId()));
+        return List.of(new ParameterInteger(user.getId()),
+                new ParameterInteger(status.getId()),
+                new ParameterInteger(status.getId()),
+                new ParameterInteger(status.getId())
+        );
     }
 }

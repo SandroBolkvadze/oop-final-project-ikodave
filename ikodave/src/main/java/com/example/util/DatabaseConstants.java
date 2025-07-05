@@ -61,6 +61,7 @@ public class DatabaseConstants {
         public static final String COL_SOLUTION    = "solution_code";
         public static final String COL_SUBMIT_DATE = "submit_date";
         public static final String COL_LOG         = "log";
+        public static final int TO_DO_ID           = 4;
     }
 
     public static final class TestCases {
