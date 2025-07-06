@@ -21,8 +21,8 @@ public class JavaLanguage implements CodeLanguage {
     @Override
     public List<String> compileCommand(String containerName) {
         return List.of(
-            "docker", "exec", containerName,
-            "javac", JAVA_FILE_NAME + ".java"
+                "docker", "exec", containerName,
+                "javac", JAVA_FILE_NAME + ".java"
         );
     }
 

@@ -1,16 +1,11 @@
 package com.example.submission.DAO;
 
-import org.apache.commons.dbcp2.BasicDataSource;
+import com.example.submission.DTO.TestCase;
 
-public class TestDAO {
+import java.util.List;
 
-    private final BasicDataSource basicDataSource;
+public interface TestDAO {
 
-    public TestDAO(BasicDataSource basicDataSource) {
-        this.basicDataSource = basicDataSource;
-    }
-
-
-
+    List<TestCase> getTestCasesByProblemId(int problemId);
 
 }

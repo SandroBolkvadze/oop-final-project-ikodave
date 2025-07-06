@@ -1,8 +1,5 @@
 package com.example.submission.Utils.Container;
 
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.model.Statistics;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;

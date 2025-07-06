@@ -4,10 +4,9 @@ import com.example.submission.DTO.TestCase;
 import com.example.submission.Utils.TestCaseResult.TestCaseRuntimeError;
 import com.example.submission.Utils.TestCaseResult.TestCaseTimeLimitExceeded;
 import com.example.submission.Utils.TestCaseResult.TestCaseWrongAnswer;
-import com.example.submission.runners.DockerCodeRunner;
+import com.example.submission.CodeRunner.DockerCodeRunner;
 import com.example.submission.Utils.SubmissionResult.SubmissionResult;
 import com.example.submission.Utils.SubmissionResult.SubmissionSuccess;
-import com.example.submission.Utils.Language.CodeLanguage;
 import com.example.submission.Utils.Language.CppLanguage;
 import com.example.submission.Utils.Language.JavaLanguage;
 import com.example.submission.Utils.Language.PythonLanguage;
@@ -129,7 +128,7 @@ public class CodeRunnerTest {
         List<String> solutionCodes = new ArrayList<>();
         List<List<TestCase>> testCasesList = new ArrayList<>();
 
-        // Submission 1: Array Sum (intentionally incorrect)
+        // UserSubmission 1: Array Sum (intentionally incorrect)
         solutionCodes.add("""
             import java.util.*;
             public class Solution {
@@ -157,7 +156,7 @@ public class CodeRunnerTest {
                 new TestCase(10, 10, 10, "5050", "100\n" + "1 ".repeat(99) + "1\n")
         ));
 
-        // Submission 2: Find Max
+        // UserSubmission 2: Find Max
         solutionCodes.add("""
             import java.util.*;
             public class Solution {
@@ -190,7 +189,7 @@ public class CodeRunnerTest {
                 new TestCase(18, 10, 1, "5", "5\n5 4 3 2 1\n")
         ));
 
-        // Submission 3: Echo String
+        // UserSubmission 3: Echo String
         solutionCodes.add("""
             import java.util.*;
             public class Solution {
@@ -214,7 +213,7 @@ public class CodeRunnerTest {
                 new TestCase(26, 10, 1, "123 456 789", "123 456 789\n")
         ));
 
-        // Submission 4: Simple Addition
+        // UserSubmission 4: Simple Addition
         solutionCodes.add("""
             import java.util.*;
             public class Solution {
@@ -239,7 +238,7 @@ public class CodeRunnerTest {
                 new TestCase(34, 10, 1, "-2", "-1 -1\n")
         ));
 
-        // Submission 5: Hello World
+        // UserSubmission 5: Hello World
         solutionCodes.add("""
             public class Solution {
                 public static void main(String[] args) {
@@ -260,7 +259,7 @@ public class CodeRunnerTest {
                 new TestCase(42, 10, 1, "Hello World!", "input")
         ));
 
-        // Submission 6: Product of Array
+        // UserSubmission 6: Product of Array
         solutionCodes.add("""
             import java.util.*;
             public class Solution {
@@ -288,7 +287,7 @@ public class CodeRunnerTest {
                 new TestCase(52, 10, 1, "1", "5\n1 1 1 1 1\n")
         ));
 
-        // Submission 7: Print N times
+        // UserSubmission 7: Print N times
         solutionCodes.add("""
             import java.util.*;
             public class Solution {
@@ -309,7 +308,7 @@ public class CodeRunnerTest {
                 new TestCase(57, 5, 1, "A\nA\nA\nA\nA", "5\n")
         ));
 
-        // Submission 8: Reverse String
+        // UserSubmission 8: Reverse String
         solutionCodes.add("""
             import java.util.*;
             public class Solution {
@@ -328,7 +327,7 @@ public class CodeRunnerTest {
                 new TestCase(62, 5, 1, "!@#", "#@!\n")
         ));
 
-        // Submission 9: Print Even or Odd
+        // UserSubmission 9: Print Even or Odd
         solutionCodes.add("""
             import java.util.*;
             public class Solution {
@@ -351,7 +350,7 @@ public class CodeRunnerTest {
                 new TestCase(67, 5, 1, "Even", "100\n")
         ));
 
-        // Submission 10: Fibonacci Nth
+        // UserSubmission 10: Fibonacci Nth
         solutionCodes.add("""
             import java.util.*;
             public class Solution {

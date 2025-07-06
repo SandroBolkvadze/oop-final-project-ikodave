@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS problems
     problem_title       VARCHAR(100) UNIQUE NOT NULL,
     problem_description TEXT,
     difficulty_id       INT,
-    create_date         DATE,
-    time_limit          LONG DEFAULT 20000,
+    create_date         DATETIME,
+    time_limit          LONG DEFAULT 2000,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty (id)
 );
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS submissions
     problem_id    INT,
     status_id     INT,
     solution_code TEXT,
-    submit_date   DATE,
+    submit_date   DATETIME,
     log           TEXT,
     FOREIGN KEY (problem_id) REFERENCES problems (id),
     FOREIGN KEY (user_id) REFERENCES users (id),
