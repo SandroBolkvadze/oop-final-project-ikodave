@@ -9,6 +9,7 @@ import com.example.submissions.DAO.SQLSubmissionDAO;
 import com.example.submissions.DAO.SQLTestDAO;
 import com.example.submissions.DAO.SubmissionDAO;
 import com.example.submissions.DAO.TestDAO;
+import com.google.gson.Gson;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import static com.example.util.AttributeConstants.*;
@@ -45,6 +46,9 @@ public class ContextListener implements ServletContextListener {
 
         DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
         sce.getServletContext().setAttribute(DOCKER_CODE_RUNNER_KEY, dockerCodeRunner);
+
+        Gson gson = new Gson();
+        sce.getServletContext().setAttribute(GSON_KEY, gson);
 
         sce.getServletContext().setAttribute(BASIC_DATASOURCE_KEY, dataSource);
     }

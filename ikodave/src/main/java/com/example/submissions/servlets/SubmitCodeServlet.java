@@ -43,8 +43,8 @@ public class SubmitCodeServlet extends HttpServlet {
         CodeLanguageDAO codeLanguageDAO = (CodeLanguageDAO) request.getAttribute(CODE_LANGUAGE_DAO_KEY);
         VerdictDAO verdictDAO = (VerdictDAO) request.getAttribute(VERDICT_DAO_KEY);
         DockerCodeRunner dockerCodeRunner = (DockerCodeRunner) request.getAttribute(DOCKER_CODE_RUNNER_KEY);
+        Gson gson = (Gson) request.getAttribute(GSON_KEY);
 
-        Gson gson = new Gson();
         UserSubmission userSubmission = gson.fromJson(request.getReader(), UserSubmission.class);
 
         Problem problem = problemDAO.getProblemByTitle(userSubmission.getProblemTitle());

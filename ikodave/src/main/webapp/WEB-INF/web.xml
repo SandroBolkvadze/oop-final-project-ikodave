@@ -86,7 +86,14 @@
     <url-pattern>/problems/*/submissions-page</url-pattern>
   </servlet-mapping>
 
-
+  <servlet>
+    <servlet-name>CodeLanguagesServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.CodeLanguagesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CodeLanguagesServlet</servlet-name>
+    <url-pattern>/code-languages</url-pattern>
+  </servlet-mapping>
 
 
 </web-app>

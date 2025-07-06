@@ -9,4 +9,5 @@ public class AttributeConstants {
     public static final String CODE_LANGUAGE_DAO_KEY = "codeLanguageDAO";
     public static final String VERDICT_DAO_KEY = "verdictDao";
     public static final String DOCKER_CODE_RUNNER_KEY = "dockerCodeRunner";
+    public static final String GSON_KEY = "gson";
 }

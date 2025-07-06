@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import static com.example.util.AttributeConstants.PROBLEM_DAO_KEY;
-import static com.example.util.AttributeConstants.SUBMISSION_DAO_KEY;
+import static com.example.util.AttributeConstants.*;
 import static com.example.util.SessionConstants.USER_KEY;
 
 
@@ -26,6 +25,7 @@ public class SubmissionsListServlet extends HttpServlet  {
         User user = (User) request.getSession().getAttribute(USER_KEY);
         ProblemDAO problemDAO = (ProblemDAO) request.getAttribute(PROBLEM_DAO_KEY);
         SubmissionDAO submissionDAO = (SubmissionDAO) request.getAttribute(SUBMISSION_DAO_KEY);
+        Gson gson = (Gson) request.getAttribute(GSON_KEY);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -38,7 +38,6 @@ public class SubmissionsListServlet extends HttpServlet  {
         Problem problem = problemDAO.getProblemByTitle(problemTitle);
 
         List<Submission> submissions = submissionDAO.getSubmissionsBy(user.getId(), problem.getId());
-        Gson gson = new Gson();
 
         response.getWriter().write(gson.toJson(submissions));
     }

@@ -83,6 +83,11 @@
             background-color: #0056b3;
         }
 
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
         .result {
             margin-top: 20px;
             padding: 15px;
@@ -100,6 +105,11 @@
             border-left-color: #28a745;
             background-color: #d4edda;
         }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -115,12 +125,7 @@
         <div class="form-group">
             <label for="language">Programming Language:</label>
             <select id="language" name="language" required>
-                <option value="">Choose language</option>
-                <option value="Java">Java 17</option>
-                <option value="C++">GNU C++17</option>
-                <option value="C++20">GNU C++20</option>
-                <option value="Python">Python 3</option>
-                <option value="C">GNU C11</option>
+                <option value="">Loading languages...</option>
             </select>
         </div>
 
@@ -135,8 +140,6 @@
     <div id="result"></div>
 </div>
 
-<script>
-
-</script>
+<script src="submit.js"></script>
 </body>
 </html>
