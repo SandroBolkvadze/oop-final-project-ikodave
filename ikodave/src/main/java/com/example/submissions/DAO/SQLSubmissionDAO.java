@@ -1,14 +1,16 @@
-package com.example.submission.DAO;
+package com.example.submissions.DAO;
 
-import com.example.submission.DTO.Submission;
+import com.example.submissions.DTO.Submission;
+import com.example.submissions.DAO.SubmissionDAO;
 import com.example.util.DatabaseConstants;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;
 
-import static com.example.submission.DAO.ToDTO.toVerdictId;
-import static com.example.submission.DAO.ToSQL.toInsertSubmissionSQL;
-import static com.example.submission.DAO.ToSQL.toUpdateSubmissionSQL;
+import static com.example.submissions.DAO.ToDTO.toVerdictId;
+import static com.example.submissions.DAO.ToSQL.toInsertSubmissionSQL;
+import static com.example.submissions.DAO.ToSQL.toUpdateSubmissionSQL;
+import static com.example.submissions.DAO.ToSQL.toInsertSubmissionSQL;
 import static java.lang.String.format;
 
 public class SQLSubmissionDAO implements SubmissionDAO {

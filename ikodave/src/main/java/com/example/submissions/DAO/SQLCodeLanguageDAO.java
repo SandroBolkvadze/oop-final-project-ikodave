@@ -1,4 +1,4 @@
-package com.example.submission.DAO;
+package com.example.submissions.DAO;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-import static com.example.submission.DAO.ToDTO.toCodeLanguageId;
-import static com.example.submission.DAO.ToSQL.toCodeLanguageNameSQL;
-import static com.example.submission.DAO.ToSQL.toVerdictNameSQL;
+import static com.example.submissions.DAO.ToDTO.toCodeLanguageId;
+import static com.example.submissions.DAO.ToSQL.toCodeLanguageNameSQL;
+import static com.example.submissions.DAO.ToSQL.toVerdictNameSQL;
 
 public class SQLCodeLanguageDAO implements  CodeLanguageDAO {
     private final BasicDataSource basicDataSource;
