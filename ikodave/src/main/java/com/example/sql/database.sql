@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS submissions
     log                 TEXT,
     FOREIGN KEY (problem_id) REFERENCES problems (id),
     FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (verdict_id) REFERENCES problem_status (id),
+    FOREIGN KEY (verdict_id) REFERENCES submission_verdict (id),
     FOREIGN KEY (code_language_id) REFERENCES code_language (id)
 );
 

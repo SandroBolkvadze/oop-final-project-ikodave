@@ -4,6 +4,8 @@ import com.example.submission.DTO.Submission;
 
 public interface SubmissionDAO {
 
-    void insertSubmission(Submission submission);
+    int insertSubmission(Submission submission);
+
+    void updateSubmission(Submission submission);
 
 }

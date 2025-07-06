@@ -40,7 +40,7 @@ public class SubmitCodeServlet extends HttpServlet {
         ProblemDAO problemDAO = (ProblemDAO) request.getAttribute(PROBLEM_DAO_KEY);
         SubmissionDAO submissionDAO = (SubmissionDAO) request.getAttribute(SUBMISSION_DAO_KEY);
         CodeLanguageDAO codeLanguageDAO = (CodeLanguageDAO) request.getAttribute(CODE_LANGUAGE_DAO_KEY);
-        VerdictDAO verdictDAO = (VerdictDAO) request.getAttribute()
+        VerdictDAO verdictDAO = (VerdictDAO) request.getAttribute(VERDICT_DAO_KEY);
         DockerCodeRunner dockerCodeRunner = (DockerCodeRunner) request.getAttribute(DOCKER_CODE_RUNNER_KEY);
 
 
@@ -55,11 +55,14 @@ public class SubmitCodeServlet extends HttpServlet {
         Submission submission = new Submission();
         submission.setUserId(user.getId());
         submission.setProblemId(problem.getId());
+        submission.setVerdictId(verdictDAO.getVerdictIdByName("Running"));
         submission.setSolutionCode(solutionCode);
         submission.setCodeLanguageId(codeLanguageDAO.getCodeLanguageIdByName(userSubmission.getCodeLanguage()));
         submission.setTime(0);
         submission.setMemory(0);
         submission.setSubmitDate(new Date(System.currentTimeMillis()));
+
+        int submissionId = submissionDAO.insertSubmission(submission);
 
         executor.submit(() -> {
             try {
