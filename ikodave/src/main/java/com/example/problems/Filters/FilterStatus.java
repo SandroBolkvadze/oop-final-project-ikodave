@@ -40,7 +40,7 @@ public class FilterStatus implements Filter {
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
                 Submissions.TABLE_NAME,
-                Submissions.COL_STATUS_ID
+                Submissions.COL_VERDICT_ID
         );
     }
 
