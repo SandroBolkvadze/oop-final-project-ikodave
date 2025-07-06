@@ -58,7 +58,7 @@ public class DatabaseConstants {
         public static final String COL_PROBLEM_ID    = "problem_id";
         public static final String COL_VERDICT_ID    = "verdict_id";
         public static final String COL_SOLUTION      = "solution_code";
-        public static final String COL_CODE_LANGUAGE = "code_language";
+        public static final String COL_CODE_LANGUAGE_ID = "code_language_id";
         public static final String COL_TIME          = "time";
         public static final String COL_MEMORY        = "memory";
         public static final String COL_SUBMIT_DATE   = "submit_date";
@@ -78,7 +78,7 @@ public class DatabaseConstants {
         public static final String COL_ID        = "id";
         public static final String COL_VERDICT = "verdict";
     }
-    public static final class CodeLanguage{
+    public static final class CodeLanguages{
         public static final String TABLE_NAME  = "code_language";
         public static final String COL_ID        = "id";
         public static final String COL_LANGUAGE = "language";

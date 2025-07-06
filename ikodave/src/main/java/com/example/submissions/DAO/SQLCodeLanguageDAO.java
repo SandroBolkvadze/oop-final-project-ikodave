@@ -1,18 +1,19 @@
 package com.example.submissions.DAO;
 
 import com.example.submissions.DTO.CodeLanguage;
+import com.example.submissions.DTO.Submission;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
-import static com.example.submissions.DAO.ToDTO.toCodeLanguageId;
-import static com.example.submissions.DAO.ToSQL.toCodeLanguageNameSQL;
-import static com.example.submissions.DAO.ToSQL.toVerdictNameSQL;
+import static com.example.submissions.DAO.ToDTO.*;
+import static com.example.submissions.DAO.ToSQL.*;
 
 public class SQLCodeLanguageDAO implements  CodeLanguageDAO {
     private final BasicDataSource basicDataSource;
@@ -36,6 +37,18 @@ public class SQLCodeLanguageDAO implements  CodeLanguageDAO {
 
     @Override
     public List<CodeLanguage> getCodeLanguages() {
-        return List.of();
+        try (Connection connection = basicDataSource.getConnection()){
+            String sqlStatement = toCodeLanguageSQL();
+            PreparedStatement preparedStatement= connection.prepareStatement(sqlStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<CodeLanguage> codeLanguages = new ArrayList<>();
+            while (resultSet.next()) {
+                codeLanguages.add(toCodeLanguage(resultSet));
+            }
+            return codeLanguages;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
