@@ -4,11 +4,11 @@ import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.SQLProblemDAO;
 import com.example.registration.dao.MySQLUserDao;
 import com.example.registration.dao.UserDAO;
-import com.example.submission.CodeRunner.DockerCodeRunner;
-import com.example.submission.DAO.SQLSubmissionDAO;
-import com.example.submission.DAO.SQLTestDAO;
-import com.example.submission.DAO.SubmissionDAO;
-import com.example.submission.DAO.TestDAO;
+import com.example.submissions.CodeRunner.DockerCodeRunner;
+import com.example.submissions.DAO.SQLSubmissionDAO;
+import com.example.submissions.DAO.SQLTestDAO;
+import com.example.submissions.DAO.SubmissionDAO;
+import com.example.submissions.DAO.TestDAO;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import static com.example.util.AttributeConstants.*;

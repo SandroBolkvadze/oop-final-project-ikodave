@@ -57,5 +57,14 @@
     <servlet-name>UserSessionServlet</servlet-name>
     <url-pattern>/user-session</url-pattern>
   </servlet-mapping>
-  
+
+  <servlet>
+    <servlet-name>SubmissionsList</servlet-name>
+    <servlet-class>com.example.submissions.servlets.SubmissionsList</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmissionsList</servlet-name>
+    <url-pattern>/problems/*/submissions</url-pattern>
+  </servlet-mapping>
+
 </web-app>

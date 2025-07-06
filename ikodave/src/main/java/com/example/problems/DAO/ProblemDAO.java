@@ -5,7 +5,6 @@ import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.Filter;
-import com.example.submission.DTO.TestCase;
 
 import java.util.List;
 
