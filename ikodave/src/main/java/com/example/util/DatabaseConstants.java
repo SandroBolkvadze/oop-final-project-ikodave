@@ -51,16 +51,18 @@ public class DatabaseConstants {
         public static final String COL_PROBLEM_ID  = "problem_id";
         public static final String COL_TOPIC_ID    = "topic_id";
     }
-
     public static final class Submissions {
-        public static final String TABLE_NAME      = "submissions";
-        public static final String COL_ID          = "id";
-        public static final String COL_USER_ID     = "user_id";
-        public static final String COL_PROBLEM_ID  = "problem_id";
-        public static final String COL_STATUS_ID   = "status_id";
-        public static final String COL_SOLUTION    = "solution_code";
-        public static final String COL_SUBMIT_DATE = "submit_date";
-        public static final String COL_LOG         = "log";
+        public static final String TABLE_NAME        = "submissions";
+        public static final String COL_ID            = "id";
+        public static final String COL_USER_ID       = "user_id";
+        public static final String COL_PROBLEM_ID    = "problem_id";
+        public static final String COL_VERDICT_ID    = "verdict_id";
+        public static final String COL_SOLUTION      = "solution_code";
+        public static final String COL_CODE_LANGUAGE = "code_language";
+        public static final String COL_TIME          = "time";
+        public static final String COL_MEMORY        = "memory";
+        public static final String COL_SUBMIT_DATE   = "submit_date";
+        public static final String COL_LOG           = "log";
     }
 
     public static final class TestCases {
@@ -70,5 +72,15 @@ public class DatabaseConstants {
         public static final String COL_INPUT      = "problem_input";
         public static final String COL_OUTPUT     = "problem_output";
         public static final String COL_ORDER      = "order_num";
+    }
+    public static final class SubmissionVerdict{
+        public static final String TABLE_NAME  = "submission_verdict";
+        public static final String COL_ID        = "id";
+        public static final String COL_VERDICT = "verdict";
+    }
+    public static final class CodeLanguage{
+        public static final String TABLE_NAME  = "code_language";
+        public static final String COL_ID        = "id";
+        public static final String COL_LANGUAGE = "language";
     }
 }

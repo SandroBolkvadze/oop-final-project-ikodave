@@ -17,5 +17,20 @@ public class ToDTO {
                 resultSet.getString(TestCases.COL_OUTPUT)
         );
     }
+    public static int toVerdictId(ResultSet rs) {
+        try {
+            return rs.getInt(SubmissionVerdict.COL_ID);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static int toCodeLanguageId(ResultSet rs) {
+        try {
+            return rs.getInt(CodeLanguage.COL_ID);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }
