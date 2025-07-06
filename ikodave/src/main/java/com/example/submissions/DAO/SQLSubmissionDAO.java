@@ -58,11 +58,11 @@ public class SQLSubmissionDAO implements SubmissionDAO {
             String sqlStatement = toSubmissionSQL();
             PreparedStatement preparedStatement= connection.prepareStatement(sqlStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Submission> problems = new ArrayList<>();
+            List<Submission> submissions = new ArrayList<>();
             while (resultSet.next()) {
-                problems.add(toSubmission(resultSet));
+                submissions.add(toSubmission(resultSet));
             }
-            return problems;
+            return submissions;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
