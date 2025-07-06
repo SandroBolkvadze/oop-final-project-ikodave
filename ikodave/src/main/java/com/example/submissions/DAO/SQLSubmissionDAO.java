@@ -29,7 +29,7 @@ public class SQLSubmissionDAO implements SubmissionDAO {
         String sqlStatement = toInsertSubmissionSQL();
         try (Connection connection = basicDataSource.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS);
-            getParameters(submission, preparedStatement);
+            setParameters(submission, preparedStatement);
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             rs.next();
@@ -43,7 +43,7 @@ public class SQLSubmissionDAO implements SubmissionDAO {
         try (Connection connection = basicDataSource.getConnection()){
             String sqlStatement = toUpdateSubmissionSQL();
             PreparedStatement preparedStatement= connection.prepareStatement(sqlStatement);
-            getParameters(submission, preparedStatement);
+            setParameters(submission, preparedStatement);
             preparedStatement.setInt(10, submission.getId());
             int num = preparedStatement.executeUpdate();
             assert num == 1;
@@ -69,7 +69,7 @@ public class SQLSubmissionDAO implements SubmissionDAO {
 
     }
 
-    private void getParameters(Submission submission, PreparedStatement preparedStatement) throws SQLException {
+    private void setParameters(Submission submission, PreparedStatement preparedStatement) throws SQLException {
         preparedStatement.setInt   (1, submission.getUserId());
         preparedStatement.setInt   (2, submission.getProblemId());
         preparedStatement.setInt   (3, submission.getVerdictId());

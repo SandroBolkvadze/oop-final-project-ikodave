@@ -21,9 +21,9 @@ public class ToSQL {
     }
     public static String toCodeLanguageNameSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
-                CodeLanguage.TABLE_NAME,
-                CodeLanguage.TABLE_NAME,
-                CodeLanguage.COL_LANGUAGE
+                CodeLanguages.TABLE_NAME,
+                CodeLanguages.TABLE_NAME,
+                CodeLanguages.COL_LANGUAGE
         );
     }
     public static String toInsertSubmissionSQL() {
@@ -76,5 +76,8 @@ public class ToSQL {
                 Submissions.TABLE_NAME,
                 Submissions.COL_PROBLEM_ID
         );
+    }
+    public static String toCodeLanguageSQL() {
+        return format("SELECT * FROM %s", CodeLanguages.TABLE_NAME);
     }
 }

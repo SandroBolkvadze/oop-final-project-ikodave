@@ -1,6 +1,7 @@
 package com.example.submissions.DAO;
 
-import com.example.problems.DTO.Problem;
+
+import com.example.submissions.DTO.CodeLanguage;
 import com.example.submissions.DTO.Submission;
 import com.example.submissions.DTO.TestCase;
 
@@ -28,7 +29,7 @@ public class ToDTO {
     }
     public static int toCodeLanguageId(ResultSet rs) throws SQLException {
         try {
-            return rs.getInt(CodeLanguage.COL_ID);
+            return rs.getInt(CodeLanguages.COL_ID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -47,6 +48,16 @@ public class ToDTO {
             submission.setSubmitDate(rs.getDate(Submissions.COL_SUBMIT_DATE));
             submission.setLog(rs.getString(Submissions.COL_LOG));
             return submission;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static CodeLanguage toCodeLanguage(ResultSet rs) throws SQLException {
+        try {
+            CodeLanguage codeLanguage = new CodeLanguage();
+            codeLanguage.setId(rs.getInt(CodeLanguages.COL_ID));
+            codeLanguage.setLanguage(rs.getString(CodeLanguages.COL_LANGUAGE));
+            return codeLanguage;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
