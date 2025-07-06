@@ -1,9 +1,15 @@
 package com.example.submission.Utils.SubmissionResult;
 
-public interface SubmissionResult {
+public abstract class SubmissionResult {
 
-    boolean isSuccess();
+    abstract boolean isAccept();
 
-    String submissionInfo();
+    abstract long getTime();
+
+    abstract long getMemory();
+
+    abstract String getVerdict();
+
+    abstract String getLog();
 
 }

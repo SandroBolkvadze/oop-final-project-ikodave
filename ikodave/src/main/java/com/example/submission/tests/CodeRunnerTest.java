@@ -6,7 +6,7 @@ import com.example.submission.Utils.TestCaseResult.TestCaseTimeLimitExceeded;
 import com.example.submission.Utils.TestCaseResult.TestCaseWrongAnswer;
 import com.example.submission.CodeRunner.DockerCodeRunner;
 import com.example.submission.Utils.SubmissionResult.SubmissionResult;
-import com.example.submission.Utils.SubmissionResult.SubmissionSuccess;
+import com.example.submission.Utils.SubmissionResult.SubmissionAccept;
 import com.example.submission.Utils.Language.CppLanguage;
 import com.example.submission.Utils.Language.JavaLanguage;
 import com.example.submission.Utils.Language.PythonLanguage;
@@ -62,7 +62,7 @@ public class CodeRunnerTest {
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "6", "3\n1 2 3\n"));
         SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLanguage(), solutionCode, 2000, testCases);
         assertTrue(result.isSuccess());
-        assertInstanceOf(SubmissionSuccess.class, result);
+        assertInstanceOf(SubmissionAccept.class, result);
         System.out.println("end test basic");
     }
 
@@ -475,7 +475,7 @@ public class CodeRunnerTest {
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "5", "2 3\\n"));
         SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new CppLanguage(), solutionCode, 2000, testCases);
         assertTrue(result.isSuccess());
-        assertInstanceOf(SubmissionSuccess.class, result);
+        assertInstanceOf(SubmissionAccept.class, result);
         System.out.println("end test basic cpp");
     }
 
@@ -491,7 +491,7 @@ public class CodeRunnerTest {
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "5", "2 3\n"));
         SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new PythonLanguage(), solutionCode, 2000, testCases);
         assertTrue(result.isSuccess());
-        assertInstanceOf(SubmissionSuccess.class, result);
+        assertInstanceOf(SubmissionAccept.class, result);
         System.out.println("end test basic python");
     }
 
@@ -510,7 +510,7 @@ public class CodeRunnerTest {
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "5", "2 3\n"));
         SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new com.example.submission.Utils.Language.CLanguage(), solutionCode, 2000, testCases);
         assertTrue(result.isSuccess());
-        assertInstanceOf(SubmissionSuccess.class, result);
+        assertInstanceOf(SubmissionAccept.class, result);
         System.out.println("end test basic c");
     }
 }

@@ -61,21 +61,21 @@ public class DockerCodeRunner implements CodeRunner {
 
         try {
             CompileResult compileResult = compileUserCode(codeLanguage, container.getContainerName());
-            if (!compileResult.isSuccess()) {
-                System.out.println(compileResult.submissionInfo());
+            if (!compileResult.isAccept()) {
+                System.out.println(compileResult.getLog());
                 return compileResult;
             }
 
             for (TestCase testCase : testCases) {
                 TestCaseResult testCaseResult = executeUserCode(codeLanguage, container.getContainerName(), executionTimeoutMillis, testCase);
-                if (!testCaseResult.isSuccess()) {
-                    System.out.println(testCaseResult.submissionInfo());
+                if (!testCaseResult.isAccept()) {
+                    System.out.println(testCaseResult.getLog());
                     return testCaseResult;
                 }
             }
-            SubmissionSuccess submissionSuccess = new SubmissionSuccess();
-            System.out.println(submissionSuccess.submissionInfo());
-            return submissionSuccess;
+            SubmissionAccept submissionAccept = new SubmissionAccept();
+            System.out.println(submissionAccept.submissionInfo());
+            return submissionAccept;
         }
         finally {
             container.cleanContainer();

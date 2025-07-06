@@ -12,7 +12,7 @@ import com.example.submission.DTO.TestCase;
 import com.example.submission.Utils.Language.CodeLanguage;
 import com.example.submission.Utils.SubmissionResult.SubmissionResult;
 import com.example.submission.CodeRunner.DockerCodeRunner;
-import com.example.submission.Utils.submit.UserSubmission;
+import com.example.submission.Utils.Submit.UserSubmission;
 import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServlet;
@@ -31,7 +31,7 @@ import static com.example.util.SessionConstants.USER;
 public class SubmitCodeServlet extends HttpServlet {
 
     private static final ExecutorService executor =
-            Executors.newFixedThreadPool(10);
+            Executors.newFixedThreadPool(5);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -42,7 +42,6 @@ public class SubmitCodeServlet extends HttpServlet {
         CodeLanguageDAO codeLanguageDAO = (CodeLanguageDAO) request.getAttribute(CODE_LANGUAGE_DAO_KEY);
         VerdictDAO verdictDAO = (VerdictDAO) request.getAttribute(VERDICT_DAO_KEY);
         DockerCodeRunner dockerCodeRunner = (DockerCodeRunner) request.getAttribute(DOCKER_CODE_RUNNER_KEY);
-
 
         Gson gson = new Gson();
         UserSubmission userSubmission = gson.fromJson(request.getReader(), UserSubmission.class);
@@ -62,14 +61,27 @@ public class SubmitCodeServlet extends HttpServlet {
         submission.setMemory(0);
         submission.setSubmitDate(new Date(System.currentTimeMillis()));
 
-        int submissionId = submissionDAO.insertSubmission(submission);
+        final int submissionId = submissionDAO.insertSubmission(submission);
 
         executor.submit(() -> {
             try {
                 SubmissionResult submissionResult =
                         dockerCodeRunner.testCodeMultipleTests(codeLanguage, solutionCode, problem.getTimeLimit(), testCases);
-                // TODO: update userSubmission
 
+                Submission updatedSubmission =
+                        new Submission(submissionId,
+                                submission.getUserId(),
+                                submission.getProblemId(),
+                                verdictDAO.getVerdictIdByName(submissionResult.getVerdict()),
+                                submission.getSolutionCode(),
+                                submission.getCodeLanguageId(),
+                                submissionResult.getTime(),
+                                submissionResult.getMemory(),
+                                submission.getSubmitDate(),
+                                submissionResult.getLog()
+                        );
+
+                submissionDAO.updateSubmission(updatedSubmission);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }

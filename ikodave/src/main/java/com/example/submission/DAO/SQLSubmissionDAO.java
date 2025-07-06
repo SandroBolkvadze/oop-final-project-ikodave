@@ -12,7 +12,12 @@ public class SQLSubmissionDAO implements SubmissionDAO {
     }
 
     @Override
-    public void insertSubmission(Submission submission) {
+    public int insertSubmission(Submission submission) {
+        return -1;
+    }
+
+    @Override
+    public void updateSubmission(Submission submission) {
 
     }
 }

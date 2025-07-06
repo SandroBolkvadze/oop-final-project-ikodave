@@ -1,4 +1,4 @@
-package com.example.submission.Utils.submit;
+package com.example.submission.Utils.Submit;
 
 public class UserSubmission {
 

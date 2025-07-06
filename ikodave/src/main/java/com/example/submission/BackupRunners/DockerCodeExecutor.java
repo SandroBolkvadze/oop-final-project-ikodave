@@ -8,7 +8,7 @@
 //import com.example.submission.Utils.Container.Container;
 //import com.example.submission.Utils.Language.CodeLanguage;
 //import com.example.submission.Utils.SubmissionResult.SubmissionResult;
-//import com.example.submission.Utils.SubmissionResult.SubmissionSuccess;
+//import com.example.submission.Utils.SubmissionResult.SubmissionAccept;
 //import com.example.submission.Utils.TestCaseResult.TestCaseResult;
 //import com.example.submission.Utils.TestCaseResult.TestCaseRuntimeError;
 //import com.example.submission.Utils.TestCaseResult.TestCaseSuccess;
@@ -105,7 +105,7 @@
 //                    return testCaseResult;
 //                }
 //            }
-//            SubmissionSuccess submissionSuccess = new SubmissionSuccess();
+//            SubmissionAccept submissionSuccess = new SubmissionAccept();
 //            System.out.println(submissionSuccess.submissionInfo());
 //            return submissionSuccess;
 //        }
