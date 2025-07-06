@@ -15,6 +15,7 @@ import com.example.submissions.CodeRunner.DockerCodeRunner;
 import com.example.submissions.Utils.Submit.UserSubmission;
 import com.google.gson.Gson;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +27,7 @@ import java.util.concurrent.Executors;
 
 import static com.example.submissions.Utils.Language.ToCodeLanguage.toCodeLanguage;
 import static com.example.util.AttributeConstants.*;
-import static com.example.util.SessionConstants.USER;
+import static com.example.util.SessionConstants.USER_KEY;
 
 public class SubmitCodeServlet extends HttpServlet {
 
@@ -34,8 +35,8 @@ public class SubmitCodeServlet extends HttpServlet {
             Executors.newFixedThreadPool(5);
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = (User) request.getSession().getAttribute(USER);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        User user = (User) request.getSession().getAttribute(USER_KEY);
         TestDAO testDAO = (TestDAO) request.getAttribute(TEST_DAO_KEY);
         ProblemDAO problemDAO = (ProblemDAO) request.getAttribute(PROBLEM_DAO_KEY);
         SubmissionDAO submissionDAO = (SubmissionDAO) request.getAttribute(SUBMISSION_DAO_KEY);
@@ -87,6 +88,6 @@ public class SubmitCodeServlet extends HttpServlet {
             }
         });
 
-
+        request.getRequestDispatcher("/submissions/submissions.html").forward(request, response);
     }
 }
