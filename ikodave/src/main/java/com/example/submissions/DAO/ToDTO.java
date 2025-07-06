@@ -1,5 +1,7 @@
 package com.example.submissions.DAO;
 
+import com.example.problems.DTO.Problem;
+import com.example.submissions.DTO.Submission;
 import com.example.submissions.DTO.TestCase;
 
 import java.sql.ResultSet;
@@ -17,20 +19,37 @@ public class ToDTO {
                 resultSet.getString(TestCases.COL_OUTPUT)
         );
     }
-    public static int toVerdictId(ResultSet rs) {
+    public static int toVerdictId(ResultSet rs) throws SQLException {
         try {
             return rs.getInt(SubmissionVerdict.COL_ID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public static int toCodeLanguageId(ResultSet rs) {
+    public static int toCodeLanguageId(ResultSet rs) throws SQLException {
         try {
             return rs.getInt(CodeLanguage.COL_ID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
+    public static Submission toSubmission(ResultSet rs) throws SQLException {
+        try {
+            Submission submission = new Submission();
+            submission.setId(rs.getInt(Problems.COL_ID));
+            submission.setUserId(rs.getInt(Submissions.COL_USER_ID));
+            submission.setProblemId(rs.getInt(Submissions.COL_PROBLEM_ID));
+            submission.setVerdictId(rs.getInt(Submissions.COL_VERDICT_ID));
+            submission.setCodeLanguageId(rs.getInt(Submissions.COL_CODE_LANGUAGE_ID));
+            submission.setSolutionCode(rs.getString(Submissions.COL_SOLUTION));
+            submission.setTime(rs.getLong(Submissions.COL_TIME));
+            submission.setMemory(rs.getLong(Submissions.COL_MEMORY));
+            submission.setSubmitDate(rs.getDate(Submissions.COL_SUBMIT_DATE));
+            submission.setLog(rs.getString(Submissions.COL_LOG));
+            return submission;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

@@ -36,7 +36,7 @@ public class ToSQL {
                 Submissions.COL_PROBLEM_ID,
                 Submissions.COL_VERDICT_ID,
                 Submissions.COL_SOLUTION,
-                Submissions.COL_CODE_LANGUAGE,
+                Submissions.COL_CODE_LANGUAGE_ID,
                 Submissions.COL_TIME,
                 Submissions.COL_MEMORY,
                 Submissions.COL_SUBMIT_DATE,
@@ -60,12 +60,21 @@ public class ToSQL {
                 Submissions.TABLE_NAME, Submissions.COL_PROBLEM_ID,
                 Submissions.TABLE_NAME, Submissions.COL_VERDICT_ID,
                 Submissions.TABLE_NAME, Submissions.COL_SOLUTION,
-                Submissions.TABLE_NAME, Submissions.COL_CODE_LANGUAGE,
+                Submissions.TABLE_NAME, Submissions.COL_CODE_LANGUAGE_ID,
                 Submissions.TABLE_NAME, Submissions.COL_TIME,
                 Submissions.TABLE_NAME, Submissions.COL_MEMORY,
                 Submissions.TABLE_NAME, Submissions.COL_SUBMIT_DATE,
                 Submissions.TABLE_NAME, Submissions.COL_LOG,
                 Submissions.TABLE_NAME
+        );
+    }
+    public static String toSubmissionSQL() {
+        return format("SELECT * FROM %s WHERE %s.%s = %s.%s AND %s.%s = %s.%s",
+                Submissions.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Submissions.COL_USER_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_PROBLEM_ID
         );
     }
 }
