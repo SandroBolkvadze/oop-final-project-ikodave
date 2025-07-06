@@ -4,6 +4,11 @@ import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.SQLProblemDAO;
 import com.example.registration.dao.MySQLUserDao;
 import com.example.registration.dao.UserDAO;
+import com.example.submission.CodeRunner.DockerCodeRunner;
+import com.example.submission.DAO.SQLSubmissionDAO;
+import com.example.submission.DAO.SQLTestDAO;
+import com.example.submission.DAO.SubmissionDAO;
+import com.example.submission.DAO.TestDAO;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import static com.example.util.AttributeConstants.*;
@@ -28,6 +33,18 @@ public class ContextListener implements ServletContextListener {
 
         ProblemDAO problemDAO = new SQLProblemDAO(dataSource);
         sce.getServletContext().setAttribute(PROBLEM_DAO_KEY, problemDAO);
+
+        UserDAO userDAO = new MySQLUserDao(dataSource);
+        sce.getServletContext().setAttribute(USER_DAO_KEY, userDAO);
+
+        TestDAO testDAO = new SQLTestDAO(dataSource);
+        sce.getServletContext().setAttribute(TEST_DAO_KEY, testDAO);
+
+        SubmissionDAO submissionDAO = new SQLSubmissionDAO(dataSource);
+        sce.getServletContext().setAttribute(SUBMISSION_DAO_KEY, submissionDAO);
+
+        DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
+        sce.getServletContext().setAttribute(DOCKER_CODE_RUNNER_KEY, dockerCodeRunner);
 
         sce.getServletContext().setAttribute(BASIC_DATASOURCE_KEY, dataSource);
     }
