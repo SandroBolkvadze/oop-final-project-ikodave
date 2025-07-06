@@ -1,9 +1,9 @@
 
-
 function loadSubmissions() {
-    const problemTitle = window.location.pathname.split('/')[2];
+    const problemTitle =
+        window.location.pathname.split('/')[2];
 
-    fetch(`/problems/${problemId}/submissions`)
+    fetch(`/problems/${problemTitle}/submissions`)
         .then(response => response.json())
         .then(submissions => {
             const container = document.getElementById('submissions');
@@ -13,12 +13,9 @@ function loadSubmissions() {
                 return;
             }
 
-            // Render submissions
-            submissions.forEach(sub => {
+            submissions.forEach(submission => {
                 const div = document.createElement('div');
-                div.innerHTML = `
-                            <p>ID: ${sub.id} | User: ${sub.userId} | Verdict: ${sub.verdictId}</p>
-                        `;
+                div.innerHTML = submission;
                 container.appendChild(div);
             });
         })

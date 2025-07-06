@@ -9,7 +9,7 @@ import com.example.submissions.DAO.TestDAO;
 import com.example.submissions.DAO.VerdictDAO;
 import com.example.submissions.DTO.Submission;
 import com.example.submissions.DTO.TestCase;
-import com.example.submissions.Utils.Language.CodeLanguage;
+import com.example.submissions.Utils.Language.CodeLang;
 import com.example.submissions.Utils.SubmissionResult.SubmissionResult;
 import com.example.submissions.CodeRunner.DockerCodeRunner;
 import com.example.submissions.Utils.Submit.UserSubmission;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.example.submissions.Utils.Language.ToCodeLanguage.toCodeLanguage;
+import static com.example.submissions.Utils.Language.ToCodeLang.toCodeLang;
 import static com.example.util.AttributeConstants.*;
 import static com.example.util.SessionConstants.USER_KEY;
 
@@ -48,7 +48,7 @@ public class SubmitCodeServlet extends HttpServlet {
         UserSubmission userSubmission = gson.fromJson(request.getReader(), UserSubmission.class);
 
         Problem problem = problemDAO.getProblemByTitle(userSubmission.getProblemTitle());
-        CodeLanguage codeLanguage = toCodeLanguage(userSubmission.getCodeLanguage());
+        CodeLang codeLang = toCodeLang(userSubmission.getCodeLanguage());
         String solutionCode = userSubmission.getSolutionCode();
         List<TestCase> testCases = testDAO.getTestCasesByProblemId(problem.getId());
 
@@ -67,7 +67,7 @@ public class SubmitCodeServlet extends HttpServlet {
         executor.submit(() -> {
             try {
                 SubmissionResult submissionResult =
-                        dockerCodeRunner.testCodeMultipleTests(codeLanguage, solutionCode, problem.getTimeLimit(), testCases);
+                        dockerCodeRunner.testCodeMultipleTests(codeLang, solutionCode, problem.getTimeLimit(), testCases);
 
                 Submission updatedSubmission =
                         new Submission(submissionId,

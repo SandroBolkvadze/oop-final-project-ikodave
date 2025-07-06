@@ -3,7 +3,7 @@ package com.example.submissions.Utils.Language;
 import java.nio.file.Path;
 import java.util.List;
 
-public interface CodeLanguage {
+public interface CodeLang {
 
     void createFiles(Path path, String solutionCode);
 

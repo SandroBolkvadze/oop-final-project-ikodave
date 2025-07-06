@@ -5,7 +5,7 @@ import com.example.submissions.Utils.CompileResult.CompileError;
 import com.example.submissions.Utils.CompileResult.CompileResult;
 import com.example.submissions.Utils.CompileResult.CompileSuccess;
 import com.example.submissions.Utils.Container.Container;
-import com.example.submissions.Utils.Language.CodeLanguage;
+import com.example.submissions.Utils.Language.CodeLang;
 import com.example.submissions.Utils.SubmissionResult.*;
 import com.example.submissions.Utils.TestCaseResult.*;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -57,12 +57,12 @@ public class DockerCodeRunner implements CodeRunner {
         }
     }
 
-    private SubmissionResult executeAllTestCases(CodeLanguage codeLanguage, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
+    private SubmissionResult executeAllTestCases(CodeLang codeLang, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
         Container container = containersPool.take();
-        codeLanguage.createFiles(container.getWorkDir(), solutionCode);
+        codeLang.createFiles(container.getWorkDir(), solutionCode);
 
         try {
-            CompileResult compileResult = compileUserCode(codeLanguage, container.getContainerName());
+            CompileResult compileResult = compileUserCode(codeLang, container.getContainerName());
             if (!compileResult.isAccept()) {
                 System.out.println(compileResult.getLog());
                 return compileResult;
@@ -71,7 +71,7 @@ public class DockerCodeRunner implements CodeRunner {
             long maxTime = 0;
             long maxMemory = 0;
             for (TestCase testCase : testCases) {
-                TestCaseResult testCaseResult = executeUserCode(codeLanguage, container.getContainerName(), executionTimeoutMillis, testCase);
+                TestCaseResult testCaseResult = executeUserCode(codeLang, container.getContainerName(), executionTimeoutMillis, testCase);
                 if (!testCaseResult.isAccept()) {
                     return new TestCaseReject(maxTime, maxMemory, testCaseResult.getLog());
                 }
@@ -87,8 +87,8 @@ public class DockerCodeRunner implements CodeRunner {
         }
     }
 
-    private CompileResult compileUserCode(CodeLanguage codeLanguage, String containerName) throws InterruptedException, IOException {
-        List<String> command = codeLanguage.compileCommand(containerName);
+    private CompileResult compileUserCode(CodeLang codeLang, String containerName) throws InterruptedException, IOException {
+        List<String> command = codeLang.compileCommand(containerName);
 
         if (command.isEmpty()) {
             return new CompileSuccess();
@@ -109,8 +109,8 @@ public class DockerCodeRunner implements CodeRunner {
     }
 
 
-    private TestCaseResult executeUserCode(CodeLanguage codeLanguage, String containerName, long executeTimeoutMillis, TestCase testCase) throws IOException, InterruptedException {
-        List<String> command = codeLanguage.executeCommand(containerName);
+    private TestCaseResult executeUserCode(CodeLang codeLang, String containerName, long executeTimeoutMillis, TestCase testCase) throws IOException, InterruptedException {
+        List<String> command = codeLang.executeCommand(containerName);
 
         Process process = new ProcessBuilder(command)
                 .redirectErrorStream(false)
@@ -165,8 +165,8 @@ public class DockerCodeRunner implements CodeRunner {
 
 
     @Override
-    public SubmissionResult testCodeMultipleTests(CodeLanguage codeLanguage, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
-        return executeAllTestCases(codeLanguage, solutionCode, executionTimeoutMillis, testCases);
+    public SubmissionResult testCodeMultipleTests(CodeLang codeLang, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
+        return executeAllTestCases(codeLang, solutionCode, executionTimeoutMillis, testCases);
     }
 
 }

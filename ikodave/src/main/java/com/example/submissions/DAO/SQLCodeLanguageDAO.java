@@ -1,11 +1,13 @@
 package com.example.submissions.DAO;
 
+import com.example.submissions.DTO.CodeLanguage;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 
 import static com.example.submissions.DAO.ToDTO.toCodeLanguageId;
@@ -30,5 +32,10 @@ public class SQLCodeLanguageDAO implements  CodeLanguageDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<CodeLanguage> getCodeLanguages() {
+        return List.of();
     }
 }

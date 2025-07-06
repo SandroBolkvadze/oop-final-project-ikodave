@@ -2,7 +2,7 @@
 //
 //import com.example.submission.CodeRunner.DockerCodeExecutor;
 //import com.example.submission.DTO.TestCase;
-//import com.example.submission.Utils.Language.JavaLanguage;
+//import com.example.submission.Utils.Language.JavaLang;
 //import com.example.submission.Utils.TestCaseResult.TestCaseResult;
 //import com.example.submission.Utils.TestCaseResult.TestCaseSuccess;
 //import org.junit.jupiter.api.AfterAll;
@@ -51,7 +51,7 @@
 //            """;
 //        TestCase testCase = new TestCase(1, 1, 1, "5", "2 3\n");
 //        List<TestCase> testCases = List.of(testCase);
-//        JavaLanguage javaLanguage = new JavaLanguage();
+//        JavaLang javaLanguage = new JavaLang();
 //        long timeout = 2000;
 //        var result = dockerCodeExecutor
 //            .testCodeMultipleTests(javaLanguage, solutionCode, timeout, testCases);
@@ -69,7 +69,7 @@
 //            """;
 //        TestCase testCase = new TestCase(2, 1, 1, "100", "");
 //        List<TestCase> testCases = List.of(testCase);
-//        JavaLanguage javaLanguage = new JavaLanguage();
+//        JavaLang javaLanguage = new JavaLang();
 //        long timeout = 2000;
 //        var result = dockerCodeExecutor
 //            .testCodeMultipleTests(javaLanguage, solutionCode, timeout, testCases);
@@ -88,7 +88,7 @@
 //            """;
 //        TestCase testCase = new TestCase(3, 1, 1, "", "");
 //        List<TestCase> testCases = List.of(testCase);
-//        JavaLanguage javaLanguage = new JavaLanguage();
+//        JavaLang javaLanguage = new JavaLang();
 //        long timeout = 2000;
 //        var result = dockerCodeExecutor
 //            .testCodeMultipleTests(javaLanguage, solutionCode, timeout, testCases);
@@ -107,7 +107,7 @@
 //            """;
 //        TestCase testCase = new TestCase(4, 1, 1, "", "");
 //        List<TestCase> testCases = List.of(testCase);
-//        JavaLanguage javaLanguage = new JavaLanguage();
+//        JavaLang javaLanguage = new JavaLang();
 //        long timeout = 1000;
 //        var result = dockerCodeExecutor
 //            .testCodeMultipleTests(javaLanguage, solutionCode, timeout, testCases);
@@ -136,7 +136,7 @@
 //                        """;
 //                    TestCase testCase = new TestCase(1, 1, 1, "5", "2 3\n");
 //                    List<TestCase> testCases = List.of(testCase);
-//                    JavaLanguage javaLanguage = new JavaLanguage();
+//                    JavaLang javaLanguage = new JavaLang();
 //                    long timeout = 2000;
 //                    var result = dockerCodeExecutor
 //                        .testCodeMultipleTests(javaLanguage, solutionCode, timeout, testCases);

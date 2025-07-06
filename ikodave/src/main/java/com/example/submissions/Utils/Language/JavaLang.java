@@ -1,4 +1,3 @@
-
 package com.example.submissions.Utils.Language;
 
 import java.io.IOException;
@@ -6,14 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class CppLanguage implements CodeLanguage {
+public class JavaLang implements CodeLang {
 
-    private static final String CPP_FILE_NAME = "Solution";
+    private static final String JAVA_FILE_NAME = "Solution";
 
     @Override
     public void createFiles(Path path, String solutionCode) {
         try {
-            Files.writeString(path.resolve(CPP_FILE_NAME + ".cpp"), solutionCode);
+            Files.writeString(path.resolve(JAVA_FILE_NAME + ".java"), solutionCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -23,9 +22,7 @@ public class CppLanguage implements CodeLanguage {
     public List<String> compileCommand(String containerName) {
         return List.of(
                 "docker", "exec", containerName,
-                "g++", CPP_FILE_NAME + ".cpp",
-                "-std=c++17", "-O2",
-                "-o", CPP_FILE_NAME
+                "javac", JAVA_FILE_NAME + ".java"
         );
     }
 
@@ -33,7 +30,7 @@ public class CppLanguage implements CodeLanguage {
     public List<String> executeCommand(String containerName) {
         return List.of(
                 "docker", "exec", "-i", containerName,
-                "/app/" + CPP_FILE_NAME
+                "java", "-cp", "/app", JAVA_FILE_NAME
         );
     }
 }

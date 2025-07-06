@@ -1,13 +1,14 @@
 package com.example.submissions.tests;
 
 import com.example.submissions.DTO.TestCase;
+import com.example.submissions.Utils.Language.CLang;
+import com.example.submissions.Utils.Language.JavaLang;
 import com.example.submissions.Utils.SubmissionResult.SubmissionAccept;
 import com.example.submissions.Utils.TestCaseResult.TestCaseReject;
 import com.example.submissions.CodeRunner.DockerCodeRunner;
 import com.example.submissions.Utils.SubmissionResult.SubmissionResult;
-import com.example.submissions.Utils.Language.CppLanguage;
-import com.example.submissions.Utils.Language.JavaLanguage;
-import com.example.submissions.Utils.Language.PythonLanguage;
+import com.example.submissions.Utils.Language.CPPLang;
+import com.example.submissions.Utils.Language.PythonLang;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -58,7 +59,7 @@ public class CodeRunnerTest {
             }
             """;
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "6", "3\n1 2 3\n"));
-        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLanguage(), solutionCode, 2000, testCases);
+        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLang(), solutionCode, 2000, testCases);
         assertTrue(result.isAccept());
         assertInstanceOf(SubmissionAccept.class, result);
         System.out.println("end test basic");
@@ -69,7 +70,7 @@ public class CodeRunnerTest {
         System.out.println("start compile error test");
         String solutionCode = "public class Solution { public static void main(String[] args) { int x = ; } }"; // Syntax error
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "0", "1\n0\n"));
-        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLanguage(), solutionCode, 2000, testCases);
+        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLang(), solutionCode, 2000, testCases);
         assertFalse(result.isAccept());
         System.out.println("end compile error test");
     }
@@ -100,7 +101,7 @@ public class CodeRunnerTest {
         for (int i = 0; i < numberOfSubmissions; i++) {
             Thread thread = new Thread(() -> {
                 try {
-                    SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLanguage(), solutionCode, 2000, testCases);
+                    SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLang(), solutionCode, 2000, testCases);
                     if (result.isAccept()) {
                         successfulSubmissions.incrementAndGet();
                     }
@@ -385,7 +386,7 @@ public class CodeRunnerTest {
                 try {
                     String solutionCode = solutionCodes.get(index);
                     List<TestCase> testCases = testCasesList.get(index);
-                    SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLanguage(), solutionCode, 2000, testCases);
+                    SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLang(), solutionCode, 2000, testCases);
                     if (result.isAccept()) {
                         successfulSubmissions.incrementAndGet();
                     }
@@ -417,7 +418,7 @@ public class CodeRunnerTest {
             }
             """;
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "", ""));
-        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLanguage(), solutionCode, 2000, testCases);
+        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLang(), solutionCode, 2000, testCases);
         assertFalse(result.isAccept());
         assertInstanceOf(TestCaseReject.class, result);
         System.out.println("end runtime error test");
@@ -434,7 +435,7 @@ public class CodeRunnerTest {
             }
             """;
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "100", ""));
-        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLanguage(), solutionCode, 2000, testCases);
+        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLang(), solutionCode, 2000, testCases);
         assertFalse(result.isAccept());
         assertInstanceOf(TestCaseReject.class, result);
         System.out.println("end wrong answer test");
@@ -451,7 +452,7 @@ public class CodeRunnerTest {
             }
             """;
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "", ""));
-        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLanguage(), solutionCode, 1000, testCases);
+        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new JavaLang(), solutionCode, 1000, testCases);
         assertFalse(result.isAccept());
         assertInstanceOf(TestCaseReject.class, result);
         System.out.println("end time limit exceeded test");
@@ -471,7 +472,7 @@ public class CodeRunnerTest {
             }
             """;
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "5", "2 3\\n"));
-        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new CppLanguage(), solutionCode, 2000, testCases);
+        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new CPPLang(), solutionCode, 2000, testCases);
         assertTrue(result.isAccept());
         assertInstanceOf(SubmissionAccept.class, result);
         System.out.println("end test basic cpp");
@@ -487,7 +488,7 @@ public class CodeRunnerTest {
             main()
             """;
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "5", "2 3\n"));
-        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new PythonLanguage(), solutionCode, 2000, testCases);
+        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new PythonLang(), solutionCode, 2000, testCases);
         assertTrue(result.isAccept());
         assertInstanceOf(SubmissionAccept.class, result);
         System.out.println("end test basic python");
@@ -506,7 +507,7 @@ public class CodeRunnerTest {
             }
             """;
         List<TestCase> testCases = List.of(new TestCase(1, 1, 1, "5", "2 3\n"));
-        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new com.example.submissions.Utils.Language.CLanguage(), solutionCode, 2000, testCases);
+        SubmissionResult result = dockerCodeRunner.testCodeMultipleTests(new CLang(), solutionCode, 2000, testCases);
         assertTrue(result.isAccept());
         assertInstanceOf(SubmissionAccept.class, result);
         System.out.println("end test basic c");

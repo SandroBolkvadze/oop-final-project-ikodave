@@ -5,14 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class JavaLanguage implements CodeLanguage {
+public class PythonLang implements CodeLang {
 
-    private static final String JAVA_FILE_NAME = "Solution";
+    private static final String PYTHON_FILE_NAME = "Solution";
 
     @Override
     public void createFiles(Path path, String solutionCode) {
         try {
-            Files.writeString(path.resolve(JAVA_FILE_NAME + ".java"), solutionCode);
+            Files.writeString(path.resolve(PYTHON_FILE_NAME + ".py"), solutionCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -20,17 +20,14 @@ public class JavaLanguage implements CodeLanguage {
 
     @Override
     public List<String> compileCommand(String containerName) {
-        return List.of(
-                "docker", "exec", containerName,
-                "javac", JAVA_FILE_NAME + ".java"
-        );
+        return List.of();
     }
 
     @Override
     public List<String> executeCommand(String containerName) {
         return List.of(
                 "docker", "exec", "-i", containerName,
-                "java", "-cp", "/app", JAVA_FILE_NAME
+                "python3", "-u", "/app/" + PYTHON_FILE_NAME + ".py"
         );
     }
 }

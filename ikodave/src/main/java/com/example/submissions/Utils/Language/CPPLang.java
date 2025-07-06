@@ -1,3 +1,4 @@
+
 package com.example.submissions.Utils.Language;
 
 import java.io.IOException;
@@ -5,14 +6,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class CLanguage implements CodeLanguage {
+public class CPPLang implements CodeLang {
 
-    private static final String C_FILE_NAME = "Solution";
+    private static final String CPP_FILE_NAME = "Solution";
 
     @Override
     public void createFiles(Path path, String solutionCode) {
         try {
-            Files.writeString(path.resolve(C_FILE_NAME + ".c"), solutionCode);
+            Files.writeString(path.resolve(CPP_FILE_NAME + ".cpp"), solutionCode);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -22,9 +23,9 @@ public class CLanguage implements CodeLanguage {
     public List<String> compileCommand(String containerName) {
         return List.of(
                 "docker", "exec", containerName,
-                "gcc", C_FILE_NAME + ".c",
-                "-std=c17", "-O2",
-                "-o", C_FILE_NAME
+                "g++", CPP_FILE_NAME + ".cpp",
+                "-std=c++17", "-O2",
+                "-o", CPP_FILE_NAME
         );
     }
 
@@ -32,7 +33,7 @@ public class CLanguage implements CodeLanguage {
     public List<String> executeCommand(String containerName) {
         return List.of(
                 "docker", "exec", "-i", containerName,
-                "/app/" + C_FILE_NAME
+                "/app/" + CPP_FILE_NAME
         );
     }
 }

@@ -6,7 +6,7 @@
 //import com.example.submission.Utils.CompileResult.CompileSuccess;
 //import com.example.submission.Utils.Container.CodeExecutorContainer;
 //import com.example.submission.Utils.Container.Container;
-//import com.example.submission.Utils.Language.CodeLanguage;
+//import com.example.submission.Utils.Language.CodeLang;
 //import com.example.submission.Utils.SubmissionResult.SubmissionResult;
 //import com.example.submission.Utils.SubmissionResult.SubmissionAccept;
 //import com.example.submission.Utils.TestCaseResult.TestCaseResult;
@@ -88,7 +88,7 @@
 //    }
 //
 //
-//    private SubmissionResult executeAllTestCases(CodeLanguage codeLanguage, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
+//    private SubmissionResult executeAllTestCases(CodeLang codeLanguage, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
 //        CodeExecutorContainer container = containersPool.take();
 //        codeLanguage.createFiles(container.getHostPath(), solutionCode);
 //
@@ -116,7 +116,7 @@
 //    }
 //
 //
-//    private CompileResult compileUserCode(String containerId, CodeLanguage codeLanguage) throws InterruptedException {
+//    private CompileResult compileUserCode(String containerId, CodeLang codeLanguage) throws InterruptedException {
 //        List<String> compileCmd = codeLanguage.compileCommand();
 //
 //        if (compileCmd.isEmpty()) {
@@ -158,7 +158,7 @@
 //
 //
 //    private TestCaseResult executeUserCode(String containerId,
-//                                           CodeLanguage codeLanguage,
+//                                           CodeLang codeLanguage,
 //                                           long executeTimeoutMillis,
 //                                           TestCase testCase) throws InterruptedException, IOException {
 //
@@ -238,7 +238,7 @@
 //        return cpuUsage[0];
 //    }
 //
-//    public SubmissionResult testCodeMultipleTests(CodeLanguage codeLanguage, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
+//    public SubmissionResult testCodeMultipleTests(CodeLang codeLanguage, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
 //        return executeAllTestCases(codeLanguage, solutionCode, executionTimeoutMillis, testCases);
 //    }
 //}
