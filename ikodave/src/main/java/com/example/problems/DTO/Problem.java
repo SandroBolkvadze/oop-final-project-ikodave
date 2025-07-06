@@ -1,28 +1,25 @@
 package com.example.problems.DTO;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Problem {
     private int id;
     private String title;
     private String description;
     private int difficultyId;
-
-    private Date createDate;
-
-    private int time_limit;
-
+    private LocalDate createDate;
+    private int timeLimit;
     public Problem() {
 
     }
 
-    public Problem(int id, String title, String description, int difficultyId, Date createDate, int time_limit) {
+    public Problem(int id, String title, String description, int difficultyId, LocalDate createDate, int timeLimit) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.difficultyId = difficultyId;
         this.createDate = createDate;
-        this.time_limit = time_limit;
+        this.timeLimit = timeLimit;
     }
 
     public int getId() {
@@ -53,23 +50,13 @@ public class Problem {
         return difficultyId;
     }
 
-    public void setDifficultyId(int difficultyId) {
-        this.difficultyId = difficultyId;
-    }
+    public void setDifficultyId(int difficultyId) {this.difficultyId = difficultyId;}
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+    public LocalDate getCreateDate() {return createDate;}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+    public void setCreateDate(LocalDate createDate) {this.createDate = createDate;}
 
-    public int getTime_limit() {
-        return time_limit;
-    }
+    public int getTimeLimit() {return timeLimit;}
 
-    public void setTime_limit(int time_limit) {
-        this.time_limit = time_limit;
-    }
+    public void setTimeLimit(int timeLimit) {this.timeLimit = timeLimit;}
 }
