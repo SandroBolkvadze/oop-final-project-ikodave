@@ -58,7 +58,6 @@
   </servlet-mapping>
 
 
-
   <servlet>
     <servlet-name>ProblemsListServlet</servlet-name>
     <servlet-class>com.example.problems.servlets.ProblemsListServlet</servlet-class>
@@ -66,6 +65,24 @@
   <servlet-mapping>
     <servlet-name>ProblemsListServlet</servlet-name>
     <url-pattern>/problems</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProblemsPageServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemListPageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemsPageServlet</servlet-name>
+    <url-pattern>/problems/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProblemServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemServlet</servlet-name>
+    <url-pattern>/problems/problem</url-pattern>
   </servlet-mapping>
 
   <servlet>

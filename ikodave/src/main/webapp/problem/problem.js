@@ -1,16 +1,28 @@
-const FETCH_API = 'https://localhost:8080/problem';
+document.addEventListener('DOMContentLoaded', loadProblem);
 
-document.addEventListener('DOMContentLoaded', getTitle);
+async function loadProblem(){
+    const parts = window.location.pathname.split('/');
+    const problemTitle = parts[parts.length - 1];
 
-async function getTitle(){
-    let title = "Ants";
-    const Title = {
-        title
-    };
-    const response = await fetch(FETCH_API, {
-        method : 'POST',
-        headers: {'Content-Type': 'applications/json'},
-        body : JSON.stringify(Title)
-    });
-    const data = await response.json();
+    const sendData = {
+        problemTitle : problemTitle
+    }
+
+    await fetch(`/problems/problem`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(sendData)
+    })
+        .then(response => response.json())
+        .then(data => {
+            let problemDescription = data.problemDescription;
+            let problemStatus = data.problemStatus;
+            let problemTopics = data.problemTopics;
+            let problemDifficulty = data.problemDifficulty;
+            let problemTestCases = data.problemTestCases;
+
+
+        })
+
+
 }

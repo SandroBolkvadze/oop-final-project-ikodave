@@ -12,19 +12,19 @@ public class ProblemResponse {
     private final String problemStatus;
     private final List<Topic> problemTopics;
     private final Difficulty problemDifficulty;
-    private final List<TestCase> testCases;
+    private final List<TestCase> problemTestCases;
 
-    public ProblemResponse(String problemTitle, String problemDescription, String problemStatus, List<Topic> problemTopics, Difficulty problemDifficulty, List<TestCase> testCases) {
+    public ProblemResponse(String problemTitle, String problemDescription, String problemStatus, List<Topic> problemTopics, Difficulty problemDifficulty, List<TestCase> problemTestCases) {
         this.problemTitle = problemTitle;
         this.problemDescription = problemDescription;
         this.problemStatus = problemStatus;
         this.problemTopics = problemTopics;
         this.problemDifficulty = problemDifficulty;
-        this.testCases = testCases;
+        this.problemTestCases = problemTestCases;
     }
 
-    public List<TestCase> getTestCases() {
-        return testCases;
+    public List<TestCase> getProblemTestCases() {
+        return problemTestCases;
     }
 
     public String getProblemTitle() {
