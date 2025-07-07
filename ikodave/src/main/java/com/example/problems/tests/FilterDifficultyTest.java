@@ -8,20 +8,23 @@ import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.FilterDifficulty;
 import com.example.problems.utils.ToSQL;
-import junit.framework.TestCase;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
 import static com.example.util.DBConnectionConstants.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class FilterDifficultyTest extends TestCase {
+public class FilterDifficultyTest {
 
     static BasicDataSource dataSource;
     static ProblemDAO dao;
-    static void setup() throws SQLException {
+    @BeforeEach
+    void setup() throws SQLException {
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
         dataSource.setDriverClassName(DRIVER);
@@ -29,25 +32,58 @@ public class FilterDifficultyTest extends TestCase {
         dataSource.setPassword(DATABASE_PASSWORD);
         dao = new SQLProblemDAO(dataSource);
     }
+
     public void testDifficultUser() throws SQLException {
         setup();
-        //System.out.println(ToSQL.toProblemDifficultySQL());
         Difficulty difficulty = dao.getProblemDifficulty(1);
-        //String s = ToSQL.toProblemDifficultySQL();
         assertEquals(1, difficulty.getId());
     }
-    public void testFilterDifficulty() throws SQLException {
+  
+    public void testFilterDifficultyHard() throws SQLException {
         setup();
         FilterDifficulty filter = new FilterDifficulty(new Difficulty(3, "HARD"));
         List<Problem> problems = dao.getProblemsByFilter(filter);
-        int k = 0;
+        boolean isProblemsFound = false;
         for(Problem problem : problems){
             if(Objects.equals(problem.getTitle(), "cool artem")){
-                k=1;
+                isProblemsFound = true;
             }
         }
-        assertEquals(1, k);
+        assertTrue(isProblemsFound);
         assertEquals(1, problems.size());
-
+    }
+    public void testFilterDifficultyMedium() throws SQLException {
+        setup();
+        FilterDifficulty filter = new FilterDifficulty(new Difficulty(2, "MEDIUM"));
+        List<Problem> problems = dao.getProblemsByFilter(filter);
+        boolean isProblemsFound2 = false, isProblemsFound4 = false, isProblemsFound5 = false;
+        for(Problem problem : problems){
+            if(Objects.equals(problem.getTitle(), "xorificator")){
+                isProblemsFound2 = true;
+            }
+            if(Objects.equals(problem.getTitle(), "nice")){
+                isProblemsFound4 = true;
+            }
+            if(Objects.equals(problem.getTitle(), "nice")){
+                isProblemsFound5 = true;
+            }
+        }
+        assertTrue(isProblemsFound2);
+        assertTrue(isProblemsFound4);
+        assertTrue(isProblemsFound5);
+        assertEquals(3, problems.size());
+    }
+    public void testFilterDifficultyEasy() throws SQLException {
+        setup();
+        FilterDifficulty filter = new FilterDifficulty(new Difficulty(1, "Easy"));
+        List<Problem> problems = dao.getProblemsByFilter(filter);
+        boolean isProblemsFound = false;
+        for(Problem problem : problems){
+            if(Objects.equals(problem.getTitle(), "Ants")){
+                isProblemsFound= true;
+            }
+        }
+        assertTrue(isProblemsFound);
+        assertEquals(1, problems.size());
     }
 }

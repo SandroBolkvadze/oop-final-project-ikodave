@@ -3,14 +3,16 @@ package com.example.problems.servlets;
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Status;
+import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.*;
 import com.example.problems.utils.FilterCriteria;
 import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
 import com.google.gson.Gson;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +27,9 @@ import static com.example.util.SessionConstants.USER_ID_KEY;
 public class ProblemsListServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect("/problems.html");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        request.getRequestDispatcher("/problems/html/problems.html")
+                .forward(request, response);
     }
 
     @Override
@@ -72,14 +75,11 @@ public class ProblemsListServlet extends HttpServlet {
             FilterTopic filterTopic = new FilterTopic(topics);
             filterAnd.addFilter(filterTopic);
         }
-
         System.out.println(filterAnd.toSQLStatement());
-
-        //List<Problem> problems = problemDAO.getProblemsByFilter(filterAnd);
-
-        //response.setContentType("application/json");
-        //response.setCharacterEncoding("UTF-8");
-        //response.getWriter().write(gson.toJson(problems));
+        List<Problem> problems = problemDAO.getProblemsByFilter(filterAnd);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(gson.toJson(problems));
     }
 
 }

@@ -6,13 +6,12 @@ import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Problem;
 
 import com.example.problems.DTO.Topic;
-import com.example.problems.Filters.Filter;
-import com.example.problems.Filters.FilterAnd;
-import com.example.problems.Filters.FilterDifficulty;
-import com.example.problems.Filters.FilterTopic;
+import com.example.problems.Filters.*;
 import com.example.problems.utils.ToSQL;
-import junit.framework.TestCase;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,11 +19,16 @@ import java.util.List;
 
 import static com.example.util.DBConnectionConstants.*;
 
-public class FilterAndTest extends TestCase {
+public class FilterAndTest {
 
     static BasicDataSource dataSource;
     static FilterAnd filterand;
     static ProblemDAO dao;
+
+    static List<Topic> topics;
+    static FilterTopic filterTopic;
+    static FilterDifficulty filterDifficulty;
+  
     static void setup() throws SQLException {
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
@@ -33,26 +37,53 @@ public class FilterAndTest extends TestCase {
         dataSource.setPassword(DATABASE_PASSWORD);
         filterand = new FilterAnd();
         dao = new SQLProblemDAO(dataSource);
-
-    }
-    public void testFilterAnd() throws SQLException {
-        setup();
-        List<Topic> topics = new ArrayList<Topic>();
+        topics = new ArrayList<Topic>();
         topics.add(new Topic(1, "dp"));
         topics.add(new Topic(2, "greedy"));
-        FilterTopic filter1 = new FilterTopic(topics);
-        FilterDifficulty filter2 = new FilterDifficulty(new Difficulty(2, "MEDIUM"));
-        filterand.addFilter(filter1);
-        filterand.addFilter(filter2);
-        List<Problem> problems=dao.getProblemsByFilter(filterand);
-        int f = 0,  s = 0;
-        for(int i = 0; i < problems.size(); ++i){
-            int p = problems.get(i).getId();
-            if(p == 4) f = 1;
-            if(p == 5) s = 1;
+        filterTopic = new FilterTopic(topics);
+        filterDifficulty = new FilterDifficulty(new Difficulty(2, "MEDIUM"));
+    }
+  
+    public void testFilterAnd() throws SQLException {
+        setup();
+        filterand.addFilter(filterTopic);
+        filterand.addFilter(filterDifficulty);
+        List<Problem> problems = dao.getProblemsByFilter(filterand);
+        boolean problem4 = false, problem5 = false;
+        for (Problem problem : problems) {
+            int p = problem.getId();
+            if (p == 4) problem4 = true;
+            if (p == 5) problem5 = true;
+
         }
         assertEquals("nice", problems.get(0).getTitle());
         assertEquals("hard", problems.get(1).getTitle());
-        assertEquals(2, f + s);
+        assertTrue(problem4);
+        assertTrue(problem5);
     }
+    public void testNoFilter() throws SQLException {
+        setup();
+        List<Problem> problems = dao.getProblemsByFilter(filterand);
+        assertEquals(5, problems.size());
+    }
+    public void testAllFilter() throws SQLException {
+        setup();
+        FilterTitle filter3 = new FilterTitle("ic");
+        filterand.addFilter(filterTopic);
+        filterand.addFilter(filterDifficulty);
+        filterand.addFilter(filter3);
+        List<Problem> problems = dao.getProblemsByFilter(filterand);
+        assertEquals(1, problems.size());
+        assertEquals("nice", problems.get(0).getTitle());
+    }
+    public void testFilterNoProblems() throws SQLException {
+        setup();
+        FilterTitle filter3 = new FilterTitle("ick");
+        filterand.addFilter(filterTopic);
+        filterand.addFilter(filterDifficulty);
+        filterand.addFilter(filter3);
+        List<Problem> problems = dao.getProblemsByFilter(filterand);
+        assertEquals(0, problems.size());
+    }
+
 }

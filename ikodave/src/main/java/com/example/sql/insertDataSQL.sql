@@ -23,7 +23,8 @@ VALUES (1, 'dp'),
 INSERT INTO problem_status (id, status)
 VALUES (1, 'ACCEPTED'),
        (2, 'WRONG'),
-       (3, 'PENDING');
+       (3, 'PENDING'),
+       (4, 'TO-DO');
 
 -- 5) problems (now with create_date and explicit time_limit)
 INSERT INTO problems (id, problem_title, problem_description, difficulty_id, create_date, time_limit)
@@ -69,4 +70,5 @@ VALUES (1, 1, 1, 1, '+', '2025-06-25', ''),
        (10, 3, 4, 2, '...', '2025-06-25', ''),
        (11, 4, 1, 1, '...', '2025-06-25', ''),
        (12, 4, 5, 1, '...', '2025-06-25', ''),
-       (13, 4, 4, 2, '...', '2025-06-25', '');
+       (13, 4, 4, 2, '...', '2025-06-25', ''),
+       (14, 3, 3, 3, '...', '2025-06-25', '');

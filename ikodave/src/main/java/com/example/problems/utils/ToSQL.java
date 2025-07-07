@@ -41,13 +41,13 @@ public class ToSQL {
                 ProblemStatus.TABLE_NAME,
                 Submissions.TABLE_NAME,
                 Submissions.TABLE_NAME,
-                Submissions.COL_STATUS_ID,
+                Submissions.COL_VERDICT_ID,
                 ProblemStatus.TABLE_NAME,
                 ProblemStatus.COL_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
                 Submissions.TABLE_NAME,
-                Submissions.COL_STATUS_ID
+                Submissions.COL_VERDICT_ID
         );
     }
 
@@ -63,6 +63,14 @@ public class ToSQL {
     public static String toProblemIdSQL() {
         return format("SELECT %s FROM %s WHERE %s.%s = ?;",
                 Problems.COL_ID,
+                Problems.TABLE_NAME,
+                Problems.TABLE_NAME,
+                Problems.COL_TITLE
+        );
+    }
+
+    public static String toProblemByTitleSQL(){
+        return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 Problems.TABLE_NAME,
                 Problems.TABLE_NAME,
                 Problems.COL_TITLE

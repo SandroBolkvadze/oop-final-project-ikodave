@@ -18,10 +18,13 @@ public interface ProblemDAO {
 
     Status getProblemStatus(int problemId, int userId);
 
+    Problem getProblemByTitle(String title);
+
     String getProblemTitle(int problemId);
 
     int getProblemId(String problemTitle);
 
+    Problem getProblemByTitle(String problemTitle);
 
     int getDifficultyId(String difficulty);
 
