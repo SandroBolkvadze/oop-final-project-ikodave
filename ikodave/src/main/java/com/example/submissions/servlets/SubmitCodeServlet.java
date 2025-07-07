@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -68,10 +69,10 @@ public class SubmitCodeServlet extends HttpServlet {
         submission.setProblemId(problem.getId());
         submission.setVerdictId(verdictDAO.getVerdictByName("Running").getId());
         submission.setSolutionCode(solutionCode);
-        submission.setCodeLanguageId(codeLanguageDAO.getCodeLanguageIdByName(userSubmission.getCodeLanguage()).getId());
+        submission.setCodeLanguageId(codeLanguageDAO.getCodeLanguageByName(userSubmission.getCodeLanguage()).getId());
         submission.setTime(0);
         submission.setMemory(0);
-        submission.setSubmitDate(new Date(System.currentTimeMillis()));
+        submission.setSubmitDate(new Timestamp(System.currentTimeMillis()));
 
         final int submissionId = submissionDAO.insertSubmission(submission);
 
@@ -102,6 +103,7 @@ public class SubmitCodeServlet extends HttpServlet {
                                 submissionResult.getLog()
                         );
 
+                System.out.println(updatedSubmission.getTime());
                 submissionDAO.updateSubmission(updatedSubmission);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);

@@ -1,6 +1,7 @@
 package com.example.submissions.DTO;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Submission {
 
@@ -12,10 +13,10 @@ public class Submission {
     private int codeLanguageId;
     private long time;
     private long memory;
-    private Date submitDate;
+    private Timestamp submitDate;
     private String log;
 
-    public Submission(int id, int userId, int problemId, int verdictId, String solutionCode, int codeLanguageId, long time, long memory, Date submitDate, String log) {
+    public Submission(int id, int userId, int problemId, int verdictId, String solutionCode, int codeLanguageId, long time, long memory, Timestamp submitDate, String log) {
         this.id = id;
         this.userId = userId;
         this.problemId = problemId;
@@ -77,7 +78,7 @@ public class Submission {
         this.solutionCode = solutionCode;
     }
 
-    public void setSubmitDate(Date submitDate) {
+    public void setSubmitDate(Timestamp submitDate) {
         this.submitDate = submitDate;
     }
 
@@ -105,7 +106,7 @@ public class Submission {
         return solutionCode;
     }
 
-    public Date getSubmitDate() {
+    public Timestamp getSubmitDate() {
         return submitDate;
     }
 

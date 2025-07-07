@@ -1,7 +1,6 @@
 package com.example.submissions.DAO;
 
 import com.example.submissions.DTO.CodeLanguage;
-import com.example.submissions.DTO.Submission;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
@@ -22,11 +21,25 @@ public class SQLCodeLanguageDAO implements  CodeLanguageDAO {
         this.basicDataSource = basicDataSource;
     }
     @Override
-    public CodeLanguage getCodeLanguageIdByName(String codeLanguage) {
-        String sqlStatement = toCodeLanguageNameSQL();
+    public CodeLanguage getCodeLanguageByName(String codeLanguage) {
+        String sqlStatement = toCodeLanguageByNameSQL();
         try (Connection connection = basicDataSource.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, codeLanguage);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return toCodeLanguage(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public CodeLanguage getCodeLanguageById(int id) {
+        String sqlStatement = toCodeLanguageByIdSQL();
+        try (Connection connection = basicDataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return toCodeLanguage(resultSet);

@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS problems
     problem_description TEXT,
     difficulty_id       INT,
     create_date         DATETIME,
-    time_limit          LONG DEFAULT 2000,
+    time_limit          BIGINT DEFAULT 2000,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty (id)
 );
 
@@ -72,9 +72,9 @@ CREATE TABLE IF NOT EXISTS submissions
     problem_id          INT,
     verdict_id          INT,
     solution_code       TEXT,
-    code_language_id    INT,
-    time                LONG,
-    memory              LONG,
+    code_language_id    INT NOT NULL,
+    time                BIGINT NOT NULL,
+    memory              BIGINT NOT NULL,
     submit_date         DATETIME,
     log                 TEXT,
     FOREIGN KEY (problem_id) REFERENCES problems (id),

@@ -2,7 +2,6 @@ function loadSubmissions() {
     const parts = window.location.pathname.split('/');
     const problemTitle = parts[parts.length - 1];
 
-    console.log(problemTitle);
     fetch(`/problems/submissions/${problemTitle}`)
         .then(res => res.json())
         .then(submissions => {
@@ -14,20 +13,23 @@ function loadSubmissions() {
                 return;
             }
 
-            submissions.forEach(sub => {
+            submissions.forEach((sub, index) => {
                 const card = document.createElement('div');
                 card.className = 'card mb-3';
                 card.style.padding = '10px';
 
                 const header = document.createElement('h5');
-                header.textContent = `#${sub.id} — ${sub.verdictId}`;
+                header.textContent = `#${index + 1} — ${sub.verdict}`;
                 card.appendChild(header);
 
                 const details = document.createElement('p');
                 details.innerHTML = `
-                      <strong>Time:</strong> ${sub.time} ms &nbsp;|&nbsp;
-                      <strong>Memory:</strong> ${Math.round(sub.memory/1024)} KB &nbsp;|&nbsp;
-                      <strong>Date:</strong> ${sub.submitDate}`;
+                    <strong>User:</strong> ${sub.username} &nbsp;|&nbsp;
+                    <strong>Language:</strong> ${sub.codeLanguage} &nbsp;|&nbsp;
+                    <strong>Time:</strong> ${sub.time} ms &nbsp;|&nbsp;
+                    <strong>Memory:</strong> ${Math.round(sub.memory / 1024)} KB &nbsp;|&nbsp;
+                    <strong>Date:</strong> ${sub.submitDate}
+                `;
                 card.appendChild(details);
 
                 const toggle = document.createElement('button');
@@ -52,7 +54,7 @@ function loadSubmissions() {
             });
         })
         .catch((error) => {
-            console.log(error);
+            console.error(error);
             document.getElementById('submissions')
                 .textContent = 'Error loading submissions.';
         });

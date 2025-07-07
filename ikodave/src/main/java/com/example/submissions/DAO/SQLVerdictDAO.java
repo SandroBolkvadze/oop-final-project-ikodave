@@ -9,7 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static com.example.submissions.DAO.ToDTO.toVerdict;
-import static com.example.submissions.DAO.ToSQL.toVerdictNameSQL;
+import static com.example.submissions.DAO.ToSQL.toVerdictByIdSQL;
+import static com.example.submissions.DAO.ToSQL.toVerdictByNameSQL;
 
 public class SQLVerdictDAO implements VerdictDAO {
     private final BasicDataSource basicDataSource;
@@ -20,10 +21,24 @@ public class SQLVerdictDAO implements VerdictDAO {
 
     @Override
     public SubmissionVerdict getVerdictByName(String verdictName) {
-        String sqlStatement = toVerdictNameSQL();
+        String sqlStatement = toVerdictByNameSQL();
         try (Connection connection = basicDataSource.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, verdictName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return toVerdict(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public SubmissionVerdict getVerdictById(int id) {
+        String sqlStatement = toVerdictByIdSQL();
+        try (Connection connection = basicDataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return toVerdict(resultSet);

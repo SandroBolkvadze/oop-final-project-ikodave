@@ -31,7 +31,7 @@ public class SQLSubmissionDAO implements SubmissionDAO {
             preparedStatement.setInt(5, submission.getCodeLanguageId());
             preparedStatement.setLong(6, submission.getTime());
             preparedStatement.setLong(7, submission.getMemory());
-            preparedStatement.setDate(8, submission.getSubmitDate());
+            preparedStatement.setTimestamp(8, submission.getSubmitDate());
             preparedStatement.setString(9, submission.getLog());
 
             preparedStatement.executeUpdate();
@@ -55,7 +55,7 @@ public class SQLSubmissionDAO implements SubmissionDAO {
             preparedStatement.setInt(5, submission.getCodeLanguageId());
             preparedStatement.setLong(6, submission.getTime());
             preparedStatement.setLong(7, submission.getMemory());
-            preparedStatement.setDate(8, submission.getSubmitDate());
+            preparedStatement.setTimestamp(8, submission.getSubmitDate());
             preparedStatement.setString(9, submission.getLog());
             preparedStatement.setInt(10, submission.getId());
 

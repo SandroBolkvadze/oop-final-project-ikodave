@@ -26,11 +26,6 @@ import static com.example.util.SessionConstants.USER_ID_KEY;
 
 public class ProblemsListServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.getRequestDispatcher("/problems/problems.html")
-                .forward(request, response);
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

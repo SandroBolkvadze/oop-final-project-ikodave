@@ -42,7 +42,7 @@ public class ToDTO {
             submission.setSolutionCode(resultSet.getString(Submissions.COL_SOLUTION));
             submission.setTime(resultSet.getLong(Submissions.COL_TIME));
             submission.setMemory(resultSet.getLong(Submissions.COL_MEMORY));
-            submission.setSubmitDate(resultSet.getDate(Submissions.COL_SUBMIT_DATE));
+            submission.setSubmitDate(resultSet.getTimestamp(Submissions.COL_SUBMIT_DATE));
             submission.setLog(resultSet.getString(Submissions.COL_LOG));
             return submission;
         } catch (SQLException e) {

@@ -6,4 +6,6 @@ public interface VerdictDAO {
 
     SubmissionVerdict getVerdictByName(String verdictName);
 
+    SubmissionVerdict getVerdictById(int id);
+
 }

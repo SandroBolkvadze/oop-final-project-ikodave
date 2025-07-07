@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface CodeLanguageDAO {
 
-    CodeLanguage getCodeLanguageIdByName(String codeLanguage);
+    CodeLanguage getCodeLanguageByName(String codeLanguage);
+
+    CodeLanguage getCodeLanguageById(int id);
 
     List<CodeLanguage> getCodeLanguages();
 

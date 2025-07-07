@@ -12,18 +12,34 @@ public class ToSQL {
                 TestCases.TABLE_NAME,
                 TestCases.COL_PROBLEM_ID);
     }
-    public static String toVerdictNameSQL() {
+    public static String toVerdictByNameSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 SubmissionVerdict.TABLE_NAME,
                 SubmissionVerdict.TABLE_NAME,
                 SubmissionVerdict.COL_VERDICT
         );
     }
-    public static String toCodeLanguageNameSQL() {
+
+    public static String toVerdictByIdSQL() {
+        return format("SELECT * FROM %s WHERE %s.%s = ?;",
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_ID
+        );
+    }
+    public static String toCodeLanguageByNameSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 CodeLanguages.TABLE_NAME,
                 CodeLanguages.TABLE_NAME,
                 CodeLanguages.COL_LANGUAGE
+        );
+    }
+
+    public static String toCodeLanguageByIdSQL() {
+        return format("SELECT * FROM %s WHERE %s.%s = ?;",
+                CodeLanguages.TABLE_NAME,
+                CodeLanguages.TABLE_NAME,
+                CodeLanguages.COL_ID
         );
     }
     public static String toInsertSubmissionNoIdSQL() {
@@ -44,14 +60,14 @@ public class ToSQL {
     }
     public static String toUpdateSubmissionSQL() {
         return format("UPDATE %s SET " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
                 "%s.%s = ? " +
                 "WHERE %s.%s = ?;",
                 Submissions.TABLE_NAME,
