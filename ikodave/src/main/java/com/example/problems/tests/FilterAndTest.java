@@ -172,7 +172,7 @@ class FilterAndTest {
     }
 
     @Test
-    void testFilterNoProblems() throws Exception {
+    void testFilterNoProblems( ) throws Exception {
 
         FilterTitle filterTitle = new FilterTitle("ick");
 
