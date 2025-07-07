@@ -23,9 +23,9 @@ public class SubmissionsListServlet extends HttpServlet  {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = (User) request.getSession().getAttribute(USER_KEY);
-        ProblemDAO problemDAO = (ProblemDAO) request.getAttribute(PROBLEM_DAO_KEY);
-        SubmissionDAO submissionDAO = (SubmissionDAO) request.getAttribute(SUBMISSION_DAO_KEY);
-        Gson gson = (Gson) request.getAttribute(GSON_KEY);
+        ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
+        SubmissionDAO submissionDAO = (SubmissionDAO) getServletContext().getAttribute(SUBMISSION_DAO_KEY);
+        Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

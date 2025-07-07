@@ -79,12 +79,21 @@
 
 
   <servlet>
-    <servlet-name>SubmissionsCodeServlet</servlet-name>
+    <servlet-name>SubmitCodeServlet</servlet-name>
     <servlet-class>com.example.submissions.servlets.SubmitCodeServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>SubmissionsCodeServlet</servlet-name>
+    <servlet-name>SubmitCodeServlet</servlet-name>
     <url-pattern>/problems/submit</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SubmitCodePageServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.SubmitCodePageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmitCodePageServlet</servlet-name>
+    <url-pattern>/problems/submit-page</url-pattern>
   </servlet-mapping>
 
   <servlet>

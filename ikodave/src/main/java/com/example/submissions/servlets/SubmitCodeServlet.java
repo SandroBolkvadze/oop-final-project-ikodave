@@ -37,13 +37,15 @@ public class SubmitCodeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User user = (User) request.getSession().getAttribute(USER_KEY);
-        TestDAO testDAO = (TestDAO) request.getAttribute(TEST_DAO_KEY);
-        ProblemDAO problemDAO = (ProblemDAO) request.getAttribute(PROBLEM_DAO_KEY);
-        SubmissionDAO submissionDAO = (SubmissionDAO) request.getAttribute(SUBMISSION_DAO_KEY);
-        CodeLanguageDAO codeLanguageDAO = (CodeLanguageDAO) request.getAttribute(CODE_LANGUAGE_DAO_KEY);
-        VerdictDAO verdictDAO = (VerdictDAO) request.getAttribute(VERDICT_DAO_KEY);
-        DockerCodeRunner dockerCodeRunner = (DockerCodeRunner) request.getAttribute(DOCKER_CODE_RUNNER_KEY);
-        Gson gson = (Gson) request.getAttribute(GSON_KEY);
+
+        TestDAO testDAO = (TestDAO) getServletContext().getAttribute(TEST_DAO_KEY);
+        ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
+        SubmissionDAO submissionDAO = (SubmissionDAO) getServletContext().getAttribute(SUBMISSION_DAO_KEY);
+        CodeLanguageDAO codeLanguageDAO = (CodeLanguageDAO) getServletContext().getAttribute(CODE_LANGUAGE_DAO_KEY);
+        VerdictDAO verdictDAO = (VerdictDAO) getServletContext().getAttribute(VERDICT_DAO_KEY);
+
+        DockerCodeRunner dockerCodeRunner = (DockerCodeRunner) getServletContext().getAttribute(DOCKER_CODE_RUNNER_KEY);
+        Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
         UserSubmission userSubmission = gson.fromJson(request.getReader(), UserSubmission.class);
 
@@ -63,6 +65,8 @@ public class SubmitCodeServlet extends HttpServlet {
         submission.setSubmitDate(new Date(System.currentTimeMillis()));
 
         final int submissionId = submissionDAO.insertSubmission(submission);
+
+        System.out.println("created necessary stuff");
 
         executor.submit(() -> {
             try {

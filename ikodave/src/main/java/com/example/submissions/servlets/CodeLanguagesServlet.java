@@ -19,8 +19,8 @@ public class CodeLanguagesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        CodeLanguageDAO codeLanguageDAO = (CodeLanguageDAO) request.getAttribute(CODE_LANGUAGE_DAO_KEY);
-        Gson gson = (Gson) request.getAttribute(GSON_KEY);
+        CodeLanguageDAO codeLanguageDAO = (CodeLanguageDAO) getServletContext().getAttribute(CODE_LANGUAGE_DAO_KEY);
+        Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
         List<CodeLanguage> codeLanguages = codeLanguageDAO.getCodeLanguages();
 

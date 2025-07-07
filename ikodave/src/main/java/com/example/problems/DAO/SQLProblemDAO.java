@@ -46,6 +46,7 @@ public class SQLProblemDAO implements ProblemDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, problemTitle);
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             return toProblem(resultSet);
 
         } catch (SQLException e) {

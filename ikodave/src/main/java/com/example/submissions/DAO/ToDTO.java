@@ -15,7 +15,7 @@ public class ToDTO {
         return new TestCase(
                 resultSet.getInt(TestCases.COL_ID),
                 resultSet.getInt(TestCases.COL_PROBLEM_ID),
-                resultSet.getInt(TestCases.COL_ORDER),
+                resultSet.getInt(TestCases.COL_TEST_NUMBER),
                 resultSet.getString(TestCases.COL_INPUT),
                 resultSet.getString(TestCases.COL_OUTPUT)
         );

@@ -1,29 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
-    loadLanguages()
-        .catch((error) => {
-            console.log(error)
-        });
-
     document
         .getElementById('submitForm')
         .addEventListener('submit', (e) => submitSolution(e));
 });
 
+loadLanguages()
+    .catch((error) => {
+        console.log(error)
+    });
 
 function submitSolution(e) {
     e.preventDefault();
 
-    const problemId = document.getElementById('problemId').value;
+    const title = document.getElementById('problemTitle').value;
     const language = document.getElementById('language').value;
-    const solutionCode = document.getElementById('solutionCode').value;
+    const code = document.getElementById('solutionCode').value;
 
     const submission = {
-        problemId: problemId,
-        codeLanguage: language,
-        solutionCode: solutionCode
+        problemTitle: title,
+        solutionCode: code,
+        codeLanguage: language
     };
 
-    fetch('/submit', {
+    fetch('/problems/submit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -36,7 +35,7 @@ function submitSolution(e) {
 
 async function loadLanguages() {
     try {
-        const response = await fetch('/languages');
+        const response = await fetch('/code-languages');
 
         if (!response.ok) {
             throw new Error('Failed to fetch languages');

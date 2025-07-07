@@ -2,11 +2,11 @@ package com.example.submissions.Utils.Submit;
 
 public class UserSubmission {
 
-    private final String solutionCode;
+    private final String problemTitle;
 
     private final String codeLanguage;
 
-    private final String problemTitle;
+    private final String solutionCode;
 
 
     public UserSubmission(String solutionCode, String codeLanguage, String problemName) {

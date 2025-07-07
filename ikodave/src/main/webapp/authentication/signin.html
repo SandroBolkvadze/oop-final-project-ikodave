@@ -47,10 +47,15 @@
         const username = document.getElementById("username").value.trim();
         const password = document.getElementById("password").value.trim();
 
+        let input = {
+            username: username,
+            password: password
+        };
+
         const res = await fetch("/signin", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ username, password })
+            body: JSON.stringify(input)
         });
 
         const data = await res.json();

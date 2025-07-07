@@ -73,7 +73,7 @@ public class DatabaseConstants {
         public static final String COL_PROBLEM_ID = "problem_id";
         public static final String COL_INPUT      = "problem_input";
         public static final String COL_OUTPUT     = "problem_output";
-        public static final String COL_ORDER      = "order_num";
+        public static final String COL_TEST_NUMBER = "test_number";
     }
 
     public static final class SubmissionVerdict{
