@@ -26,6 +26,7 @@ public class FilterStatus implements Filter {
         this.status = status;
     }
 
+    // TODO: FIX THIS
     public String toSQLStatement() {
         return format(
                 "SELECT %s.* FROM %s LEFT JOIN %s ON %s.%s = %s.%s AND %s.%s = ? " +
@@ -39,10 +40,10 @@ public class FilterStatus implements Filter {
                 Problems.COL_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
-                Submissions.TO_DO_ID,
+//                Submissions.TO_DO_ID,
                 Submissions.TABLE_NAME,
-                Submissions.COL_STATUS_ID,
-                Submissions.TO_DO_ID,
+//                Submissions.COL_STATUS_ID,
+//                Submissions.TO_DO_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_VERDICT_ID
         );

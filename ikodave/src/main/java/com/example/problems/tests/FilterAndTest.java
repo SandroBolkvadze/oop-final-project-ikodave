@@ -29,7 +29,8 @@ public class FilterAndTest {
     static FilterTopic filterTopic;
     static FilterDifficulty filterDifficulty;
   
-    static void setup() throws SQLException {
+    @BeforeEach
+    void setup() throws SQLException {
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
         dataSource.setDriverClassName(DRIVER);
@@ -44,6 +45,7 @@ public class FilterAndTest {
         filterDifficulty = new FilterDifficulty(new Difficulty(2, "MEDIUM"));
     }
   
+    @Test
     public void testFilterAnd() throws SQLException {
         setup();
         filterand.addFilter(filterTopic);
@@ -61,11 +63,13 @@ public class FilterAndTest {
         assertTrue(problem4);
         assertTrue(problem5);
     }
+    @Test
     public void testNoFilter() throws SQLException {
         setup();
         List<Problem> problems = dao.getProblemsByFilter(filterand);
         assertEquals(5, problems.size());
     }
+    @Test
     public void testAllFilter() throws SQLException {
         setup();
         FilterTitle filter3 = new FilterTitle("ic");
@@ -76,6 +80,7 @@ public class FilterAndTest {
         assertEquals(1, problems.size());
         assertEquals("nice", problems.get(0).getTitle());
     }
+    @Test
     public void testFilterNoProblems() throws SQLException {
         setup();
         FilterTitle filter3 = new FilterTitle("ick");

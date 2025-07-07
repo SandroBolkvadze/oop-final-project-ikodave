@@ -33,12 +33,14 @@ public class FilterDifficultyTest {
         dao = new SQLProblemDAO(dataSource);
     }
 
+    @Test
     public void testDifficultUser() throws SQLException {
         setup();
         Difficulty difficulty = dao.getProblemDifficulty(1);
         assertEquals(1, difficulty.getId());
     }
   
+    @Test
     public void testFilterDifficultyHard() throws SQLException {
         setup();
         FilterDifficulty filter = new FilterDifficulty(new Difficulty(3, "HARD"));
@@ -52,6 +54,7 @@ public class FilterDifficultyTest {
         assertTrue(isProblemsFound);
         assertEquals(1, problems.size());
     }
+    @Test
     public void testFilterDifficultyMedium() throws SQLException {
         setup();
         FilterDifficulty filter = new FilterDifficulty(new Difficulty(2, "MEDIUM"));
@@ -73,6 +76,7 @@ public class FilterDifficultyTest {
         assertTrue(isProblemsFound5);
         assertEquals(3, problems.size());
     }
+    @Test
     public void testFilterDifficultyEasy() throws SQLException {
         setup();
         FilterDifficulty filter = new FilterDifficulty(new Difficulty(1, "Easy"));

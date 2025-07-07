@@ -68,6 +68,7 @@ public class FilterTopicTest {
         assertEquals(4, problems.size());
         assertEquals(4, cnt);
     }
+    @Test
     public void testFilterMultipleTopics() throws SQLException {
         setup();
         List<Topic> topics = new ArrayList<Topic>();

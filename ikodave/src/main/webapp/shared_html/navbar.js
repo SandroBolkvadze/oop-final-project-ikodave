@@ -17,7 +17,7 @@ async function loadNavbar() {
     if (homeLink) {
         homeLink.addEventListener('click', function (e) {
             e.preventDefault();
-            window.location.href = "/ikodave_war/home";
+            window.location.href = "/home";
         });
     }
 
@@ -26,7 +26,7 @@ async function loadNavbar() {
     if (regLink) {
         regLink.addEventListener('click', function (e) {
             e.preventDefault();
-            window.location.href = "/ikodave_war/registration";
+            window.location.href = "/registration";
         });
     }
 
@@ -34,7 +34,7 @@ async function loadNavbar() {
     if(signLink){
         signLink.addEventListener('click', function (e){
             e.preventDefault();
-            window.location.href = "/ikodave_war/signin";
+            window.location.href = "/signin";
         });
     }
 
@@ -42,14 +42,14 @@ async function loadNavbar() {
     if(profileLink){
         profileLink.addEventListener('click', function(e){
             e.preventDefault();
-            window.location.href = "/ikodave_war/profile-page"
+            window.location.href = "/profile-page"
         });
     }
     const problemLink = document.querySelector('#nav-problems a');
     if(problemLink){
         problemLink.addEventListener('click', function(e){
             e.preventDefault();
-            window.location.href = "/ikodave_war/problems"
+            window.location.href = "/problems"
         });
     }
 }
