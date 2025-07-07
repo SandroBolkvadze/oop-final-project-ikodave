@@ -16,8 +16,6 @@ public interface ProblemDAO {
 
     Difficulty getProblemDifficulty(int problemId);
 
-    Status getProblemStatus(int problemId, int userId);
-
     String getProblemTitle(int problemId);
 
     int getProblemId(String problemTitle);
@@ -25,8 +23,6 @@ public interface ProblemDAO {
     Problem getProblemByTitle(String problemTitle);
 
     int getDifficultyId(String difficulty);
-
-    int getStatusId(String status);
 
     int getTopicId(String topic);
 }

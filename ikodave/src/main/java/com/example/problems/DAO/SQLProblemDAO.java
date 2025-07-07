@@ -91,21 +91,6 @@ public class SQLProblemDAO implements ProblemDAO {
     }
 
     @Override
-    public Status getProblemStatus(int problemId, int userId) {
-        String sqlStatement = toProblemStatusSQL();
-        try (Connection connection = basicDataSource.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1, problemId);
-            preparedStatement.setInt(2, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return toStatus(resultSet);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public String getProblemTitle(int problemId) {
         String sqlStatement = toProblemTitleSQL();
         try (Connection connection = basicDataSource.getConnection()) {
@@ -146,21 +131,6 @@ public class SQLProblemDAO implements ProblemDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public int getStatusId(String status) {
-        String sqlStatement = toProblemStatusSQL();
-        try (Connection connection = basicDataSource.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, status);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return toId(resultSet);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     @Override
