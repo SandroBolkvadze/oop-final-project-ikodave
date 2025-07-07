@@ -6,4 +6,5 @@ public class DBConnectionConstants {
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     public static final String DATABASE_USER = "root";
     public static final String DATABASE_PASSWORD = "root";
+
 }

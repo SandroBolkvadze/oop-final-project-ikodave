@@ -32,22 +32,58 @@ public class FilterDifficultyTest {
         dataSource.setPassword(DATABASE_PASSWORD);
         dao = new SQLProblemDAO(dataSource);
     }
-    @Test
-    void testDifficultUser() throws SQLException {
+
+    public void testDifficultUser() throws SQLException {
+        setup();
         Difficulty difficulty = dao.getProblemDifficulty(1);
         assertEquals(1, difficulty.getId());
     }
-    @Test
-    void testFilterDifficulty() throws SQLException {
+  
+    public void testFilterDifficultyHard() throws SQLException {
+        setup();
         FilterDifficulty filter = new FilterDifficulty(new Difficulty(3, "HARD"));
         List<Problem> problems = dao.getProblemsByFilter(filter);
-        int k = 0;
+        boolean isProblemsFound = false;
         for(Problem problem : problems){
             if(Objects.equals(problem.getTitle(), "cool artem")){
-                k=1;
+                isProblemsFound = true;
             }
         }
-        assertEquals(1, k);
+        assertTrue(isProblemsFound);
+        assertEquals(1, problems.size());
+    }
+    public void testFilterDifficultyMedium() throws SQLException {
+        setup();
+        FilterDifficulty filter = new FilterDifficulty(new Difficulty(2, "MEDIUM"));
+        List<Problem> problems = dao.getProblemsByFilter(filter);
+        boolean isProblemsFound2 = false, isProblemsFound4 = false, isProblemsFound5 = false;
+        for(Problem problem : problems){
+            if(Objects.equals(problem.getTitle(), "xorificator")){
+                isProblemsFound2 = true;
+            }
+            if(Objects.equals(problem.getTitle(), "nice")){
+                isProblemsFound4 = true;
+            }
+            if(Objects.equals(problem.getTitle(), "nice")){
+                isProblemsFound5 = true;
+            }
+        }
+        assertTrue(isProblemsFound2);
+        assertTrue(isProblemsFound4);
+        assertTrue(isProblemsFound5);
+        assertEquals(3, problems.size());
+    }
+    public void testFilterDifficultyEasy() throws SQLException {
+        setup();
+        FilterDifficulty filter = new FilterDifficulty(new Difficulty(1, "Easy"));
+        List<Problem> problems = dao.getProblemsByFilter(filter);
+        boolean isProblemsFound = false;
+        for(Problem problem : problems){
+            if(Objects.equals(problem.getTitle(), "Ants")){
+                isProblemsFound= true;
+            }
+        }
+        assertTrue(isProblemsFound);
         assertEquals(1, problems.size());
     }
 }

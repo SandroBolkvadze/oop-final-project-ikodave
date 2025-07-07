@@ -38,6 +38,20 @@ public class SQLProblemDAO implements ProblemDAO {
             throw new RuntimeException(e);
         }
     }
+    @Override
+    public Problem getProblemByTitle(String title) {
+        String sqlStatement = toProblemByTitleSQL();
+
+        try (Connection connection = basicDataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, title);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return toProblem(resultSet);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public List<Topic> getProblemTopics(int problemId) {

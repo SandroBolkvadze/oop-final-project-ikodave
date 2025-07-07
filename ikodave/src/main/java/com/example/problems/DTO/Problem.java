@@ -1,6 +1,6 @@
 package com.example.problems.DTO;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Problem {
     private int id;
@@ -10,17 +10,24 @@ public class Problem {
     private Date createDate;
     private long timeLimit;
 
+
     public Problem() {
 
     }
 
+
     public Problem(int id, String title, String description, int difficultyId, Date createDate, long timeLimit) {
+
         this.id = id;
         this.title = title;
         this.description = description;
         this.difficultyId = difficultyId;
         this.createDate = createDate;
         this.timeLimit = timeLimit;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {
@@ -34,6 +41,7 @@ public class Problem {
     public void setDescription(String description) {
         this.description = description;
     }
+
 
     public void setDifficultyId(int difficultyId) {
         this.difficultyId = difficultyId;
@@ -70,4 +78,5 @@ public class Problem {
     public long getTimeLimit() {
         return timeLimit;
     }
+
 }

@@ -1,4 +1,4 @@
-package com.example.registration.servlets;
+package com.example.general_servlets;
 
 import com.example.registration.model.User;
 
