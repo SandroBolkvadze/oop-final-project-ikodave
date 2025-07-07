@@ -30,9 +30,9 @@ public class DatabaseConstants {
     }
 
     public static final class ProblemStatus {
-        public static final String SOLVED        = "SOLVED";
-        public static final String ATTEMPTED     = "ATTEMPTED";
-        public static final String TO_DO         = "TO DO";
+        public static final String SOLVED        = "'SOLVED'";
+        public static final String ATTEMPTED     = "'ATTEMPTED'";
+        public static final String TO_DO         = "'TODO'";
     }
 
     public static final class Problems {
