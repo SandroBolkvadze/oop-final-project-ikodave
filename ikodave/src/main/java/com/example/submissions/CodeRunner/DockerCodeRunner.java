@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.*;
 
 import static java.lang.String.format;
@@ -34,8 +35,8 @@ public class DockerCodeRunner implements CodeRunner {
         containersPool = new ArrayBlockingQueue<>(NUM_CONTAINERS);
         for (int i = 0; i < NUM_CONTAINERS; i++) {
             try {
-                Path workDir = Files.createTempDirectory(WORKDIR_PREFIX + "-");
-//                Path workDir = Files.createDirectories(Path.of("C:\\Users\\User\\Desktop\\runner" + UUID.randomUUID()));
+//                Path workDir = Files.createTempDirectory(WORKDIR_PREFIX + "-");
+                Path workDir = Files.createDirectories(Path.of("C:\\Users\\User\\Desktop\\runner" + UUID.randomUUID()));
                 Container container = new Container(workDir);
                 container.startContainer();
                 containersPool.put(container);
@@ -60,9 +61,10 @@ public class DockerCodeRunner implements CodeRunner {
     private SubmissionResult executeAllTestCases(CodeLang codeLang, String solutionCode, long executionTimeoutMillis, List<TestCase> testCases) throws IOException, InterruptedException {
         Container container = containersPool.take();
         codeLang.createFiles(container.getWorkDir(), solutionCode);
-
         try {
             CompileResult compileResult = compileUserCode(codeLang, container.getContainerName());
+            System.out.println(compileResult.getLog());
+
             if (!compileResult.isAccept()) {
                 System.out.println(compileResult.getLog());
                 return compileResult;
@@ -70,6 +72,7 @@ public class DockerCodeRunner implements CodeRunner {
 
             long maxTime = 0;
             long maxMemory = 0;
+
             for (TestCase testCase : testCases) {
                 TestCaseResult testCaseResult = executeUserCode(codeLang, container.getContainerName(), executionTimeoutMillis, testCase);
                 if (!testCaseResult.isAccept()) {
@@ -135,6 +138,7 @@ public class DockerCodeRunner implements CodeRunner {
         ProcessHandle.Info info = processHandle.info();
         Optional<Duration> cpuDuration = info.totalCpuDuration();
         long cpuTimeMillis = cpuDuration.orElse(Duration.ZERO).toMillis();
+        System.out.println(cpuTimeMillis + "ms");
 
         if (cpuTimeMillis > executeTimeoutMillis) {
             return new TestCaseTimeLimitExceeded(executeTimeoutMillis, 0, format("Time Limit Exceeded On Test %d", testCase.getTestNumber()));

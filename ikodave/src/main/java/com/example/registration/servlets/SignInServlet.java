@@ -56,7 +56,6 @@ public class SignInServlet extends HttpServlet {
 
             Map<String, String> result = new HashMap<>();
             if (authOK) {
-                System.out.println(user.getId());
                 request.getSession().setAttribute(USER_KEY, user);
                 result.put("status", "ok");
             } else {

@@ -22,14 +22,14 @@ public class SQLCodeLanguageDAO implements  CodeLanguageDAO {
         this.basicDataSource = basicDataSource;
     }
     @Override
-    public int getCodeLanguageIdByName(String codeLanguage) {
+    public CodeLanguage getCodeLanguageIdByName(String codeLanguage) {
         String sqlStatement = toCodeLanguageNameSQL();
         try (Connection connection = basicDataSource.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, codeLanguage);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            return toCodeLanguageId(resultSet);
+            return toCodeLanguage(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

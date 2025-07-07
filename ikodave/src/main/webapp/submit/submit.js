@@ -24,13 +24,17 @@ function submitSolution(e) {
 
     fetch('/problems/submit', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(submission)
-    }).catch(error => {
-        console.log(error);
-    });
+    })
+        .then(res => res.json())
+        .then(json => {
+            console.log(json);
+            if (json.redirect) {
+                window.location.href = json.redirect;
+            }
+        })
+        .catch(console.error);
 }
 
 async function loadLanguages() {

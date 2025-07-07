@@ -102,7 +102,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>SubmissionsListServlet</servlet-name>
-    <url-pattern>/problems/*/submissions</url-pattern>
+    <url-pattern>/problems/submissions/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -111,7 +111,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>SubmissionsListPageServlet</servlet-name>
-    <url-pattern>/problems/*/submissions-page</url-pattern>
+    <url-pattern>/problems/submissions-page/*</url-pattern>
   </servlet-mapping>
 
   <servlet>

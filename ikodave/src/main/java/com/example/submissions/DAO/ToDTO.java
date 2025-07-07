@@ -7,7 +7,10 @@ import com.example.submissions.DTO.TestCase;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.example.util.DatabaseConstants;
 import com.example.util.DatabaseConstants.*;
+import com.example.submissions.DTO.SubmissionVerdict;
 
 public class ToDTO {
 
@@ -16,24 +19,18 @@ public class ToDTO {
                 resultSet.getInt(TestCases.COL_ID),
                 resultSet.getInt(TestCases.COL_PROBLEM_ID),
                 resultSet.getInt(TestCases.COL_TEST_NUMBER),
-                resultSet.getString(TestCases.COL_INPUT),
-                resultSet.getString(TestCases.COL_OUTPUT)
+                resultSet.getString(TestCases.COL_OUTPUT),
+                resultSet.getString(TestCases.COL_INPUT)
         );
     }
-    public static int toVerdictId(ResultSet resultSet) throws SQLException {
+    public static SubmissionVerdict toVerdict(ResultSet resultSet) throws SQLException {
         try {
-            return resultSet.getInt(SubmissionVerdict.COL_ID);
+            return new SubmissionVerdict(resultSet.getInt(DatabaseConstants.SubmissionVerdict.COL_ID), resultSet.getString(DatabaseConstants.SubmissionVerdict.COL_VERDICT));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public static int toCodeLanguageId(ResultSet resultSet) throws SQLException {
-        try {
-            return resultSet.getInt(CodeLanguages.COL_ID);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
     public static Submission toSubmission(ResultSet resultSet) throws SQLException {
         try {
             Submission submission = new Submission();

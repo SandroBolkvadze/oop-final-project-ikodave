@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.util.AttributeConstants.*;
@@ -27,8 +28,6 @@ public class SubmissionsListServlet extends HttpServlet  {
         SubmissionDAO submissionDAO = (SubmissionDAO) getServletContext().getAttribute(SUBMISSION_DAO_KEY);
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
 
         String pathInfo = request.getPathInfo();
         if (pathInfo == null || pathInfo.split("/").length < 2) {
@@ -39,10 +38,12 @@ public class SubmissionsListServlet extends HttpServlet  {
         String[] pathParts = pathInfo.split("/");
         String problemTitle = pathParts[1];
 
+
         Problem problem = problemDAO.getProblemByTitle(problemTitle);
+        List<Submission> submissions = submissionDAO.getSubmissionsBy(2, problem.getId());
 
-        List<Submission> submissions = submissionDAO.getSubmissionsBy(user.getId(), problem.getId());
-
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.getWriter().write(gson.toJson(submissions));
     }
 

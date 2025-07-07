@@ -21,7 +21,6 @@ async function loadNavbar() {
         });
     }
 
-    // ✅ Fix the registration link to route through servlet
     const regLink = document.querySelector('#nav-register a');
     if (regLink) {
         regLink.addEventListener('click', function (e) {

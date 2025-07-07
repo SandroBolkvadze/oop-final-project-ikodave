@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -37,6 +39,11 @@ public class SubmitCodeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User user = (User) request.getSession().getAttribute(USER_KEY);
+//        System.out.println("user: " + user);
+
+        if (user == null) {
+            user = new User(2, "x", "y", 1, new java.util.Date());
+        }
 
         TestDAO testDAO = (TestDAO) getServletContext().getAttribute(TEST_DAO_KEY);
         ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
@@ -51,33 +58,42 @@ public class SubmitCodeServlet extends HttpServlet {
 
         Problem problem = problemDAO.getProblemByTitle(userSubmission.getProblemTitle());
         CodeLang codeLang = toCodeLang(userSubmission.getCodeLanguage());
+        System.out.println(codeLang);
         String solutionCode = userSubmission.getSolutionCode();
         List<TestCase> testCases = testDAO.getTestCasesByProblemId(problem.getId());
+
 
         Submission submission = new Submission();
         submission.setUserId(user.getId());
         submission.setProblemId(problem.getId());
-        submission.setVerdictId(verdictDAO.getVerdictIdByName("Running"));
+        submission.setVerdictId(verdictDAO.getVerdictByName("Running").getId());
         submission.setSolutionCode(solutionCode);
-        submission.setCodeLanguageId(codeLanguageDAO.getCodeLanguageIdByName(userSubmission.getCodeLanguage()));
+        submission.setCodeLanguageId(codeLanguageDAO.getCodeLanguageIdByName(userSubmission.getCodeLanguage()).getId());
         submission.setTime(0);
         submission.setMemory(0);
         submission.setSubmitDate(new Date(System.currentTimeMillis()));
 
         final int submissionId = submissionDAO.insertSubmission(submission);
 
-        System.out.println("created necessary stuff");
+
+        System.out.println(solutionCode);
+        System.out.println(testCases);
+        System.out.println(codeLang);
+        System.out.println(problem.getTitle());
 
         executor.submit(() -> {
             try {
+                System.out.println("start testing");
                 SubmissionResult submissionResult =
                         dockerCodeRunner.testCodeMultipleTests(codeLang, solutionCode, problem.getTimeLimit(), testCases);
+
+                System.out.println("log: " + submissionResult.getLog());
 
                 Submission updatedSubmission =
                         new Submission(submissionId,
                                 submission.getUserId(),
                                 submission.getProblemId(),
-                                verdictDAO.getVerdictIdByName(submissionResult.getVerdict()),
+                                verdictDAO.getVerdictByName(submissionResult.getVerdict()).getId(),
                                 submission.getSolutionCode(),
                                 submission.getCodeLanguageId(),
                                 submissionResult.getTime(),
@@ -92,6 +108,9 @@ public class SubmitCodeServlet extends HttpServlet {
             }
         });
 
-        request.getRequestDispatcher("/submissions/submissions.html").forward(request, response);
+        String redirectUrl = "/problems" + "/submissions-page/" +
+                        URLEncoder.encode(userSubmission.getProblemTitle(), StandardCharsets.UTF_8);
+        response.setContentType("application/json");
+        response.getWriter().write("{\"redirect\":\"" + redirectUrl + "\"}");
     }
 }

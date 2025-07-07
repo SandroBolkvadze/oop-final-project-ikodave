@@ -76,15 +76,17 @@ public class DatabaseConstants {
         public static final String COL_TEST_NUMBER = "test_number";
     }
 
-    public static final class SubmissionVerdict{
+    public static final class SubmissionVerdict {
         public static final String TABLE_NAME  = "submission_verdict";
         public static final String COL_ID        = "id";
         public static final String COL_VERDICT = "verdict";
     }
-    public static final class CodeLanguages{
+
+    public static final class CodeLanguages {
         public static final String TABLE_NAME  = "code_language";
         public static final String COL_ID        = "id";
         public static final String COL_LANGUAGE = "language";
     }
+
 }
 

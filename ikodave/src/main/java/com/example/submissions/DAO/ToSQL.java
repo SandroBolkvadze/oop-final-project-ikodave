@@ -10,20 +10,20 @@ public class ToSQL {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 TestCases.TABLE_NAME,
                 TestCases.TABLE_NAME,
-                TestCases.COL_ID);
+                TestCases.COL_PROBLEM_ID);
     }
     public static String toVerdictNameSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 SubmissionVerdict.TABLE_NAME,
                 SubmissionVerdict.TABLE_NAME,
-                SubmissionVerdict.COL_ID
+                SubmissionVerdict.COL_VERDICT
         );
     }
     public static String toCodeLanguageNameSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 CodeLanguages.TABLE_NAME,
                 CodeLanguages.TABLE_NAME,
-                CodeLanguages.COL_ID
+                CodeLanguages.COL_LANGUAGE
         );
     }
     public static String toInsertSubmissionNoIdSQL() {
