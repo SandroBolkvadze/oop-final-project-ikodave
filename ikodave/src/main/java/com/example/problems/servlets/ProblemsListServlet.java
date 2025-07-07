@@ -28,7 +28,7 @@ public class ProblemsListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.getRequestDispatcher("/problems/html/problems.html")
+        request.getRequestDispatcher("/problems/problems.html")
                 .forward(request, response);
     }
 
