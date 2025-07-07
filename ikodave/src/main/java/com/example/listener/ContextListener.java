@@ -1,7 +1,6 @@
 package com.example.listener;
 
-import com.example.problems.DAO.ProblemDAO;
-import com.example.problems.DAO.SQLProblemDAO;
+import com.example.problems.DAO.*;
 import com.example.registration.dao.MySQLUserDao;
 import com.example.registration.dao.UserDAO;
 import com.example.submissions.CodeRunner.DockerCodeRunner;
@@ -48,8 +47,14 @@ public class ContextListener implements ServletContextListener {
         VerdictDAO verdictDAO = new SQLVerdictDAO(dataSource);
         sce.getServletContext().setAttribute(VERDICT_DAO_KEY, verdictDAO);
 
+        TopicDAO topicDAO = new SQLTopicDAO(dataSource);
+        sce.getServletContext().setAttribute(TOPIC_DAO_KEY, topicDAO);
+
+        DifficultyDAO difficultyDAO = new SQLDifficultyDAO(dataSource);
+        sce.getServletContext().setAttribute(DIFFICULTY_DAO_KEY, difficultyDAO);
+
         DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
-        dockerCodeRunner.startContainers();
+//        dockerCodeRunner.startContainers();
         sce.getServletContext().setAttribute(DOCKER_CODE_RUNNER_KEY, dockerCodeRunner);
 
         Gson gson = new Gson();

@@ -44,6 +44,12 @@ CREATE TABLE IF NOT EXISTS code_language
     language VARCHAR(32) UNIQUE NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS problem_status
+(
+    id   INT AUTO_INCREMENT PRIMARY KEY,
+    status VARCHAR(32) UNIQUE NOT NULL
+);
+
 -- problems
 CREATE TABLE IF NOT EXISTS problems
 (
@@ -89,6 +95,6 @@ CREATE TABLE IF NOT EXISTS test_cases
     problem_id     INT,
     problem_input  TEXT,
     problem_output TEXT,
-    order_num      INT,
+    test_number    INT,
     FOREIGN KEY (problem_id) REFERENCES problems (id)
 );

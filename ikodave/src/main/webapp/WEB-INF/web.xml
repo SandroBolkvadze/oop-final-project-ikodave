@@ -77,6 +77,14 @@
     <url-pattern>/problems-page</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>ProblemDifficultiesServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemDifficultiesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemDifficultiesServlet</servlet-name>
+    <url-pattern>/difficulties</url-pattern>
+  </servlet-mapping>
 
 
   <servlet>

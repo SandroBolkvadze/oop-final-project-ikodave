@@ -1,22 +1,20 @@
 package com.example.problems.DTO;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Problem {
     private int id;
     private String title;
     private String description;
     private int difficultyId;
-    private Date createDate;
+    private Timestamp createDate;
     private long timeLimit;
-
 
     public Problem() {
 
     }
 
-
-    public Problem(int id, String title, String description, int difficultyId, Date createDate, long timeLimit) {
+    public Problem(int id, String title, String description, int difficultyId, Timestamp createDate, long timeLimit) {
 
         this.id = id;
         this.title = title;
@@ -47,7 +45,7 @@ public class Problem {
         this.difficultyId = difficultyId;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
@@ -67,7 +65,7 @@ public class Problem {
         return difficultyId;
     }
 
-    public Date getCreateDate() {
+    public Timestamp getCreateDate() {
         return createDate;
     }
 

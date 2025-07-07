@@ -27,11 +27,10 @@ import static com.example.util.SessionConstants.USER_KEY;
 
 public class ProblemsListServlet extends HttpServlet {
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = (User) getServletContext().getAttribute(USER_KEY);
-        UserDAO userDAO = (UserDAO) getServletContext().getAttribute(USER_DAO_KEY);
+        UserDAO userDao = (UserDAO) getServletContext().getAttribute(USER_DAO_KEY);
         ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
@@ -71,6 +70,7 @@ public class ProblemsListServlet extends HttpServlet {
         }
 
         System.out.println(filterAnd.toSQLStatement());
+
         List<Problem> problems = problemDAO.getProblemsByFilter(filterAnd);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
