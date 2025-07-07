@@ -20,43 +20,43 @@ public class ToDTO {
                 resultSet.getString(TestCases.COL_OUTPUT)
         );
     }
-    public static int toVerdictId(ResultSet rs) throws SQLException {
+    public static int toVerdictId(ResultSet resultSet) throws SQLException {
         try {
-            return rs.getInt(SubmissionVerdict.COL_ID);
+            return resultSet.getInt(SubmissionVerdict.COL_ID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public static int toCodeLanguageId(ResultSet rs) throws SQLException {
+    public static int toCodeLanguageId(ResultSet resultSet) throws SQLException {
         try {
-            return rs.getInt(CodeLanguages.COL_ID);
+            return resultSet.getInt(CodeLanguages.COL_ID);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public static Submission toSubmission(ResultSet rs) throws SQLException {
+    public static Submission toSubmission(ResultSet resultSet) throws SQLException {
         try {
             Submission submission = new Submission();
-            submission.setId(rs.getInt(Problems.COL_ID));
-            submission.setUserId(rs.getInt(Submissions.COL_USER_ID));
-            submission.setProblemId(rs.getInt(Submissions.COL_PROBLEM_ID));
-            submission.setVerdictId(rs.getInt(Submissions.COL_VERDICT_ID));
-            submission.setCodeLanguageId(rs.getInt(Submissions.COL_CODE_LANGUAGE_ID));
-            submission.setSolutionCode(rs.getString(Submissions.COL_SOLUTION));
-            submission.setTime(rs.getLong(Submissions.COL_TIME));
-            submission.setMemory(rs.getLong(Submissions.COL_MEMORY));
-            submission.setSubmitDate(rs.getDate(Submissions.COL_SUBMIT_DATE));
-            submission.setLog(rs.getString(Submissions.COL_LOG));
+            submission.setId(resultSet.getInt(Submissions.COL_ID));
+            submission.setUserId(resultSet.getInt(Submissions.COL_USER_ID));
+            submission.setProblemId(resultSet.getInt(Submissions.COL_PROBLEM_ID));
+            submission.setVerdictId(resultSet.getInt(Submissions.COL_VERDICT_ID));
+            submission.setCodeLanguageId(resultSet.getInt(Submissions.COL_CODE_LANGUAGE_ID));
+            submission.setSolutionCode(resultSet.getString(Submissions.COL_SOLUTION));
+            submission.setTime(resultSet.getLong(Submissions.COL_TIME));
+            submission.setMemory(resultSet.getLong(Submissions.COL_MEMORY));
+            submission.setSubmitDate(resultSet.getDate(Submissions.COL_SUBMIT_DATE));
+            submission.setLog(resultSet.getString(Submissions.COL_LOG));
             return submission;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public static CodeLanguage toCodeLanguage(ResultSet rs) throws SQLException {
+    public static CodeLanguage toCodeLanguage(ResultSet resultSet) throws SQLException {
         try {
             CodeLanguage codeLanguage = new CodeLanguage();
-            codeLanguage.setId(rs.getInt(CodeLanguages.COL_ID));
-            codeLanguage.setLanguage(rs.getString(CodeLanguages.COL_LANGUAGE));
+            codeLanguage.setId(resultSet.getInt(CodeLanguages.COL_ID));
+            codeLanguage.setLanguage(resultSet.getString(CodeLanguages.COL_LANGUAGE));
             return codeLanguage;
         } catch (SQLException e) {
             throw new RuntimeException(e);

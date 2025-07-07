@@ -26,6 +26,8 @@ public class SQLTestDAO implements TestDAO {
         String sqlStatement = toTestCasesSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, problemId);
+
             ResultSet resultSet = preparedStatement.executeQuery();
 
             List<TestCase> testCases = new ArrayList<>();

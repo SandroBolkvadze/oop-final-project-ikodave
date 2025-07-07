@@ -16,22 +16,21 @@ public class ToSQL {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 SubmissionVerdict.TABLE_NAME,
                 SubmissionVerdict.TABLE_NAME,
-                SubmissionVerdict.COL_VERDICT
+                SubmissionVerdict.COL_ID
         );
     }
     public static String toCodeLanguageNameSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 CodeLanguages.TABLE_NAME,
                 CodeLanguages.TABLE_NAME,
-                CodeLanguages.COL_LANGUAGE
+                CodeLanguages.COL_ID
         );
     }
-    public static String toInsertSubmissionSQL() {
+    public static String toInsertSubmissionNoIdSQL() {
         return format("INSERT INTO %s " +
-                "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" +
+                "(%s, %s, %s, %s, %s, %s, %s, %s, %s) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
                 Submissions.TABLE_NAME,
-                Submissions.COL_ID,
                 Submissions.COL_USER_ID,
                 Submissions.COL_PROBLEM_ID,
                 Submissions.COL_VERDICT_ID,
@@ -45,16 +44,16 @@ public class ToSQL {
     }
     public static String toUpdateSubmissionSQL() {
         return format("UPDATE %s SET " +
-                "%s.%s = ?" +
-                "%s.%s = ?" +
-                "%s.%s = ?" +
-                "%s.%s = ?" +
-                "%s.%s = ?" +
-                "%s.%s = ?" +
-                "%s.%s = ?" +
-                "%s.%s = ?" +
-                "%s.%s = ?" +
-                "WHERE %s.%s = ?",
+                "%s.%s = ? " +
+                "%s.%s = ? " +
+                "%s.%s = ? " +
+                "%s.%s = ? " +
+                "%s.%s = ? " +
+                "%s.%s = ? " +
+                "%s.%s = ? " +
+                "%s.%s = ? " +
+                "%s.%s = ? " +
+                "WHERE %s.%s = ?;",
                 Submissions.TABLE_NAME,
                 Submissions.TABLE_NAME, Submissions.COL_USER_ID,
                 Submissions.TABLE_NAME, Submissions.COL_PROBLEM_ID,
@@ -65,11 +64,11 @@ public class ToSQL {
                 Submissions.TABLE_NAME, Submissions.COL_MEMORY,
                 Submissions.TABLE_NAME, Submissions.COL_SUBMIT_DATE,
                 Submissions.TABLE_NAME, Submissions.COL_LOG,
-                Submissions.TABLE_NAME
+                Submissions.TABLE_NAME, Submissions.COL_ID
         );
     }
     public static String toSubmissionSQL() {
-        return format("SELECT * FROM %s WHERE %s.%s = %s.%s AND %s.%s = %s.%s",
+        return format("SELECT * FROM %s WHERE %s.%s = ? AND %s.%s = ?;",
                 Submissions.TABLE_NAME,
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
@@ -78,6 +77,6 @@ public class ToSQL {
         );
     }
     public static String toCodeLanguageSQL() {
-        return format("SELECT * FROM %s", CodeLanguages.TABLE_NAME);
+        return format("SELECT * FROM %s;", CodeLanguages.TABLE_NAME);
     }
 }

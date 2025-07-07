@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadLanguages()
         .catch((error) => {
-            console(error)
+            console.log(error)
         });
 
     document

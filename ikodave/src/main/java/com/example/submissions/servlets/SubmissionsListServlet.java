@@ -31,8 +31,12 @@ public class SubmissionsListServlet extends HttpServlet  {
         response.setCharacterEncoding("UTF-8");
 
         String pathInfo = request.getPathInfo();
-        String[] pathParts = pathInfo.split("/");
+        if (pathInfo == null || pathInfo.split("/").length < 2) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid URL format");
+            return;
+        }
 
+        String[] pathParts = pathInfo.split("/");
         String problemTitle = pathParts[1];
 
         Problem problem = problemDAO.getProblemByTitle(problemTitle);

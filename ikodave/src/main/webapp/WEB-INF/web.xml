@@ -65,7 +65,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>SubmissionsCodeServlet</servlet-name>
-    <url-pattern>/submit</url-pattern>
+    <url-pattern>/problems/submit</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -79,7 +79,7 @@
 
   <servlet>
     <servlet-name>SubmissionsListPageServlet</servlet-name>
-    <servlet-class>com.example.submissions.servlets.SubmissionsListServlet</servlet-class>
+    <servlet-class>com.example.submissions.servlets.SubmissionsListPageServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>SubmissionsListPageServlet</servlet-name>
