@@ -5,7 +5,7 @@ import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.Filter;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -128,6 +128,20 @@ public class SQLProblemDAO implements ProblemDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return toId(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Problem getProblemByTitle(String problemTitle) {
+        String sqlStatement = toProblemByTitleSQL();
+        try (Connection connection = basicDataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, problemTitle);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return toProblem(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

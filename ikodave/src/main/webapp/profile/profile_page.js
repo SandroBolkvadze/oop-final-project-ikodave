@@ -1,5 +1,5 @@
 function load_profile(){
-    fetch('/ikodave_war/profile')
+    fetch('/profile')
         .then(res => res.json())
         .then(username => {
             document.getElementById('username-placeholder').textContent = username || "Guest";

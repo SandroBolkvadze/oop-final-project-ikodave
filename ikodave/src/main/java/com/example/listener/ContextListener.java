@@ -4,7 +4,13 @@ import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.SQLProblemDAO;
 import com.example.registration.dao.MySQLUserDao;
 import com.example.registration.dao.UserDAO;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import com.example.submissions.CodeRunner.DockerCodeRunner;
+import com.example.submissions.DAO.SQLSubmissionDAO;
+import com.example.submissions.DAO.SQLTestDAO;
+import com.example.submissions.DAO.SubmissionDAO;
+import com.example.submissions.DAO.TestDAO;
+import com.google.gson.Gson;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import static com.example.util.AttributeConstants.*;
 import static com.example.util.DBConnectionConstants.*;
@@ -28,6 +34,21 @@ public class ContextListener implements ServletContextListener {
 
         ProblemDAO problemDAO = new SQLProblemDAO(dataSource);
         sce.getServletContext().setAttribute(PROBLEM_DAO_KEY, problemDAO);
+
+        UserDAO userDAO = new MySQLUserDao(dataSource);
+        sce.getServletContext().setAttribute(USER_DAO_KEY, userDAO);
+
+        TestDAO testDAO = new SQLTestDAO(dataSource);
+        sce.getServletContext().setAttribute(TEST_DAO_KEY, testDAO);
+
+        SubmissionDAO submissionDAO = new SQLSubmissionDAO(dataSource);
+        sce.getServletContext().setAttribute(SUBMISSION_DAO_KEY, submissionDAO);
+
+        DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
+        sce.getServletContext().setAttribute(DOCKER_CODE_RUNNER_KEY, dockerCodeRunner);
+
+        Gson gson = new Gson();
+        sce.getServletContext().setAttribute(GSON_KEY, gson);
 
         sce.getServletContext().setAttribute(BASIC_DATASOURCE_KEY, dataSource);
     }

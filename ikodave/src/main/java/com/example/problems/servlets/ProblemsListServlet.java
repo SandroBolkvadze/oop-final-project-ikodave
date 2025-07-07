@@ -10,7 +10,7 @@ import com.example.problems.utils.FilterCriteria;
 import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
 import com.google.gson.Gson;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

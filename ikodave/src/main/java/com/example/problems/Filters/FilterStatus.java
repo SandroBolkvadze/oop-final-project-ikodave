@@ -7,7 +7,7 @@ import com.example.problems.Filters.Parameters.ParameterInteger;
 import com.example.problems.Filters.Parameters.ParameterString;
 import com.example.registration.model.User;
 import com.example.util.DatabaseConstants.*;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,7 +44,7 @@ public class FilterStatus implements Filter {
                 Submissions.COL_STATUS_ID,
                 Submissions.TO_DO_ID,
                 Submissions.TABLE_NAME,
-                Submissions.COL_STATUS_ID
+                Submissions.COL_VERDICT_ID
         );
     }
 

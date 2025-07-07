@@ -24,6 +24,7 @@ public interface ProblemDAO {
 
     int getProblemId(String problemTitle);
 
+    Problem getProblemByTitle(String problemTitle);
 
     int getDifficultyId(String difficulty);
 

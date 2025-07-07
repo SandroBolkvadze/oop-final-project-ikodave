@@ -8,8 +8,10 @@ import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.*;
 import com.example.problems.utils.ToSQL;
-import junit.framework.TestCase;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,14 +19,16 @@ import java.util.List;
 
 import static com.example.util.DBConnectionConstants.*;
 
-public class FilterAndTest extends TestCase {
+public class FilterAndTest {
 
     static BasicDataSource dataSource;
     static FilterAnd filterand;
     static ProblemDAO dao;
+
     static List<Topic> topics;
     static FilterTopic filterTopic;
     static FilterDifficulty filterDifficulty;
+  
     static void setup() throws SQLException {
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
@@ -39,6 +43,7 @@ public class FilterAndTest extends TestCase {
         filterTopic = new FilterTopic(topics);
         filterDifficulty = new FilterDifficulty(new Difficulty(2, "MEDIUM"));
     }
+  
     public void testFilterAnd() throws SQLException {
         setup();
         filterand.addFilter(filterTopic);
@@ -49,6 +54,7 @@ public class FilterAndTest extends TestCase {
             int p = problem.getId();
             if (p == 4) problem4 = true;
             if (p == 5) problem5 = true;
+
         }
         assertEquals("nice", problems.get(0).getTitle());
         assertEquals("hard", problems.get(1).getTitle());

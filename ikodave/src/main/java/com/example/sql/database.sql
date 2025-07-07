@@ -32,10 +32,16 @@ CREATE TABLE IF NOT EXISTS problem_topic
     topic VARCHAR(16) UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS problem_status
+CREATE TABLE IF NOT EXISTS submission_verdict
 (
     id     INT AUTO_INCREMENT PRIMARY KEY,
-    status VARCHAR(16) UNIQUE NOT NULL
+    verdict VARCHAR(32) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS code_language
+(
+    id   INT AUTO_INCREMENT PRIMARY KEY,
+    language VARCHAR(32) UNIQUE NOT NULL
 );
 
 -- problems
@@ -45,8 +51,8 @@ CREATE TABLE IF NOT EXISTS problems
     problem_title       VARCHAR(100) UNIQUE NOT NULL,
     problem_description TEXT,
     difficulty_id       INT,
-    create_date         DATE,
-    time_limit          LONG DEFAULT 20000,
+    create_date         DATETIME,
+    time_limit          LONG DEFAULT 2000,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty (id)
 );
 
@@ -61,16 +67,20 @@ CREATE TABLE IF NOT EXISTS problem_many_to_many_topic
 
 CREATE TABLE IF NOT EXISTS submissions
 (
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    user_id       INT,
-    problem_id    INT,
-    status_id     INT,
-    solution_code TEXT,
-    submit_date   DATE,
-    log           TEXT,
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    user_id             INT,
+    problem_id          INT,
+    verdict_id          INT,
+    solution_code       TEXT,
+    code_language_id    INT,
+    time                LONG,
+    memory              LONG,
+    submit_date         DATETIME,
+    log                 TEXT,
     FOREIGN KEY (problem_id) REFERENCES problems (id),
     FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (status_id) REFERENCES problem_status (id)
+    FOREIGN KEY (verdict_id) REFERENCES submission_verdict (id),
+    FOREIGN KEY (code_language_id) REFERENCES code_language (id)
 );
 
 CREATE TABLE IF NOT EXISTS test_cases
