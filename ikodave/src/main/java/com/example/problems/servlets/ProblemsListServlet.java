@@ -6,6 +6,7 @@ import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.*;
+import com.example.problems.FrontResponse.ProblemResponse;
 import com.example.problems.utils.FilterCriteria;
 import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
