@@ -4,14 +4,14 @@ public class TestCase {
 
     private int id;
     private int problemId;
-    private int orderNum;
+    private int testNumber;
     private String problemOutput;
     private String problemInput;
 
-    public TestCase(int id, int problemId, int orderNum, String problemOutput, String problemInput) {
+    public TestCase(int id, int problemId, int testNumber, String problemOutput, String problemInput) {
         this.id = id;
         this.problemId = problemId;
-        this.orderNum = orderNum;
+        this.testNumber = testNumber;
         this.problemOutput = problemOutput;
         this.problemInput = problemInput;
     }
@@ -24,8 +24,8 @@ public class TestCase {
         this.problemId = problemId;
     }
 
-    public void setOrderNum(int orderNum) {
-        this.orderNum = orderNum;
+    public void setTestNumber(int testNumber) {
+        this.testNumber = testNumber;
     }
 
     public void setProblemOutput(String problemOutput) {
@@ -48,8 +48,8 @@ public class TestCase {
         return problemId;
     }
 
-    public int getOrderNum() {
-        return orderNum;
+    public int getTestNumber() {
+        return testNumber;
     }
 
     public String getProblemOutput() {

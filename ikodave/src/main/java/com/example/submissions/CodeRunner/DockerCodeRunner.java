@@ -126,7 +126,7 @@ public class DockerCodeRunner implements CodeRunner {
         boolean finished = process.waitFor(executeTimeoutMillis + 1000, TimeUnit.MILLISECONDS);
 
         if (!finished) {
-            return new TestCaseTimeLimitExceeded(executeTimeoutMillis, 0, format("Time Limit Exceeded On Test %d", testCase.getOrderNum()));
+            return new TestCaseTimeLimitExceeded(executeTimeoutMillis, 0, format("Time Limit Exceeded On Test %d", testCase.getTestNumber()));
         }
         if (process.exitValue() != 0) {
             return new TestCaseRuntimeError(0, 0, readInputStream(process.getErrorStream()));
@@ -137,15 +137,15 @@ public class DockerCodeRunner implements CodeRunner {
         long cpuTimeMillis = cpuDuration.orElse(Duration.ZERO).toMillis();
 
         if (cpuTimeMillis > executeTimeoutMillis) {
-            return new TestCaseTimeLimitExceeded(executeTimeoutMillis, 0, format("Time Limit Exceeded On Test %d", testCase.getOrderNum()));
+            return new TestCaseTimeLimitExceeded(executeTimeoutMillis, 0, format("Time Limit Exceeded On Test %d", testCase.getTestNumber()));
         }
         String output = readInputStream(process.getInputStream());
 
         if (output.strip().equals(testCase.getProblemOutput())) {
-            return new TestCaseAccept(cpuTimeMillis, 0, format("Test Case %d Passed", testCase.getOrderNum()));
+            return new TestCaseAccept(cpuTimeMillis, 0, format("Test Case %d Passed", testCase.getTestNumber()));
         }
         else {
-            return new TestCaseWrongAnswer(cpuTimeMillis, 0, format("Wrong Answer On Test %d", testCase.getOrderNum()));
+            return new TestCaseWrongAnswer(cpuTimeMillis, 0, format("Wrong Answer On Test %d", testCase.getTestNumber()));
         }
     }
 
