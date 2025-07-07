@@ -26,7 +26,7 @@ public class HtmlAccessBlockerFilter implements Filter {
         }
 
         // Block direct access to other .html files
-        res.sendRedirect("/ikodave_war/home");
+        res.sendRedirect("/home");
     }
 
     @Override

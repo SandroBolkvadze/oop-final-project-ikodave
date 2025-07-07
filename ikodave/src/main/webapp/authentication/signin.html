@@ -47,7 +47,7 @@
         const username = document.getElementById("username").value.trim();
         const password = document.getElementById("password").value.trim();
 
-        const res = await fetch("/ikodave_war/signin", {
+        const res = await fetch("/signin", {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ username, password })
@@ -58,7 +58,7 @@
             document.getElementById("error-msg").innerHTML =
                 '<div class="alert alert-danger text-center">Username or password is incorrect.</div>';
         } else if (data.status === "ok") {
-            window.location.href = "/ikodave_war/problems/html/problems.html";
+            window.location.href = "/problems/html/problems.html";
         }
     });
 </script>

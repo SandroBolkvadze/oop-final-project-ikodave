@@ -39,12 +39,12 @@ public class SQLProblemDAO implements ProblemDAO {
         }
     }
     @Override
-    public Problem getProblemByTitle(String title) {
+    public Problem getProblemByTitle(String problemTitle) {
         String sqlStatement = toProblemByTitleSQL();
 
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, title);
+            preparedStatement.setString(1, problemTitle);
             ResultSet resultSet = preparedStatement.executeQuery();
             return toProblem(resultSet);
 
@@ -133,19 +133,6 @@ public class SQLProblemDAO implements ProblemDAO {
         }
     }
 
-    @Override
-    public Problem getProblemByTitle(String problemTitle) {
-        String sqlStatement = toProblemByTitleSQL();
-        try (Connection connection = basicDataSource.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, problemTitle);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return toProblem(resultSet);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public int getDifficultyId(String difficulty) {

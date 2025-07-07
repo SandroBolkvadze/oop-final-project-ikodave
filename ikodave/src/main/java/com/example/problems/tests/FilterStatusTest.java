@@ -20,40 +20,26 @@ public class FilterStatusTest {
 
     static BasicDataSource dataSource;
     static ProblemDAO dao;
-<<<<<<< feature/add-compile-run
+    static User user1, user2, user3, user4;
     @BeforeEach
     void setup() throws SQLException {
-=======
-    static User user1, user2, user3, user4;
-    static void setup() throws SQLException {
->>>>>>> master
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
         dataSource.setDriverClassName(DRIVER);
         dataSource.setUsername(DATABASE_USER);
         dataSource.setPassword(DATABASE_PASSWORD);
         dao = new SQLProblemDAO(dataSource);
-<<<<<<< feature/add-compile-run
-    }
-    @Test
-    void testStatusFilter() throws SQLException {
-        User user1 = new User("bolkvadze","sbolk23");
-        User user2 = new User("losaberidze","slosa23");
-        User user3 = new User("endeladze","kende23");
-        User user4 = new User("metreveli","nmetr23");
-=======
         user1 = new User("bolkvadze","sbolk23");
         user2 = new User("losaberidze","slosa23");
         user3 = new User("endeladze","kende23");
         user4 = new User("metreveli","nmetr23");
->>>>>>> master
         user1.setId(1);
         user2.setId(2);
         user3.setId(3);
         user4.setId(4);
     }
+    @Test
     public void testStatusFilterAccepted() throws SQLException {
-        setup();
         Status status = new Status(1, "ACCEPTED");
         FilterStatus filterStatus = new FilterStatus(user1, status);
         List<Problem> problems = dao.getProblemsByFilter(filterStatus);
@@ -67,8 +53,8 @@ public class FilterStatusTest {
         assertTrue(problemFound1);
         assertTrue(problemFound5);
     }
+    @Test
     public void testStatusFilterRejected() throws SQLException {
-        setup();
         Status status = new Status(2, "WRONG");
         FilterStatus filterStatus = new FilterStatus(user2, status);
         List<Problem> problems = dao.getProblemsByFilter(filterStatus);
@@ -82,8 +68,8 @@ public class FilterStatusTest {
         assertTrue(problemFound1);
         assertTrue(problemFound3);
     }
+    @Test
     public void testStatusFilterPending() throws SQLException {
-        setup();
         Status status = new Status(3, "PENDING");
         FilterStatus filterStatus = new FilterStatus(user3, status);
         List<Problem> problems = dao.getProblemsByFilter(filterStatus);
@@ -92,8 +78,8 @@ public class FilterStatusTest {
         Problem problem = problems.get(0);
         assertEquals(3, problem.getId());
     }
+    @Test
     public void testProblemTODO() throws SQLException {
-        setup();
         Status status = new Status(4, "TODO");
         FilterStatus filterStatus = new FilterStatus(user1, status);
         List<Problem> problems = dao.getProblemsByFilter(filterStatus);

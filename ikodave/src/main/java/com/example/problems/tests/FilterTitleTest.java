@@ -42,6 +42,7 @@ public class FilterTitleTest {
         assertTrue(problemFound2);
         assertTrue(problemFound4);
     }
+    @Test
     public void testTitleFilterNoProblems() throws SQLException {
         setup();
         FilterTitle ft = new FilterTitle("ick");
