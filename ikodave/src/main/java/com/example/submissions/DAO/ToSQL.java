@@ -92,6 +92,18 @@ public class ToSQL {
                 Submissions.COL_PROBLEM_ID
         );
     }
+
+    public static String toSubmissionSortedSQL() {
+        return format("SELECT * FROM %s WHERE %s.%s = ? AND %s.%s = ? ORDER BY %s.%s DESC;",
+                Submissions.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Submissions.COL_USER_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_PROBLEM_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE
+        );
+    }
     public static String toCodeLanguageSQL() {
         return format("SELECT * FROM %s;", CodeLanguages.TABLE_NAME);
     }

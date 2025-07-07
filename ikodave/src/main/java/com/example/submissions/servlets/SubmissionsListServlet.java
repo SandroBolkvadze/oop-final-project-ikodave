@@ -43,11 +43,8 @@ public class SubmissionsListServlet extends HttpServlet  {
         String[] pathParts = pathInfo.split("/");
         String problemTitle = pathParts[1];
 
-
         Problem problem = problemDAO.getProblemByTitle(problemTitle);
-        List<Submission> submissions = submissionDAO.getSubmissionsBy(2, problem.getId());
-
-        System.out.println();
+        List<Submission> submissions = submissionDAO.getSubmissionsByOrder(2, problem.getId());
 
         List<SubmissionResponse> submissionResponses =
                 submissions.stream().map((submission) -> {
@@ -57,7 +54,7 @@ public class SubmissionsListServlet extends HttpServlet  {
 
                     return new SubmissionResponse(
                             submission.getSubmitDate(),
-                            user.getUsername(),
+                            /*user.getUsername()*/"sandro",
                             submission.getSolutionCode(),
                             problemTitle,
                             codeLanguageDAO.getCodeLanguageById(submission.getCodeLanguageId()).getLanguage(),

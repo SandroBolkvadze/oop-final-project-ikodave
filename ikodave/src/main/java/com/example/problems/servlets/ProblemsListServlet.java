@@ -30,7 +30,6 @@ public class ProblemsListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = (User) getServletContext().getAttribute(USER_KEY);
-        UserDAO userDao = (UserDAO) getServletContext().getAttribute(USER_DAO_KEY);
         ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
