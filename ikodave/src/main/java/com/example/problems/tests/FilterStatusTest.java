@@ -7,7 +7,6 @@ import com.example.problems.DTO.Status;
 import com.example.problems.Filters.FilterStatus;
 import com.example.registration.model.User;
 
-
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;
 
@@ -45,13 +44,6 @@ class FilterStatusTest {
             """);
 
             stmt.execute("""
-                CREATE TABLE problem_status (
-                    id INT PRIMARY KEY,
-                    status VARCHAR(50)
-                );
-            """);
-
-            stmt.execute("""
                 CREATE TABLE problems (
                     id INT PRIMARY KEY,
                     problem_title VARCHAR(255),
@@ -67,7 +59,7 @@ class FilterStatusTest {
                     id INT PRIMARY KEY,
                     user_id INT,
                     problem_id INT,
-                    status_id INT,
+                    verdict_id INT,
                     solution_code CLOB,
                     submit_date DATE,
                     log CLOB
@@ -80,14 +72,6 @@ class FilterStatusTest {
                     (2, 'losaberidze', 'slosa23', 1, '2025-06-11'),
                     (3, 'endeladze',   'kende23', 2, '2025-06-12'),
                     (4, 'metreveli',   'nmetr23', 3, '2025-06-13');
-            """);
-
-            stmt.execute("""
-                INSERT INTO problem_status (id, status) VALUES
-                    (1, 'ACCEPTED'),
-                    (2, 'WRONG'),
-                    (3, 'PENDING'),
-                    (4, 'TODO');
             """);
 
             stmt.execute("""
@@ -107,7 +91,7 @@ class FilterStatusTest {
             stmt.execute("DELETE FROM submissions");
 
             stmt.execute("""
-                INSERT INTO submissions (id, user_id, problem_id, status_id, solution_code, submit_date, log) VALUES
+                INSERT INTO submissions (id, user_id, problem_id, verdict_id, solution_code, submit_date, log) VALUES
                     (1, 1, 1, 1, '+',    '2025-06-25', ''),
                     (2, 1, 2, 2, '++',   '2025-06-25', ''),
                     (3, 1, 3, 2, '+++',  '2025-06-25', ''),
@@ -133,7 +117,7 @@ class FilterStatusTest {
 
     @Test
     void testStatusFilterAccepted() throws Exception {
-        FilterStatus filter = new FilterStatus(user1, new Status(1, "ACCEPTED"));
+        FilterStatus filter = new FilterStatus(user1, "SOLVED");
         List<Problem> problems = dao.getProblemsByFilter(filter);
 
         assertEquals(2, problems.size());
@@ -142,27 +126,8 @@ class FilterStatusTest {
     }
 
     @Test
-    void testStatusFilterRejected() throws Exception {
-        FilterStatus filter = new FilterStatus(user2, new Status(2, "WRONG"));
-        List<Problem> problems = dao.getProblemsByFilter(filter);
-
-        assertEquals(2, problems.size());
-        assertTrue(problems.stream().anyMatch(p -> p.getId() == 1));
-        assertTrue(problems.stream().anyMatch(p -> p.getId() == 3));
-    }
-
-    @Test
-    void testStatusFilterPending() throws Exception {
-        FilterStatus filter = new FilterStatus(user3, new Status(3, "PENDING"));
-        List<Problem> problems = dao.getProblemsByFilter(filter);
-
-        assertEquals(1, problems.size());
-        assertEquals(3, problems.get(0).getId());
-    }
-
-    @Test
     void testProblemTODO() throws Exception {
-        FilterStatus filter = new FilterStatus(user1, new Status(4, "TODO"));
+        FilterStatus filter = new FilterStatus(user1, "TODO");
         List<Problem> problems = dao.getProblemsByFilter(filter);
 
         assertEquals(1, problems.size());

@@ -7,7 +7,6 @@ import com.example.problems.Filters.Parameters.ParameterInteger;
 import com.example.problems.Filters.Parameters.ParameterString;
 import com.example.registration.model.User;
 import com.example.util.DatabaseConstants.*;
-import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,33 +18,29 @@ import static java.lang.String.format;
 public class FilterStatus implements Filter {
 
     private final User user;
-    private final Status status;
-
-    public FilterStatus(User user, Status status) {
+    private final int ACCEPTED_ID = 1;
+    private final String status;
+    public FilterStatus(User user, String status) {
         this.user = user;
         this.status = status;
     }
 
-    // TODO: FIX THIS
     public String toSQLStatement() {
         return format(
                 "SELECT %s.* FROM %s LEFT JOIN %s ON %s.%s = %s.%s AND %s.%s = ? " +
-                        "WHERE (? =  AND %s.%s IS NULL) OR (? <> %s AND %s.%s = ?)",
+                        "WHERE " +
+                        "(? = %s AND %s.%s IS NULL) OR " +
+                        "(? = %s AND %s.%s = %d) OR " +
+                        "(? = %s AND %s.%s <> %d);",
                 Problems.TABLE_NAME,
                 Problems.TABLE_NAME,
                 Submissions.TABLE_NAME,
-                Submissions.TABLE_NAME,
-                Submissions.COL_PROBLEM_ID,
-                Problems.TABLE_NAME,
-                Problems.COL_ID,
-                Submissions.TABLE_NAME,
-                Submissions.COL_USER_ID,
-                ProblemStatus.TO_DO,
-                Submissions.TABLE_NAME,
-                Submissions.COL_PROBLEM_ID,
-                ProblemStatus.TO_DO,
-                Submissions.TABLE_NAME,
-                Submissions.COL_VERDICT_ID
+                Submissions.TABLE_NAME, Submissions.COL_PROBLEM_ID,
+                Problems.TABLE_NAME, Problems.COL_ID,
+                Submissions.TABLE_NAME, Submissions.COL_USER_ID,
+                ProblemStatus.TO_DO, Submissions.TABLE_NAME, Submissions.COL_PROBLEM_ID,
+                ProblemStatus.SOLVED, Submissions.TABLE_NAME, Submissions.COL_VERDICT_ID, ACCEPTED_ID,
+                ProblemStatus.ATTEMPTED, Submissions.TABLE_NAME,Submissions.COL_VERDICT_ID, ACCEPTED_ID
         );
     }
 
@@ -68,9 +63,9 @@ public class FilterStatus implements Filter {
     @Override
     public List<Parameter> getParameters() {
         return List.of(new ParameterInteger(user.getId()),
-                new ParameterInteger(status.getId()),
-                new ParameterInteger(status.getId()),
-                new ParameterInteger(status.getId())
+                new ParameterString(status),
+                new ParameterString(status),
+                new ParameterString(status)
         );
     }
 }

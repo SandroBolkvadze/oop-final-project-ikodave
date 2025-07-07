@@ -46,17 +46,6 @@ public class ToDTO {
         }
     }
 
-    public static Status toStatus(ResultSet rs) {
-        try {
-            Status status = new Status();
-            status.setId(rs.getInt(ProblemStatus.COL_ID));
-            status.setStatus(rs.getString(ProblemStatus.COL_STATUS));
-            return status;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static Problem toProblem(ResultSet rs) {
         try {
             Problem problem = new Problem();

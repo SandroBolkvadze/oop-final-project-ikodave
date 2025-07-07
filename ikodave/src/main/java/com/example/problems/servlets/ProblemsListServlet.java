@@ -59,8 +59,7 @@ public class ProblemsListServlet extends HttpServlet {
         String statusString = filterCriteria.getStatus();
         if (!statusString.isEmpty() && userId != null) {
             User user = userDAO.getUser(Integer.parseInt(userId));
-            Status status = new Status(problemDAO.getStatusId(statusString), statusString);
-            FilterStatus filterStatus = new FilterStatus(user, status);
+            FilterStatus filterStatus = new FilterStatus(user, statusString);
             filterAnd.addFilter(filterStatus);
         }
 
