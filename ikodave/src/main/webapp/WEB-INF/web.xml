@@ -67,7 +67,18 @@
     <servlet-name>ProblemsListServlet</servlet-name>
     <url-pattern>/problems</url-pattern>
   </servlet-mapping>
-  
+
+  <servlet>
+    <servlet-name>ProblemsListPageServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemListPageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemsListPageServlet</servlet-name>
+    <url-pattern>/problems-page</url-pattern>
+  </servlet-mapping>
+
+
+
   <servlet>
     <servlet-name>UserSessionServlet</servlet-name>
     <servlet-class>com.example.general_servlets.UserSessionServlet</servlet-class>
