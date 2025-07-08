@@ -1,7 +1,11 @@
-// document.addEventListener('DOMContentLoaded', filter);
 
 
-async function loadDifficulties() {
+function addListeners() {
+
+}
+
+
+async function loadStatuses() {
 
 }
 
@@ -34,20 +38,19 @@ async function loadDifficulties() {
         const res = await fetch('/api/problems/difficulties');
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
-        const difficulties = await res.json(); // Expecting something like [{id:1, name:"Easy"}, ...]
+        const difficulties = await res.json();
 
         const difficultySelect = document.getElementById('filter-difficulty');
 
-        // Clear existing options except "All"
         difficultySelect.querySelectorAll('option:not([value=""])').forEach(o => o.remove());
 
-        // Add new options dynamically
         difficulties.forEach(diff => {
             const option = document.createElement('option');
-            option.value = diff.name.toLowerCase();  // or use diff.id if you prefer
+            option.value = diff.name.toLowerCase();
             option.textContent = diff.name;
             difficultySelect.appendChild(option);
         });
+
     } catch (err) {
         console.error("Failed to load difficulties:", err);
     }
