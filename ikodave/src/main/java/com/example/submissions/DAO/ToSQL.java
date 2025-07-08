@@ -104,7 +104,30 @@ public class ToSQL {
                 Submissions.COL_SUBMIT_DATE
         );
     }
+    public static String toStatusSQL(){
+        return format("SELECT * FROM %s;",
+                ProblemStatus.TABLE_NAME
+        );
+    }
+    public static String toStatusByIdSQL(){
+        return format("SELECT * FROM %s WHERE %s.%s = ?;",
+               ProblemStatus.TABLE_NAME,
+               ProblemStatus.TABLE_NAME,
+               ProblemStatus.COL_ID
+        );
+    }
+    public static String toStatusByNameSQL(){
+        return format("SELECT * FROM %s WHERE %s.%s = ?;",
+                ProblemStatus.TABLE_NAME,
+                ProblemStatus.TABLE_NAME,
+                ProblemStatus.COL_STATUS
+        );
+    }
+    public static String toStatusByIds(){
+        return null;
+    }
     public static String toCodeLanguageSQL() {
-        return format("SELECT * FROM %s;", CodeLanguages.TABLE_NAME);
+        return format("SELECT * FROM %s;",
+                CodeLanguages.TABLE_NAME);
     }
 }
