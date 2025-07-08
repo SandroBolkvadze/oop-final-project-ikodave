@@ -8,7 +8,7 @@ async function loadProblem(){
         problemTitle : problemTitle
     }
 
-    await fetch(`/problems/problem`, {
+    await fetch(`/api/problems/problem`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(sendData)
@@ -20,22 +20,28 @@ async function loadProblem(){
             let problemTopics = data.problemTopics;
             let problemDifficulty = data.problemDifficulty;
             let problemTestCases = data.problemTestCases;
-            let problemTime = data.problemTime;
-            let problemMemory = data.problemMemory;
+            let timeLimit = data.problemTime;
+            let memoryLimit = data.problemMemory;
 
+            // Set problem title
             document.getElementById('problemTitle').textContent = problemTitle;
             document.title = `Problem ${problemTitle} | Ikodave`;
 
+            // Set problem description
             document.getElementById('descriptionText').textContent = problemDescription;
 
+            // Set problem status
             document.getElementById('statusText').textContent = problemStatus;
 
+            // Set problem difficulty
             document.getElementById('difficultyText').textContent = problemDifficulty;
 
+            // Set time and memory limits
             document.getElementById('problemLimits').innerHTML =
-                `Time limit per test: <strong>${problemTime} ms</strong>;<br>
-                 Memory limit per test: <strong>${problemMemory} mb</strong>.`;
+                `Time limit per test: <strong>${timeLimit} ms</strong>;<br>
+                 Memory limit per test: <strong>${memoryLimit} mb</strong>.`;
 
+            // Set test cases/examples
             const testCasesContainer = document.getElementById('testCases');
             if (problemTestCases && problemTestCases.length > 0) {
                 problemTestCases.forEach((testCase, index) => {
@@ -51,6 +57,7 @@ async function loadProblem(){
                 });
             }
 
+            // Set problem topics/tags
             const topicsContainer = document.getElementById('problemTopics');
             if (problemTopics && problemTopics.length > 0) {
                 problemTopics.forEach(topic => {

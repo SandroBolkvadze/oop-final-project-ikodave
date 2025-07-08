@@ -12,6 +12,7 @@
     <listener-class>com.example.listener.ContextListener</listener-class>
   </listener>
 
+  <!-- Pages -->
   <servlet>
     <servlet-name>HomeServlet</servlet-name>
     <servlet-class>com.example.home.servlets.HomeServlet</servlet-class>
@@ -40,97 +41,30 @@
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>UserProfileServlet</servlet-name>
-    <servlet-class>com.example.user_profile.servlets.UserProfileServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UserProfileServlet</servlet-name>
-    <url-pattern>/profile</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
     <servlet-name>ProfilePageServlet</servlet-name>
     <servlet-class>com.example.user_profile.servlets.ProfilePageServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ProfilePageServlet</servlet-name>
-    <url-pattern>/profile-page</url-pattern>
+    <url-pattern>/profile</url-pattern>
   </servlet-mapping>
 
-
   <servlet>
-    <servlet-name>ProblemsListServlet</servlet-name>
-    <servlet-class>com.example.problems.servlets.ProblemsListServlet</servlet-class>
+    <servlet-name>ProblemsListPageServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemsListPageServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ProblemsListServlet</servlet-name>
+    <servlet-name>ProblemsListPageServlet</servlet-name>
     <url-pattern>/problems</url-pattern>
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>ProblemsPageServlet</servlet-name>
-    <servlet-class>com.example.problems.servlets.ProblemListPageServlet</servlet-class>
+    <servlet-name>ProblemPageServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemPageServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ProblemsPageServlet</servlet-name>
+    <servlet-name>ProblemPageServlet</servlet-name>
     <url-pattern>/problems/*</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>ProblemServlet</servlet-name>
-    <servlet-class>com.example.problems.servlets.ProblemServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ProblemServlet</servlet-name>
-    <url-pattern>/problems/problem</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>ProblemsListPageServlet</servlet-name>
-    <servlet-class>com.example.problems.servlets.ProblemListPageServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ProblemsListPageServlet</servlet-name>
-    <url-pattern>/problems-page</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>ProblemDifficultiesServlet</servlet-name>
-    <servlet-class>com.example.problems.servlets.ProblemDifficultiesServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ProblemDifficultiesServlet</servlet-name>
-    <url-pattern>/difficulties</url-pattern>
-  </servlet-mapping>
-
-
-  <servlet>
-    <servlet-name>ProblemTopicsServlet</servlet-name>
-    <servlet-class>com.example.problems.servlets.ProblemTopicsServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ProblemTopicsServlet</servlet-name>
-    <url-pattern>/topics</url-pattern>
-  </servlet-mapping>
-
-
-  <servlet>
-    <servlet-name>UserSessionServlet</servlet-name>
-    <servlet-class>com.example.general_servlets.UserSessionServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UserSessionServlet</servlet-name>
-    <url-pattern>/user-session</url-pattern>
-  </servlet-mapping>
-
-
-  <servlet>
-    <servlet-name>SubmitCodeServlet</servlet-name>
-    <servlet-class>com.example.submissions.servlets.SubmitCodeServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>SubmitCodeServlet</servlet-name>
-    <url-pattern>/problems/submit</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -139,16 +73,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>SubmitCodePageServlet</servlet-name>
-    <url-pattern>/problems/submit-page</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>SubmissionsListServlet</servlet-name>
-    <servlet-class>com.example.submissions.servlets.SubmissionsListServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>SubmissionsListServlet</servlet-name>
-    <url-pattern>/problems/submissions/*</url-pattern>
+    <url-pattern>/problems/submit</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -157,7 +82,79 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>SubmissionsListPageServlet</servlet-name>
-    <url-pattern>/problems/submissions-page/*</url-pattern>
+    <url-pattern>/problems/submissions/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UserProfileServlet</servlet-name>
+    <servlet-class>com.example.user_profile.servlets.UserProfileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserProfileServlet</servlet-name>
+    <url-pattern>/api/user/profile</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UserSessionServlet</servlet-name>
+    <servlet-class>com.example.general_servlets.UserSessionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserSessionServlet</servlet-name>
+    <url-pattern>/api/user/session</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProblemsListServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemsListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemsListServlet</servlet-name>
+    <url-pattern>/api/problems</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProblemServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemServlet</servlet-name>
+    <url-pattern>/api/problems/problem</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProblemDifficultiesServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemDifficultiesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemDifficultiesServlet</servlet-name>
+    <url-pattern>/api/problems/difficulties</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProblemTopicsServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemTopicsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemTopicsServlet</servlet-name>
+    <url-pattern>/api/problems/topics</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SubmitCodeServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.SubmitCodeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmitCodeServlet</servlet-name>
+    <url-pattern>/api/problems/submit</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SubmissionsListServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.SubmissionsListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmissionsListServlet</servlet-name>
+    <url-pattern>/api/problems/submissions/*</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -166,8 +163,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>CodeLanguagesServlet</servlet-name>
-    <url-pattern>/code-languages</url-pattern>
+    <url-pattern>/api/languages</url-pattern>
   </servlet-mapping>
-
 
 </web-app>

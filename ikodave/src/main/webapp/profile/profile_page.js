@@ -1,5 +1,5 @@
 function load_profile(){
-    fetch('/profile')
+    fetch('/api/user/profile')
         .then(res => res.json())
         .then(username => {
             document.getElementById('username-placeholder').textContent = username || "Guest";

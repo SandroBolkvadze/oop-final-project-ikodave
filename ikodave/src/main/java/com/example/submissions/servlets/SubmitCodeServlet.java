@@ -110,7 +110,7 @@ public class SubmitCodeServlet extends HttpServlet {
             }
         });
 
-        String redirectUrl = "/problems" + "/submissions-page/" +
+        String redirectUrl = "/problems" + "/submissions/" +
                         URLEncoder.encode(userSubmission.getProblemTitle(), StandardCharsets.UTF_8);
         response.setContentType("application/json");
         response.getWriter().write("{\"redirect\":\"" + redirectUrl + "\"}");

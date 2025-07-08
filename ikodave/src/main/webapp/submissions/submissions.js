@@ -2,7 +2,9 @@ function loadSubmissions() {
     const parts = window.location.pathname.split('/');
     const problemTitle = parts[parts.length - 1];
 
-    fetch(`/problems/submissions/${problemTitle}`)
+    console.log(problemTitle);
+
+    fetch(`/api/problems/submissions/${problemTitle}`)
         .then(res => res.json())
         .then(submissions => {
             const container = document.getElementById('submissions');

@@ -19,8 +19,8 @@ public class HtmlAccessBlockerFilter implements Filter {
 
         String uri = req.getRequestURI();
 
-        // Allow shared HTML files (like navbar) and index.html
-        if (uri.contains("/shared_html/") || uri.endsWith("/index.html")) {
+        // Allow shared HTML files (like navbar), index.html, and problem pages
+        if (uri.contains("/shared_html/") || uri.endsWith("/index.html") || uri.contains("/problems/")) {
             chain.doFilter(request, response);
             return;
         }

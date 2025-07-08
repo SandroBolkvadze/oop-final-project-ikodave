@@ -3,7 +3,7 @@ async function loadNavbar() {
     const html = await navbarRes.text();
     document.getElementById('navbar-container').innerHTML = html;
 
-    const sessionRes = await fetch('/user-session');
+    const sessionRes = await fetch('/api/user/session');
     const data = await sessionRes.json();
 
     if (data.loggedIn) {
@@ -41,7 +41,7 @@ async function loadNavbar() {
     if(profileLink){
         profileLink.addEventListener('click', function(e){
             e.preventDefault();
-            window.location.href = "/profile-page"
+            window.location.href = "/profile"
         });
     }
     const problemLink = document.querySelector('#nav-problems a');

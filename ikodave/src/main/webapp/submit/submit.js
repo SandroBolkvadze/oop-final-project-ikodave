@@ -22,7 +22,7 @@ function submitSolution(e) {
         codeLanguage: language
     };
 
-    fetch('/problems/submit', {
+    fetch('/api/problems/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(submission)
@@ -39,7 +39,7 @@ function submitSolution(e) {
 
 async function loadLanguages() {
     try {
-        const response = await fetch('/code-languages');
+        const response = await fetch('/api/languages');
 
         if (!response.ok) {
             throw new Error('Failed to fetch languages');

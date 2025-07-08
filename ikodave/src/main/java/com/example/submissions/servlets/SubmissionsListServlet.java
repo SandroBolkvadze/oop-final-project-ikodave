@@ -41,7 +41,9 @@ public class SubmissionsListServlet extends HttpServlet  {
         }
 
         String[] pathParts = pathInfo.split("/");
-        String problemTitle = pathParts[1];
+        String problemTitle = pathParts[pathParts.length - 1];
+
+        System.out.println(problemTitle);
 
         Problem problem = problemDAO.getProblemByTitle(problemTitle);
         List<Submission> submissions = submissionDAO.getSubmissionsByOrder(2, problem.getId());
