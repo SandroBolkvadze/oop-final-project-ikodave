@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS problem_status
     status VARCHAR(32) UNIQUE NOT NULL
 );
 
+
 -- problems
 CREATE TABLE IF NOT EXISTS problems
 (
