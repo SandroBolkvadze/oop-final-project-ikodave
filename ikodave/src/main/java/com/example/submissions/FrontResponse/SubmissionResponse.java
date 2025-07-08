@@ -11,9 +11,10 @@ public class SubmissionResponse {
     private final String verdict;
     private final long time;
     private final long memory;
+    private final String log;
 
-    public SubmissionResponse(Timestamp date, String username, String solutionCode, String problemTitle, String codeLanguage, String verdict, long time, long memory) {
-        this.submitDate = date;
+    public SubmissionResponse(Timestamp submitDate, String username, String solutionCode, String problemTitle, String codeLanguage, String verdict, long time, long memory, String log) {
+        this.submitDate = submitDate;
         this.username = username;
         this.solutionCode = solutionCode;
         this.problemTitle = problemTitle;
@@ -21,6 +22,11 @@ public class SubmissionResponse {
         this.verdict = verdict;
         this.time = time;
         this.memory = memory;
+        this.log = log;
+    }
+
+    public String getLog() {
+        return log;
     }
 
     public Timestamp getSubmitDate() {

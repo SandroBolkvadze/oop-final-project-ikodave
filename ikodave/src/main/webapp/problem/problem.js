@@ -1,6 +1,24 @@
-document.addEventListener('DOMContentLoaded', loadProblem);
+document.addEventListener('DOMContentLoaded', (e) => {
+    addListeners(e);
 
-async function loadProblem(){
+    loadProblem(e)
+        .catch(error => console.log(error));
+});
+
+function addListeners() {
+    document.getElementById('submitButton').onclick = submissionButton;
+}
+
+function submissionButton(e) {
+    e.preventDefault();
+
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    const title = parts[parts.length - 1];
+
+    window.location.href = `/problems/submit/${encodeURIComponent(title)}`;
+}
+
+async function loadProblem(e){
     console.log('loading problem');
 
     const parts = window.location.pathname.split('/');
@@ -17,38 +35,35 @@ async function loadProblem(){
     })
         .then(response => response.json())
         .then(data => {
-            let problemDescription = data.problemDescription;
-            let problemStatus = data.problemStatus;
-            let problemTopics = data.problemTopics;
-            let problemDifficulty = data.problemDifficulty;
-            let problemTestCases = data.problemTestCases;
-            let problemInputSpec = data.problemInputSpec;
-            let problemOutputSpec = data.problemOutputSpec;
-            let timeLimit = data.problemTime;
-            let memoryLimit = data.problemMemory;
-
-            // Set problem title
             document.getElementById('problemTitle').textContent = problemTitle;
+
             document.title = `Problem ${problemTitle} | Ikodave`;
 
-            // Set problem description
+            const problemDescription = data.problemDescription;
             document.getElementById('descriptionText').textContent = problemDescription;
 
-            // Set problem status
+            const problemStatus = data.problemStatus;
             document.getElementById('statusText').textContent = problemStatus;
 
-            // Set problem difficulty
+            const problemDifficulty = data.problemDifficulty;
             document.getElementById('difficultyText').textContent = problemDifficulty;
 
+
+            const problemInputSpec = data.problemInputSpec;
             document.getElementById('inputText').textContent = problemInputSpec;
+
+            const problemOutputSpec = data.problemOutputSpec;
             document.getElementById('outputText').textContent = problemOutputSpec;
 
-            // Set time and memory limits
+
+            const timeLimit = data.problemTime;
+            const memoryLimit = data.problemMemory;
             document.getElementById('problemLimits').innerHTML =
                 `Time limit per test: <strong>${timeLimit} ms</strong>;<br>
                  Memory limit per test: <strong>${memoryLimit} mb</strong>.`;
 
-            // Set test cases/examples
+
+            const problemTestCases = data.problemTestCases;
             const testCasesContainer = document.getElementById('testCases');
             if (problemTestCases && problemTestCases.length > 0) {
                 problemTestCases.forEach((testCase, index) => {
@@ -64,7 +79,7 @@ async function loadProblem(){
                 });
             }
 
-            // Set problem topics/tags
+            const problemTopics = data.problemTopics;
             const topicsContainer = document.getElementById('problemTopics');
             if (problemTopics && problemTopics.length > 0) {
                 problemTopics.forEach(topic => {
@@ -77,7 +92,7 @@ async function loadProblem(){
         })
         .catch(error => {
             console.error('Error loading problem:', error);
-            // Handle error - maybe show a message to the user
+
             document.getElementById('problemTitle').textContent = 'Error loading problem';
             document.getElementById('descriptionText').textContent = 'Failed to load problem data. Please try again.';
         });

@@ -77,6 +77,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>SubmitSpecificCodePageServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.SubmitSpecificCodePageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmitSpecificCodePageServlet</servlet-name>
+    <url-pattern>/problems/submit/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>SubmissionsListPageServlet</servlet-name>
     <servlet-class>com.example.submissions.servlets.SubmissionsListPageServlet</servlet-class>
   </servlet>

@@ -62,7 +62,8 @@ public class SubmissionsListServlet extends HttpServlet  {
                             codeLanguageDAO.getCodeLanguageById(submission.getCodeLanguageId()).getLanguage(),
                             verdictDAO.getVerdictById(submission.getVerdictId()).getVerdict(),
                             submission.getTime(),
-                            submission.getMemory()
+                            submission.getMemory(),
+                            submission.getLog()
                     );
                 }
         ).toList();

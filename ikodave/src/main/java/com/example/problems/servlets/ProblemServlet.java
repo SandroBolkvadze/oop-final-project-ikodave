@@ -29,6 +29,10 @@ public class ProblemServlet extends HttpServlet {
 
         String title = problemTitle.getProblemTitle();
 
+        if (user == null) {
+            user = new User(2, "x", "y", 1, new java.util.Date());
+        }
+
         System.out.println(title);
         System.out.println(user.getUsername());
 

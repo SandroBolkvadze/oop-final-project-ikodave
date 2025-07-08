@@ -1,4 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', (e) => {
+    loadProblemTitle();
+
     loadLanguages()
         .catch((error) => {
             console.log(error)
@@ -7,13 +9,29 @@ document.addEventListener('DOMContentLoaded', () => {
     document
         .getElementById('submitForm')
         .addEventListener('submit', (e) => submitSolution(e));
-});
+})
+
+
+function loadProblemTitle() {
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    const title = parts[parts.length - 1];
+
+    const inputEl = document.getElementById('problemTitle');
+    const wrapper = inputEl.parentElement;
+
+    const textEl = document.createElement('span');
+    textEl.id = 'problemTitle';
+    textEl.textContent = title;
+    textEl.style.fontWeight = 'bold';
+
+    wrapper.replaceChild(textEl, inputEl)
+}
 
 
 function submitSolution(e) {
     e.preventDefault();
 
-    const title = document.getElementById('problemTitle').value;
+    const title = document.getElementById('problemTitle').textContent;
     const language = document.getElementById('language').value;
     const code = document.getElementById('solutionCode').value;
 
@@ -39,4 +57,5 @@ function submitSolution(e) {
         })
         .catch(console.error);
 }
+
 
