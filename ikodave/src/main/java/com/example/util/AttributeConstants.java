@@ -12,10 +12,6 @@ public class AttributeConstants {
     public static final String DIFFICULTY_DAO_KEY = "difficultyDAO";
     public static final String DOCKER_CODE_RUNNER_KEY = "dockerCodeRunner";
 
-//    public static final String DOCKER_WORKDIR_PREFIX = "C:\\Users\\User\\Desktop\\runner";
-
-    public static final String DOCKER_WORKDIR_PREFIX = "/tmp/runner";
-
     public static final String GSON_KEY = "gson";
 
 }
