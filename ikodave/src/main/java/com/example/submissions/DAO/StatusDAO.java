@@ -12,4 +12,5 @@ public interface StatusDAO {
 
     Status getStatusByStatusName(String statusName);
 
+    Status getStatusByUserProblemId(int userId, int problemId);
 }
