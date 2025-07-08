@@ -1,4 +1,4 @@
-USE ikodave;
+USE Ikodave;
 INSERT INTO problems (
     problem_title,
     problem_description,

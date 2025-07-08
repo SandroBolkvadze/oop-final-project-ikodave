@@ -1,3 +1,5 @@
+DROP SCHEMA IF EXISTS Ikodave;
+
 CREATE SCHEMA IF NOT EXISTS Ikodave;
 
 USE Ikodave;
