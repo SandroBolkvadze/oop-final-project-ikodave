@@ -1,7 +1,7 @@
 package com.example.registration.dao;
 
 import com.example.registration.model.User;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;

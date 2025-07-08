@@ -1,4 +1,4 @@
-USE ikodave;
+USE Ikodave;
 
 -- sum-of-two-numbers
 UPDATE problems SET
