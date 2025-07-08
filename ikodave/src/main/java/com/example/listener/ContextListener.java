@@ -53,6 +53,9 @@ public class ContextListener implements ServletContextListener {
         DifficultyDAO difficultyDAO = new SQLDifficultyDAO(dataSource);
         sce.getServletContext().setAttribute(DIFFICULTY_DAO_KEY, difficultyDAO);
 
+        StatusDAO statusDAO = new SQLStatusDAO(dataSource);
+        sce.getServletContext().setAttribute(DIFFICULTY_DAO_KEY, difficultyDAO);
+
         DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
         dockerCodeRunner.startContainers();
         sce.getServletContext().setAttribute(DOCKER_CODE_RUNNER_KEY, dockerCodeRunner);
