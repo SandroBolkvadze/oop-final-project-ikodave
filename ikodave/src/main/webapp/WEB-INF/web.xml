@@ -138,6 +138,15 @@
     <servlet-name>ProblemDifficultiesServlet</servlet-name>
     <url-pattern>/api/problems/difficulties</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ProblemStatusesServlet</servlet-name>
+    <servlet-class>com.example.problems.servlets.ProblemStatusesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProblemStatusesServlet</servlet-name>
+    <url-pattern>/api/problems/statuses</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>ProblemTopicsServlet</servlet-name>

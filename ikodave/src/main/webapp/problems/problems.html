@@ -5,11 +5,30 @@
     <title>Problems - OJ</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <style>
-        body { background: #f8f9fa; }
-        .problem-table th, .problem-table td { vertical-align: middle; }
-        .filter-label { font-weight: 500; margin-right: 8px; }
-        .filter-row { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); padding: 16px; margin-bottom: 24px; }
-        .topic-checkbox { margin-right: 10px; }
+        body {
+            background: #f8f9fa;
+        }
+
+        .problem-table th, .problem-table td {
+            vertical-align: middle;
+        }
+
+        .filter-label {
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        .filter-row {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .topic-checkbox {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -24,30 +43,43 @@
             <label for="filter-title" class="filter-label">Name</label>
             <input type="text" class="form-control" id="filter-title" placeholder="Search by name...">
         </div>
-        <div class="col-md-2">
-            <label for="filter-difficulty" class="filter-label">Difficulty</label>
-            <select class="form-select" id="filter-difficulty">
-                <option value="">All</option>
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label for="filter-status" class="filter-label">Status</label>
-            <select class="form-select" id="filter-status">
-                <option value="">All</option>
-                <option value="accepted">Accepted</option>
-                <option value="rejected">Rejected</option>
-                <option value="todo">Todo</option>
-            </select>
-        </div>
-        <div class="col-md-5">
-            <label class="filter-label">Topics</label>
-            <div class="d-flex flex-wrap" id="topics-checkboxes">
-                <!-- Topics will be dynamically loaded here -->
+        <div class="row g-3 align-items-start mb-4">
+
+            <div class="col-md-4">
+                <button class="btn btn-outline-primary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#difficulty-collapse" aria-expanded="true" aria-controls="difficulty-collapse">
+                    Difficulty
+                </button>
+                <div class="collapse show" id="difficulty-collapse">
+                    <div id="difficulty-checkboxes" class="d-flex flex-wrap gap-2">
+                        <!-- Difficulty checkboxes inserted here -->
+                    </div>
+                </div>
             </div>
+
+            <div class="col-md-4">
+                <button class="btn btn-outline-primary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#status-collapse" aria-expanded="true" aria-controls="status-collapse">
+                    Status
+                </button>
+                <div class="collapse show" id="status-collapse">
+                    <div id="status-checkboxes" class="d-flex flex-wrap gap-2">
+                        <!-- Status checkboxes inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <button class="btn btn-outline-primary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#topics-collapse" aria-expanded="true" aria-controls="topics-collapse">
+                    Topics
+                </button>
+                <div class="collapse show" id="topics-collapse">
+                    <div id="topics-checkboxes" class="d-flex flex-wrap gap-2">
+                        <!-- Topics checkboxes inserted here -->
+                    </div>
+                </div>
+            </div>
+
         </div>
+
         <div class="col-12 text-end">
             <button type="button" class="btn btn-primary" id="filter-button">Apply Filters</button>
         </div>
@@ -72,7 +104,13 @@
     </div>
 </div>
 
-<script src="problems.js"></script>
+<script src="/problems/problems.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        loadNavbar();
+        addListeners();
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

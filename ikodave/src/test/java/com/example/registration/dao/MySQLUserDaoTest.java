@@ -82,4 +82,109 @@ class MySQLUserDaoTest {
     void testGetUserByUsernameReturnsNullIfNotFound() {
         assertNull(userDao.getUserByUsername("notfound"));
     }
+
+    @Test
+    void testAddUserWithSpecialCharacters() {
+        User user = new User("usér@#%$", "päss@!$%");
+        userDao.addUser(user);
+
+        assertTrue(userDao.userExists("usér@#%$"));
+        User retrieved = userDao.getUserByUsername("usér@#%$");
+        assertEquals("päss@!$%", retrieved.getPassword());
+    }
+
+    @Test
+    void testAddUserWithLongUsernameAndPassword() {
+        String longUsername = "u".repeat(255);
+        String longPassword = "p".repeat(255);
+        User user = new User(longUsername, longPassword);
+        userDao.addUser(user);
+
+        assertTrue(userDao.userExists(longUsername));
+        User retrieved = userDao.getUserByUsername(longUsername);
+        assertEquals(longPassword, retrieved.getPassword());
+    }
+
+    @Test
+    void testAddDuplicateUsernameFails() {
+        User user1 = new User("duplicate", "pass1");
+        User user2 = new User("duplicate", "pass2");
+
+        userDao.addUser(user1);
+        assertThrows(RuntimeException.class, () -> userDao.addUser(user2));
+    }
+
+    @Test
+    void testAddUserWithEmptyFields() {
+        assertThrows(RuntimeException.class, () -> userDao.addUser(new User("", "notempty")));
+        assertThrows(RuntimeException.class, () -> userDao.addUser(new User("notempty", "")));
+    }
+
+    @Test
+    void testGetUserById() {
+        User user = new User("byId", "1234");
+        userDao.addUser(user);
+
+        User retrieved = userDao.getUserByUsername("byId");
+        assertNotNull(retrieved);
+
+        User byId = userDao.getUser(retrieved.getId());
+        assertEquals("byId", byId.getUsername());
+        assertEquals("1234", byId.getPassword());
+    }
+
+    @Test
+    void testDeleteNonExistentUser() {
+        assertDoesNotThrow(() -> userDao.deleteUser("nope"));
+    }
+
+    @Test
+    void testRegisterDateIsSetAutomatically() {
+        User user = new User("datecheck", "pwd");
+        userDao.addUser(user);
+        User retrieved = userDao.getUserByUsername("datecheck");
+
+        assertNotNull(retrieved.getRegisterDate());
+    }
+
+    @Test
+    void testSQLInjectionPrevention() {
+        User injection = new User("'; DROP TABLE users; --", "hack");
+        assertDoesNotThrow(() -> userDao.addUser(injection));
+
+        assertTrue(userDao.userExists("'; DROP TABLE users; --"));
+    }
+
+    @Test
+    void testMassInsertionAndRetrieval() {
+        for (int i = 0; i < 100; i++) {
+            userDao.addUser(new User("user" + i, "pass" + i));
+        }
+
+        for (int i = 0; i < 100; i++) {
+            assertTrue(userDao.userExists("user" + i));
+            User retrieved = userDao.getUserByUsername("user" + i);
+            assertEquals("pass" + i, retrieved.getPassword());
+        }
+    }
+
+    @Test
+    void testAuthenticateAfterDeletionFails() {
+        User user = new User("tempuser", "temppass");
+        userDao.addUser(user);
+
+        assertTrue(userDao.authenticate(user));
+        userDao.deleteUser("tempuser");
+
+        assertFalse(userDao.authenticate(user));
+    }
+
+    @Test
+    void testCaseSensitivity() {
+        userDao.addUser(new User("CaseUser", "CasePass"));
+
+        assertFalse(userDao.authenticate(new User("caseuser", "CasePass")));
+        assertFalse(userDao.userExists("caseuser"));
+    }
+
 }

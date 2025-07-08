@@ -5,5 +5,5 @@ import com.example.registration.model.User;
 import com.example.submissions.DTO.SubmissionVerdict;
 
 public interface UserDetails {
-    public int getStatusProblemsCount(User user, SubmissionVerdict verdict);
+    public int getVerdictProblemsCount(User user, SubmissionVerdict verdict);
 }

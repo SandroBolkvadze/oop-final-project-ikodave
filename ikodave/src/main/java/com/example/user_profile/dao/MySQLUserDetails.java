@@ -22,7 +22,7 @@ public class MySQLUserDetails implements UserDetails {
     }
 
     @Override
-    public int getStatusProblemsCount(User user, SubmissionVerdict verdict) {
+    public int getVerdictProblemsCount(User user, SubmissionVerdict verdict) {
         String sqlStatement = getProblemsCountByStatusSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
