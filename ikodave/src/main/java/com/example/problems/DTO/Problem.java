@@ -8,6 +8,8 @@ public class Problem {
     private String description;
     private int difficultyId;
     private Timestamp createDate;
+    private String inputSpec;
+    private String outputSpec;
     private long timeLimit;
     private long memoryLimit;
 
@@ -15,14 +17,32 @@ public class Problem {
 
     }
 
-    public Problem(int id, String title, String description, int difficultyId, Timestamp createDate, long timeLimit, long memoryLimit) {
+    public Problem(int id, String title, String description, int difficultyId, Timestamp createDate, String inputSpec, String outputSpec, long timeLimit, long memoryLimit) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.difficultyId = difficultyId;
         this.createDate = createDate;
+        this.inputSpec = inputSpec;
+        this.outputSpec = outputSpec;
         this.timeLimit = timeLimit;
         this.memoryLimit = memoryLimit;
+    }
+
+    public void setInputSpec(String inputSpec) {
+        this.inputSpec = inputSpec;
+    }
+
+    public void setOutputSpec(String outputSpec) {
+        this.outputSpec = outputSpec;
+    }
+
+    public String getInputSpec() {
+        return inputSpec;
+    }
+
+    public String getOutputSpec() {
+        return outputSpec;
     }
 
     public long getMemoryLimit() {

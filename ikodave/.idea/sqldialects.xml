@@ -11,5 +11,6 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertProblemTopicsRelation.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertProblems.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertVerdicts.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/updateInputOutputSpecs.sql" dialect="GenericSQL" />
   </component>
 </project>

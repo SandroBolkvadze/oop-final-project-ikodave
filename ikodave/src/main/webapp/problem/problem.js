@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', loadProblem);
 
 async function loadProblem(){
+    console.log('loading problem');
+
     const parts = window.location.pathname.split('/');
     const problemTitle = parts[parts.length - 1];
 
@@ -20,6 +22,8 @@ async function loadProblem(){
             let problemTopics = data.problemTopics;
             let problemDifficulty = data.problemDifficulty;
             let problemTestCases = data.problemTestCases;
+            let problemInputSpec = data.problemInputSpec;
+            let problemOutputSpec = data.problemOutputSpec;
             let timeLimit = data.problemTime;
             let memoryLimit = data.problemMemory;
 
@@ -35,6 +39,9 @@ async function loadProblem(){
 
             // Set problem difficulty
             document.getElementById('difficultyText').textContent = problemDifficulty;
+
+            document.getElementById('inputText').textContent = problemInputSpec;
+            document.getElementById('outputText').textContent = problemOutputSpec;
 
             // Set time and memory limits
             document.getElementById('problemLimits').innerHTML =

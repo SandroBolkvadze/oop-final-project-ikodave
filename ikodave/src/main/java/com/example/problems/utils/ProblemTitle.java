@@ -2,12 +2,14 @@ package com.example.problems.utils;
 
 public class ProblemTitle {
 
-    private final String title;
+    private final String problemTitle;
 
-    public ProblemTitle(String title) {
-        this.title = title;
+
+    public ProblemTitle(String problemTitle) {
+        this.problemTitle = problemTitle;
     }
-    public String getTitle() {
-        return title;
+
+    public String getProblemTitle() {
+        return problemTitle;
     }
 }

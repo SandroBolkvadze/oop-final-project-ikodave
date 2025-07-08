@@ -53,13 +53,15 @@ CREATE TABLE IF NOT EXISTS problem_status
 -- problems
 CREATE TABLE IF NOT EXISTS problems
 (
-    id                  INT AUTO_INCREMENT PRIMARY KEY,
-    problem_title       VARCHAR(100) UNIQUE NOT NULL,
-    problem_description TEXT,
-    difficulty_id       INT,
-    create_date         DATETIME,
-    time_limit          BIGINT DEFAULT 2000,
-    memory_limit        BIGINT DEFAULT 128 ,
+    id                      INT AUTO_INCREMENT PRIMARY KEY,
+    problem_title           VARCHAR(100) UNIQUE NOT NULL,
+    problem_description     TEXT,
+    difficulty_id           INT,
+    create_date             DATETIME,
+    input_spec              TEXT,
+    output_spec             TEXT,
+    time_limit              BIGINT DEFAULT 2000,
+    memory_limit            BIGINT DEFAULT 128 ,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty (id)
 );
 

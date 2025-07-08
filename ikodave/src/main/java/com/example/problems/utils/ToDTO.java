@@ -65,6 +65,8 @@ public class ToDTO {
             problem.setDescription(rs.getString(Problems.COL_DESCRIPTION));
             problem.setDifficultyId(rs.getInt(Problems.COL_DIFFICULTY_ID));
             problem.setCreateDate(rs.getTimestamp(Problems.COL_CREATE_DATE));
+            problem.setInputSpec(rs.getString(Problems.COL_INPUT_SPEC));
+            problem.setOutputSpec(rs.getString(Problems.COL_OUTPUT_SPEC));
             problem.setTimeLimit(rs.getLong(Problems.COL_TIME_LIMIT));
             problem.setMemoryLimit(rs.getLong(Problems.COL_MEMORY_LIMIT));
             return problem;
