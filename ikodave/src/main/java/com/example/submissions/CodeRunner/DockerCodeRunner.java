@@ -19,13 +19,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.*;
 
+import static com.example.util.AttributeConstants.DOCKER_WORKDIR_PREFIX;
 import static java.lang.String.format;
 
 public class DockerCodeRunner implements CodeRunner {
 
     private static final int NUM_CONTAINERS = 5;
-
-    private static final String WORKDIR_PREFIX = "Runner";
 
     private static final long PROCESS_TIMEOUT_MILLIS = 5000;
 
@@ -35,8 +34,7 @@ public class DockerCodeRunner implements CodeRunner {
         containersPool = new ArrayBlockingQueue<>(NUM_CONTAINERS);
         for (int i = 0; i < NUM_CONTAINERS; i++) {
             try {
-//                Path workDir = Files.createTempDirectory(WORKDIR_PREFIX + "-");
-                Path workDir = Files.createDirectories(Path.of("C:\\Users\\User\\Desktop\\runner" + UUID.randomUUID()));
+                Path workDir = Files.createDirectories(Path.of(DOCKER_WORKDIR_PREFIX + UUID.randomUUID()));
                 Container container = new Container(workDir);
                 container.startContainer();
                 containersPool.put(container);
