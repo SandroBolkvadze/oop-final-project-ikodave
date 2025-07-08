@@ -105,7 +105,7 @@ public class SQLProblemDAO implements ProblemDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
                 return null;
-            };
+            }
             return toStatus(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
