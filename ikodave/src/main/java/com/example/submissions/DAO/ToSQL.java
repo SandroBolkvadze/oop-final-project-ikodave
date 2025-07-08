@@ -124,7 +124,7 @@ public class ToSQL {
         );
     }
     public static String toStatusByIds(){
-        return null;
+        return "";
     }
     public static String toCodeLanguageSQL() {
         return format("SELECT * FROM %s;",
