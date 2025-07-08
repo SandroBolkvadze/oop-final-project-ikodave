@@ -70,6 +70,7 @@ class RegistrationServletTest {
         }
     }
 
+
     @Test
     void testDoGet_ForwardToRegistrationForm() throws Exception {
         try (MockedStatic<Helper> helper = mockStatic(Helper.class)) {
