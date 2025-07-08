@@ -59,5 +59,4 @@ public class Registration extends HttpServlet {
             throw new IOException("Forwarding failed", e);
         }
     }
-
 }
