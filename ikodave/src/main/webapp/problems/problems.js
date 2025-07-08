@@ -1,13 +1,7 @@
-
-
 function addListeners() {
 
 }
 
-
-async function loadStatuses() {
-
-}
 
 async function filter() {
 
@@ -16,7 +10,7 @@ async function filter() {
     let status = 'solved';
     let topics = ['graph', 'dp', 'math'];
 
-    const filters =  {
+    const filters = {
         title,
         difficulty,
         status,
@@ -25,7 +19,7 @@ async function filter() {
 
     const response = await fetch(``, {
         method: 'POST',
-        headers: {'Content-Type': 'applications/json'},
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(filters)
     });
 
@@ -42,12 +36,10 @@ async function loadDifficulties() {
 
         const difficultySelect = document.getElementById('filter-difficulty');
 
-        difficultySelect.querySelectorAll('option:not([value=""])').forEach(o => o.remove());
-
         difficulties.forEach(diff => {
             const option = document.createElement('option');
-            option.value = diff.name.toLowerCase();
-            option.textContent = diff.name;
+            option.value = diff.difficulty;
+            option.textContent = diff.difficulty;
             difficultySelect.appendChild(option);
         });
 
@@ -56,3 +48,23 @@ async function loadDifficulties() {
     }
 }
 
+async function loadStatuses() {
+    try {
+        const res = await fetch('/api/problems/statuses');
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+        const statuses = await res.json();
+
+        const statusSelect = document.getElementById('filter-status');
+
+        statuses.forEach(stat => {
+            console.log("shoairstoairestaoirsn");
+            const option = document.createElement('option');
+            option.value = stat.status;
+            option.textContent = stat.status;
+            statusSelect.appendChild(option);
+        });
+    } catch (err) {
+        console.error("Failed to load difficulties:", err);
+    }
+}

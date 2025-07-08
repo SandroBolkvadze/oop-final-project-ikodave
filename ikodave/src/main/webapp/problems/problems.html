@@ -35,9 +35,7 @@
             <label for="filter-status" class="filter-label">Status</label>
             <select class="form-select" id="filter-status">
                 <option value="">All</option>
-                <option value="accepted">Accepted</option>
-                <option value="rejected">Rejected</option>
-                <option value="todo">Todo</option>
+                <!--- js will insert here -->
             </select>
         </div>
         <div class="col-md-5">
@@ -70,8 +68,15 @@
     </div>
 </div>
 
-<script src="problems.js"></script>
-<script>loadDifficulties();</script>
+<script src="/problems/problems.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        loadNavbar();
+        loadDifficulties();
+        loadStatuses();
+        addListeners();
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
