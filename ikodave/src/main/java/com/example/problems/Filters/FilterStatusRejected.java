@@ -25,7 +25,7 @@ public class FilterStatusRejected implements Filter{
     @Override
     public String toSQLStatement() {
         return format("SELECT %s.*, 'Rejected' AS status FROM %s JOIN %s ON %s.%s = %s.%s " +
-                        "JOIN %s ON %s.%s = %s.%s" +
+                        "JOIN %s ON %s.%s = %s.%s " +
                         "WHERE %s.%s = ? GROUP BY %s.%s HAVING SUM(%s.%s = ?) = 0",
                 DatabaseConstants.Problems.TABLE_NAME,
                 DatabaseConstants.Problems.TABLE_NAME,

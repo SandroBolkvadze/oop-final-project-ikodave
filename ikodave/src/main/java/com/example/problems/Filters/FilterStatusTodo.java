@@ -23,7 +23,7 @@ public class FilterStatusTodo implements Filter{
     }
     @Override
     public String toSQLStatement() {
-        return format("SELECT %s.*, 'Todo' AS status FROM %s LEFT JOIN %s ON %s.%s = %s.%s" +
+        return format("SELECT %s.*, 'Todo' AS status FROM %s LEFT JOIN %s ON %s.%s = %s.%s " +
                         "AND %s.%s = ? WHERE %s.%s IS NULL",
                 DatabaseConstants.Problems.TABLE_NAME,
                 DatabaseConstants.Problems.TABLE_NAME,

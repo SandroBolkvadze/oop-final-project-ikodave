@@ -24,7 +24,8 @@ public class FilterStatusAccepted implements Filter{
     }
     @Override
     public String toSQLStatement() {
-        return format("SELECT %s.*, 'Accepted' AS status FROM %s JOIN %s ON %s.%s = %s.%s JOIN %s on %s.%s = %s.%s" +
+        return format("SELECT DISTINCT %s.*, 'Accepted' AS status FROM %s JOIN %s " +
+                        "ON %s.%s = %s.%s JOIN %s on %s.%s = %s.%s " +
                         "WHERE %s.%s = ? AND %s.%s = ?",
                 DatabaseConstants.Problems.TABLE_NAME,
                 DatabaseConstants.Problems.TABLE_NAME,
