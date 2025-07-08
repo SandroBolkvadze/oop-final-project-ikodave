@@ -75,13 +75,13 @@ public class DockerCodeRunner implements CodeRunner {
             for (TestCase testCase : testCases) {
                 TestCaseResult testCaseResult = executeUserCode(codeLang, container.getContainerName(), executionTimeoutMillis, testCase);
                 if (!testCaseResult.isAccept()) {
-//                    System.out.println("test case failed!!! " + testCaseResult.getLog());
+                    System.out.println("test case failed!!! " + testCaseResult.getLog());
                     return new TestCaseReject(maxTime, maxMemory, testCaseResult.getVerdict(), testCaseResult.getLog());
                 }
                 maxTime = Math.max(maxTime, testCaseResult.getTime());
                 maxMemory = Math.max(maxMemory, testCaseResult.getMemory());
             }
-//            System.out.println(maxTime);
+            System.out.println(maxTime);
             return new SubmissionAccept(maxTime, maxMemory);
         }
         finally {
@@ -129,11 +129,11 @@ public class DockerCodeRunner implements CodeRunner {
         boolean finished = process.waitFor(executeTimeoutMillis + 1000, TimeUnit.MILLISECONDS);
 
         if (!finished) {
-//            System.out.println("time limit exceeded");
+            System.out.println("time limit exceeded");
             return new TestCaseTimeLimitExceeded(executeTimeoutMillis, 0, format("Time Limit Exceeded On Test %d", testCase.getTestNumber()));
         }
         if (process.exitValue() != 0) {
-//            System.out.println("runtime error");
+            System.out.println("runtime error");
             return new TestCaseRuntimeError(0, 0, readInputStream(process.getErrorStream()));
         }
 
@@ -142,19 +142,19 @@ public class DockerCodeRunner implements CodeRunner {
         long cpuTimeMillis = cpuDuration.orElse(Duration.ZERO).toMillis();
 
         if (cpuTimeMillis > executeTimeoutMillis) {
-//            System.out.println("time limit exceeded");
+            System.out.println("time limit exceeded");
             return new TestCaseTimeLimitExceeded(executeTimeoutMillis, 0, format("Time Limit Exceeded On Test %d", testCase.getTestNumber()));
         }
         String output = readInputStream(process.getInputStream());
 
         if (output.strip().equals(testCase.getProblemOutput())) {
-//            System.out.println("test " + testCase.getTestNumber() + " passed");
+            System.out.println("test " + testCase.getTestNumber() + " passed");
             return new TestCaseAccept(cpuTimeMillis, 0, format("Test Case %d Passed", testCase.getTestNumber()));
         }
         else {
-//            System.out.println("test " + testCase.getTestNumber() + " wrong");
-//            System.out.println("current " + output);
-//            System.out.println("expected " + testCase.getProblemOutput());
+            System.out.println("test " + testCase.getTestNumber() + " wrong");
+            System.out.println("current " + output);
+            System.out.println("expected " + testCase.getProblemOutput());
             return new TestCaseWrongAnswer(cpuTimeMillis, 0, format("Wrong Answer On Test %d", testCase.getTestNumber()));
         }
     }

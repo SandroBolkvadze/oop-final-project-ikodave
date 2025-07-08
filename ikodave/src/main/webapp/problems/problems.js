@@ -1,7 +1,14 @@
-// document.addEventListener('DOMContentLoaded', filter);
 
+
+function addListeners() {
+
+}
 
 async function loadDifficulties() {
+
+}
+
+async function loadStatuses() {
 
 }
 
