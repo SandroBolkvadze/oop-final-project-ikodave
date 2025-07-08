@@ -35,6 +35,8 @@ public class SignInServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
         try {
@@ -45,13 +47,16 @@ public class SignInServlet extends HttpServlet {
             String password = userInput.getPassword();
 
             UserDAO userDao = (UserDAO) request.getServletContext().getAttribute(USER_DAO_KEY);
+            if (userDao == null) throw new IllegalStateException("UserDAO not found in ServletContext.");
+
             User user = userDao.getUserByUsername(username);
 
             boolean authOK = false;
             if (user != null) {
                 try {
                     authOK = BCrypt.checkpw(password, user.getPassword());
-                } catch (IllegalArgumentException ignored) {}
+                } catch (IllegalArgumentException ignored) {
+                }
             }
 
             Map<String, String> result = new HashMap<>();
@@ -65,8 +70,18 @@ public class SignInServlet extends HttpServlet {
             sendJsonResponse(response, result);
 
         } catch (ServletException e) {
+            e.printStackTrace(); // ✅ Show in logs
             throw new IOException("Forwarding failed", e);
+        } catch (IOException e) {
+            e.printStackTrace(); // ✅ Show in logs
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace(); // ✅ Catch any unexpected errors
+            Map<String, String> result = new HashMap<>();
+            result.put("status", "error");
+            sendJsonResponse(response, result);
         }
+
     }
 
 }

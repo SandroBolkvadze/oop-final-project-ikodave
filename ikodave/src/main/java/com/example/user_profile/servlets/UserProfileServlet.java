@@ -9,8 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.util.AttributeConstants.USER_DAO_KEY;
-import static com.example.util.SessionConstants.USER_ID_KEY;
+import static com.example.util.SessionConstants.USER_KEY;
 
 public class UserProfileServlet extends HttpServlet {
 
@@ -18,7 +17,7 @@ public class UserProfileServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = null;
         if(request.getSession(false) != null){
-            user = (User) request.getSession().getAttribute(USER_ID_KEY);
+            user = (User) request.getSession().getAttribute(USER_KEY);
         }
 
         String json;

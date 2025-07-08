@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.util.AttributeConstants.*;
-import static com.example.util.SessionConstants.USER_ID_KEY;
 import static com.example.util.SessionConstants.USER_KEY;
 
 public class ProblemsListServlet extends HttpServlet {

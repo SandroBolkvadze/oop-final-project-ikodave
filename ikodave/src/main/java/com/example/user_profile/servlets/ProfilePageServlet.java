@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.example.registration.servlets.Helper.redirectProfileIfRegistered;
-import static com.example.util.SessionConstants.USER_ID_KEY;
 
 public class ProfilePageServlet extends HttpServlet {
     @Override

@@ -9,12 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import static com.example.util.SessionConstants.USER_ID_KEY;
+import static com.example.util.SessionConstants.USER_KEY;
+
 
 public class Helper {
     public static boolean redirectProfileIfRegistered(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        User user = (User) request.getSession().getAttribute(USER_ID_KEY);
+        User user = (User) request.getSession().getAttribute(USER_KEY);
         if (user == null) {
             return false;
         }
