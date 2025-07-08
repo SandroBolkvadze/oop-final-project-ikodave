@@ -9,19 +9,28 @@ public class Problem {
     private int difficultyId;
     private Timestamp createDate;
     private long timeLimit;
+    private long memoryLimit;
 
     public Problem() {
 
     }
 
-    public Problem(int id, String title, String description, int difficultyId, Timestamp createDate, long timeLimit) {
-
+    public Problem(int id, String title, String description, int difficultyId, Timestamp createDate, long timeLimit, long memoryLimit) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.difficultyId = difficultyId;
         this.createDate = createDate;
         this.timeLimit = timeLimit;
+        this.memoryLimit = memoryLimit;
+    }
+
+    public long getMemoryLimit() {
+        return memoryLimit;
+    }
+
+    public void setMemoryLimit(long memoryLimit) {
+        this.memoryLimit = memoryLimit;
     }
 
     public int getId() {

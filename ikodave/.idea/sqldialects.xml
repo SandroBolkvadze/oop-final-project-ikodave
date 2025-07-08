@@ -8,6 +8,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertDifficulties.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertLanguages.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertProblemTopics.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertProblemTopicsRelation.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertProblems.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertVerdicts.sql" dialect="MySQL" />
   </component>

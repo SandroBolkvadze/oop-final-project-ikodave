@@ -40,7 +40,9 @@ public class ProblemServlet extends HttpServlet {
                 problemDAO.getProblemStatus(problem.getId(), user.getId()).getStatus(),
                 problemDAO.getProblemTopics(problem.getId()),
                 problemDAO.getProblemDifficulty(problem.getId()),
-                testDAO.getTestCasesByProblemId(problem.getId()).subList(0, 2)
+                testDAO.getTestCasesByProblemId(problem.getId()).subList(0, 2),
+                problem.getTimeLimit(),
+                problem.getMemoryLimit()
         );
 
         response.setContentType("application/json");

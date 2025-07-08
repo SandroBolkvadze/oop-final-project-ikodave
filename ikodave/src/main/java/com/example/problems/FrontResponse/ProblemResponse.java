@@ -13,14 +13,26 @@ public class ProblemResponse {
     private final List<Topic> problemTopics;
     private final Difficulty problemDifficulty;
     private final List<TestCase> problemTestCases;
+    private final long problemTime;
+    private final long problemMemory;
 
-    public ProblemResponse(String problemTitle, String problemDescription, String problemStatus, List<Topic> problemTopics, Difficulty problemDifficulty, List<TestCase> problemTestCases) {
+    public ProblemResponse(String problemTitle, String problemDescription, String problemStatus, List<Topic> problemTopics, Difficulty problemDifficulty, List<TestCase> problemTestCases, long problemTime, long problemMemory) {
         this.problemTitle = problemTitle;
         this.problemDescription = problemDescription;
         this.problemStatus = problemStatus;
         this.problemTopics = problemTopics;
         this.problemDifficulty = problemDifficulty;
         this.problemTestCases = problemTestCases;
+        this.problemTime = problemTime;
+        this.problemMemory = problemMemory;
+    }
+
+    public long getProblemTime() {
+        return problemTime;
+    }
+
+    public long getProblemMemory() {
+        return problemMemory;
     }
 
     public List<TestCase> getProblemTestCases() {

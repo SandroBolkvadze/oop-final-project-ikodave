@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS problems
     difficulty_id       INT,
     create_date         DATETIME,
     time_limit          BIGINT DEFAULT 2000,
+    memory_limit        BIGINT DEFAULT 128 ,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty (id)
 );
 

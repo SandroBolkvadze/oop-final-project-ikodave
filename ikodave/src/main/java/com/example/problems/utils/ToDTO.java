@@ -64,8 +64,9 @@ public class ToDTO {
             problem.setTitle(rs.getString(Problems.COL_TITLE));
             problem.setDescription(rs.getString(Problems.COL_DESCRIPTION));
             problem.setDifficultyId(rs.getInt(Problems.COL_DIFFICULTY_ID));
+            problem.setCreateDate(rs.getTimestamp(Problems.COL_CREATE_DATE));
             problem.setTimeLimit(rs.getLong(Problems.COL_TIME_LIMIT));
-            problem.setDescription(rs.getString(Problems.COL_DESCRIPTION));
+            problem.setMemoryLimit(rs.getLong(Problems.COL_MEMORY_LIMIT));
             return problem;
         } catch (SQLException e) {
             throw new RuntimeException(e);

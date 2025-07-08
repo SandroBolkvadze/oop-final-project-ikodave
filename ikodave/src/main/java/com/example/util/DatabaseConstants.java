@@ -43,6 +43,7 @@ public class DatabaseConstants {
         public static final String COL_DIFFICULTY_ID = "difficulty_id";
         public static final String COL_CREATE_DATE   = "create_date";
         public static final String COL_TIME_LIMIT    = "time_limit";
+        public static final String COL_MEMORY_LIMIT    = "memory_limit";
     }
 
     public static final class ProblemManyToManyTopic {
