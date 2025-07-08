@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.*;
 
-import static com.example.util.AttributeConstants.DOCKER_WORKDIR_PREFIX;
 import static java.lang.String.format;
 
 public class DockerCodeRunner implements CodeRunner {
