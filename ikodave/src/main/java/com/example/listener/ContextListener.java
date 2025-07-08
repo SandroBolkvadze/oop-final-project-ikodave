@@ -1,14 +1,10 @@
 package com.example.listener;
 
-import com.example.problems.DAO.ProblemDAO;
-import com.example.problems.DAO.SQLProblemDAO;
+import com.example.problems.DAO.*;
 import com.example.registration.dao.MySQLUserDao;
 import com.example.registration.dao.UserDAO;
 import com.example.submissions.CodeRunner.DockerCodeRunner;
-import com.example.submissions.DAO.SQLSubmissionDAO;
-import com.example.submissions.DAO.SQLTestDAO;
-import com.example.submissions.DAO.SubmissionDAO;
-import com.example.submissions.DAO.TestDAO;
+import com.example.submissions.DAO.*;
 import com.google.gson.Gson;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -23,6 +19,7 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        System.out.println("here");
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
         dataSource.setDriverClassName(DRIVER);
@@ -44,7 +41,23 @@ public class ContextListener implements ServletContextListener {
         SubmissionDAO submissionDAO = new SQLSubmissionDAO(dataSource);
         sce.getServletContext().setAttribute(SUBMISSION_DAO_KEY, submissionDAO);
 
+        CodeLanguageDAO codeLanguageDAO = new SQLCodeLanguageDAO(dataSource);
+        sce.getServletContext().setAttribute(CODE_LANGUAGE_DAO_KEY, codeLanguageDAO);
+
+        VerdictDAO verdictDAO = new SQLVerdictDAO(dataSource);
+        sce.getServletContext().setAttribute(VERDICT_DAO_KEY, verdictDAO);
+
+        TopicDAO topicDAO = new SQLTopicDAO(dataSource);
+        sce.getServletContext().setAttribute(TOPIC_DAO_KEY, topicDAO);
+
+        DifficultyDAO difficultyDAO = new SQLDifficultyDAO(dataSource);
+        sce.getServletContext().setAttribute(DIFFICULTY_DAO_KEY, difficultyDAO);
+
+        StatusDAO statusDAO = new SQLStatusDAO(dataSource);
+        sce.getServletContext().setAttribute(STATUS_DAO_KEY, statusDAO);
+
         DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
+        dockerCodeRunner.startContainers();
         sce.getServletContext().setAttribute(DOCKER_CODE_RUNNER_KEY, dockerCodeRunner);
 
         Gson gson = new Gson();
@@ -56,6 +69,11 @@ public class ContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(javax.servlet.ServletContextEvent sce) {
         try {
+            DockerCodeRunner dockerCodeRunner = (DockerCodeRunner) sce.getServletContext().getAttribute(DOCKER_CODE_RUNNER_KEY);
+            if (dockerCodeRunner != null) {
+                dockerCodeRunner.destroyContainers();
+            }
+
             if (dataSource != null) {
                 dataSource.close();
             }

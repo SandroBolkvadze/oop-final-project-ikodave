@@ -16,6 +16,14 @@ public class User {
         this.password = password;
     }
 
+    public User(int id, String username, String password, int rankId, Date registerDate) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.rankId = rankId;
+        this.registerDate = registerDate;
+    }
+
     public int getId() {
         return id;
     }

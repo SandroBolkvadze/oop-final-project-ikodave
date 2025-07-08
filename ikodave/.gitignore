@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### files from code
+ikodave/src/main/java/com/example/util/DBConnectionConstants.java

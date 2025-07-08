@@ -1,3 +1,5 @@
+DROP SCHEMA IF EXISTS Ikodave;
+
 CREATE SCHEMA IF NOT EXISTS Ikodave;
 
 USE Ikodave;
@@ -44,15 +46,25 @@ CREATE TABLE IF NOT EXISTS code_language
     language VARCHAR(32) UNIQUE NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS problem_status
+(
+    id   INT AUTO_INCREMENT PRIMARY KEY,
+    status VARCHAR(32) UNIQUE NOT NULL
+);
+
+
 -- problems
 CREATE TABLE IF NOT EXISTS problems
 (
-    id                  INT AUTO_INCREMENT PRIMARY KEY,
-    problem_title       VARCHAR(100) UNIQUE NOT NULL,
-    problem_description TEXT,
-    difficulty_id       INT,
-    create_date         DATETIME,
-    time_limit          LONG DEFAULT 2000,
+    id                      INT AUTO_INCREMENT PRIMARY KEY,
+    problem_title           VARCHAR(100) UNIQUE NOT NULL,
+    problem_description     TEXT,
+    difficulty_id           INT,
+    create_date             DATETIME,
+    input_spec              TEXT,
+    output_spec             TEXT,
+    time_limit              BIGINT DEFAULT 2000,
+    memory_limit            BIGINT DEFAULT 128 ,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty (id)
 );
 
@@ -72,9 +84,9 @@ CREATE TABLE IF NOT EXISTS submissions
     problem_id          INT,
     verdict_id          INT,
     solution_code       TEXT,
-    code_language_id    INT,
-    time                LONG,
-    memory              LONG,
+    code_language_id    INT NOT NULL,
+    time                BIGINT NOT NULL,
+    memory              BIGINT NOT NULL,
     submit_date         DATETIME,
     log                 TEXT,
     FOREIGN KEY (problem_id) REFERENCES problems (id),
@@ -89,6 +101,6 @@ CREATE TABLE IF NOT EXISTS test_cases
     problem_id     INT,
     problem_input  TEXT,
     problem_output TEXT,
-    order_num      INT,
+    test_number    INT,
     FOREIGN KEY (problem_id) REFERENCES problems (id)
 );

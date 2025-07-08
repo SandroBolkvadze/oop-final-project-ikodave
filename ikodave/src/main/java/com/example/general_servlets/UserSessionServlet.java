@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.util.SessionConstants.USER_ID_KEY;
+import static com.example.util.SessionConstants.USER_KEY;
 
 public class UserSessionServlet extends HttpServlet {
     @Override
@@ -15,7 +15,7 @@ public class UserSessionServlet extends HttpServlet {
         response.setContentType("application/json");
         User user = null;
         if(request.getSession(false) != null){
-            user = (User) request.getSession().getAttribute(USER_ID_KEY);
+            user = (User) request.getSession().getAttribute(USER_KEY);
         }
         String json;
         if(user != null){

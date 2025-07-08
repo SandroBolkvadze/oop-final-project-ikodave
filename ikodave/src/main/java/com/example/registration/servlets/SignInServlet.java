@@ -2,6 +2,7 @@ package com.example.registration.servlets;
 
 import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
+import com.example.registration.utils.UserInput;
 import com.example.util.SessionConstants;
 import com.google.gson.Gson;
 import org.mindrot.jbcrypt.BCrypt;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 import static com.example.registration.servlets.Helper.*;
 import static com.example.util.AttributeConstants.*;
+import static com.example.util.SessionConstants.USER_KEY;
 
 public class SignInServlet extends HttpServlet {
     @Override
@@ -33,26 +35,33 @@ public class SignInServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
+
         try {
             if (redirectProfileIfRegistered(request, response)) return;
 
-            User inputUser = parseJsonBody(request, User.class);
-            String username = inputUser.getUsername();
-            String password = inputUser.getPassword();
+            UserInput userInput = gson.fromJson(request.getReader(), UserInput.class);
+            String username = userInput.getUsername();
+            String password = userInput.getPassword();
 
             UserDAO userDao = (UserDAO) request.getServletContext().getAttribute(USER_DAO_KEY);
+            if (userDao == null) throw new IllegalStateException("UserDAO not found in ServletContext.");
+
             User user = userDao.getUserByUsername(username);
 
             boolean authOK = false;
             if (user != null) {
                 try {
                     authOK = BCrypt.checkpw(password, user.getPassword());
-                } catch (IllegalArgumentException ignored) {}
+                } catch (IllegalArgumentException ignored) {
+                }
             }
 
             Map<String, String> result = new HashMap<>();
             if (authOK) {
-                request.getSession().setAttribute(SessionConstants.USER_ID_KEY, user);
+                request.getSession().setAttribute(USER_KEY, user);
                 result.put("status", "ok");
             } else {
                 result.put("status", "invalid");
@@ -61,8 +70,18 @@ public class SignInServlet extends HttpServlet {
             sendJsonResponse(response, result);
 
         } catch (ServletException e) {
+            e.printStackTrace(); // ✅ Show in logs
             throw new IOException("Forwarding failed", e);
+        } catch (IOException e) {
+            e.printStackTrace(); // ✅ Show in logs
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace(); // ✅ Catch any unexpected errors
+            Map<String, String> result = new HashMap<>();
+            result.put("status", "error");
+            sendJsonResponse(response, result);
         }
+
     }
 
 }

@@ -1,7 +1,11 @@
 package com.example.submissions.DAO;
 
+import com.example.submissions.DTO.SubmissionVerdict;
+
 public interface VerdictDAO {
 
-    int getVerdictIdByName(String verdictName);
+    SubmissionVerdict getVerdictByName(String verdictName);
+
+    SubmissionVerdict getVerdictById(int id);
 
 }

@@ -10,16 +10,32 @@ public class ToSQL {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 TestCases.TABLE_NAME,
                 TestCases.TABLE_NAME,
-                TestCases.COL_ID);
+                TestCases.COL_PROBLEM_ID);
     }
-    public static String toVerdictNameSQL() {
+    public static String toVerdictByNameSQL() {
+        return format("SELECT * FROM %s WHERE %s.%s = ?;",
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_VERDICT
+        );
+    }
+
+    public static String toVerdictByIdSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 SubmissionVerdict.TABLE_NAME,
                 SubmissionVerdict.TABLE_NAME,
                 SubmissionVerdict.COL_ID
         );
     }
-    public static String toCodeLanguageNameSQL() {
+    public static String toCodeLanguageByNameSQL() {
+        return format("SELECT * FROM %s WHERE %s.%s = ?;",
+                CodeLanguages.TABLE_NAME,
+                CodeLanguages.TABLE_NAME,
+                CodeLanguages.COL_LANGUAGE
+        );
+    }
+
+    public static String toCodeLanguageByIdSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 CodeLanguages.TABLE_NAME,
                 CodeLanguages.TABLE_NAME,
@@ -44,14 +60,14 @@ public class ToSQL {
     }
     public static String toUpdateSubmissionSQL() {
         return format("UPDATE %s SET " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
-                "%s.%s = ? " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
+                "%s.%s = ?, " +
                 "%s.%s = ? " +
                 "WHERE %s.%s = ?;",
                 Submissions.TABLE_NAME,
@@ -76,7 +92,42 @@ public class ToSQL {
                 Submissions.COL_PROBLEM_ID
         );
     }
+
+    public static String toSubmissionSortedSQL() {
+        return format("SELECT * FROM %s WHERE %s.%s = ? AND %s.%s = ? ORDER BY %s.%s DESC;",
+                Submissions.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Submissions.COL_USER_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_PROBLEM_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE
+        );
+    }
+    public static String toStatusSQL(){
+        return format("SELECT * FROM %s;",
+                ProblemStatus.TABLE_NAME
+        );
+    }
+    public static String toStatusByIdSQL(){
+        return format("SELECT * FROM %s WHERE %s.%s = ?;",
+               ProblemStatus.TABLE_NAME,
+               ProblemStatus.TABLE_NAME,
+               ProblemStatus.COL_ID
+        );
+    }
+    public static String toStatusByNameSQL(){
+        return format("SELECT * FROM %s WHERE %s.%s = ?;",
+                ProblemStatus.TABLE_NAME,
+                ProblemStatus.TABLE_NAME,
+                ProblemStatus.COL_STATUS
+        );
+    }
+    public static String toStatusByIds(){
+        return "";
+    }
     public static String toCodeLanguageSQL() {
-        return format("SELECT * FROM %s;", CodeLanguages.TABLE_NAME);
+        return format("SELECT * FROM %s;",
+                CodeLanguages.TABLE_NAME);
     }
 }

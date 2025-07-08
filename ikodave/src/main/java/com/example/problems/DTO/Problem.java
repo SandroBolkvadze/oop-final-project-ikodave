@@ -1,29 +1,56 @@
 package com.example.problems.DTO;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Problem {
     private int id;
     private String title;
     private String description;
     private int difficultyId;
-    private Date createDate;
+    private Timestamp createDate;
+    private String inputSpec;
+    private String outputSpec;
     private long timeLimit;
-
+    private long memoryLimit;
 
     public Problem() {
 
     }
 
-
-    public Problem(int id, String title, String description, int difficultyId, Date createDate, long timeLimit) {
-
+    public Problem(int id, String title, String description, int difficultyId, Timestamp createDate, String inputSpec, String outputSpec, long timeLimit, long memoryLimit) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.difficultyId = difficultyId;
         this.createDate = createDate;
+        this.inputSpec = inputSpec;
+        this.outputSpec = outputSpec;
         this.timeLimit = timeLimit;
+        this.memoryLimit = memoryLimit;
+    }
+
+    public void setInputSpec(String inputSpec) {
+        this.inputSpec = inputSpec;
+    }
+
+    public void setOutputSpec(String outputSpec) {
+        this.outputSpec = outputSpec;
+    }
+
+    public String getInputSpec() {
+        return inputSpec;
+    }
+
+    public String getOutputSpec() {
+        return outputSpec;
+    }
+
+    public long getMemoryLimit() {
+        return memoryLimit;
+    }
+
+    public void setMemoryLimit(long memoryLimit) {
+        this.memoryLimit = memoryLimit;
     }
 
     public int getId() {
@@ -47,7 +74,7 @@ public class Problem {
         this.difficultyId = difficultyId;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
@@ -67,7 +94,7 @@ public class Problem {
         return difficultyId;
     }
 
-    public Date getCreateDate() {
+    public Timestamp getCreateDate() {
         return createDate;
     }
 

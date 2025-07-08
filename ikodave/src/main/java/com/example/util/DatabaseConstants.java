@@ -42,7 +42,10 @@ public class DatabaseConstants {
         public static final String COL_DESCRIPTION   = "problem_description";
         public static final String COL_DIFFICULTY_ID = "difficulty_id";
         public static final String COL_CREATE_DATE   = "create_date";
+        public static final String COL_INPUT_SPEC   = "input_spec";
+        public static final String COL_OUTPUT_SPEC   = "output_spec";
         public static final String COL_TIME_LIMIT    = "time_limit";
+        public static final String COL_MEMORY_LIMIT    = "memory_limit";
     }
 
     public static final class ProblemManyToManyTopic {
@@ -73,18 +76,20 @@ public class DatabaseConstants {
         public static final String COL_PROBLEM_ID = "problem_id";
         public static final String COL_INPUT      = "problem_input";
         public static final String COL_OUTPUT     = "problem_output";
-        public static final String COL_ORDER      = "order_num";
+        public static final String COL_TEST_NUMBER = "test_number";
     }
 
-    public static final class SubmissionVerdict{
+    public static final class SubmissionVerdict {
         public static final String TABLE_NAME  = "submission_verdict";
         public static final String COL_ID        = "id";
         public static final String COL_VERDICT = "verdict";
     }
-    public static final class CodeLanguages{
+
+    public static final class CodeLanguages {
         public static final String TABLE_NAME  = "code_language";
         public static final String COL_ID        = "id";
         public static final String COL_LANGUAGE = "language";
     }
+
 }
 

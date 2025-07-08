@@ -6,6 +6,7 @@ import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.*;
+import com.example.problems.FrontResponse.ProblemResponse;
 import com.example.problems.utils.FilterCriteria;
 import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
@@ -22,31 +23,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.util.AttributeConstants.*;
-import static com.example.util.SessionConstants.USER_ID_KEY;
+import static com.example.util.SessionConstants.USER_KEY;
 
 public class ProblemsListServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.getRequestDispatcher("/problems/problems.html")
-                .forward(request, response);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String userId = (String) request.getSession().getAttribute(USER_ID_KEY);
-        UserDAO userDAO = (UserDAO) request.getAttribute(USER_DAO_KEY);
-        ProblemDAO problemDAO = (ProblemDAO) request.getAttribute(PROBLEM_DAO_KEY);
-        BasicDataSource basicDataSource = (BasicDataSource) request.getAttribute(BASIC_DATASOURCE_KEY);
+        User user = (User) getServletContext().getAttribute(USER_KEY);
+        ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
+        Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
-        Gson gson = new Gson();
         FilterCriteria filterCriteria = gson.fromJson(request.getReader(), FilterCriteria.class);
+
         FilterAnd filterAnd = new FilterAnd();
 
         String titleString = filterCriteria.getTitle();
         if (!titleString.isEmpty()) {
-            FilterTitle filterTitle = new FilterTitle(titleString);
-            filterAnd.addFilter(filterTitle);
+            filterAnd.addFilter(new FilterTitle(titleString));
         }
 
         String difficultyString = filterCriteria.getDifficulty();
@@ -57,8 +50,7 @@ public class ProblemsListServlet extends HttpServlet {
         }
 
         String statusString = filterCriteria.getStatus();
-        if (!statusString.isEmpty() && userId != null) {
-            User user = userDAO.getUser(Integer.parseInt(userId));
+        if (!statusString.isEmpty() && user != null) {
             Status status = new Status(problemDAO.getStatusId(statusString), statusString);
             FilterStatus filterStatus = new FilterStatus(user, status);
             filterAnd.addFilter(filterStatus);
@@ -75,7 +67,9 @@ public class ProblemsListServlet extends HttpServlet {
             FilterTopic filterTopic = new FilterTopic(topics);
             filterAnd.addFilter(filterTopic);
         }
+
         System.out.println(filterAnd.toSQLStatement());
+
         List<Problem> problems = problemDAO.getProblemsByFilter(filterAnd);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -1,216 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Submit Solution</title>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Submit | Ikodave</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+    <div id="navbar-container"></div>
+    <script src="/shared_html/navbar.js"></script>
+    <script>loadNavbar();</script>
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .header {
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 20px;
-            font-weight: normal;
-            color: #333;
-        }
-
-        .form-section {
-            margin-bottom: 25px;
-        }
-
-        .form-row {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: #666;
-        }
-
-        .form-input {
-            width: 100%;
-        }
-
-        .form-input input,
-        .form-input select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            font-size: 13px;
-            background: white;
-            box-sizing: border-box;
-        }
-
-        .form-input input:focus,
-        .form-input select:focus {
-            outline: none;
-            border-color: #4CAF50;
-        }
-
-        .code-section {
-            margin-top: 20px;
-        }
-
-        .code-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: #666;
-        }
-
-        .code-textarea {
-            width: 100%;
-            height: 400px;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.4;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            background: white;
-            resize: vertical;
-            box-sizing: border-box;
-        }
-
-        .code-textarea:focus {
-            outline: none;
-            border-color: #4CAF50;
-        }
-
-        .submit-section {
-            margin-top: 15px;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .submit-button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 13px;
-            border-radius: 3px;
-            cursor: pointer;
-            min-width: 100px;
-        }
-
-        .submit-button:hover {
-            background-color: #45a049;
-        }
-
-        .submit-button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        .result {
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 3px;
-            font-size: 13px;
-            display: none;
-        }
-
-        .result.error {
-            background-color: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-        }
-
-        .result.success {
-            background-color: #e8f5e8;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
-        }
-
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .problem-info {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            padding: 12px;
-            margin-bottom: 20px;
-            font-size: 13px;
-        }
-
-        .problem-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .problem-details {
-            color: #666;
-        }
+        body { font-family: Arial, sans-serif; background: #f2f2f2; margin: 0; padding: 0; }
+        .header { background: #3f4a5a; color: #fff; padding: 0.75rem 1rem; display: flex; align-items: center; }
+        .header a { color: #fff; text-decoration: none; margin-right: 1rem; }
+        .container { max-width: 800px; margin: 2rem auto; background: #fff; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); padding: 1.5rem; }
+        h2 { margin-top: 0; font-size: 1.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-weight: bold; margin-bottom: 0.5rem; }
+        input[type="text"], select, textarea { width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 0.5rem; font-family: monospace; }
+        .form-actions { text-align: right; }
+        .form-actions button { background: #3f4a5a; color: #fff; border: none; padding: 0.5rem 1rem; margin-left: 0.5rem; border-radius: 4px; cursor: pointer; }
+        .form-actions #cancelButton { background: #999; }
     </style>
+
+    <script src="/submit/languages.js"></script>
+
+    <script src="/submit/submit.js"></script>
+
 </head>
+
 <body>
-<div class="container">
-    <div class="header">
-        <h1>Submit Solution</h1>
-    </div>
 
-    <div class="problem-info" id="problemInfo" style="display: none;">
-        <div class="problem-title" id="problemTitle"></div>
-        <div class="problem-details" id="problemDetails"></div>
-    </div>
+    <div class="container">
+        <h2>Submit Solution</h2>
+        <form id="submitForm">
 
-    <form id="submitForm">
-        <div class="form-section">
-            <div class="form-row">
-                <div class="form-label">Problem:</div>
-                <div class="form-input">
-                    <input type="text" id="problemId" name="problemId" placeholder="e.g., A, B, C or 1234A" required>
-                </div>
+            <div class="form-group">
+                <label for="problemTitle">Problem Title</label>
+                <input type="text" id="problemTitle" name="problemTitle"/>
             </div>
 
-            <div class="form-row">
-                <div class="form-label">Language:</div>
-                <div class="form-input">
-                    <select id="language" name="language" required>
-                        <option value="">Loading languages...</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label for="language">Language</label>
+                <select id="language" name="language">
+                    <option value="">Choose language</option>
+                </select>
             </div>
-        </div>
 
-        <div class="code-section">
-            <label class="code-label" for="solutionCode">Source Code:</label>
-            <textarea id="solutionCode" name="solutionCode" class="code-textarea" placeholder="// Write your solution here..." required></textarea>
-        </div>
+            <div class="form-group">
+                <label for="solutionCode">Source Code</label>
+                <textarea id="solutionCode" name="solutionCode" rows="15"></textarea>
+            </div>
 
-        <div class="submit-section">
-            <button type="submit" class="submit-button">Submit</button>
-        </div>
-    </form>
 
-    <div id="result" class="result"></div>
-</div>
+            <div class="form-actions">
+                <button type="submit" id="submitButton">Submit</button>
+            </div>
 
-<script src="submit.js"></script>
+        </form>
+    </div>
+
 </body>
 </html>

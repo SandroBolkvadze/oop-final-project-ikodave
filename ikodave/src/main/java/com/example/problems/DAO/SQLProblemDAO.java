@@ -46,6 +46,9 @@ public class SQLProblemDAO implements ProblemDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, problemTitle);
             ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                return null;
+            }
             return toProblem(resultSet);
 
         } catch (SQLException e) {
@@ -83,7 +86,9 @@ public class SQLProblemDAO implements ProblemDAO {
             preparedStatement.setInt(1, problemId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
+            if (!resultSet.next()) {
+                return null;
+            }
             return toDifficulty(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -98,7 +103,9 @@ public class SQLProblemDAO implements ProblemDAO {
             preparedStatement.setInt(1, problemId);
             preparedStatement.setInt(2, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
+            if (!resultSet.next()) {
+                return null;
+            }
             return toStatus(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -112,7 +119,9 @@ public class SQLProblemDAO implements ProblemDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, problemId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
+            if (!resultSet.next()) {
+                return null;
+            }
             return toTitle(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);

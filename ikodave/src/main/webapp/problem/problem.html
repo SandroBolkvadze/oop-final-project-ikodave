@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Problems | Ikodave</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body { font-family: Arial, sans-serif; background: #f2f2f2; margin: 0; padding: 0; }
+        .header { background: #3f4a5a; padding: 0.5rem 1rem; display: flex; align-items: center; }
+        .header .btn-link { background: none; border: none; margin-right: 1.5rem; padding: 0; font: inherit; color: #fff; cursor: pointer; }
+        .header .btn-link:hover { color: yellow; text-decoration: underline; }
+        .content { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .filter-row { background: #f9f9f9; border-bottom: 1px solid #e0e0e0; padding: 1rem; display: flex; flex-wrap: wrap; gap: 1rem; position: relative; overflow: visible; }
+        .filter-row .form-group { flex: 1; min-width: 150px; }
+        .filter-row .btn-apply { align-self: flex-end; }
+        .table-responsive { padding: 1rem; }
+        .problem-table th, .problem-table td { vertical-align: middle; }
+        .tag { display: inline-block; background: #e0e0e0; color: #333; border-radius: 3px; padding: 0.2rem 0.5rem; margin: 0.1rem; font-size: 0.85rem; }
+        /* Improved dropdown styling for topics */
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%; left: 0;
+            width: 100%;
+            max-height: 250px;
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.15);
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.175);
+            padding: 0.5rem;
+            z-index: 1000;
+            overscroll-behavior: contain;
+        }
+        /* Custom scrollbar for WebKit */
+        .dropdown-menu::-webkit-scrollbar {
+            width: 8px;
+        }
+        .dropdown-menu::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .dropdown-menu::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        .dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Thin scrollbar for Firefox */
+        .dropdown-menu {
+            scrollbar-width: thin;
+            scrollbar-color: #888 #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+<div id="navbar-container"></div>
+<script src="/shared_html/navbar.js"></script>
+<script>loadNavbar();</script>
+
+<div class="content">
+    <div class="header">
+        <button type="button" class="btn btn-link">Ikodave</button>
+        <button type="button" class="btn btn-link">Problemset</button>
+    </div>
+
+    <h2 class="p-3">Problems</h2>
+    <form id="filter-form" class="filter-row">
+        <div class="form-group">
+            <label for="filter-title" class="form-label">Name</label>
+            <input type="text" class="form-control" id="filter-title" placeholder="Search by name...">
+        </div>
+        <div class="form-group">
+            <label for="filter-difficulty" class="form-label">Difficulty</label>
+            <select class="form-select" id="filter-difficulty">
+                <option value="">All</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="filter-status" class="form-label">Status</label>
+            <select class="form-select" id="filter-status">
+                <option value="">All</option>
+                <option value="accepted">Accepted</option>
+                <option value="rejected">Rejected</option>
+                <option value="todo">Todo</option>
+            </select>
+        </div>
+        <div class="form-group flex-grow-1">
+            <label class="form-label" for="filterTopicsDropdown">Topics</label>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" id="filterTopicsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select topics
+                </button>
+                <div class="dropdown-menu p-3" aria-labelledby="filterTopicsDropdown" style="max-height:200px; overflow-y:auto;">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-graphs" value="graphs">
+                        <label class="form-check-label" for="topic-graphs">Graphs</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-dp" value="dp">
+                        <label class="form-check-label" for="topic-dp">Dynamic Programming</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-greedy" value="greedy">
+                        <label class="form-check-label" for="topic-greedy">Greedy</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-sorting" value="sorting">
+                        <label class="form-check-label" for="topic-sorting">Sorting</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-bfs" value="bfs">
+                        <label class="form-check-label" for="topic-bfs">Breadth-First Search</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-dfs" value="dfs">
+                        <label class="form-check-label" for="topic-dfs">Depth-First Search</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-segment-tree" value="segment-tree">
+                        <label class="form-check-label" for="topic-segment-tree">Segment Tree</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-fenwick" value="fenwick">
+                        <label class="form-check-label" for="topic-fenwick">Fenwick Tree</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-bruteforce" value="bruteforce">
+                        <label class="form-check-label" for="topic-bruteforce">Brute Force</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-recursion" value="recursion">
+                        <label class="form-check-label" for="topic-recursion">Recursion</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-math" value="math">
+                        <label class="form-check-label" for="topic-math">Math</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-string" value="string">
+                        <label class="form-check-label" for="topic-string">String</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="topic-geometry" value="geometry">
+                        <label class="form-check-label" for="topic-geometry">Geometry</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-apply">Apply Filters</button>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover problem-table">
+            <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Difficulty</th>
+                <th>Status</th>
+                <th>Topics</th>
+                <th>Link</th>
+            </tr>
+            </thead>
+            <tbody id="problems-table-body">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="problems.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-USE ikodave;
+USE Ikodave;
 INSERT INTO submission_verdict (verdict) VALUES ('Running');
 INSERT INTO submission_verdict (verdict) VALUES ('Accepted');
 INSERT INTO submission_verdict (verdict) VALUES ('Wrong Answer');

@@ -31,7 +31,7 @@ public class SQLSubmissionDAO implements SubmissionDAO {
             preparedStatement.setInt(5, submission.getCodeLanguageId());
             preparedStatement.setLong(6, submission.getTime());
             preparedStatement.setLong(7, submission.getMemory());
-            preparedStatement.setDate(8, submission.getSubmitDate());
+            preparedStatement.setTimestamp(8, submission.getSubmitDate());
             preparedStatement.setString(9, submission.getLog());
 
             preparedStatement.executeUpdate();
@@ -55,7 +55,7 @@ public class SQLSubmissionDAO implements SubmissionDAO {
             preparedStatement.setInt(5, submission.getCodeLanguageId());
             preparedStatement.setLong(6, submission.getTime());
             preparedStatement.setLong(7, submission.getMemory());
-            preparedStatement.setDate(8, submission.getSubmitDate());
+            preparedStatement.setTimestamp(8, submission.getSubmitDate());
             preparedStatement.setString(9, submission.getLog());
             preparedStatement.setInt(10, submission.getId());
 
@@ -82,7 +82,25 @@ public class SQLSubmissionDAO implements SubmissionDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    @Override
+    public List<Submission> getSubmissionsByOrder(int userId, int problemId) {
+        try (Connection connection = basicDataSource.getConnection()){
+            String sqlStatement = toSubmissionSortedSQL();
+            PreparedStatement preparedStatement= connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, problemId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Submission> submissions = new ArrayList<>();
+            while (resultSet.next()) {
+                submissions.add(toSubmission(resultSet));
+            }
+            return submissions;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

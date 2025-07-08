@@ -1,55 +1,45 @@
 async function loadNavbar() {
-    const navbarRes = await fetch('/shared_html/navbar.html');
-    const html = await navbarRes.text();
-    document.getElementById('navbar-container').innerHTML = html;
+    try {
+        // Load and inject the navbar HTML
+        const navbarRes = await fetch('/shared_html/navbar.html');
+        const html = await navbarRes.text();
+        document.getElementById('navbar-container').innerHTML = html;
 
-    const sessionRes = await fetch('/user-session');
-    const data = await sessionRes.json();
+        // Get user session
+        const sessionRes = await fetch('/api/user/session');
+        const { loggedIn } = await sessionRes.json();
 
-    if (data.loggedIn) {
-        document.getElementById("nav-register").style.display = "none";
-        document.getElementById("nav-signin").style.display = "none";
-    } else {
-        document.getElementById("nav-profile").style.display = "none";
-    }
+        // Show/hide navbar items based on login status
+        toggleNavbarItems(loggedIn);
 
-    const homeLink = document.querySelector('#nav-home a');
-    if (homeLink) {
-        homeLink.addEventListener('click', function (e) {
-            e.preventDefault();
-            window.location.href = "/home";
+        // Set up navbar navigation links
+        setupNavLinks({
+            'nav-home': '/home',
+            'nav-register': '/registration',
+            'nav-signin': '/signin',
+            'nav-profile': '/profile',
+            'nav-problems': '/problems'
         });
-    }
 
-    // ✅ Fix the registration link to route through servlet
-    const regLink = document.querySelector('#nav-register a');
-    if (regLink) {
-        regLink.addEventListener('click', function (e) {
-            e.preventDefault();
-            window.location.href = "/registration";
-        });
+    } catch (err) {
+        console.error("Failed to load navbar:", err);
     }
+}
 
-    const signLink = document.querySelector('#nav-signin a');
-    if(signLink){
-        signLink.addEventListener('click', function (e){
-            e.preventDefault();
-            window.location.href = "/signin";
-        });
-    }
+function toggleNavbarItems(loggedIn) {
+    document.getElementById('nav-register')?.style.setProperty('display', loggedIn ? 'none' : 'block');
+    document.getElementById('nav-signin')?.style.setProperty('display', loggedIn ? 'none' : 'block');
+    document.getElementById('nav-profile')?.style.setProperty('display', loggedIn ? 'block' : 'none');
+}
 
-    const profileLink = document.querySelector('#nav-profile a');
-    if(profileLink){
-        profileLink.addEventListener('click', function(e){
-            e.preventDefault();
-            window.location.href = "/profile-page"
-        });
-    }
-    const problemLink = document.querySelector('#nav-problems a');
-    if(problemLink){
-        problemLink.addEventListener('click', function(e){
-            e.preventDefault();
-            window.location.href = "/problems"
-        });
+function setupNavLinks(linkMap) {
+    for (const [id, href] of Object.entries(linkMap)) {
+        const link = document.querySelector(`#${id} a`);
+        if (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                window.location.href = href;
+            });
+        }
     }
 }
