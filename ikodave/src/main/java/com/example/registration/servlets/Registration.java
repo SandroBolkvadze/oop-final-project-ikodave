@@ -2,7 +2,6 @@ package com.example.registration.servlets;
 
 import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
-import com.google.gson.Gson;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
@@ -16,14 +15,11 @@ import java.util.Map;
 
 import static com.example.registration.servlets.Helper.*;
 import static com.example.util.AttributeConstants.USER_DAO_KEY;
-import static com.example.util.SessionConstants.USER_ID_KEY;
 import static com.example.util.SessionConstants.USER_KEY;
 
 public class Registration extends HttpServlet {
-
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             if (!redirectProfileIfRegistered(request, response)) {
                 request.getRequestDispatcher("/authentication/registration.html")
