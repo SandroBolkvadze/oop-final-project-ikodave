@@ -22,7 +22,6 @@ public class ProblemStatusesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         StatusDAO statusDAO = (StatusDAO) getServletContext().getAttribute(STATUS_DAO_KEY);
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
-        System.out.println("IOSNTORISENTORSNTO");
         List<Status> statuses = statusDAO.getStatuses();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
