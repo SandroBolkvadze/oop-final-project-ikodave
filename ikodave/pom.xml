@@ -145,7 +145,7 @@
                 <version>3.0.1</version>
                 <configuration>
                     <path>/</path>
-                    <port>8089</port>
+                    <port>8088</port>
                 </configuration>
             </plugin>
             <!-- other plugins as needed -->

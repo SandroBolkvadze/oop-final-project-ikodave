@@ -1,3 +1,18 @@
+document.addEventListener('DOMContentLoaded', (e) => {
+    loadSubmissions();
+    addButtonListeners();
+});
+
+function addButtonListeners() {
+    document.getElementById('backToProblemButton').onclick = backToProblemButton;
+}
+
+function backToProblemButton() {
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    const title = parts[parts.length - 1];
+    window.location.href = `/problems/${encodeURIComponent(title)}`;
+}
+
 function loadSubmissions() {
     const parts = window.location.pathname.split('/');
     const problemTitle = parts[parts.length - 1];

@@ -4,11 +4,13 @@ public class TestCaseReject extends TestCaseResult {
 
     private final long time;
     private final long memory;
+    private final String verdict;
     private final String log;
 
-    public TestCaseReject(long time, long memory, String log) {
+    public TestCaseReject(long time, long memory, String verdict, String log) {
         this.time = time;
         this.memory = memory;
+        this.verdict = verdict;
         this.log = log;
     }
 
@@ -29,11 +31,11 @@ public class TestCaseReject extends TestCaseResult {
 
     @Override
     public String getVerdict() {
-        return log;
+        return verdict;
     }
 
     @Override
     public String getLog() {
-        return "";
+        return log;
     }
 }

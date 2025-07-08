@@ -5,16 +5,20 @@ document.addEventListener('DOMContentLoaded', (e) => {
         .catch(error => console.log(error));
 });
 
-function addListeners() {
-    document.getElementById('submitButton').onclick = submissionButton;
+function addListeners(e) {
+    document.getElementById('submissionsButton').onclick = mySubmissionsProblem;
+    document.getElementById('submitSolutionButton').onclick = submitSolutionButton;
 }
 
-function submissionButton(e) {
-    e.preventDefault();
-
+function mySubmissionsProblem() {
     const parts = window.location.pathname.split('/').filter(Boolean);
     const title = parts[parts.length - 1];
+    window.location.href = `/problems/submissions/${encodeURIComponent(title)}`;
+}
 
+function submitSolutionButton() {
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    const title = parts[parts.length - 1];
     window.location.href = `/problems/submit/${encodeURIComponent(title)}`;
 }
 

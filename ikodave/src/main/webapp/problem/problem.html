@@ -29,6 +29,7 @@
         .btn-link {
             background: none;
             border: none;
+            margin-right: 1.5rem;
             padding: 0;
             font: inherit;
             color: #fff;
@@ -38,18 +39,24 @@
             text-decoration: underline;
             outline: none;
         }
+        .btn-link:hover {
+            color: yellow;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="header" id="header">
     <a href="/" id="homeLink" class="btn btn-link mb-3">Ikodave</a>
+
     <a href="/problems" class="btn btn-link mb-3">&larr; Back to Problemset</a>
-    <button
-            type="button"
-            id="submitButton"
-            class="btn btn-link mb-3"
-    >
+
+    <button type="button" id="submissionsButton" class="btn btn-link mb-3">
+        My Submissions
+    </button>
+
+    <button type="button" id="submitSolutionButton" class="btn btn-link mb-3">
         Submit Solution
     </button>
 </div>

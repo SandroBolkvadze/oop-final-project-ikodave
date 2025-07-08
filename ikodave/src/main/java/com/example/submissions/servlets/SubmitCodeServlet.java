@@ -77,10 +77,10 @@ public class SubmitCodeServlet extends HttpServlet {
         final int submissionId = submissionDAO.insertSubmission(submission);
 
 
-        System.out.println(solutionCode);
-        System.out.println(testCases);
-        System.out.println(codeLang);
-        System.out.println(problem.getTitle());
+//        System.out.println(solutionCode);
+//        System.out.println(testCases);
+//        System.out.println(codeLang);
+//        System.out.println(problem.getTitle());
 
         executor.submit(() -> {
             try {
@@ -103,7 +103,7 @@ public class SubmitCodeServlet extends HttpServlet {
                                 submissionResult.getLog()
                         );
 
-                System.out.println(updatedSubmission.getTime());
+                System.out.println("Done: " + submissionResult.getLog());
                 submissionDAO.updateSubmission(updatedSubmission);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
