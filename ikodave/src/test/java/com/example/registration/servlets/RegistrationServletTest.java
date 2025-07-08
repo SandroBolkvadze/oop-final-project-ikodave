@@ -59,7 +59,7 @@ class RegistrationServletTest {
 
             verify(userDao).addUser(argThat(u ->
                     u.getUsername().equals("newuser") &&
-                            !u.getPassword().equals("plainpass") // ensure password is hashed
+                            !u.getPassword().equals("plainpass")
             ));
 
             verify(session).setAttribute(eq(USER_KEY), any(User.class));
@@ -85,7 +85,6 @@ class RegistrationServletTest {
             Registration servlet = new Registration();
             servlet.doGet(req, res);
 
-            // Should forward to registration.html
             verify(dispatcher).forward(req, res);
         }
     }
@@ -101,7 +100,6 @@ class RegistrationServletTest {
             Registration servlet = new Registration();
             servlet.doGet(req, res);
 
-            // Nothing forwarded
             verify(req, never()).getRequestDispatcher(anyString());
         }
     }
