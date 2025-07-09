@@ -4,15 +4,11 @@ import com.example.problems.DAO.DifficultyDAO;
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.TopicDAO;
 import com.example.problems.DTO.Difficulty;
-import com.example.problems.DTO.Status;
-import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.*;
 import com.example.problems.FrontResponse.ProblemListResponse;
 import com.example.problems.utils.FilterCriteria;
 import com.example.registration.model.User;
-import com.example.submissions.DAO.StatusDAO;
-import com.example.util.DatabaseConstants;
 import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServlet;
@@ -20,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.example.util.AttributeConstants.*;
@@ -35,11 +30,18 @@ public class ProblemsListServlet extends HttpServlet {
         ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
         DifficultyDAO difficultyDAO = (DifficultyDAO) getServletContext().getAttribute(DIFFICULTY_DAO_KEY);
         TopicDAO topicDAO = (TopicDAO) getServletContext().getAttribute(TOPIC_DAO_KEY);
-        StatusDAO statusDAO = (StatusDAO) getServletContext().getAttribute(STATUS_DAO_KEY);
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
         FilterCriteria filterCriteria = gson.fromJson(request.getReader(), FilterCriteria.class);
-        FilterAnd filterAnd = new FilterAnd();
+
+        FilterAnd filterAnd;
+        if (user != null) {
+            filterAnd = new FilterAndLoggedIn();
+        }
+        else {
+            filterAnd = new FilterAndLoggedOut();
+        }
+
 
         String titleString = filterCriteria.getTitle();
         System.out.println("title: " + titleString);
@@ -59,8 +61,14 @@ public class ProblemsListServlet extends HttpServlet {
         System.out.println("status: " + statusName);
         System.out.println("user " + user);
 
+
         if (statusName == null && user != null) {
-            
+            FilterStatusNone filterStatusNone = new FilterStatusNone();
+            filterStatusNone.addFilter(new FilterStatusSolved(user));
+            filterStatusNone.addFilter(new FilterStatusAttempted(user));
+            filterStatusNone.addFilter(new FilterStatusTodo(user));
+
+            filterAnd.addFilter(filterStatusNone);
         }
 
         if (statusName != null && user != null) {
@@ -96,7 +104,15 @@ public class ProblemsListServlet extends HttpServlet {
 
         System.out.println(filterAnd.toSQLStatement());
 
-        List<ProblemListResponse> problems = problemDAO.getProblemResponsesByFilter(filterAnd);
+        List<ProblemListResponse> problems;
+
+        if (user != null) {
+            problems = problemDAO.getProblemResponsesByFilterLoggedIn(filterAnd);
+        }
+        else {
+            problems = problemDAO.getProblemResponsesByFilterLoggedOut(filterAnd);
+        }
+
         for (ProblemListResponse problem : problems) {
             System.out.println(problem.getTitle() + " " + problem.getDifficultyId() + " " + problem.getStatus());
         }

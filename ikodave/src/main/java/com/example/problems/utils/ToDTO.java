@@ -2,7 +2,6 @@ package com.example.problems.utils;
 
 import com.example.problems.DTO.*;
 import com.example.problems.FrontResponse.ProblemListResponse;
-import com.example.problems.FrontResponse.ProblemSpecificResponse;
 import com.example.registration.model.User;
 
 import java.sql.ResultSet;
@@ -59,7 +58,7 @@ public class ToDTO {
         }
     }
 
-    public static ProblemListResponse toProblemListResponse(ResultSet resultSet) {
+    public static ProblemListResponse toProblemListResponseLoggedIn(ResultSet resultSet) {
         try {
             ProblemListResponse problem = new ProblemListResponse();
             problem.setTitle(resultSet.getString(Problems.COL_TITLE));
@@ -69,7 +68,18 @@ public class ToDTO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public static ProblemListResponse toProblemListResponseLoggedOut(ResultSet resultSet) {
+        try {
+            ProblemListResponse problem = new ProblemListResponse();
+            problem.setTitle(resultSet.getString(Problems.COL_TITLE));
+            problem.setDifficultyId(resultSet.getInt(Problems.COL_DIFFICULTY_ID));
+            problem.setStatus("No Status");
+            return problem;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static Problem toProblem(ResultSet rs) {

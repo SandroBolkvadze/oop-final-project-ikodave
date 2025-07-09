@@ -1,14 +1,11 @@
 package com.example.problems.FrontResponse;
 
-import com.example.problems.DTO.Difficulty;
-
 public class ProblemListResponse {
 
     private String title;
     private int difficultyId;
     private String difficultyName;
     private String status;
-
 
     public ProblemListResponse() {
 

@@ -1,11 +1,5 @@
 package com.example.problems.utils;
 
-import com.example.problems.DAO.ProblemDAO;
-import com.example.problems.Filters.Filter;
-import com.example.problems.Filters.FilterAnd;
-import com.example.problems.Filters.FilterTitle;
-import org.apache.commons.dbcp2.BasicDataSource;
-
 import java.util.List;
 
 public class FilterCriteria {

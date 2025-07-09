@@ -27,14 +27,14 @@ public class SQLProblemDAO implements ProblemDAO {
     }
 
     @Override
-    public List<ProblemListResponse> getProblemResponsesByFilter(Filter filter) {
-        try (Connection connection = basicDataSource.getConnection();
-            PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
+    public List<ProblemListResponse> getProblemResponsesByFilterLoggedIn(Filter filter) {
+        try (Connection connection = basicDataSource.getConnection()) {
+            PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             List<ProblemListResponse> problems = new ArrayList<>();
             while (resultSet.next()) {
-                ProblemListResponse problem = toProblemListResponse(resultSet);
+                ProblemListResponse problem = toProblemListResponseLoggedIn(resultSet);
                 problem.setDifficultyName(difficultyDAO.getDifficultyById(problem.getDifficultyId()).getDifficulty());
                 problems.add(problem);
             }
@@ -47,12 +47,30 @@ public class SQLProblemDAO implements ProblemDAO {
     @Override
     public List<Problem> getProblemsByFilter(Filter filter) {
         try (Connection connection = basicDataSource.getConnection();
-             PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
+            PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             List<Problem> problems = new ArrayList<>();
             while (resultSet.next()) {
                 problems.add(toProblem(resultSet));
+            }
+            return problems;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<ProblemListResponse> getProblemResponsesByFilterLoggedOut(Filter filter) {
+        try (Connection connection = basicDataSource.getConnection()) {
+            PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<ProblemListResponse> problems = new ArrayList<>();
+            while (resultSet.next()) {
+                ProblemListResponse problem = toProblemListResponseLoggedOut(resultSet);
+                problem.setDifficultyName(difficultyDAO.getDifficultyById(problem.getDifficultyId()).getDifficulty());
+                problems.add(problem);
             }
             return problems;
         } catch (SQLException e) {

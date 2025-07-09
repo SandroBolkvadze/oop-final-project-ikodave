@@ -64,7 +64,55 @@ async function filter() {
         body: JSON.stringify(filterCriteria)
     });
 
-    console.log(response);
+    const problems = await response.json();
+
+    const tbody = document.getElementById('problems-table-body');
+    tbody.innerHTML = '';
+
+    problems.forEach((p, idx) => {
+        const tr = document.createElement('tr');
+
+        const tdIndex = document.createElement('td');
+        tdIndex.textContent = idx + 1;
+        tr.appendChild(tdIndex);
+
+        const tdName = document.createElement('td');
+        tdName.textContent = p.title;
+        tr.appendChild(tdName);
+
+        const tdDiff = document.createElement('td');
+        const diffBadge = document.createElement('span');
+        diffBadge.textContent = p.difficultyName;
+        diffBadge.className = `badge ${
+            p.difficultyName.toLowerCase() === 'easy'   ? 'btn-easy'   :
+                p.difficultyName.toLowerCase() === 'medium' ? 'btn-medium' :
+                    'btn-hard'
+        }`;
+        tdDiff.appendChild(diffBadge);
+        tr.appendChild(tdDiff);
+
+        const tdStatus = document.createElement('td');
+        const statusBadge = document.createElement('span');
+        statusBadge.textContent = p.status;
+        statusBadge.className = `badge ${
+            p.status.toLowerCase() === 'accepted' ? 'bg-success' : 'bg-secondary'
+        }`;
+        tdStatus.appendChild(statusBadge);
+        tr.appendChild(tdStatus);
+
+        const tdTopics = document.createElement('td');
+        tr.appendChild(tdTopics);
+
+        const tdLink = document.createElement('td');
+        const a = document.createElement('a');
+        a.href = `/problems/${encodeURIComponent(p.title)}`;
+        a.className = 'btn btn-sm btn-outline-primary';
+        a.textContent = 'View';
+        tdLink.appendChild(a);
+        tr.appendChild(tdLink);
+
+        tbody.appendChild(tr);
+    });
 }
 
 async function populateToggleGroup({ url, containerId, groupName, valueKey, labelKey, btnClass = 'btn-outline-primary' }) {

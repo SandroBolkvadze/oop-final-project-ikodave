@@ -13,7 +13,9 @@ public interface ProblemDAO {
 
     List<Problem> getProblemsByFilter(Filter filter);
 
-    List<ProblemListResponse> getProblemResponsesByFilter(Filter filter);
+    List<ProblemListResponse> getProblemResponsesByFilterLoggedOut(Filter filter);
+
+    List<ProblemListResponse> getProblemResponsesByFilterLoggedIn(Filter filter);
 
     List<Topic> getProblemTopics(int problemId);
 

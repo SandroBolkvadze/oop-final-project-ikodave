@@ -1,6 +1,7 @@
 package com.example.problems.Filters;
 
 import com.example.problems.Filters.Parameters.Parameter;
+import com.example.util.DatabaseConstants.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,10 +9,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterStatusNone implements Filter {
+import static java.lang.String.format;
+
+public class FilterAndLoggedIn extends FilterAnd {
 
     private final List<Filter> filters;
-    public FilterStatusNone() {
+
+    public FilterAndLoggedIn() {
         filters = new ArrayList<>();
     }
 
@@ -22,18 +26,48 @@ public class FilterStatusNone implements Filter {
     @Override
     public String toSQLStatement() {
         StringBuilder sqlStatement = new StringBuilder();
-        for (int i = 0; i < filters.size(); i++) {
-            sqlStatement.append(filters.get(i).toSQLStatement());
-            if (i < filters.size() - 1){
-                sqlStatement.append(" UNION ALL ");
-            }
+        if (!filters.isEmpty()) {
+            sqlStatement.append("WITH ");
         }
+
+        for (int i = 0; i < filters.size(); i++) {
+            sqlStatement.append(format("t%d AS ", i));
+            sqlStatement.append("(");
+            sqlStatement.append(filters.get(i).toSQLStatement());
+            sqlStatement.append(")");
+            if (i < filters.size() - 1) {
+                sqlStatement.append(",");
+            }
+            sqlStatement.append(" \n");
+        }
+
+        StringBuilder selectStatement = new StringBuilder(format(
+                "SELECT *, status FROM %s",
+                Problems.TABLE_NAME
+        ));
+
+        for (int i = 0; i < filters.size(); i++) {
+            selectStatement.append(format(
+                    " JOIN t%d on %s.%s = t%d.%s ",
+                    i,
+                    Problems.TABLE_NAME,
+                    Problems.COL_ID,
+                    i,
+                    Problems.COL_ID
+            ));
+        }
+
+        selectStatement.append(";");
+
+        sqlStatement.append(selectStatement);
+
         return sqlStatement.toString();
     }
 
     @Override
     public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
+
         try  {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 1;
@@ -52,10 +86,7 @@ public class FilterStatusNone implements Filter {
 
     @Override
     public List<Parameter> getParameters() {
-        List<Parameter> parameters = new ArrayList<>();
-        for (Filter filter : filters) {
-            parameters.addAll(filter.getParameters());
-        }
-        return parameters;
+        return List.of();
     }
+
 }
