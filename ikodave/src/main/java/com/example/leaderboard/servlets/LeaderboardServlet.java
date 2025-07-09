@@ -28,9 +28,6 @@ public class LeaderboardServlet extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-
-        System.out.println("oantrostaorsn");
-
         PrintWriter out = response.getWriter();
         out.print(json);
         out.flush();
