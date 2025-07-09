@@ -3,8 +3,7 @@ package com.example.user_profile.dao;
 import com.example.problems.DTO.Difficulty;
 import com.example.registration.model.User;
 import com.example.submissions.DTO.SubmissionVerdict;
-import org.apache.commons.dbcp2.BasicDataSource;
-
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,8 +28,9 @@ public class SQLUserDetailsDAO implements UserDetailsDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, verdict.getId());
             preparedStatement.setInt(2,user.getId());
+
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
         } catch (SQLException e) {
@@ -38,8 +38,10 @@ public class SQLUserDetailsDAO implements UserDetailsDAO {
         }
         return 0;
     }
-    public int getProblemCount(User user){
-        String sqlStatement = getProblemCountSQL();
+
+
+    public int getAcceptedProblemCount(User user) {
+        String sqlStatement = getAcceptedProblemCountSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, user.getId());
@@ -53,6 +55,7 @@ public class SQLUserDetailsDAO implements UserDetailsDAO {
             throw new RuntimeException("Error querying accepted problems", e);
         }
     }
+
     public int getProblemCountByDifficulty(User user, Difficulty difficulty) {
         String sqlStatement = getProblemsCountByDifficultySQL();
         try (Connection connection = basicDataSource.getConnection()) {
@@ -69,7 +72,8 @@ public class SQLUserDetailsDAO implements UserDetailsDAO {
             throw new RuntimeException("Error querying accepted problems by difficulty", e);
         }
     }
-    public int getTriedProblemCount(User user) {
+
+    public int getSubmittedProblemCount(User user) {
         String sqlStatement = getTriedProblemCountSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
@@ -83,11 +87,6 @@ public class SQLUserDetailsDAO implements UserDetailsDAO {
             throw new RuntimeException("Error querying tried problems", e);
         }
     }
-    public double getPercentage(User user){
-        int acceptedCount = getProblemCount(user);
-        int triedCount = getTriedProblemCount(user);
-        if(triedCount == 0)return 0;
-        return (double)(acceptedCount)/(double)(triedCount);
-    }
+
 
 }
