@@ -42,7 +42,7 @@
 
   <servlet>
     <servlet-name>ProfilePageServlet</servlet-name>
-    <servlet-class>com.example.user_profile.servlets.ProfilePageServlet</servlet-class>
+    <servlet-class>com.example.user_profile.servlets.UserProfilePageServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ProfilePageServlet</servlet-name>

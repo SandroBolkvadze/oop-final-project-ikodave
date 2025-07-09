@@ -12,10 +12,10 @@ import java.sql.*;
 import static org.junit.Assert.*;
 
 @RunWith(JUnit4.class)
-public class UserDetailsTest {
+public class UserDetailsDAOTest {
 
     private static BasicDataSource dataSource;
-    private MySQLUserDetails userDetails;
+    private SQLUserDetailsDAO userDetails;
 
     @BeforeClass
     public static void setupDatabase() throws Exception {
@@ -90,7 +90,7 @@ public class UserDetailsTest {
 
     @Before
     public void setUp() {
-        userDetails = new MySQLUserDetails(dataSource);
+        userDetails = new SQLUserDetailsDAO(dataSource);
     }
 
     @Test
@@ -188,7 +188,7 @@ public class UserDetailsTest {
         // Close it to simulate connection failure
         failingDataSource.close();
 
-        MySQLUserDetails failingUserDetails = new MySQLUserDetails(failingDataSource);
+        SQLUserDetailsDAO failingUserDetails = new SQLUserDetailsDAO(failingDataSource);
 
         User user = new User();
         user.setId(1);

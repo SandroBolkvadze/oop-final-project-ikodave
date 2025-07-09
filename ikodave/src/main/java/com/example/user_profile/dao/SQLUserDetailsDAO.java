@@ -13,11 +13,11 @@ import java.sql.SQLException;
 import static com.example.user_profile.utils.ToSQL.*;
 import static java.lang.String.format;
 
-public class MySQLUserDetails implements UserDetails {
+public class SQLUserDetailsDAO implements UserDetailsDAO {
 
     private final BasicDataSource basicDataSource;
 
-    public MySQLUserDetails(BasicDataSource basicDataSource) {
+    public SQLUserDetailsDAO(BasicDataSource basicDataSource) {
         this.basicDataSource = basicDataSource;
     }
 
@@ -28,8 +28,9 @@ public class MySQLUserDetails implements UserDetails {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, verdict.getId());
             preparedStatement.setInt(2,user.getId());
+
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
         } catch (SQLException e) {
@@ -37,8 +38,10 @@ public class MySQLUserDetails implements UserDetails {
         }
         return 0;
     }
-    public int getProblemCount(User user){
-        String sqlStatement = getProblemCountSQL();
+
+
+    public int getAcceptedProblemCount(User user) {
+        String sqlStatement = getAcceptedProblemCountSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, user.getId());
@@ -52,6 +55,7 @@ public class MySQLUserDetails implements UserDetails {
             throw new RuntimeException("Error querying accepted problems", e);
         }
     }
+
     public int getProblemCountByDifficulty(User user, Difficulty difficulty) {
         String sqlStatement = getProblemsCountByDifficultySQL();
         try (Connection connection = basicDataSource.getConnection()) {
@@ -68,7 +72,8 @@ public class MySQLUserDetails implements UserDetails {
             throw new RuntimeException("Error querying accepted problems by difficulty", e);
         }
     }
-    public int getTriedProblemCount(User user) {
+
+    public int getSubmittedProblemCount(User user) {
         String sqlStatement = getTriedProblemCountSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
@@ -82,11 +87,6 @@ public class MySQLUserDetails implements UserDetails {
             throw new RuntimeException("Error querying tried problems", e);
         }
     }
-    public double getProcentage(User user){
-        int acceptedCount = getProblemCount(user);
-        int triedCount = getTriedProblemCount(user);
-        if(triedCount == 0)return 0;
-        return (double)(acceptedCount)/(double)(triedCount);
-    }
+
 
 }

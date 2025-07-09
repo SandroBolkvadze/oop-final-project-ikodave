@@ -5,7 +5,7 @@ import com.example.util.DatabaseConstants.*;
 import static java.lang.String.format;
 
 public class ToSQL {
-    public static String getProblemsCountByVerdictSQL(){
+    public static String getProblemsCountByVerdictSQL() {
         return format("SELECT COUNT(DISTINCT %s.%s) " +
                         "FROM %s JOIN %s ON %s.%s = %s.%s " +
                         "WHERE %s.%s = ? AND %s.%s = ?;",
@@ -23,7 +23,7 @@ public class ToSQL {
                 Submissions.COL_USER_ID
         );
     }
-    public static String getProblemsCountByDifficultySQL(){
+    public static String getProblemsCountByDifficultySQL() {
         return format("SELECT COUNT(DISTINCT %s.%s) " +
                         "FROM %s JOIN %s ON %s.%s = %s.%s " +
                         "JOIN %s ON %s.%s = %s.%s " +
@@ -55,7 +55,7 @@ public class ToSQL {
                         Submissions.COL_USER_ID
         );
     }
-    public static String getProblemCountSQL(){
+    public static String getAcceptedProblemCountSQL() {
         return format("SELECT COUNT(DISTINCT %s.%s) " +
                         "FROM %s JOIN %s ON %s.%s = %s.%s " +
                         "JOIN %s ON %s.%s = %s.%s" +

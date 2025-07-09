@@ -14,16 +14,16 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-class ProfilePageServletTest {
+class UserProfilePageServletTest {
 
-    private ProfilePageServlet servlet;
+    private UserProfilePageServlet servlet;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private RequestDispatcher dispatcher;
 
     @BeforeEach
     void setUp() {
-        servlet = new ProfilePageServlet();
+        servlet = new UserProfilePageServlet();
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         dispatcher = mock(RequestDispatcher.class);
