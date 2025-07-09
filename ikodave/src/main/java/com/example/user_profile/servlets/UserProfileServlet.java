@@ -20,6 +20,9 @@ public class UserProfileServlet extends HttpServlet {
             user = (User) request.getSession().getAttribute(USER_KEY);
         }
 
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
         String json;
         if (user != null) {
             json = new Gson().toJson(user.getUsername());

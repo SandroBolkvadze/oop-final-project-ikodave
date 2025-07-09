@@ -4,7 +4,6 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    addListeners();
 
     populateToggleGroup({
         url: '/api/problems/difficulties',
@@ -33,9 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-function addListeners() {
-    document.getElementById('filter-button').addEventListener('click', filter);
-}
 
 async function filter() {
     const title = document.getElementById('filter-title').value.trim();
