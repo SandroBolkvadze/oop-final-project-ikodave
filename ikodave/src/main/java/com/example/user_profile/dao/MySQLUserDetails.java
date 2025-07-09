@@ -68,5 +68,25 @@ public class MySQLUserDetails implements UserDetails {
             throw new RuntimeException("Error querying accepted problems by difficulty", e);
         }
     }
+    public int getTriedProblemCount(User user) {
+        String sqlStatement = getTriedProblemCountSQL();
+        try (Connection connection = basicDataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, user.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error querying tried problems", e);
+        }
+    }
+    public double getProcentage(User user){
+        int acceptedCount = getProblemCount(user);
+        int triedCount = getTriedProblemCount(user);
+        if(triedCount == 0)return 0;
+        return (double)(acceptedCount)/(double)(triedCount);
+    }
 
 }

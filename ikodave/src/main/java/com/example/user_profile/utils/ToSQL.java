@@ -79,5 +79,20 @@ public class ToSQL {
                        SubmissionVerdict.COL_VERDICT
         );
     }
+    public static String getTriedProblemCountSQL(){
+        return format("SELECT COUNT(%s.%s) FROM %s JOIN %s ON %s.%s = %s.%s " +
+                "WHERE %s.%s = ?",
+                Problems.TABLE_NAME,
+                Problems.COL_ID,
+                Problems.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Submissions.COL_PROBLEM_ID,
+                Problems.TABLE_NAME,
+                Problems.COL_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_USER_ID
+        );
+    }
 
 }
