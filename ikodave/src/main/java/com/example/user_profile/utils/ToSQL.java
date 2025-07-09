@@ -5,7 +5,7 @@ import com.example.util.DatabaseConstants.*;
 import static java.lang.String.format;
 
 public class ToSQL {
-    public static String getProblemsCountByStatusSQL(){
+    public static String getProblemsCountByVerdictSQL(){
         return format("SELECT COUNT(DISTINCT %s.%s) " +
                         "FROM %s JOIN %s ON %s.%s = %s.%s " +
                         "WHERE %s.%s = ? AND %s.%s = ?;",

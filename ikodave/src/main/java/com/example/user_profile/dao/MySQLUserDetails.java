@@ -1,6 +1,5 @@
 package com.example.user_profile.dao;
 
-import com.example.problems.DTO.Status;
 import com.example.registration.model.User;
 import com.example.submissions.DTO.SubmissionVerdict;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
@@ -23,7 +22,7 @@ public class MySQLUserDetails implements UserDetails {
 
     @Override
     public int getVerdictProblemsCount(User user, SubmissionVerdict verdict) {
-        String sqlStatement = getProblemsCountByStatusSQL();
+        String sqlStatement = getProblemsCountByVerdictSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, verdict.getId());
