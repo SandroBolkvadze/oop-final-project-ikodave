@@ -82,7 +82,7 @@ public class MySQLUserDetails implements UserDetails {
             throw new RuntimeException("Error querying tried problems", e);
         }
     }
-    public double getProcentage(User user){
+    public double getPercentage(User user){
         int acceptedCount = getProblemCount(user);
         int triedCount = getTriedProblemCount(user);
         if(triedCount == 0)return 0;
