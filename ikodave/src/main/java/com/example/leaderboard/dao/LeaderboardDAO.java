@@ -1,10 +1,9 @@
 package com.example.leaderboard.dao;
 
-import com.example.leaderboard.dto.UserWithRank;
-import com.example.registration.model.User;
+import com.example.leaderboard.dto.UserWithScore;
 
 import java.util.List;
 
 public interface LeaderboardDAO {
-    public List<UserWithRank> getUsersByRank();
+    public List<UserWithScore> getUsersByScore();
 }

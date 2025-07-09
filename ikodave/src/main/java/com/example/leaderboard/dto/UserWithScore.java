@@ -2,20 +2,20 @@ package com.example.leaderboard.dto;
 
 import com.example.registration.model.User;
 
-public class UserWithRank {
+public class UserWithScore {
     private User user;
-    private int rank;
+    private int score;
 
-    public UserWithRank(User user, int rank) {
+    public UserWithScore(User user, int score) {
         this.user = user;
-        this.rank = rank;
+        this.score = score;
     }
 
     public User getUser() {
         return user;
     }
 
-    public int getRank() {
-        return rank;
+    public int getScore() {
+        return score;
     }
 }

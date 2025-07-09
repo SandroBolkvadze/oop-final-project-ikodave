@@ -1,7 +1,7 @@
 package com.example.leaderboard.servlets;
 
 import com.example.leaderboard.dao.LeaderboardDAO;
-import com.example.leaderboard.dto.UserWithRank;
+import com.example.leaderboard.dto.UserWithScore;
 import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServlet;
@@ -18,15 +18,18 @@ public class LeaderboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
-        LeaderboardDAO leaderboardDAO = (LeaderboardDAO) request.getSession().getAttribute(LEADERBOARD_DAO_KEY);
+        LeaderboardDAO leaderboardDAO = (LeaderboardDAO) getServletContext().getAttribute(LEADERBOARD_DAO_KEY);
 
         // Now returns List<UserWithRank>
-        List<UserWithRank> leaderboard = leaderboardDAO.getUsersByRank();
+        List<UserWithScore> leaderboard = leaderboardDAO.getUsersByScore();
 
         String json = gson.toJson(leaderboard);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+
+
+        System.out.println("oantrostaorsn");
 
         PrintWriter out = response.getWriter();
         out.print(json);
