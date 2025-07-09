@@ -1,6 +1,7 @@
 package com.example.problems.utils;
 
 import com.example.problems.DTO.*;
+import com.example.problems.FrontResponse.ProblemListResponse;
 import com.example.registration.model.User;
 
 import java.sql.ResultSet;
@@ -52,6 +53,51 @@ public class ToDTO {
             status.setId(rs.getInt(ProblemStatus.COL_ID));
             status.setStatus(rs.getString(ProblemStatus.COL_STATUS));
             return status;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static ProblemListResponse toProblemListResponseLoggedIn(ResultSet resultSet) {
+        try {
+            ProblemListResponse problem = new ProblemListResponse();
+            problem.setTitle(resultSet.getString(Problems.COL_TITLE));
+            problem.setDifficultyId(resultSet.getInt(Problems.COL_DIFFICULTY_ID));
+            problem.setStatus(resultSet.getString("status"));
+            return problem;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static ProblemListResponse toProblemListResponseLoggedOut(ResultSet resultSet) {
+        try {
+            ProblemListResponse problem = new ProblemListResponse();
+            problem.setTitle(resultSet.getString(Problems.COL_TITLE));
+            problem.setDifficultyId(resultSet.getInt(Problems.COL_DIFFICULTY_ID));
+            problem.setStatus("No Status");
+            return problem;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String toStatusCounts(ResultSet rs) {
+        try {
+            if (!rs.next()) {
+                return "Todo";
+            }
+            int acceptedCount = rs.getInt("accepts");
+            int notAcceptedCount = rs.getInt("notAccepts");
+            System.out.println(acceptedCount);
+            System.out.println(notAcceptedCount);
+            if (acceptedCount > 0) {
+                return "Solved";
+            }
+            if (notAcceptedCount > 0) {
+                return "Attempted";
+            }
+            return "";
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -26,11 +26,55 @@ public class FilterStatus implements Filter {
         this.status = status;
     }
 
-    // TODO: FIX THIS
-    public String toSQLStatement() {
-        return format(
-                "SELECT %s.* FROM %s LEFT JOIN %s ON %s.%s = %s.%s AND %s.%s = ? " +
-                        "WHERE (? = %d AND %s.%s IS NULL) OR (? <> %d AND %s.%s = ?)",
+    public String toSolvedProblemsSQL() {
+        return format("SELECT %s.*, 'Accepted' AS status FROM %s JOIN %s ON %s.%s = %s.%s JOIN %s on %s.%s = %s.%s" +
+                "WHERE %s.%s = ? AND %s.%s = ?",
+                Problems.TABLE_NAME,
+                Problems.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Problems.TABLE_NAME,
+                Problems.COL_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_PROBLEM_ID,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_VERDICT_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_USER_ID,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_VERDICT
+        );
+    }
+
+    public String toAttemptedProblemsSQL() {
+        return format("SELECT %s.*, 'Rejected' AS status FROM %s JOIN %s ON %s.%s = %s.%s " +
+                        "JOIN %s ON %s.%s = %s.%s" +
+                        "WHERE %s.%s = ? GROUP BY %s.%s HAVING SUM(%s.%s = ?) = 0",
+                 Problems.TABLE_NAME,
+                 Problems.TABLE_NAME,
+                 Submissions.TABLE_NAME,
+                 Problems.TABLE_NAME,
+                 Problems.COL_ID,
+                 Submissions.TABLE_NAME,
+                 Submissions.COL_PROBLEM_ID,
+                 SubmissionVerdict.TABLE_NAME,
+                 SubmissionVerdict.TABLE_NAME,
+                 SubmissionVerdict.COL_ID,
+                 Submissions.TABLE_NAME,
+                 Submissions.COL_VERDICT_ID,
+                 Submissions.TABLE_NAME,
+                 Submissions.COL_USER_ID,
+                 Submissions.TABLE_NAME,
+                 Submissions.COL_PROBLEM_ID,
+                 SubmissionVerdict.TABLE_NAME,
+                 SubmissionVerdict.COL_VERDICT
+        );
+    }
+    public String toToDoProblemsSQL(){
+        return format("SELECT %s.*, 'Todo' AS status FROM %s LEFT JOIN %s ON %s.%s = %s.%s" +
+                "AND %s.%s = ? WHERE %s.%s IS NULL",
                 Problems.TABLE_NAME,
                 Problems.TABLE_NAME,
                 Submissions.TABLE_NAME,
@@ -40,13 +84,29 @@ public class FilterStatus implements Filter {
                 Problems.COL_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
-//                Submissions.TO_DO_ID,
                 Submissions.TABLE_NAME,
-//                Submissions.COL_STATUS_ID,
-//                Submissions.TO_DO_ID,
-                Submissions.TABLE_NAME,
-                Submissions.COL_VERDICT_ID
+                Submissions.COL_PROBLEM_ID
         );
+    }
+
+    public String ProbemsStatuses(){
+        return format(toSolvedProblemsSQL() + " UNION ALL " +
+                toAttemptedProblemsSQL() + " UNION ALL "+
+                toToDoProblemsSQL()
+        );
+    }
+    @Override
+    public String toSQLStatement() {
+        if(status.getStatus().equals("Accepted")){
+            return toSolvedProblemsSQL();
+        }
+        if(status.getStatus().equals("Rejected")){
+            return toAttemptedProblemsSQL();
+        }
+        if(status.getStatus().equals("Todo")){
+            return toToDoProblemsSQL();
+        }
+        return "";
     }
 
     @Override

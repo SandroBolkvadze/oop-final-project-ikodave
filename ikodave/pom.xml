@@ -26,6 +26,20 @@
             <artifactId>tomcat-embed-core</artifactId>
             <version>9.0.64</version>
         </dependency>
+        <!-- Byte Buddy core -->
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.12.23</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>1.12.23</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.mdkt.compiler</groupId>
             <artifactId>InMemoryJavaCompiler</artifactId>
@@ -95,7 +109,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.12.0</version>
+            <version>4.5.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -144,6 +158,12 @@
             <artifactId>tomcat-dbcp</artifactId>
             <version>7.0.47</version>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.5.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 
@@ -164,10 +184,10 @@
                 <version>3.0.1</version>
                 <configuration>
                     <path>/</path>
-                    <port>8087</port>
+                    <port>8080</port>
                 </configuration>
             </plugin>
-            <!-- other plugins as needed -->
+
         </plugins>
     </build>
 </project>

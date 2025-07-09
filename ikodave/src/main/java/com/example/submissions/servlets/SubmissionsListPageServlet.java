@@ -10,7 +10,7 @@ public class SubmissionsListPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/submissions/submissions.html").forward(request, response);
+        request.getRequestDispatcher("/static/submissions/submissions.html").forward(request, response);
     }
 
 }
