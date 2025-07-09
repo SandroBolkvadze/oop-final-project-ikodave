@@ -1,3 +1,7 @@
+window.addEventListener('DOMContentLoaded', () => {
+    addFilterListeners();
+    filter();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     addListeners();
@@ -26,8 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         valueKey: 'topic',
         labelKey: 'topic'
     });
-
-    filter();
 });
 
 
@@ -193,5 +195,26 @@ async function populateCheckboxGroup({ url, containerId, valueKey, labelKey }) {
     }
 }
 
+
+function addFilterListeners() {
+    document.getElementById('filter-title').addEventListener('input', debounce(filter, 300));
+
+    ['difficulty-toggle', 'status-toggle'].forEach(groupId => {
+        const group = document.getElementById(groupId);
+        group.addEventListener('click', () => {
+            setTimeout(filter, 0); // wait for active class to toggle
+        });
+    });
+
+    document.getElementById('topics-checkboxes').addEventListener('change', filter);
+}
+
+function debounce(fn, delay) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn.apply(this, args), delay);
+    };
+}
 
 

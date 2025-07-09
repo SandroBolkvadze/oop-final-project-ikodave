@@ -40,10 +40,12 @@ public class SubmitCodeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User user = (User) request.getSession().getAttribute(USER_KEY);
-//        System.out.println("user: " + user);
 
         if (user == null) {
-            user = new User(2, "x", "y", 1, new java.util.Date());
+            response.setContentType("application/json");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+            response.getWriter().write("{\"redirect\": \"/problems\"}");
+            return;
         }
 
         TestDAO testDAO = (TestDAO) getServletContext().getAttribute(TEST_DAO_KEY);
