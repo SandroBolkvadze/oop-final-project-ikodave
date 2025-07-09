@@ -5,6 +5,7 @@ import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.Filter;
+import com.example.problems.FrontResponse.ProblemListResponse;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;
@@ -18,26 +19,47 @@ public class SQLProblemDAO implements ProblemDAO {
 
     private final BasicDataSource basicDataSource;
 
+    private final DifficultyDAO difficultyDAO;
+
     public SQLProblemDAO(BasicDataSource basicDataSource) {
         this.basicDataSource = basicDataSource;
+        this.difficultyDAO = new SQLDifficultyDAO(basicDataSource);
     }
 
+    @Override
+    public List<ProblemListResponse> getProblemResponsesByFilter(Filter filter) {
+        try (Connection connection = basicDataSource.getConnection();
+            PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<ProblemListResponse> problems = new ArrayList<>();
+            while (resultSet.next()) {
+                ProblemListResponse problem = toProblemListResponse(resultSet);
+                problem.setDifficultyName(difficultyDAO.getDifficultyById(problem.getDifficultyId()).getDifficulty());
+                problems.add(problem);
+            }
+            return problems;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public List<Problem> getProblemsByFilter(Filter filter) {
         try (Connection connection = basicDataSource.getConnection();
-            PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
+             PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
             ResultSet resultSet = preparedStatement.executeQuery();
+
             List<Problem> problems = new ArrayList<>();
             while (resultSet.next()) {
                 problems.add(toProblem(resultSet));
             }
             return problems;
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public Problem getProblemByTitle(String problemTitle) {
         String sqlStatement = toProblemByTitleSQL();

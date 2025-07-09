@@ -3,7 +3,7 @@ package com.example.problems.servlets;
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
-import com.example.problems.FrontResponse.ProblemResponse;
+import com.example.problems.FrontResponse.ProblemSpecificResponse;
 import com.example.problems.utils.ProblemTitle;
 import com.example.registration.model.User;
 import com.example.submissions.DAO.TestDAO;
@@ -43,7 +43,7 @@ public class ProblemServlet extends HttpServlet {
 
         Problem problem = problemDAO.getProblemByTitle(title);
 
-        ProblemResponse problemResponse = new ProblemResponse(
+        ProblemSpecificResponse problemSpecificResponse = new ProblemSpecificResponse(
                 problem.getTitle(),
                 problem.getDescription(),
                 /*problemDAO.getProblemStatus(problem.getId(), user.getId()).getStatus()*/ "solved",
@@ -58,7 +58,7 @@ public class ProblemServlet extends HttpServlet {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(gson.toJson(problemResponse));
+        response.getWriter().write(gson.toJson(problemSpecificResponse));
     }
 
 }

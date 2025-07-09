@@ -43,7 +43,7 @@ public class FilterAnd implements Filter{
         }
 
         StringBuilder selectStatement = new StringBuilder(format(
-                "SELECT * FROM %s",
+                "SELECT *, status  FROM %s",
                 Problems.TABLE_NAME
         ));
 

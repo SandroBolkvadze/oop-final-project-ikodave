@@ -8,6 +8,7 @@ import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.*;
+import com.example.problems.FrontResponse.ProblemListResponse;
 import com.example.problems.utils.FilterCriteria;
 import com.example.registration.model.User;
 import com.example.submissions.DAO.StatusDAO;
@@ -57,6 +58,11 @@ public class ProblemsListServlet extends HttpServlet {
         String statusName = filterCriteria.getStatus();
         System.out.println("status: " + statusName);
         System.out.println("user " + user);
+
+        if (statusName == null && user != null) {
+            
+        }
+
         if (statusName != null && user != null) {
             if (statusName.equalsIgnoreCase("Solved")) {
                 FilterStatusSolved filterStatusSolved = new FilterStatusSolved(user);
@@ -90,9 +96,9 @@ public class ProblemsListServlet extends HttpServlet {
 
         System.out.println(filterAnd.toSQLStatement());
 
-        List<Problem> problems = problemDAO.getProblemsByFilter(filterAnd);
-        for (Problem problem : problems) {
-            System.out.println(problem.getTitle() + " " + problem.getDifficultyId());
+        List<ProblemListResponse> problems = problemDAO.getProblemResponsesByFilter(filterAnd);
+        for (ProblemListResponse problem : problems) {
+            System.out.println(problem.getTitle() + " " + problem.getDifficultyId() + " " + problem.getStatus());
         }
         System.out.println();
         response.setContentType("application/json");
