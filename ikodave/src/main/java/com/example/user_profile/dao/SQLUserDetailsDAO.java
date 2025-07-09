@@ -3,7 +3,7 @@ package com.example.user_profile.dao;
 import com.example.problems.DTO.Difficulty;
 import com.example.registration.model.User;
 import com.example.submissions.DTO.SubmissionVerdict;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
