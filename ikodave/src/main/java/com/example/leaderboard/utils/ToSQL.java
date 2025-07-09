@@ -14,7 +14,7 @@ public class ToSQL {
                         "WHERE VERDICTS.%s = 'Accepted' AND USERCOUNTER.%s = USERS.%s) AS SCORE " +
                         "FROM %s USERS " +
                         "ORDER BY SCORE DESC;",
-                Users.COL_ID,
+                Users.COL_USERNAME,
                 Users.COL_ID,
                 Users.TABLE_NAME,
                 Submissions.TABLE_NAME,
