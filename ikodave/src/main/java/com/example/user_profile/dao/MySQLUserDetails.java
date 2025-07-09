@@ -49,7 +49,7 @@ public class MySQLUserDetails implements UserDetails {
             }
             return 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Error querying accepted problems by difficulty", e);
+            throw new RuntimeException("Error querying accepted problems", e);
         }
     }
     public int getProblemCountByDifficulty(User user, Difficulty difficulty) {
