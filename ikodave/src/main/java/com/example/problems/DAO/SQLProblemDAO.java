@@ -2,7 +2,6 @@ package com.example.problems.DAO;
 
 import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Problem;
-import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.Filter;
 import com.example.problems.FrontResponse.ProblemListResponse;
@@ -136,17 +135,16 @@ public class SQLProblemDAO implements ProblemDAO {
     }
 
     @Override
-    public Status getProblemStatus(int problemId, int userId) {
-        String sqlStatement = toProblemStatusSQL();
+    public String getProblemStatus(int problemId, int userId) {
+        String sqlStatement = toProblemStatusCountsSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1, problemId);
-            preparedStatement.setInt(2, userId);
+            preparedStatement.setString(1, "Accepted");
+            preparedStatement.setString(2, "Accepted");
+            preparedStatement.setInt(3, problemId);
+            preparedStatement.setInt(4, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()) {
-                return null;
-            }
-            return toStatus(resultSet);
+            return toStatusCounts(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -199,7 +197,7 @@ public class SQLProblemDAO implements ProblemDAO {
 
     @Override
     public int getStatusId(String status) {
-        String sqlStatement = toProblemStatusSQL();
+        String sqlStatement = toProblemStatusCountsSQL();
         try (Connection connection = basicDataSource.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, status);

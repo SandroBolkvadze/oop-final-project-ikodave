@@ -29,12 +29,7 @@ public class ProblemServlet extends HttpServlet {
 
         String title = problemTitle.getProblemTitle();
 
-        if (user == null) {
-            user = new User(2, "x", "y", 1, new java.util.Date());
-        }
-
         System.out.println(title);
-        System.out.println(user.getUsername());
 
         if (title == null || title.trim().isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing or empty 'title' field.");
@@ -46,7 +41,7 @@ public class ProblemServlet extends HttpServlet {
         ProblemSpecificResponse problemSpecificResponse = new ProblemSpecificResponse(
                 problem.getTitle(),
                 problem.getDescription(),
-                /*problemDAO.getProblemStatus(problem.getId(), user.getId()).getStatus()*/ "solved",
+                user != null? problemDAO.getProblemStatus(problem.getId(), user.getId()) : "No Status",
                 problemDAO.getProblemTopics(problem.getId()).stream().map(Topic::getTopic).toList(),
                 problemDAO.getProblemDifficulty(problem.getId()).getDifficulty(),
                 testDAO.getTestCasesByProblemId(problem.getId()).subList(0, 2),

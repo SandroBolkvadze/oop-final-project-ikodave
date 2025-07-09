@@ -35,19 +35,30 @@ public class ToSQL {
     }
 
 
-    public static String toProblemStatusSQL() {
-        return format("SELECT %s.* FROM %s JOIN %s on %s.%s = %s.%s WHERE %s.%s = ? AND %s.%s = ?;",
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.TABLE_NAME,
+    public static String toProblemStatusCountsSQL() {
+        return format("SELECT SUM(%s.%s = ?) as accepts, " +
+                        "SUM(%s.%s <> ?) as notAccepts " +
+                        "FROM %s JOIN %s ON %s.%s = %s.%s " +
+                        "WHERE %s.%s = ? AND %s.%s = ? " +
+                        "GROUP BY %s.%s, %s.%s",
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_VERDICT,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_VERDICT,
                 Submissions.TABLE_NAME,
+                SubmissionVerdict.TABLE_NAME,
                 Submissions.TABLE_NAME,
                 Submissions.COL_VERDICT_ID,
-                ProblemStatus.TABLE_NAME,
-                ProblemStatus.COL_ID,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_PROBLEM_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
                 Submissions.TABLE_NAME,
-                Submissions.COL_VERDICT_ID
+                Submissions.COL_USER_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_PROBLEM_ID
         );
     }
 

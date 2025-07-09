@@ -82,6 +82,27 @@ public class ToDTO {
         }
     }
 
+    public static String toStatusCounts(ResultSet rs) {
+        try {
+            if (!rs.next()) {
+                return "Todo";
+            }
+            int acceptedCount = rs.getInt("accepts");
+            int notAcceptedCount = rs.getInt("notAccepts");
+            System.out.println(acceptedCount);
+            System.out.println(notAcceptedCount);
+            if (acceptedCount > 0) {
+                return "Solved";
+            }
+            if (notAcceptedCount > 0) {
+                return "Attempted";
+            }
+            return "";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Problem toProblem(ResultSet rs) {
         try {
             Problem problem = new Problem();
