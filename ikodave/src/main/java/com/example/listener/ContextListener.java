@@ -5,6 +5,8 @@ import com.example.registration.dao.MySQLUserDao;
 import com.example.registration.dao.UserDAO;
 import com.example.submissions.CodeRunner.DockerCodeRunner;
 import com.example.submissions.DAO.*;
+import com.example.user_profile.dao.SQLUserDetailsDAO;
+import com.example.user_profile.dao.UserDetailsDAO;
 import com.google.gson.Gson;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -52,6 +54,9 @@ public class ContextListener implements ServletContextListener {
 
         DifficultyDAO difficultyDAO = new SQLDifficultyDAO(dataSource);
         sce.getServletContext().setAttribute(DIFFICULTY_DAO_KEY, difficultyDAO);
+
+        UserDetailsDAO userDetailsDAO = new SQLUserDetailsDAO(dataSource);
+        sce.getServletContext().setAttribute(USER_DETAILES_DAO, userDetailsDAO);
 
         StatusDAO statusDAO = new SQLStatusDAO(dataSource);
         sce.getServletContext().setAttribute(STATUS_DAO_KEY, statusDAO);

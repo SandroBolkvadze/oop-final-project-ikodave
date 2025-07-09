@@ -18,7 +18,8 @@ async function loadNavbar() {
             'nav-register': '/registration',
             'nav-signin': '/signin',
             'nav-profile': '/profile',
-            'nav-problems': '/problems'
+            'nav-problems': '/problems',
+            'nav-leaderboard': '/leaderboard'
         });
 
     } catch (err) {
