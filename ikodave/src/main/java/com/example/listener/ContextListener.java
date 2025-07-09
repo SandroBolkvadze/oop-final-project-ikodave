@@ -1,5 +1,7 @@
 package com.example.listener;
 
+import com.example.leaderboard.dao.LeaderboardDAO;
+import com.example.leaderboard.dao.SQLLeaderboardDAO;
 import com.example.problems.DAO.*;
 import com.example.registration.dao.MySQLUserDao;
 import com.example.registration.dao.UserDAO;
@@ -54,6 +56,9 @@ public class ContextListener implements ServletContextListener {
 
         DifficultyDAO difficultyDAO = new SQLDifficultyDAO(dataSource);
         sce.getServletContext().setAttribute(DIFFICULTY_DAO_KEY, difficultyDAO);
+
+        LeaderboardDAO leaderboardDAO = new SQLLeaderboardDAO(dataSource);
+        sce.getServletContext().setAttribute(LEADERBOARD_DAO_KEY, leaderboardDAO);
 
         UserDetailsDAO userDetailsDAO = new SQLUserDetailsDAO(dataSource);
         sce.getServletContext().setAttribute(USER_DETAILES_DAO, userDetailsDAO);
