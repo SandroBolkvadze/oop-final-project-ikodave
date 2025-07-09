@@ -1,21 +1,34 @@
 package com.example.leaderboard.dto;
 
-import com.example.registration.model.User;
 
 public class UserWithScore {
-    private User user;
+    private String username;
     private int score;
 
-    public UserWithScore(User user, int score) {
-        this.user = user;
+    public UserWithScore(){}
+
+    public UserWithScore(String username, int score) {
+        this.username = username;
         this.score = score;
     }
 
-    public User getUser() {
-        return user;
+    public String getUser() {
+        return username;
     }
 
     public int getScore() {
         return score;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

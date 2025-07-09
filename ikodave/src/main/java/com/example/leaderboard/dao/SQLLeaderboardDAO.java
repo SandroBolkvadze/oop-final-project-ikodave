@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.leaderboard.utils.ToDTO.toUserWithScore;
 import static com.example.leaderboard.utils.ToSQL.getUsersScored;
 import static com.example.problems.utils.ToDTO.toUser;
 
@@ -30,9 +31,8 @@ public class SQLLeaderboardDAO implements LeaderboardDAO {
 
             List<UserWithScore> userWithScores = new ArrayList<>();
             while (resultSet.next()) {
-                User user = toUser(resultSet);                    // Create User object
-                int score = resultSet.getInt("SCORE");              // Read SCORE column
-                userWithScores.add(new UserWithScore(user, score));  // Add to list
+                UserWithScore userWithScore = toUserWithScore(resultSet);
+                userWithScores.add(userWithScore);  // Add to list
             }
 
             for(int i = 0; i < userWithScores.size(); i++){
