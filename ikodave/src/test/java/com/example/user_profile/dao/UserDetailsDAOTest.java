@@ -2,7 +2,8 @@ package com.example.user_profile.dao;
 
 import com.example.registration.model.User;
 import com.example.submissions.DTO.SubmissionVerdict;
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
@@ -10,10 +11,10 @@ import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserDetailsTest {
+class UserDetailsDAOTest {
 
     private static BasicDataSource dataSource;
-    private static UserDetails dao;
+    private static UserDetailsDAO dao;
 
     @BeforeAll
     static void setup() throws Exception {
@@ -23,7 +24,7 @@ class UserDetailsTest {
         dataSource.setPassword("");
         dataSource.setDriverClassName("org.h2.Driver");
 
-        dao = new MySQLUserDetails(dataSource); // or whatever class contains the method
+        dao = new SQLUserDetailsDAO(dataSource); // or whatever class contains the method
 
         try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
             stmt.execute("""
