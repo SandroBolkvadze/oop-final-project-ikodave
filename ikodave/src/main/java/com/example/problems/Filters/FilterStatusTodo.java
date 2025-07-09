@@ -15,11 +15,9 @@ import static java.lang.String.format;
 
 public class FilterStatusTodo implements Filter{
     private final User user;
-    private final Status status;
 
-    public FilterStatusTodo(User user, Status status) {
+    public FilterStatusTodo(User user) {
         this.user = user;
-        this.status = status;
     }
     @Override
     public String toSQLStatement() {

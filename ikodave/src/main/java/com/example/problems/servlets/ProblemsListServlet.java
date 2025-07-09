@@ -1,20 +1,16 @@
 package com.example.problems.servlets;
 
+import com.example.problems.DAO.DifficultyDAO;
 import com.example.problems.DAO.ProblemDAO;
+import com.example.problems.DAO.TopicDAO;
 import com.example.problems.DTO.Difficulty;
-import com.example.problems.DTO.Status;
-import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.*;
-import com.example.problems.FrontResponse.ProblemResponse;
+import com.example.problems.FrontResponse.ProblemListResponse;
 import com.example.problems.utils.FilterCriteria;
-import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
 import com.google.gson.Gson;
-import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,49 +25,75 @@ public class ProblemsListServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = (User) getServletContext().getAttribute(USER_KEY);
+        User user = (User) request.getSession().getAttribute(USER_KEY);
+//        User user = new User(1, "x", "y", 1, new Date());
         ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
+        DifficultyDAO difficultyDAO = (DifficultyDAO) getServletContext().getAttribute(DIFFICULTY_DAO_KEY);
+        TopicDAO topicDAO = (TopicDAO) getServletContext().getAttribute(TOPIC_DAO_KEY);
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
         FilterCriteria filterCriteria = gson.fromJson(request.getReader(), FilterCriteria.class);
 
-        FilterAnd filterAnd = new FilterAnd();
+        FilterAnd filterAnd;
+        if (user != null) {
+            filterAnd = new FilterAndLoggedIn();
+        }
+        else {
+            filterAnd = new FilterAndLoggedOut();
+        }
+
 
         String titleString = filterCriteria.getTitle();
+        System.out.println("title: " + titleString);
         if (!titleString.isEmpty()) {
             filterAnd.addFilter(new FilterTitle(titleString));
         }
 
-        String difficultyString = filterCriteria.getDifficulty();
-        if (!difficultyString.isEmpty()) {
-            Difficulty difficulty = new Difficulty(problemDAO.getDifficultyId(difficultyString), difficultyString);
+        String difficultyName = filterCriteria.getDifficulty();
+        System.out.println("difficulty: " + difficultyName);
+        if (difficultyName != null) {
+            Difficulty difficulty = difficultyDAO.getDifficultyByName(difficultyName);
             FilterDifficulty filterDifficulty = new FilterDifficulty(difficulty);
             filterAnd.addFilter(filterDifficulty);
         }
 
-        String statusString = filterCriteria.getStatus();
+        String statusName = filterCriteria.getStatus();
+        System.out.println("status: " + statusName);
+        System.out.println("user " + user);
 
-        if(!statusString.isEmpty() && user != null) {
-            Status status = new Status(problemDAO.getStatusId(statusString), statusString);
-            if (statusString.equals("Accepted")) {
-                FilterStatusAccepted filterStatusAccepted =new FilterStatusAccepted(user, status);
-                filterAnd.addFilter(filterStatusAccepted);
+
+        if (statusName == null && user != null) {
+            FilterStatusNone filterStatusNone = new FilterStatusNone();
+            filterStatusNone.addFilter(new FilterStatusSolved(user));
+            filterStatusNone.addFilter(new FilterStatusAttempted(user));
+            filterStatusNone.addFilter(new FilterStatusTodo(user));
+
+            filterAnd.addFilter(filterStatusNone);
+        }
+
+        if (statusName != null && user != null) {
+            if (statusName.equalsIgnoreCase("Solved")) {
+                FilterStatusSolved filterStatusSolved = new FilterStatusSolved(user);
+                filterAnd.addFilter(filterStatusSolved);
             }
-            if (statusString.equals("Rejected")) {
-               FilterStatusRejected filterStatusRejected = new FilterStatusRejected(user, status);
-               filterAnd.addFilter(filterStatusRejected);
+
+            if (statusName.equalsIgnoreCase("Attempted")) {
+               FilterStatusAttempted filterStatusAttempted = new FilterStatusAttempted(user);
+               filterAnd.addFilter(filterStatusAttempted);
             }
-            if (statusString.equals("Todo")) {
-                FilterStatusTodo filterStatusTodo = new FilterStatusTodo(user, status);
+
+            if (statusName.equalsIgnoreCase("Todo")) {
+                FilterStatusTodo filterStatusTodo = new FilterStatusTodo(user);
                 filterAnd.addFilter(filterStatusTodo);
             }
         }
 
 
-        List<String> topicStrings = filterCriteria.getTopics();
+        List<String> topicNames = filterCriteria.getTopics();
+        System.out.println("topics: " + topicNames);
         List<Topic> topics = new ArrayList<>();
-        for (String topicString : topicStrings) {
-            Topic topic = new Topic(problemDAO.getTopicId(topicString), topicString);
+        for (String topicName : topicNames) {
+            Topic topic = topicDAO.getTopicByName(topicName);
             topics.add(topic);
         }
 
@@ -82,7 +104,19 @@ public class ProblemsListServlet extends HttpServlet {
 
         System.out.println(filterAnd.toSQLStatement());
 
-        List<Problem> problems = problemDAO.getProblemsByFilter(filterAnd);
+        List<ProblemListResponse> problems;
+
+        if (user != null) {
+            problems = problemDAO.getProblemResponsesByFilterLoggedIn(filterAnd);
+        }
+        else {
+            problems = problemDAO.getProblemResponsesByFilterLoggedOut(filterAnd);
+        }
+
+        for (ProblemListResponse problem : problems) {
+            System.out.println(problem.getTitle() + " " + problem.getDifficultyId() + " " + problem.getStatus());
+        }
+        System.out.println();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(gson.toJson(problems));

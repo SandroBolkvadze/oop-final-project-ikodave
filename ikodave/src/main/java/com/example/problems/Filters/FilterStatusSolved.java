@@ -14,17 +14,16 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class FilterStatusAccepted implements Filter{
+public class FilterStatusSolved implements Filter {
     private final User user;
-    private final Status status;
 
-    public FilterStatusAccepted(User user, Status status) {
+    public FilterStatusSolved(User user) {
         this.user = user;
-        this.status = status;
     }
+
     @Override
     public String toSQLStatement() {
-        return format("SELECT DISTINCT %s.*, 'Accepted' AS status FROM %s JOIN %s " +
+        return format("SELECT DISTINCT %s.*, 'Solved' AS status FROM %s JOIN %s " +
                         "ON %s.%s = %s.%s JOIN %s on %s.%s = %s.%s " +
                         "WHERE %s.%s = ? AND %s.%s = ?",
                 DatabaseConstants.Problems.TABLE_NAME,
@@ -49,9 +48,8 @@ public class FilterStatusAccepted implements Filter{
     @Override
     public PreparedStatement toSQLPreparedStatement(Connection connection) {
         String sqlStatement = toSQLStatement();
-        PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.prepareStatement(sqlStatement);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             int index = 1;
             for (Parameter parameter : getParameters()) {
                 parameter.setParameter(index++, preparedStatement);
@@ -65,6 +63,6 @@ public class FilterStatusAccepted implements Filter{
     @Override
     public List<Parameter> getParameters() {
         return List.of(new ParameterInteger(user.getId()),
-                new ParameterString(status.getStatus()));
+                new ParameterString("Accepted"));
     }
 }

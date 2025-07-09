@@ -14,17 +14,15 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class FilterStatusRejected implements Filter{
+public class FilterStatusAttempted implements Filter{
     private final User user;
-    private final Status status;
 
-    public FilterStatusRejected(User user, Status status) {
+    public FilterStatusAttempted(User user) {
         this.user = user;
-        this.status = status;
     }
     @Override
     public String toSQLStatement() {
-        return format("SELECT %s.*, 'Rejected' AS status FROM %s JOIN %s ON %s.%s = %s.%s " +
+        return format("SELECT %s.*, 'Attempted' AS status FROM %s JOIN %s ON %s.%s = %s.%s " +
                         "JOIN %s ON %s.%s = %s.%s " +
                         "WHERE %s.%s = ? GROUP BY %s.%s HAVING SUM(%s.%s = ?) = 0",
                 DatabaseConstants.Problems.TABLE_NAME,
@@ -67,6 +65,6 @@ public class FilterStatusRejected implements Filter{
     @Override
     public List<Parameter> getParameters() {
         return List.of(new ParameterInteger(user.getId()),
-                       new ParameterString(status.getStatus()));
+                       new ParameterString("Accepted"));
     }
 }

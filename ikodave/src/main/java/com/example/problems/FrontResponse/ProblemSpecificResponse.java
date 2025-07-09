@@ -1,11 +1,9 @@
 package com.example.problems.FrontResponse;
 
-import com.example.problems.DTO.Difficulty;
-import com.example.problems.DTO.Topic;
 import com.example.submissions.DTO.TestCase;
 import java.util.List;
 
-public class ProblemResponse {
+public class ProblemSpecificResponse {
 
     private final String problemTitle;
     private final String problemDescription;
@@ -19,7 +17,7 @@ public class ProblemResponse {
     private final long problemMemory;
 
 
-    public ProblemResponse(String problemTitle, String problemDescription, String problemStatus, List<String> problemTopics, String problemDifficulty, List<TestCase> problemTestCases, String problemInputSpec, String problemOutputSpec, long problemTime, long problemMemory) {
+    public ProblemSpecificResponse(String problemTitle, String problemDescription, String problemStatus, List<String> problemTopics, String problemDifficulty, List<TestCase> problemTestCases, String problemInputSpec, String problemOutputSpec, long problemTime, long problemMemory) {
         this.problemTitle = problemTitle;
         this.problemDescription = problemDescription;
         this.problemStatus = problemStatus;

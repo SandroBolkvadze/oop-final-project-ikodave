@@ -3,7 +3,7 @@ package com.example.problems.servlets;
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
-import com.example.problems.FrontResponse.ProblemResponse;
+import com.example.problems.FrontResponse.ProblemSpecificResponse;
 import com.example.problems.utils.ProblemTitle;
 import com.example.registration.model.User;
 import com.example.submissions.DAO.TestDAO;
@@ -29,12 +29,7 @@ public class ProblemServlet extends HttpServlet {
 
         String title = problemTitle.getProblemTitle();
 
-        if (user == null) {
-            user = new User(2, "x", "y", 1, new java.util.Date());
-        }
-
         System.out.println(title);
-        System.out.println(user.getUsername());
 
         if (title == null || title.trim().isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing or empty 'title' field.");
@@ -43,10 +38,10 @@ public class ProblemServlet extends HttpServlet {
 
         Problem problem = problemDAO.getProblemByTitle(title);
 
-        ProblemResponse problemResponse = new ProblemResponse(
+        ProblemSpecificResponse problemSpecificResponse = new ProblemSpecificResponse(
                 problem.getTitle(),
                 problem.getDescription(),
-                /*problemDAO.getProblemStatus(problem.getId(), user.getId()).getStatus()*/ "solved",
+                user != null? problemDAO.getProblemStatus(problem.getId(), user.getId()) : "No Status",
                 problemDAO.getProblemTopics(problem.getId()).stream().map(Topic::getTopic).toList(),
                 problemDAO.getProblemDifficulty(problem.getId()).getDifficulty(),
                 testDAO.getTestCasesByProblemId(problem.getId()).subList(0, 2),
@@ -58,7 +53,7 @@ public class ProblemServlet extends HttpServlet {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(gson.toJson(problemResponse));
+        response.getWriter().write(gson.toJson(problemSpecificResponse));
     }
 
 }
