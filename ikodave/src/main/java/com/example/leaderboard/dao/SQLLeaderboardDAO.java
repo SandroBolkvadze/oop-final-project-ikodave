@@ -1,5 +1,6 @@
 package com.example.leaderboard.dao;
 
+import com.example.leaderboard.dto.UserWithRank;
 import com.example.registration.model.User;
 import com.mysql.cj.exceptions.ClosedOnExpiredPasswordException;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -22,17 +23,20 @@ public class SQLLeaderboardDAO implements LeaderboardDAO {
     }
 
     @Override
-    public List<User> getUsersByRank() {
+    public List<UserWithRank> getUsersByRank() {
         String sqlStatement = getUsersRanked();
-        try(Connection con = dataSource.getConnection()){
+        try (Connection con = dataSource.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement(sqlStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<User> users = new ArrayList<>();
-            while(resultSet.next()){
-                users.add(toUser(resultSet));
+
+            List<UserWithRank> userWithRanks = new ArrayList<>();
+            while (resultSet.next()) {
+                User user = toUser(resultSet);                    // Create User object
+                int rank = resultSet.getInt("RANK");              // Read RANK column
+                userWithRanks.add(new UserWithRank(user, rank));  // Add to list
             }
-            return users;
-        }catch (SQLException e){
+            return userWithRanks;
+        } catch (SQLException e) {
             throw new RuntimeException("Error querying users by rank", e);
         }
     }

@@ -13,7 +13,7 @@ public class ToSQL {
                         "JOIN %s VERDICTS ON VERDICTS.%s = SUBMISSIONS.%s " +
                         "WHERE VERDICTS.%s = 'Accepted' AND USERCOUNTER.%s = USERS.%s) AS RANK " +
                         "FROM %s USERS " +
-                        "ORDER BY RANK;",
+                        "ORDER BY RANK DESC;",
                 Users.COL_ID,
                 Users.COL_ID,
                 Users.TABLE_NAME,
