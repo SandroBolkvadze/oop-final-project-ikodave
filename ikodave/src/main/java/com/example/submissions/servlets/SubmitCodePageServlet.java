@@ -10,7 +10,7 @@ public class SubmitCodePageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/submit/submit.html").forward(request, response);
+        request.getRequestDispatcher("/static/submit/submit.html").forward(request, response);
     }
 
 }

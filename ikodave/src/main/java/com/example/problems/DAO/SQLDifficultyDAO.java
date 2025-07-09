@@ -14,8 +14,7 @@ import java.util.List;
 
 import static com.example.problems.utils.ToDTO.toDifficulty;
 import static com.example.problems.utils.ToDTO.toTopic;
-import static com.example.problems.utils.ToDifficultySQL.toProblemDifficultiesByIdSQL;
-import static com.example.problems.utils.ToDifficultySQL.toProblemDifficultiesSQL;
+import static com.example.problems.utils.ToDifficultySQL.*;
 import static com.example.problems.utils.ToProblemTopicsSQL.*;
 
 public class SQLDifficultyDAO implements DifficultyDAO {
@@ -63,7 +62,7 @@ public class SQLDifficultyDAO implements DifficultyDAO {
 
     @Override
     public Difficulty getDifficultyByName(String difficultyName) {
-        String sqlStatement = toProblemTopicsByTopicNameSQL();
+        String sqlStatement = toProblemDifficultiesByDifficultyNameSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, difficultyName);

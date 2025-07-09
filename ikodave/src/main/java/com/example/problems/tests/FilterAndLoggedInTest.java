@@ -7,7 +7,6 @@ import com.example.problems.DTO.Problem;
 
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.*;
-import com.example.problems.utils.ToSQL;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,10 +18,10 @@ import java.util.List;
 
 import static com.example.util.DBConnectionConstants.*;
 
-public class FilterAndTest {
+public class FilterAndLoggedInTest {
 
     static BasicDataSource dataSource;
-    static FilterAnd filterand;
+    static FilterAndLoggedIn filterand;
     static ProblemDAO dao;
 
     static List<Topic> topics;
@@ -36,7 +35,7 @@ public class FilterAndTest {
         dataSource.setDriverClassName(DRIVER);
         dataSource.setUsername(DATABASE_USER);
         dataSource.setPassword(DATABASE_PASSWORD);
-        filterand = new FilterAnd();
+        filterand = new FilterAndLoggedIn();
         dao = new SQLProblemDAO(dataSource);
         topics = new ArrayList<Topic>();
         topics.add(new Topic(1, "dp"));

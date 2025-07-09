@@ -64,7 +64,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ProblemPageServlet</servlet-name>
-    <url-pattern>/problem/*</url-pattern>
+    <url-pattern>/problems/*</url-pattern>
   </servlet-mapping>
 
   <servlet>

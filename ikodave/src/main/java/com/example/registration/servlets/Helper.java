@@ -19,7 +19,7 @@ public class Helper {
         if (user == null) {
             return false;
         }
-        request.getRequestDispatcher("/profile/profile_page.html")
+        request.getRequestDispatcher("/static/profile/profile_page.html")
                 .forward(request, response);
         return true;
     }

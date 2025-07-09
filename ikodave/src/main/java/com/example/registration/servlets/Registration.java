@@ -22,7 +22,7 @@ public class Registration extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             if (!redirectProfileIfRegistered(request, response)) {
-                request.getRequestDispatcher("/authentication/registration.html")
+                request.getRequestDispatcher("/static/authentication/registration.html")
                         .forward(request, response);
             }
         } catch (ServletException e) {

@@ -10,7 +10,7 @@ public class ProblemPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/problem/problem.html").forward(request, response);
+        request.getRequestDispatcher("/static/problem/problem.html").forward(request, response);
     }
 
 }
