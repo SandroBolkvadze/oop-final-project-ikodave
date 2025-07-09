@@ -1,7 +1,7 @@
 async function loadNavbar() {
     try {
         // Load and inject the navbar HTML
-        const navbarRes = await fetch('/shared_html/navbar.html');
+        const navbarRes = await fetch('/static/shared_html/navbar.html');
         const html = await navbarRes.text();
         document.getElementById('navbar-container').innerHTML = html;
 

@@ -10,7 +10,7 @@ public class SubmitSpecificCodePageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/submit_specific/submit_specific.html").forward(request, response);
+        request.getRequestDispatcher("/static/submit_specific/submit_specific.html").forward(request, response);
     }
 
 }

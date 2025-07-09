@@ -50,11 +50,23 @@ public class ProblemsListServlet extends HttpServlet {
         }
 
         String statusString = filterCriteria.getStatus();
-        if (!statusString.isEmpty() && user != null) {
+
+        if(!statusString.isEmpty() && user != null) {
             Status status = new Status(problemDAO.getStatusId(statusString), statusString);
-            FilterStatus filterStatus = new FilterStatus(user, status);
-            filterAnd.addFilter(filterStatus);
+            if (statusString.equals("Accepted")) {
+                FilterStatusAccepted filterStatusAccepted =new FilterStatusAccepted(user, status);
+                filterAnd.addFilter(filterStatusAccepted);
+            }
+            if (statusString.equals("Rejected")) {
+               FilterStatusRejected filterStatusRejected = new FilterStatusRejected(user, status);
+               filterAnd.addFilter(filterStatusRejected);
+            }
+            if (statusString.equals("Todo")) {
+                FilterStatusTodo filterStatusTodo = new FilterStatusTodo(user, status);
+                filterAnd.addFilter(filterStatusTodo);
+            }
         }
+
 
         List<String> topicStrings = filterCriteria.getTopics();
         List<Topic> topics = new ArrayList<>();

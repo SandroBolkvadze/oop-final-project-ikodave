@@ -17,7 +17,7 @@ public class ProfilePageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             if (!redirectProfileIfRegistered(request, response)) {
-                request.getRequestDispatcher("/authentication/signin.html")
+                request.getRequestDispatcher("/static/authentication/signin.html")
                         .forward(request, response);
             }
         }catch (ServletException e){

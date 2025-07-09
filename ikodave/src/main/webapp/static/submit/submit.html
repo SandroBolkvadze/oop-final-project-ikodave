@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit | Ikodave</title>
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+
+    <script
+            src="https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs/loader.js"
+            defer
+    ></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: #3f4a5a;
+            color: #fff;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .header .btn-link {
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            color: #fff;
+            cursor: pointer;
+        }
+        .header .btn-link:hover {
+            color: yellow;
+            text-decoration: underline;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .content .section {
+            padding: 1.5rem;
+        }
+
+        h2 {
+            margin: 0 0 1rem;
+            font-size: 1.7rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        select,
+        input[type="text"] {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+
+        #editor {
+            height: 420px;
+            border: 1.5px solid #cfd8dc;
+            border-radius: 6px;
+            background: #f8fafc;
+            box-shadow: 0 2px 8px rgba(63, 74, 90, 0.06);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        #editor:focus-within {
+            border-color: #3f4a5a;
+            box-shadow: 0 0 0 2px #3f4a5a33;
+        }
+
+        .form-actions {
+            text-align: right;
+            margin-top: 1.5rem;
+            padding: 0 1.5rem 1.5rem;
+        }
+        .form-actions button {
+            background: #3f4a5a;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            margin-left: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .form-actions button:hover,
+        .form-actions button:focus {
+            background: #2c3542;
+            box-shadow: 0 2px 8px rgba(63, 74, 90, 0.10);
+        }
+
+        @media (max-width: 600px) {
+            #editor {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="navbar-container"></div>
+<script src="/static/shared_html/navbar.js" defer></script>
+
+
+<div class="content">
+    <div class="header">
+        <button type="button" class="btn btn-link mb-0">My Submissions</button>
+        <button type="button" class="btn btn-link mb-0">Problemset</button>
+        <button type="button" class="btn btn-link mb-0">Submit Solution</button>
+    </div>
+
+    <div class="section">
+        <h2>Submit Solution</h2>
+        <form id="submitForm">
+            <div class="form-group">
+                <label for="problemTitle">Problem Title</label>
+                <input
+                        type="text"
+                        id="problemTitle"
+                        name="problemTitle"
+                        class="form-control"
+                        placeholder="Enter problem title"
+                        value=""
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="language">Language</label>
+                <select
+                        id="language"
+                        name="language"
+                        class="form-select"
+                ></select>
+            </div>
+
+            <div class="form-group">
+                <label for="solutionCode">Source Code</label>
+                <div id="editor"></div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" id="submitButton">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/static/submit/languages.js" defer></script>
+<script src="/static/submit/submit.js" defer></script>
+</body>
+</html>

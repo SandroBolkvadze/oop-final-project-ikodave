@@ -46,7 +46,7 @@ public class ProblemServlet extends HttpServlet {
         ProblemResponse problemResponse = new ProblemResponse(
                 problem.getTitle(),
                 problem.getDescription(),
-                problemDAO.getProblemStatus(problem.getId(), user.getId()).getStatus() ,
+                /*problemDAO.getProblemStatus(problem.getId(), user.getId()).getStatus()*/ "solved",
                 problemDAO.getProblemTopics(problem.getId()).stream().map(Topic::getTopic).toList(),
                 problemDAO.getProblemDifficulty(problem.getId()).getDifficulty(),
                 testDAO.getTestCasesByProblemId(problem.getId()).subList(0, 2),
