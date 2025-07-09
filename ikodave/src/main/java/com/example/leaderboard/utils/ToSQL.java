@@ -9,7 +9,7 @@ public class ToSQL {
         return format("SELECT USERS.%s, " +
                         "(SELECT COUNT(DISTINCT USERCOUNTER.%s) " +
                         "FROM %s USERCOUNTER " +
-                        "JOIN %s SUBMISSIONS ON SUBMISSIONS.%s = USERCOUNTER.%s " +
+                        "LEFT JOIN %s SUBMISSIONS ON SUBMISSIONS.%s = USERCOUNTER.%s " +
                         "JOIN %s VERDICTS ON VERDICTS.%s = SUBMISSIONS.%s " +
                         "WHERE VERDICTS.%s = 'Accepted' AND USERCOUNTER.%s = USERS.%s) AS RANK " +
                         "FROM %s USERS " +
