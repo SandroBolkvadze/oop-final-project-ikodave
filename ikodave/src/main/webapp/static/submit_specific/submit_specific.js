@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('submitForm').addEventListener('submit', e => {
         e.preventDefault();
-        const title    = document.getElementById('problemTitle').value.trim();
+        const title    = document.getElementById('problemTitle').textContent.trim();
         const language = document.getElementById('language').value;
         const code     = editor.getValue();
 
