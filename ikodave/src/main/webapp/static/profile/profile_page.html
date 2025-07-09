@@ -58,7 +58,7 @@
 <body>
 
 <div id="navbar-container"></div>
-<script src="/shared_html/navbar.js"></script>
+<script src="/static/shared_html/navbar.js"></script>
 <script>loadNavbar();</script>
 
 <div class="container mt-5">
@@ -72,7 +72,12 @@
                         <h2 id="username" class="mb-0"></h2>
                         <span id="rank" class="text-muted"></span>
                     </div>
-                    <span id="rating" class="rating-badge"></span>
+                    <div class="text-end">
+                        <span id="rating" class="rating-badge d-block mb-2"></span>
+                        <form action="/api/logout" method="POST" class="d-inline">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
+                        </form>
+                    </div>
                 </div>
 
                 <div class="row text-center mt-4">
@@ -111,7 +116,7 @@
     </div>
 </div>
 
-<script src="/profile/profile_page.js"></script>
+<script src="/static/profile/profile_page.js"></script>
 <script>
     load_profile(); // Optional init
 </script>

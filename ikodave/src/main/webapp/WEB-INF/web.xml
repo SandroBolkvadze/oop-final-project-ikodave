@@ -23,6 +23,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>com.example.registration.servlets.LogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/api/logout</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>LeaderboardPageServlet</servlet-name>
     <servlet-class>com.example.leaderboard.servlets.LeaderboardPageServlet</servlet-class>
   </servlet>
