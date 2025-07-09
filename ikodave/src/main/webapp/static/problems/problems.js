@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         valueKey: 'topic',
         labelKey: 'topic'
     });
+
+    filter();
 });
 
 
@@ -99,9 +101,6 @@ async function filter() {
         }`;
         tdStatus.appendChild(statusBadge);
         tr.appendChild(tdStatus);
-
-        const tdTopics = document.createElement('td');
-        tr.appendChild(tdTopics);
 
         const tdLink = document.createElement('td');
         const a = document.createElement('a');
