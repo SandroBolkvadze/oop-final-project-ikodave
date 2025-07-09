@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', (e) => {
-    loadSubmissions();
     addButtonListeners();
+    loadSubmissions();
 });
 
 function addButtonListeners() {

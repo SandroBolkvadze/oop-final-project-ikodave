@@ -130,14 +130,15 @@
     </style>
 </head>
 <body>
-<div id="navbar-container"></div>
-<script src="/static/shared_html/navbar.js" defer></script>
 
+<div id="navbar-container"></div>
+<script src="/static/shared_html/navbar.js"></script>
+<script>loadNavbar();</script>
 
 <div class="content">
     <div class="header">
-        <button type="button" class="btn btn-link mb-0">My Submissions</button>
-        <button type="button" class="btn btn-link mb-0">Problemset</button>
+        <button type="button" id="mySubmissionsButton" class="btn btn-link mb-0">My Submissions</button>
+        <button type="button" id="backToProblemButton" class="btn btn-link mb-0">Back to problem</button>
     </div>
 
     <div class="section">

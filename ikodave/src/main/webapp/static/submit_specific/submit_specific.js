@@ -5,8 +5,6 @@ function loadProblemTitle() {
     const inputEl = document.getElementById('problemTitle');
     const wrapper = inputEl.parentElement;
 
-
-
     const textEl = document.createElement('span');
     textEl.id = 'problemTitle';
     textEl.textContent = title;
@@ -63,5 +61,18 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(console.error);
     });
+
+
+    document.getElementById('backToProblemButton').addEventListener('click', e => {
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        const title = parts[parts.length - 1];
+        window.location.href = `/problems/${encodeURIComponent(title)}`;
+    });
+
+    document.getElementById('mySubmissionsButton').addEventListener('click', e => {
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        const title = parts[parts.length - 1];
+        window.location.href = `/problems/submissions/${encodeURIComponent(title)}`;
+    })
 });
 
