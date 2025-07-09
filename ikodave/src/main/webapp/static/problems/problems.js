@@ -2,18 +2,22 @@
 document.addEventListener('DOMContentLoaded', () => {
     addListeners();
 
-    populateCheckboxGroup({
+    populateToggleGroup({
         url: '/api/problems/difficulties',
-        containerId: 'difficulty-checkboxes',
+        containerId: 'difficulty-toggle',
+        groupName: 'difficulty',
         valueKey: 'difficulty',
-        labelKey: 'difficulty'
+        labelKey: 'difficulty',
+        btnClass: 'btn-outline-primary'
     });
 
-    populateCheckboxGroup({
+    populateToggleGroup({
         url: '/api/problems/statuses',
-        containerId: 'status-checkboxes',
+        containerId: 'status-toggle',
+        groupName: 'status',
         valueKey: 'status',
-        labelKey: 'status'
+        labelKey: 'status',
+        btnClass: 'btn-outline-primary'
     });
 
     populateCheckboxGroup({
@@ -26,53 +30,98 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function addListeners() {
-    document.getElementById('filter-button')?.addEventListener('click', filter);
+    document.getElementById('filter-button').addEventListener('click', filter);
 }
 
 async function filter() {
-    const title = document.getElementById('filter-title')?.value.trim();
-    const difficulty = document.getElementById('filter-difficulty')?.value;
-    const status = document.getElementById('filter-status')?.value;
+    const title = document.getElementById('filter-title').value.trim();
+    console.log(title);
+
+    const difficultyInput = document.querySelector('#difficulty-toggle input[type="checkbox"]:checked');
+    const difficulty = difficultyInput ? difficultyInput.value : null;
+    console.log(difficulty);
+
+    const statusInput = document.querySelector('#status-toggle input[type="checkbox"]:checked');
+    const status = statusInput ? statusInput.value : null;
+    console.log(status);
 
     const topicCheckboxes = document.querySelectorAll('#topics-checkboxes input[type="checkbox"]:checked');
     const topics = Array.from(topicCheckboxes).map(cb => cb.value);
+    console.log(topics);
 
-    const filters = { title, difficulty, status, topics };
+    let filterCriteria = {
+        title: title,
+        status: status,
+        difficulty: difficulty,
+        topics: topics
+    };
 
-    try {
-        const response = await fetch('/api/problems/filter', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(filters)
-        });
+    const response = await fetch('/api/problems', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(filterCriteria)
+    });
 
-        if (!response.ok) throw new Error(`Failed to fetch problems: ${response.status}`);
-        const data = await response.json();
-        console.log("Filtered problems:", data); // TODO: Render this in your table
-    } catch (err) {
-        console.error("Filter failed:", err);
-    }
+    console.log(response);
 }
 
-async function populateSelect({ url, selectId, valueKey, labelKey }) {
+async function populateToggleGroup({ url, containerId, groupName, valueKey, labelKey, btnClass = 'btn-outline-primary' }) {
     try {
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
         const items = await res.json();
-        const select = document.getElementById(selectId);
-        if (!select) return;
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'btn-group w-100';
+        groupDiv.setAttribute('role', 'group');
+        groupDiv.setAttribute('aria-label', groupName);
 
         items.forEach(item => {
-            const option = document.createElement('option');
-            option.value = item[valueKey];
-            option.textContent = item[labelKey];
-            select.appendChild(option);
+            const value = item[valueKey];
+            const label = item[labelKey];
+
+            const inputId = `${groupName}-${value}`;
+
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.className = 'btn-check';
+            input.id = inputId;
+            input.value = value;
+            input.autocomplete = 'off';
+
+            const labelElem = document.createElement('label');
+            labelElem.className = `btn ${btnClass} flex-fill`;
+            labelElem.setAttribute('for', inputId);
+            labelElem.textContent = label;
+
+            groupDiv.appendChild(input);
+            groupDiv.appendChild(labelElem);
         });
+
+        container.appendChild(groupDiv);
+
+        const checkboxes = groupDiv.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            cb.addEventListener('click', function () {
+                if (this.checked) {
+                    checkboxes.forEach(other => {
+                        if (other !== this) other.checked = false;
+                    });
+                }
+            });
+        });
+
     } catch (err) {
-        console.error(`Failed to load ${selectId}:`, err);
+        console.error(`Failed to load ${containerId}:`, err);
     }
 }
+
+
 
 async function populateCheckboxGroup({ url, containerId, valueKey, labelKey }) {
     try {
@@ -96,5 +145,6 @@ async function populateCheckboxGroup({ url, containerId, valueKey, labelKey }) {
         console.error(`Failed to load ${containerId}:`, err);
     }
 }
+
 
 
