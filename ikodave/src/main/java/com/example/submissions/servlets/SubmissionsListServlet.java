@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.example.util.AttributeConstants.*;
 import static com.example.util.SessionConstants.USER_KEY;
@@ -27,13 +29,6 @@ public class SubmissionsListServlet extends HttpServlet  {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = (User) request.getSession().getAttribute(USER_KEY);
-        ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
-        SubmissionDAO submissionDAO = (SubmissionDAO) getServletContext().getAttribute(SUBMISSION_DAO_KEY);
-        Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
-        VerdictDAO verdictDAO = (VerdictDAO) getServletContext().getAttribute(VERDICT_DAO_KEY);
-        CodeLanguageDAO codeLanguageDAO = (CodeLanguageDAO) getServletContext().getAttribute(CODE_LANGUAGE_DAO_KEY);
-
         String pathInfo = request.getPathInfo();
         if (pathInfo == null || pathInfo.split("/").length < 2) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid URL format");
@@ -43,10 +38,25 @@ public class SubmissionsListServlet extends HttpServlet  {
         String[] pathParts = pathInfo.split("/");
         String problemTitle = pathParts[pathParts.length - 1];
 
+        User user = (User) request.getSession().getAttribute(USER_KEY);
+        ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
+        SubmissionDAO submissionDAO = (SubmissionDAO) getServletContext().getAttribute(SUBMISSION_DAO_KEY);
+        Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
+        VerdictDAO verdictDAO = (VerdictDAO) getServletContext().getAttribute(VERDICT_DAO_KEY);
+        CodeLanguageDAO codeLanguageDAO = (CodeLanguageDAO) getServletContext().getAttribute(CODE_LANGUAGE_DAO_KEY);
+
+        if (user == null) {
+            response.setContentType("application/json");
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("submissions", null);
+            response.getWriter().write(gson.toJson(payload));
+            return;
+        }
+
         System.out.println(problemTitle);
 
         Problem problem = problemDAO.getProblemByTitle(problemTitle);
-        List<Submission> submissions = submissionDAO.getSubmissionsByOrder(2, problem.getId());
+        List<Submission> submissions = submissionDAO.getSubmissionsByOrder(user.getId(), problem.getId());
 
         List<SubmissionResponse> submissionResponses =
                 submissions.stream().map((submission) -> {
@@ -56,7 +66,7 @@ public class SubmissionsListServlet extends HttpServlet  {
 
                     return new SubmissionResponse(
                             submission.getSubmitDate(),
-                            /*user.getUsername()*/"sandro",
+                            user.getUsername(),
                             submission.getSolutionCode(),
                             problemTitle,
                             codeLanguageDAO.getCodeLanguageById(submission.getCodeLanguageId()).getLanguage(),
@@ -72,7 +82,10 @@ public class SubmissionsListServlet extends HttpServlet  {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(gson.toJson(submissionResponses));
+
+        Map<String, List<SubmissionResponse>> payload = new HashMap<>();
+        payload.put("submissions", submissionResponses);
+        response.getWriter().write(gson.toJson(payload));
     }
 
 }

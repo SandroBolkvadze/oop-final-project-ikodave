@@ -11,10 +11,10 @@ import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserDetailsDAOTest {
+class UserStatsDAOTest {
 
     private static BasicDataSource dataSource;
-    private static UserDetailsDAO dao;
+    private static UserStatsDAO dao;
 
     @BeforeAll
     static void setup() throws Exception {
@@ -24,7 +24,7 @@ class UserDetailsDAOTest {
         dataSource.setPassword("");
         dataSource.setDriverClassName("org.h2.Driver");
 
-        dao = new SQLUserDetailsDAO(dataSource); // or whatever class contains the method
+        dao = new SQLUserStatsDAO(dataSource); // or whatever class contains the method
 
         try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
             stmt.execute("""

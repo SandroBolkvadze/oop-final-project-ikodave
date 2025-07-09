@@ -12,9 +12,9 @@ import java.io.StringWriter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class UserProfileServletTest {
+class ProfileStatsServletTest {
 
-    private UserProfileServlet servlet;
+    private ProfileStatsServlet servlet;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession session;
@@ -22,7 +22,7 @@ class UserProfileServletTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        servlet = new UserProfileServlet();
+        servlet = new ProfileStatsServlet();
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session = mock(HttpSession.class);

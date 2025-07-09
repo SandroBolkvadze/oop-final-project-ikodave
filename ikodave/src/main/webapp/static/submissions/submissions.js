@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', (e) => {
     addButtonListeners();
-    loadSubmissions();
+    loadUserSubmissions();
 });
 
 function addButtonListeners() {
@@ -13,15 +13,22 @@ function backToProblemButton() {
     window.location.href = `/problems/${encodeURIComponent(title)}`;
 }
 
-function loadSubmissions() {
+function loadUserSubmissions() {
     const parts = window.location.pathname.split('/');
     const problemTitle = parts[parts.length - 1];
 
     fetch(`/api/problems/submissions/${problemTitle}`)
         .then(res => res.json())
-        .then(submissions => {
+        .then(data => {
             const container = document.getElementById('submissions');
             container.innerHTML = '';
+
+            if (!data || typeof data !== 'object' || !('submissions' in data)) {
+                container.innerHTML = `<a href="/signin">Sign in to view Submissions</a>`;
+                return;
+            }
+
+            let submissions = data.submissions;
 
             if (!submissions.length) {
                 container.innerHTML = '<p>No submissions yet.</p>';

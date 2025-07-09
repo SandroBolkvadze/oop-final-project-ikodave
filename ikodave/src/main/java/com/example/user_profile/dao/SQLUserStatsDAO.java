@@ -13,11 +13,11 @@ import java.sql.SQLException;
 import static com.example.user_profile.utils.ToSQL.*;
 import static java.lang.String.format;
 
-public class SQLUserDetailsDAO implements UserDetailsDAO {
+public class SQLUserStatsDAO implements UserStatsDAO {
 
     private final BasicDataSource basicDataSource;
 
-    public SQLUserDetailsDAO(BasicDataSource basicDataSource) {
+    public SQLUserStatsDAO(BasicDataSource basicDataSource) {
         this.basicDataSource = basicDataSource;
     }
 
