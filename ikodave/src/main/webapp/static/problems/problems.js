@@ -1,18 +1,21 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     addListeners();
+
     populateCheckboxGroup({
         url: '/api/problems/difficulties',
         containerId: 'difficulty-checkboxes',
         valueKey: 'difficulty',
         labelKey: 'difficulty'
     });
+
     populateCheckboxGroup({
         url: '/api/problems/statuses',
         containerId: 'status-checkboxes',
         valueKey: 'status',
         labelKey: 'status'
     });
+
     populateCheckboxGroup({
         url: '/api/problems/topics',
         containerId: 'topics-checkboxes',
@@ -51,7 +54,6 @@ async function filter() {
     }
 }
 
-// --- GENERALIZED LOADER ---
 async function populateSelect({ url, selectId, valueKey, labelKey }) {
     try {
         const res = await fetch(url);
