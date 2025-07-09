@@ -32,9 +32,10 @@
     </style>
 </head>
 <body>
+
 <div id="navbar-container"></div>
-<script src="/shared_html/navbar.js"></script>
-<script>document.addEventListener('DOMContentLoaded', loadNavbar);</script>
+<script src="/static/shared_html/navbar.js"></script>
+<script>loadNavbar();</script>
 
 <div class="container mt-4">
     <h2 class="mb-4">Problems</h2>
@@ -105,12 +106,7 @@
 </div>
 
 <script src="/static/problems/problems.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        loadNavbar();
-        addListeners();
-    });
-</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

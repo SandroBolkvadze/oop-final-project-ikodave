@@ -1,3 +1,27 @@
+
+document.addEventListener('DOMContentLoaded', () => {
+    addListeners();
+    populateCheckboxGroup({
+        url: '/api/problems/difficulties',
+        containerId: 'difficulty-checkboxes',
+        valueKey: 'difficulty',
+        labelKey: 'difficulty'
+    });
+    populateCheckboxGroup({
+        url: '/api/problems/statuses',
+        containerId: 'status-checkboxes',
+        valueKey: 'status',
+        labelKey: 'status'
+    });
+    populateCheckboxGroup({
+        url: '/api/problems/topics',
+        containerId: 'topics-checkboxes',
+        valueKey: 'topic',
+        labelKey: 'topic'
+    });
+});
+
+
 function addListeners() {
     document.getElementById('filter-button')?.addEventListener('click', filter);
 }
@@ -71,25 +95,4 @@ async function populateCheckboxGroup({ url, containerId, valueKey, labelKey }) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    addListeners();
-    populateCheckboxGroup({
-        url: '/api/problems/difficulties',
-        containerId: 'difficulty-checkboxes',
-        valueKey: 'difficulty',
-        labelKey: 'difficulty'
-    });
-    populateCheckboxGroup({
-        url: '/api/problems/statuses',
-        containerId: 'status-checkboxes',
-        valueKey: 'status',
-        labelKey: 'status'
-    });
-    populateCheckboxGroup({
-        url: '/api/problems/topics',
-        containerId: 'topics-checkboxes',
-        valueKey: 'topic',
-        labelKey: 'topic'
-    });
-});
 
