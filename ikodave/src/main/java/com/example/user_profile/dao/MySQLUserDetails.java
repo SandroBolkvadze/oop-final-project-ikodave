@@ -1,5 +1,6 @@
 package com.example.user_profile.dao;
 
+import com.example.problems.DTO.Difficulty;
 import com.example.registration.model.User;
 import com.example.submissions.DTO.SubmissionVerdict;
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
@@ -36,4 +37,36 @@ public class MySQLUserDetails implements UserDetails {
         }
         return 0;
     }
+    public int getProblemCount(User user){
+        String sqlStatement = getProblemCountSQL();
+        try (Connection connection = basicDataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setString(2,"Accepted");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error querying accepted problems by difficulty", e);
+        }
+    }
+    public int getProblemCountByDifficulty(User user, Difficulty difficulty) {
+        String sqlStatement = getProblemsCountByDifficultySQL();
+        try (Connection connection = basicDataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, "Accepted");
+            preparedStatement.setString(2, difficulty.getDifficulty());
+            preparedStatement.setInt(3, user.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error querying accepted problems by difficulty", e);
+        }
+    }
+
 }
