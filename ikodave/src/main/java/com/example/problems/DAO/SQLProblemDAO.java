@@ -168,7 +168,7 @@ public class SQLProblemDAO implements ProblemDAO {
 
     @Override
     public int getProblemId(String problemTitle) {
-        String sqlStatement = toProblemTitleSQL();
+        String sqlStatement = toProblemIdSQL();
         try (Connection connection = basicDataSource.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, problemTitle);
