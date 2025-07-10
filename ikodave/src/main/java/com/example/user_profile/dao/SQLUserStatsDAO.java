@@ -112,7 +112,7 @@ public class SQLUserStatsDAO implements UserStatsDAO {
         String sqlStatement = getUserRankSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setString(1, user.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(1);
