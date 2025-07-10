@@ -133,14 +133,22 @@ public class ToSQL {
         );
     }
     public static String getUserActivityByMonthSQL(){
-        return format("SELECT %s.%s FROM %s WHERE MONTH(%s.%s) = MONTH(NOW()) AND %s.%s = ?",
+        return format("SELECT DISTINCT(%s.%s) FROM %s JOIN %s ON %s.%s = %s.%s " +
+                        "WHERE MONTH(%s.%s) = MONTH(NOW()) AND %s.%s = ? AND %s.%s = ?",
                 Submissions.TABLE_NAME,
                 Submissions.COL_SUBMIT_DATE,
                 Submissions.TABLE_NAME,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_VERDICT_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_SUBMIT_DATE,
                 Submissions.TABLE_NAME,
-                Submissions.COL_USER_ID
+                Submissions.COL_USER_ID,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_VERDICT
         );
     }
 

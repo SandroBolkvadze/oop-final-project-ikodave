@@ -127,7 +127,8 @@ public class SQLUserStatsDAO implements UserStatsDAO {
         String sqlStatement = getUserActivityByMonthSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setString(2, "'Accepted'");
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Timestamp> activityTimestamps = new ArrayList<>();
             while(resultSet.next()) {
@@ -137,7 +138,7 @@ public class SQLUserStatsDAO implements UserStatsDAO {
             return activityTimestamps;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error querying tried problems", e);
+            throw new RuntimeException("Error querying activity problems", e);
         }
     }
 
