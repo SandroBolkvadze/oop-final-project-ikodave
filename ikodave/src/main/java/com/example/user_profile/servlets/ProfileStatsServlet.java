@@ -95,9 +95,6 @@ public class ProfileStatsServlet extends HttpServlet {
         List<Timestamp> submissionDates = userStatsDAO.getUserActivityByMonth(user);
         userStats.setSubmissionDates(submissionDates);
 
-        List<UserWithScore> leaderboard = leaderboardDAO.getUsersByScore();
-
-
         System.out.println(submissionDates.size());
 
         response.setContentType("application/json");

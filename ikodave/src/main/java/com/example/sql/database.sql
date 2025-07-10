@@ -13,28 +13,28 @@ CREATE TABLE IF NOT EXISTS users
 (
     id            INT AUTO_INCREMENT PRIMARY KEY,
     role_id       INT,
-    username      VARCHAR(50)  NOT NULL UNIQUE,
-    password      VARCHAR(255) NOT NULL,
-    register_date DATE,
+    username      VARCHAR(64)  NOT NULL UNIQUE,
+    password      VARCHAR(256) NOT NULL,
+    register_date DATETIME,
     FOREIGN KEY (role_id) REFERENCES user_role (id)
 );
 
 CREATE TABLE IF NOT EXISTS problem_status
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    status      VARCHAR(16) UNIQUE NOT NULL
+    status      VARCHAR(32) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS problem_difficulty
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
-    difficulty VARCHAR(16) UNIQUE NOT NULL
+    difficulty VARCHAR(32) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS problem_topic
 (
     id    INT AUTO_INCREMENT PRIMARY KEY,
-    topic VARCHAR(16) UNIQUE NOT NULL
+    topic VARCHAR(32) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS submission_verdict
@@ -53,11 +53,11 @@ CREATE TABLE IF NOT EXISTS code_language
 CREATE TABLE IF NOT EXISTS problems
 (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
-    problem_title       VARCHAR(100) UNIQUE NOT NULL,
+    problem_title       VARCHAR(128) UNIQUE NOT NULL,
     problem_description TEXT,
     difficulty_id       INT,
     create_date         DATETIME,
-    time_limit          LONG,
+    time_limit          BIGINT,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty (id)
 );
 
@@ -78,8 +78,8 @@ CREATE TABLE IF NOT EXISTS submissions
     verdict_id          INT,
     solution_code       TEXT,
     code_language_id    INT,
-    time                LONG,
-    memory              LONG,
+    time                BIGINT,
+    memory              BIGINT,
     submit_date         DATETIME,
     log                 TEXT,
     FOREIGN KEY (problem_id) REFERENCES problems (id),
