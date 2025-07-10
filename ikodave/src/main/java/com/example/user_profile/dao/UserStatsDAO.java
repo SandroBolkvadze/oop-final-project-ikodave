@@ -14,5 +14,7 @@ public interface UserStatsDAO {
 
     int getSubmissionsCount(User user);
 
+    int getSubmissionsCountByDays(User user, int lastDays);
 
+    int getUserRank(User user);
 }

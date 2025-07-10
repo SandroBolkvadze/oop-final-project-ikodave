@@ -64,8 +64,15 @@ public class ProfileStatsServlet extends HttpServlet {
         int acceptedSubmissionsCount = userStatsDAO.getSubmittedProblemCountByVerdict(user, verdictAccepted);
         userStats.setNotAcceptedSubmissionsCount(submissionsTotalCount - acceptedSubmissionsCount);
 
+        int submissionsToday = userStatsDAO.getSubmissionsCountByDays(user, 1);
+        userStats.setAcceptedProblemsCountToday(submissionsToday);
 
+        int userRank = userStats.getUserRank();
+        userStats.setUserRank(userRank);
 
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(gson.toJson(userStats));
     }
 
 }
