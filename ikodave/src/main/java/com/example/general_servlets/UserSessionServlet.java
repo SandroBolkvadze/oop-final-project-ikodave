@@ -19,7 +19,7 @@ public class UserSessionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = null;
-        if(request.getSession(false) != null){
+        if (request.getSession(false) != null){
             user = (User) request.getSession().getAttribute(USER_KEY);
         }
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
@@ -30,6 +30,7 @@ public class UserSessionServlet extends HttpServlet {
             map.put("username", user.getUsername());
 
             RoleDAO roleDAO = (RoleDAO) getServletContext().getAttribute(ROLE_DAO_KEY);
+            System.out.println(user.getRoleId());
             Role role = roleDAO.getRoleById(user.getRoleId());
 
             map.put("role", role.getRole());

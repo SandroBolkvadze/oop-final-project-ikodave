@@ -25,7 +25,7 @@ public class SQLRoleDAO implements RoleDAO{
             PreparedStatement preparedStatement = con.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 return toRole(resultSet);
             }
         } catch (SQLException e) {
