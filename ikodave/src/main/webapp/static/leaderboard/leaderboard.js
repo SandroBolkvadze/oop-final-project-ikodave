@@ -17,7 +17,7 @@ function createLeaderboardRow(entry, index) {
             <a href="/profile/${entry.username}"
                class="btn btn-outline-primary btn-sm"
                role="button"
-               target="_blank">
+               >
                 View Profile
             </a>
         </td>

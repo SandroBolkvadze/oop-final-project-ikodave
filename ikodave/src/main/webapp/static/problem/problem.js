@@ -22,12 +22,12 @@ function submitSolutionButton() {
     window.location.href = `/problems/submit/${encodeURIComponent(title)}`;
 }
 
-async function loadProblem(e){
+async function loadProblem(e) {
     const parts = window.location.pathname.split('/');
     const problemTitle = parts[parts.length - 1];
 
     const sendData = {
-        problemTitle : problemTitle
+        problemTitle: problemTitle
     }
 
     await fetch(`/api/problems/problem`, {
@@ -38,18 +38,36 @@ async function loadProblem(e){
         .then(response => response.json())
         .then(data => {
             document.getElementById('problemTitle').textContent = problemTitle;
-
             document.title = `Problem ${problemTitle} | Ikodave`;
 
             const problemDescription = data.problemDescription;
             document.getElementById('descriptionText').textContent = problemDescription;
 
-            const problemStatus = data.problemStatus;
-            document.getElementById('statusText').textContent = problemStatus;
-
+            // Difficulty with color coding
             const problemDifficulty = data.problemDifficulty;
-            document.getElementById('difficultyText').textContent = problemDifficulty;
+            const diffElem = document.getElementById('difficultyText');
+            diffElem.textContent = problemDifficulty;
+            diffElem.classList.remove('text-success', 'text-warning', 'text-danger');
+            if (problemDifficulty.toLowerCase() === 'easy') {
+                diffElem.classList.add('text-success');
+            } else if (problemDifficulty.toLowerCase() === 'medium') {
+                diffElem.classList.add('text-warning');
+            } else if (problemDifficulty.toLowerCase() === 'hard') {
+                diffElem.classList.add('text-danger');
+            }
 
+            // Status with color coding
+            const problemStatus = data.problemStatus;
+            const statusElem = document.getElementById('statusText');
+            statusElem.textContent = problemStatus;
+            statusElem.classList.remove('text-success', 'text-warning', 'text-primary');
+            if (problemStatus.toLowerCase() === 'accepted') {
+                statusElem.classList.add('text-success');
+            } else if (problemStatus.toLowerCase() === 'attempted') {
+                statusElem.classList.add('text-warning');
+            } else if (problemStatus.toLowerCase() === 'todo') {
+                statusElem.classList.add('text-primary');
+            }
 
             const problemInputSpec = data.problemInputSpec;
             document.getElementById('inputText').textContent = problemInputSpec;
@@ -57,13 +75,11 @@ async function loadProblem(e){
             const problemOutputSpec = data.problemOutputSpec;
             document.getElementById('outputText').textContent = problemOutputSpec;
 
-
             const timeLimit = data.problemTime;
             const memoryLimit = data.problemMemory;
             document.getElementById('problemLimits').innerHTML =
                 `Time limit per test: <strong>${timeLimit} ms</strong>;<br>
-                 Memory limit per test: <strong>${memoryLimit} mb</strong>.`;
-
+             Memory limit per test: <strong>${memoryLimit} mb</strong>.`;
 
             const problemTestCases = data.problemTestCases;
             const testCasesContainer = document.getElementById('testCases');
@@ -72,11 +88,11 @@ async function loadProblem(e){
                     const exampleDiv = document.createElement('div');
                     exampleDiv.className = 'example';
                     exampleDiv.innerHTML = `
-                        <div><strong>Input:</strong></div>
-                        <pre>${testCase.problemInput}</pre>
-                        <div><strong>Output:</strong></div>
-                        <pre>${testCase.problemOutput}</pre>
-                    `;
+                    <div><strong>Input:</strong></div>
+                    <pre>${testCase.problemInput}</pre>
+                    <div><strong>Output:</strong></div>
+                    <pre>${testCase.problemOutput}</pre>
+                `;
                     testCasesContainer.appendChild(exampleDiv);
                 });
             }
@@ -94,7 +110,6 @@ async function loadProblem(e){
         })
         .catch(error => {
             console.error('Error loading problem:', error);
-
             document.getElementById('problemTitle').textContent = 'Error loading problem';
             document.getElementById('descriptionText').textContent = 'Failed to load problem data. Please try again.';
         });
