@@ -7,10 +7,10 @@ async function loadNavbar() {
 
         // Get user session
         const sessionRes = await fetch('/api/user/session');
-        const { loggedIn } = await sessionRes.json();
+        const { loggedIn, role } = await sessionRes.json();
 
         // Show/hide navbar items based on login status
-        toggleNavbarItems(loggedIn);
+        toggleNavbarItems(loggedIn, role);
 
         // Set up navbar navigation links
         setupNavLinks({
@@ -28,8 +28,8 @@ async function loadNavbar() {
     }
 }
 
-function toggleNavbarItems(loggedIn) {
-    document.getElementById('nav-admin')?.style.setProperty('display', )
+function toggleNavbarItems(loggedIn, role) {
+    document.getElementById('nav-admin')?.style.setProperty('display',  role === "Admin" ? 'block' : 'none')
     document.getElementById('nav-register')?.style.setProperty('display', loggedIn ? 'none' : 'block');
     document.getElementById('nav-signin')?.style.setProperty('display', loggedIn ? 'none' : 'block');
     document.getElementById('nav-profile')?.style.setProperty('display', loggedIn ? 'block' : 'none');
