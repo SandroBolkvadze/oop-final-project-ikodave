@@ -11,12 +11,12 @@ CREATE TABLE IF NOT EXISTS user_role
 
 CREATE TABLE IF NOT EXISTS users
 (
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    role_id       INT,
-    username      VARCHAR(64)  NOT NULL UNIQUE,
-    password      VARCHAR(256) NOT NULL,
-    register_date DATETIME,
-    FOREIGN KEY (role_id) REFERENCES user_role (id)
+    id                      INT AUTO_INCREMENT PRIMARY KEY,
+    role_id                 INT,
+    username                VARCHAR(64)  NOT NULL UNIQUE,
+    password                VARCHAR(256) NOT NULL,
+    register_date           DATETIME NOT NULL,
+    FOREIGN KEY (role_id)   REFERENCES user_role (id)
 );
 
 CREATE TABLE IF NOT EXISTS problem_status
@@ -54,10 +54,13 @@ CREATE TABLE IF NOT EXISTS problems
 (
     id                  INT AUTO_INCREMENT PRIMARY KEY,
     problem_title       VARCHAR(128) UNIQUE NOT NULL,
-    problem_description TEXT,
+    problem_description TEXT NOT NULL,
     difficulty_id       INT,
-    create_date         DATETIME,
-    time_limit          BIGINT,
+    time_limit          BIGINT NOT NULL,
+    memory_limit        BIGINT,
+    input_spec          TEXT NOT NULL,
+    output_spec         TEXT NOT NULL,
+    create_date         DATETIME NOT NULL,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty (id)
 );
 
@@ -77,10 +80,10 @@ CREATE TABLE IF NOT EXISTS submissions
     problem_id          INT,
     verdict_id          INT,
     solution_code       TEXT,
-    code_language_id    INT,
-    time                BIGINT,
+    code_language_id    INT NOT NULL,
+    time                BIGINT NOT NULL,
     memory              BIGINT,
-    submit_date         DATETIME,
+    submit_date         DATETIME NOT NULL,
     log                 TEXT,
     FOREIGN KEY (problem_id) REFERENCES problems (id),
     FOREIGN KEY (user_id) REFERENCES users (id),
@@ -90,10 +93,10 @@ CREATE TABLE IF NOT EXISTS submissions
 
 CREATE TABLE IF NOT EXISTS test_cases
 (
-    id             INT AUTO_INCREMENT PRIMARY KEY,
-    problem_id     INT,
-    problem_input  MEDIUMTEXT,
-    problem_output MEDIUMTEXT,
-    order_num      INT,
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    problem_id          INT,
+    problem_input       MEDIUMTEXT,
+    problem_output      MEDIUMTEXT,
+    test_number         INT,
     FOREIGN KEY (problem_id) REFERENCES problems (id)
 );
