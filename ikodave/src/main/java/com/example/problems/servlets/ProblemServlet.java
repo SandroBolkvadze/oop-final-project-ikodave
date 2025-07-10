@@ -44,7 +44,7 @@ public class ProblemServlet extends HttpServlet {
                 user != null? problemDAO.getProblemStatus(problem.getId(), user.getId()) : "No Status",
                 problemDAO.getProblemTopics(problem.getId()).stream().map(Topic::getTopic).toList(),
                 problemDAO.getProblemDifficulty(problem.getId()).getDifficulty(),
-                testDAO.getTestCasesByProblemId(problem.getId()).subList(0, 2),
+                testDAO.getTestCasesByProblemId(problem.getId()).subList(0, 1),
                 problem.getInputSpec(),
                 problem.getOutputSpec(),
                 problem.getTimeLimit(),
