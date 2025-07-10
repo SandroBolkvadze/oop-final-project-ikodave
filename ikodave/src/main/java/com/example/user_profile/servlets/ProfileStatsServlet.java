@@ -1,7 +1,6 @@
 package com.example.user_profile.servlets;
 
 import com.example.leaderboard.dao.LeaderboardDAO;
-import com.example.leaderboard.dto.UserWithScore;
 import com.example.problems.DAO.DifficultyDAO;
 import com.example.problems.DTO.Difficulty;
 import com.example.registration.dao.UserDAO;
@@ -83,7 +82,7 @@ public class ProfileStatsServlet extends HttpServlet {
         System.out.println("total submissions " + submissionsTotalCount);
         System.out.println("accepted submissions " + acceptedSubmissionsCount);
 
-        int submissionsToday = userStatsDAO.getSubmissionsCountByDays(user);
+        int submissionsToday = userStatsDAO.getAcceptedSubmissionsCountByToday(user);
         userStats.setAcceptedProblemsCountToday(submissionsToday);
 
         System.out.println("submissions today " + submissionsToday);

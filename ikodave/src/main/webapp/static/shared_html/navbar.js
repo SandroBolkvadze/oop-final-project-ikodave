@@ -14,6 +14,7 @@ async function loadNavbar() {
         toggleElement('nav-signin', !loggedIn);
         toggleElement('nav-profile', loggedIn);
         toggleElement('nav-admin', role === "Admin");
+        toggleElement('nav-submissions', loggedIn);
 
         // Attach page navigation
         attachNavbarLinks({
@@ -23,7 +24,8 @@ async function loadNavbar() {
             'nav-profile': '/profile',
             'nav-problems': '/problems',
             'nav-leaderboard': '/leaderboard',
-            'nav-admin': '/AdminPage'
+            'nav-admin': '/AdminPage',
+            'nav-submissions': '/submissions'
         });
 
     } catch (err) {

@@ -14,4 +14,5 @@ public interface SubmissionDAO {
 
     List<Submission> getSubmissionsByOrder(int userId, int problemId);
 
+    List<Submission> getAllSubmissionsByOrder();
 }
