@@ -43,7 +43,7 @@ public class MySQLUserDao implements UserDAO {
     public void addUser(User user) {
         try (Connection con = dataSource.getConnection()){
             //TODO
-            String sql = format("INSERT INTO users (%s, %s, %s, %s) VALUES (2, ?, ?, NOW())",
+            String sql = format("INSERT INTO users (%s, %s, %s, %s) VALUES (1, ?, ?, NOW())",
                     Users.COL_ROLE_ID, Users.COL_USERNAME, Users.COL_PASSWORD, Users.COL_REGISTER_DATE);
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, user.getUsername());

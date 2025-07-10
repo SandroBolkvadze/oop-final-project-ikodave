@@ -6,6 +6,10 @@ import static java.lang.String.format;
 
 public class ToSQL {
 
+    public static String toInsertProblemSQL(){
+        return format();
+    }
+
     public static String toProblemTopicsSQL() {
         return format("SELECT %s.* FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ?;",
                 ProblemTopic.TABLE_NAME,

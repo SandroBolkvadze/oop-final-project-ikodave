@@ -23,8 +23,6 @@ function submitSolutionButton() {
 }
 
 async function loadProblem(e){
-    console.log('loading problem');
-
     const parts = window.location.pathname.split('/');
     const problemTitle = parts[parts.length - 1];
 
