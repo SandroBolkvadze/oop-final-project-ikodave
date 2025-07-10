@@ -19,6 +19,11 @@ CREATE TABLE IF NOT EXISTS users
     FOREIGN KEY (role_id) REFERENCES user_role (id)
 );
 
+CREATE TABLE IF NOT EXISTS problem_status
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    status      VARCHAR(16) UNIQUE NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS problem_difficulty
 (

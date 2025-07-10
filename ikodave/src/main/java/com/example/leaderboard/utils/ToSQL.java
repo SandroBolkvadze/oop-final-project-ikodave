@@ -7,7 +7,7 @@ import static java.lang.String.format;
 public class ToSQL {
     public static String getUsersScored() {
         return format("SELECT USERS.%s AS USER, " +
-                        "(SELECT COUNT(DISTINCT USERCOUNTER.%s) " +
+                        "(SELECT COUNT(DISTINCT SUBMISSIONS.%s) " +
                         "FROM %s USERCOUNTER " +
                         "LEFT JOIN %s SUBMISSIONS ON SUBMISSIONS.%s = USERCOUNTER.%s " +
                         "JOIN %s VERDICTS ON VERDICTS.%s = SUBMISSIONS.%s " +
@@ -15,7 +15,7 @@ public class ToSQL {
                         "FROM %s USERS " +
                         "ORDER BY SCORE DESC;",
                 Users.COL_USERNAME,
-                Users.COL_ID,
+                Submissions.COL_PROBLEM_ID,
                 Users.TABLE_NAME,
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,

@@ -14,10 +14,10 @@ function createLeaderboardRow(entry, index) {
         <td>${entry.username}</td>
         <td>${entry.score}</td>
         <td>
-            <a href="#"
-               class="btn btn-outline-primary btn-sm disabled"
+            <a href="/profile/${entry.username}"
+               class="btn btn-outline-primary btn-sm"
                role="button"
-               aria-disabled="true">
+               target="_blank">
                 View Profile
             </a>
         </td>
