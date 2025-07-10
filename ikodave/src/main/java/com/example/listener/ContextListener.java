@@ -66,6 +66,8 @@ public class ContextListener implements ServletContextListener {
         StatusDAO statusDAO = new SQLStatusDAO(dataSource);
         sce.getServletContext().setAttribute(STATUS_DAO_KEY, statusDAO);
 
+
+
         DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
         dockerCodeRunner.startContainers();
         sce.getServletContext().setAttribute(DOCKER_CODE_RUNNER_KEY, dockerCodeRunner);

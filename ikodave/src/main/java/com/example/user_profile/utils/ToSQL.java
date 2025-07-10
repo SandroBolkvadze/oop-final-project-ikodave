@@ -23,7 +23,7 @@ public class ToSQL {
                 Submissions.COL_USER_ID
         );
     }
-    public static String getProblemsCountByDifficultySQL() {
+    public static String getProblemCountByDifficultySQL() {
         return format("SELECT COUNT(DISTINCT %s.%s) " +
                         "FROM %s JOIN %s ON %s.%s = %s.%s " +
                         "JOIN %s ON %s.%s = %s.%s " +
@@ -79,7 +79,7 @@ public class ToSQL {
                 SubmissionVerdict.COL_VERDICT
         );
     }
-    public static String getTriedProblemCountSQL(){
+    public static String getSubmissionsCountSQL(){
         return format("SELECT COUNT(%s.%s) FROM %s JOIN %s ON %s.%s = %s.%s " +
                         "WHERE %s.%s = ?",
                 Problems.TABLE_NAME,

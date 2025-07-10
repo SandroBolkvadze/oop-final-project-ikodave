@@ -91,5 +91,18 @@ public class DatabaseConstants {
         public static final String COL_LANGUAGE = "language";
     }
 
+
+    public static final class DifficultyElements {
+        public static final String DIFFICULTY_EASY = "Easy";
+        public static final String DIFFICULTY_MEDIUM = "Medium";
+        public static final String DIFFICULTY_HARD = "Hard";
+    }
+
+    public static final class ProblemVerdictElements {
+        public static final String VERDICT_ACCEPTED = "Accepted";
+        public static final String VERDICT_REJECTED = "Rejected";
+        public static final String VERDICT_TIME_LIMIT_EXCEEDED = "Time Limit Exceeded";
+    }
+
 }
 
