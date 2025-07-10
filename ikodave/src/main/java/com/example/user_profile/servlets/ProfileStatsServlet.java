@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import static com.example.util.AttributeConstants.*;
@@ -55,7 +56,7 @@ public class ProfileStatsServlet extends HttpServlet {
 
         int mediumSolvedCount = userStatsDAO.getSolvedProblemCountByDifficulty(user, difficultyMedium);
         int mediumTotalCount = problemStatsDAO.getProblemCountByDifficulty(difficultyMedium);
-        userStats.setMediumSolvedProblemsCount(mediumTotalCount);
+        userStats.setMediumSolvedProblemsCount(mediumSolvedCount);
         userStats.setMediumNotSolvedProblemsCount(mediumTotalCount - mediumSolvedCount);
 
         System.out.println("medium solved: " + mediumSolvedCount);
@@ -73,8 +74,8 @@ public class ProfileStatsServlet extends HttpServlet {
 
         int submissionsTotalCount = userStatsDAO.getSubmissionsCount(user);
         int acceptedSubmissionsCount = userStatsDAO.getSubmittedProblemCountByVerdict(user, verdictAccepted);
+        userStats.setSubmissionsTotalCount(submissionsTotalCount);
         userStats.setNotAcceptedSubmissionsCount(submissionsTotalCount - acceptedSubmissionsCount);
-
 
         System.out.println("total submissions " + submissionsTotalCount);
         System.out.println("accepted submissions " + acceptedSubmissionsCount);
@@ -84,10 +85,14 @@ public class ProfileStatsServlet extends HttpServlet {
 
         System.out.println("submissions today " + submissionsToday);
 
-        int userRank = userStats.getUserRank();
+        int userRank = userStatsDAO.getUserRank(user);
         userStats.setUserRank(userRank);
-
         System.out.println("rank " + userRank);
+
+        List<Timestamp> submissionDates = userStatsDAO.getUserActivityByMonth(user);
+        userStats.setSubmissionDates(submissionDates);
+
+        System.out.println(submissionDates.size());
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -128,7 +128,7 @@ public class SQLUserStatsDAO implements UserStatsDAO {
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, user.getId());
-            preparedStatement.setString(2, "'Accepted'");
+            preparedStatement.setString(2, "Accepted");
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Timestamp> activityTimestamps = new ArrayList<>();
             while(resultSet.next()) {
