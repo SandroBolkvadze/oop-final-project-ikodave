@@ -5,10 +5,9 @@ import com.example.registration.model.User;
 import com.example.submissions.DTO.SubmissionVerdict;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.user_profile.utils.ToSQL.*;
 import static com.example.util.DatabaseConstants.ProblemVerdictElements.VERDICT_ACCEPTED;
@@ -118,6 +117,25 @@ public class SQLUserStatsDAO implements UserStatsDAO {
                 return resultSet.getInt(1);
             }
             return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error querying tried problems", e);
+        }
+    }
+
+    @Override
+    public List<Timestamp> getUserActivityByMonth(User user) {
+        String sqlStatement = getUserActivityByMonthSQL();
+        try (Connection connection = basicDataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, user.getUsername());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Timestamp> activityTimestamps = new ArrayList<>();
+            while(resultSet.next()) {
+                Timestamp timestamp = resultSet.getTimestamp(1);
+                activityTimestamps.add(timestamp);
+            }
+            return activityTimestamps;
+
         } catch (SQLException e) {
             throw new RuntimeException("Error querying tried problems", e);
         }

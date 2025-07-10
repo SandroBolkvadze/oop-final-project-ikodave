@@ -132,5 +132,16 @@ public class ToSQL {
                 Problems.COL_DIFFICULTY_ID
         );
     }
+    public static String getUserActivityByMonthSQL(){
+        return format("SELECT %s.%s FROM %s WHERE MONTH(%s.%s) = MONTH(NOW()) AND %s.%s = ?",
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE,
+                Submissions.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE,
+                Submissions.TABLE_NAME,
+                Submissions.COL_USER_ID
+        );
+    }
 
 }
