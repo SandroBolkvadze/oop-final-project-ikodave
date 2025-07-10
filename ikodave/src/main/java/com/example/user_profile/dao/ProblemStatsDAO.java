@@ -8,5 +8,4 @@ public interface ProblemStatsDAO {
 
     int getProblemCountByDifficulty(Difficulty difficulty);
 
-
 }

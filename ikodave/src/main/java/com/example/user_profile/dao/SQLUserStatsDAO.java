@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 import static com.example.user_profile.utils.ToSQL.*;
 import static com.example.util.DatabaseConstants.ProblemVerdictElements.VERDICT_ACCEPTED;
+import static java.lang.String.format;
 
 public class SQLUserStatsDAO implements UserStatsDAO {
 
@@ -23,7 +24,7 @@ public class SQLUserStatsDAO implements UserStatsDAO {
 
     @Override
     public int getSubmittedProblemCountByVerdict(User user, SubmissionVerdict verdict) {
-        String sqlStatement = getSubmittedProblemCountByVerdictSQL();
+        String sqlStatement = getUserSubmittedProblemCountByVerdictSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, verdict.getId());
@@ -41,7 +42,7 @@ public class SQLUserStatsDAO implements UserStatsDAO {
 
 
     public int getSolvedProblemCount(User user) {
-        String sqlStatement = getSolvedProblemCountSQL();
+        String sqlStatement = getUserSolvedProblemCountSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, user.getId());
@@ -58,7 +59,7 @@ public class SQLUserStatsDAO implements UserStatsDAO {
     }
 
     public int getSolvedProblemCountByDifficulty(User user, Difficulty difficulty) {
-        String sqlStatement = getProblemCountByDifficultySQL();
+        String sqlStatement = getUserProblemCountByDifficultySQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, VERDICT_ACCEPTED);
@@ -76,7 +77,7 @@ public class SQLUserStatsDAO implements UserStatsDAO {
     }
 
     public int getSubmissionsCount(User user) {
-        String sqlStatement = getSubmissionsCountSQL();
+        String sqlStatement = getUserSubmissionsCountSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, user.getId());
@@ -91,8 +92,8 @@ public class SQLUserStatsDAO implements UserStatsDAO {
     }
 
     @Override
-    public int getSubmissionsCountByDays(User user, int lastDays) {
-        String sqlStatement = getSubmissionCountByDays();
+    public int getSubmissionsCountByDays(User user) {
+        String sqlStatement = getUserSubmissionCountByDays();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, user.getId());
@@ -108,7 +109,18 @@ public class SQLUserStatsDAO implements UserStatsDAO {
 
     @Override
     public int getUserRank(User user) {
-        return 0;
+        String sqlStatement = getUserRankSQL();
+        try (Connection connection = basicDataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, user.getUsername());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error querying tried problems", e);
+        }
     }
 
 }
