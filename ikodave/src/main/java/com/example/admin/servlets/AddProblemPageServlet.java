@@ -13,8 +13,8 @@ import java.util.Objects;
 import static com.example.util.AttributeConstants.ROLE_DAO_KEY;
 import static com.example.util.SessionConstants.USER_KEY;
 
-@WebServlet(name = "AdminPageServlet", value = "/AdminPage")
-public class AdminPageServlet extends HttpServlet {
+@WebServlet(name = "AddProblemPageServlet", value = "/AddProblemPage")
+public class AddProblemPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!AdminAuthHelper.isAdmin(request, getServletContext())) {
@@ -22,7 +22,7 @@ public class AdminPageServlet extends HttpServlet {
             return;
         }
 
-        request.getRequestDispatcher("/static/admin/admin_page.html")
+        request.getRequestDispatcher("/static/admin/add_problem.html")
                 .forward(request, response);
         // todo
     }

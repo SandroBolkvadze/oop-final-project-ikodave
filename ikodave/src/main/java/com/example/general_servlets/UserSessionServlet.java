@@ -28,11 +28,8 @@ public class UserSessionServlet extends HttpServlet {
         if(user != null){
             map.put("loggedIn", "true");
             map.put("username", user.getUsername());
-
             RoleDAO roleDAO = (RoleDAO) getServletContext().getAttribute(ROLE_DAO_KEY);
-            System.out.println(user.getRoleId());
             Role role = roleDAO.getRoleById(user.getRoleId());
-
             map.put("role", role.getRole());
         }else{
             map.put("loggedIn", "false");
