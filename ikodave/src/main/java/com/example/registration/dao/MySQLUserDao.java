@@ -42,7 +42,8 @@ public class MySQLUserDao implements UserDAO {
     @Override
     public void addUser(User user) {
         try (Connection con = dataSource.getConnection()){
-            String sql = format("INSERT INTO users (%s, %s, %s, %s) VALUES (1, ?, ?, NOW())",
+            //TODO
+            String sql = format("INSERT INTO users (%s, %s, %s, %s) VALUES (2, ?, ?, NOW())",
                     Users.COL_ROLE_ID, Users.COL_USERNAME, Users.COL_PASSWORD, Users.COL_REGISTER_DATE);
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, user.getUsername());
