@@ -1,5 +1,7 @@
 package com.example.user_profile.servlets;
 
+import com.example.leaderboard.dao.LeaderboardDAO;
+import com.example.leaderboard.dto.UserWithScore;
 import com.example.problems.DAO.DifficultyDAO;
 import com.example.problems.DTO.Difficulty;
 import com.example.registration.dao.UserDAO;
@@ -32,6 +34,7 @@ public class ProfileStatsServlet extends HttpServlet {
         ProblemStatsDAO problemStatsDAO = (ProblemStatsDAO) getServletContext().getAttribute(PROBLEM_STATS_DAO);
         DifficultyDAO difficultyDAO = (DifficultyDAO) getServletContext().getAttribute(DIFFICULTY_DAO_KEY);
         VerdictDAO verdictDAO = (VerdictDAO) getServletContext().getAttribute(VERDICT_DAO_KEY);
+        LeaderboardDAO leaderboardDAO = (LeaderboardDAO) getServletContext().getAttribute(LEADERBOARD_DAO_KEY);
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
         UsernameBody usernameBody = gson.fromJson(request.getReader(), UsernameBody.class);
@@ -91,6 +94,9 @@ public class ProfileStatsServlet extends HttpServlet {
 
         List<Timestamp> submissionDates = userStatsDAO.getUserActivityByMonth(user);
         userStats.setSubmissionDates(submissionDates);
+
+        List<UserWithScore> leaderboard = leaderboardDAO.getUsersByScore();
+
 
         System.out.println(submissionDates.size());
 
