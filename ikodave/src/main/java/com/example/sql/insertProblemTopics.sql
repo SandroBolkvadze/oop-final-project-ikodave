@@ -4,7 +4,6 @@ INSERT INTO problem_topic (topic) VALUES ('Array');
 INSERT INTO problem_topic (topic) VALUES ('Hash Table');
 INSERT INTO problem_topic (topic) VALUES ('Graph');
 INSERT INTO problem_topic (topic) VALUES ('Greedy');
-
 INSERT INTO problem_topic (topic) VALUES ('String');
 INSERT INTO problem_topic (topic) VALUES ('Two Pointers');
 INSERT INTO problem_topic (topic) VALUES ('Dynamic Programming');

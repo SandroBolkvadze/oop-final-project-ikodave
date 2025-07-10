@@ -19,6 +19,7 @@ async function loadNavbar() {
             'nav-signin': '/signin',
             'nav-profile': '/profile',
             'nav-problems': '/problems',
+            'nav-submissions' : '/submissions',
             'nav-leaderboard': '/leaderboard'
         });
 
@@ -31,6 +32,7 @@ function toggleNavbarItems(loggedIn) {
     document.getElementById('nav-register')?.style.setProperty('display', loggedIn ? 'none' : 'block');
     document.getElementById('nav-signin')?.style.setProperty('display', loggedIn ? 'none' : 'block');
     document.getElementById('nav-profile')?.style.setProperty('display', loggedIn ? 'block' : 'none');
+    document.getElementById('nav-submissions')?.style.setProperty('display', loggedIn ? 'block' : 'none');
 }
 
 function setupNavLinks(linkMap) {

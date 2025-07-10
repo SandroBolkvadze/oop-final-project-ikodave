@@ -130,4 +130,13 @@ public class ToSQL {
         return format("SELECT * FROM %s;",
                 CodeLanguages.TABLE_NAME);
     }
+
+
+    public static String toAllSubmissionSortedSQL() {
+        return format("SELECT * FROM %s ORDER BY %s.%s DESC",
+                Submissions.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE
+        );
+    }
 }

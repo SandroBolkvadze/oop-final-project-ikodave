@@ -7,6 +7,4 @@ import com.example.util.DatabaseConstants;
 public interface ProblemStatsDAO {
 
     int getProblemCountByDifficulty(Difficulty difficulty);
-
-
 }
