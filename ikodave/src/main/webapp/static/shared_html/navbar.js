@@ -19,7 +19,8 @@ async function loadNavbar() {
             'nav-signin': '/signin',
             'nav-profile': '/profile',
             'nav-problems': '/problems',
-            'nav-leaderboard': '/leaderboard'
+            'nav-leaderboard': '/leaderboard',
+            'nav-admin': '/AdminPage'
         });
 
     } catch (err) {
@@ -28,6 +29,7 @@ async function loadNavbar() {
 }
 
 function toggleNavbarItems(loggedIn) {
+    document.getElementById('nav-admin')?.style.setProperty('display', )
     document.getElementById('nav-register')?.style.setProperty('display', loggedIn ? 'none' : 'block');
     document.getElementById('nav-signin')?.style.setProperty('display', loggedIn ? 'none' : 'block');
     document.getElementById('nav-profile')?.style.setProperty('display', loggedIn ? 'block' : 'none');
