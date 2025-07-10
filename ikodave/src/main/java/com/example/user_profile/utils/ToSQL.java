@@ -84,7 +84,7 @@ public class ToSQL {
         return format("""
                         WITH scores AS (
                              SELECT 
-                             %s.%s AS username, COUNT(DISTINCT %s.%s) as score 
+                             %s.%s AS userId, COUNT(DISTINCT %s.%s) as score 
                              FROM %s 
                              LEFT JOIN %s on %s.%s = %s.%s 
                              LEFT JOIN %s on %s.%s = %s.%s and %s.%s = 'Accepted' 
@@ -96,7 +96,7 @@ public class ToSQL {
                              ROW_NUMBER() OVER (ORDER BY score DESC, username ASC) AS user_rank 
                              FROM scores 
                         )
-                        SELECT user_rank FROM ranks WHERE username = ?; 
+                        SELECT user_rank FROM ranks WHERE userId = ?; 
                 """,
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID,
