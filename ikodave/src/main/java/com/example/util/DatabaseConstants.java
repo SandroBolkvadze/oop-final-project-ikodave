@@ -5,16 +5,16 @@ public class DatabaseConstants {
     public static final class Users {
         public static final String TABLE_NAME        = "users";
         public static final String COL_ID            = "id";
-        public static final String COL_RANK_ID       = "rank_id";
+        public static final String COL_ROLE_ID = "role_id";
         public static final String COL_USERNAME      = "username";
         public static final String COL_PASSWORD      = "password";
         public static final String COL_REGISTER_DATE = "register_date";
     }
 
-    public static final class UserRank {
-        public static final String TABLE_NAME = "user_rank";
+    public static final class UserRole {
+        public static final String TABLE_NAME = "user_role";
         public static final String COL_ID     = "id";
-        public static final String COL_RANK   = "user_rank";
+        public static final String COL_ROLE   = "role";
     }
 
     public static final class ProblemDifficulty {

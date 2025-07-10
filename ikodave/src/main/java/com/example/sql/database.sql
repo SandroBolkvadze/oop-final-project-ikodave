@@ -3,20 +3,20 @@ CREATE SCHEMA IF NOT EXISTS Ikodave;
 USE Ikodave;
 
 
-CREATE TABLE IF NOT EXISTS user_rank
+CREATE TABLE IF NOT EXISTS user_role
 (
     id        INT AUTO_INCREMENT PRIMARY KEY,
-    user_rank VARCHAR(32)
+    role VARCHAR(32)
 );
 
 CREATE TABLE IF NOT EXISTS users
 (
     id            INT AUTO_INCREMENT PRIMARY KEY,
-    rank_id       INT,
+    role_id       INT,
     username      VARCHAR(50)  NOT NULL UNIQUE,
     password      VARCHAR(255) NOT NULL,
     register_date DATE,
-    FOREIGN KEY (rank_id) REFERENCES user_rank (id)
+    FOREIGN KEY (role_id) REFERENCES user_role (id)
 );
 
 
@@ -87,8 +87,8 @@ CREATE TABLE IF NOT EXISTS test_cases
 (
     id             INT AUTO_INCREMENT PRIMARY KEY,
     problem_id     INT,
-    problem_input  TEXT,
-    problem_output TEXT,
+    problem_input  MEDIUMTEXT,
+    problem_output MEDIUMTEXT,
     order_num      INT,
     FOREIGN KEY (problem_id) REFERENCES problems (id)
 );

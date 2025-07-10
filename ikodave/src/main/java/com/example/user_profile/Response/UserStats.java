@@ -15,16 +15,16 @@ public class UserStats {
 
     private int notAcceptedSubmissionsCount;
 
-    private int acceptedProblemsCountCurrentWeek;
+    private int acceptedProblemsCountToday;
 
-    private int userScore;
+    private int userRank;
 
 
     public UserStats() {
 
     }
 
-    public UserStats(int easySolvedProblemsCount, int easyNotSolvedProblemsCount, int mediumSolvedProblemsCount, int mediumNotSolvedProblemsCount, int hardSolvedProblemsCount, int hardNotSolvedProblemsCount, int submissionsTotalCount, int notAcceptedSubmissionsCount, int acceptedProblemsCountCurrentWeek, int userScore) {
+    public UserStats(int easySolvedProblemsCount, int easyNotSolvedProblemsCount, int mediumSolvedProblemsCount, int mediumNotSolvedProblemsCount, int hardSolvedProblemsCount, int hardNotSolvedProblemsCount, int submissionsTotalCount, int notAcceptedSubmissionsCount, int acceptedProblemsCountToday, int userScore) {
         this.easySolvedProblemsCount = easySolvedProblemsCount;
         this.easyNotSolvedProblemsCount = easyNotSolvedProblemsCount;
         this.mediumSolvedProblemsCount = mediumSolvedProblemsCount;
@@ -33,8 +33,8 @@ public class UserStats {
         this.hardNotSolvedProblemsCount = hardNotSolvedProblemsCount;
         this.submissionsTotalCount = submissionsTotalCount;
         this.notAcceptedSubmissionsCount = notAcceptedSubmissionsCount;
-        this.acceptedProblemsCountCurrentWeek = acceptedProblemsCountCurrentWeek;
-        this.userScore = userScore;
+        this.acceptedProblemsCountToday = acceptedProblemsCountToday;
+        this.userRank = userScore;
     }
 
     public int getEasySolvedProblemsCount() {
@@ -101,19 +101,19 @@ public class UserStats {
         this.notAcceptedSubmissionsCount = notAcceptedSubmissionsCount;
     }
 
-    public int getAcceptedProblemsCountCurrentWeek() {
-        return acceptedProblemsCountCurrentWeek;
+    public int getAcceptedProblemsCountToday() {
+        return acceptedProblemsCountToday;
     }
 
-    public void setAcceptedProblemsCountCurrentWeek(int acceptedProblemsCountCurrentWeek) {
-        this.acceptedProblemsCountCurrentWeek = acceptedProblemsCountCurrentWeek;
+    public void setAcceptedProblemsCountToday(int acceptedProblemsCountToday) {
+        this.acceptedProblemsCountToday = acceptedProblemsCountToday;
     }
 
-    public int getUserScore() {
-        return userScore;
+    public int getUserRank() {
+        return userRank;
     }
 
-    public void setUserScore(int userScore) {
-        this.userScore = userScore;
+    public void setUserRank(int userRank) {
+        this.userRank = userRank;
     }
 }

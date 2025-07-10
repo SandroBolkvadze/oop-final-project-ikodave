@@ -88,5 +88,15 @@ public class SQLUserStatsDAO implements UserStatsDAO {
         }
     }
 
+    @Override
+    public int getSubmissionsCountByDays(User user, int lastDays) {
+        return 0;
+    }
+
+    @Override
+    public int getUserRank(User user) {
+        return 0;
+    }
+
 
 }
