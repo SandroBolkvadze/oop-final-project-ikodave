@@ -36,13 +36,8 @@ public class SQLProblemDAO implements ProblemDAO {
             preparedStatement.setLong(4, problem.getTimeLimit());
             preparedStatement.setLong(5, problem.getMemoryLimit());
             preparedStatement.setString(6, problem.getInputSpec());
-            preparedStatement.setString(7, );
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()) {
-                return null;
-            }
-            return toDifficulty(resultSet);
+            preparedStatement.setString(7, problem.getOutputSpec());
+            preparedStatement.executeUpdate(); // Execute the insert statement
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -23,6 +23,10 @@ public class TestCase {
         this.problemInput = problemInput;
     }
 
+    public TestCase() {
+        // Default constructor
+    }
+
     public void setId(int id) {
         this.id = id;
     }

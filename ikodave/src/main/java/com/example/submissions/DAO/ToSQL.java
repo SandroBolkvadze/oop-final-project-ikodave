@@ -6,6 +6,19 @@ import static java.lang.String.format;
 
 public class ToSQL {
 
+    //INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '1 2', '3', 1);
+    public static String toInsertTestCaseSQL() {
+        return format("INSERT INTO %s " +
+                "(%s, %s, %s, %s) " +
+                "VALUES (?, ?, ?, ?);",
+                TestCases.TABLE_NAME,
+                TestCases.COL_PROBLEM_ID,
+                TestCases.COL_INPUT,
+                TestCases.COL_OUTPUT,
+                TestCases.COL_TEST_NUMBER
+        );
+    }
+
     public static String toTestCasesSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 TestCases.TABLE_NAME,

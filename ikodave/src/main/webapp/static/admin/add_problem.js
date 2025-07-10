@@ -53,6 +53,9 @@ function problemSubmitted(event) {
     const outputSpec = document.getElementById('output-spec').value.trim();
     const difficultyInput = document.querySelector('input[name="difficulty"]:checked');
     const difficulty = difficultyInput ? difficultyInput.value : null;
+
+    console.log(difficulty);
+
     const timeLimit = parseInt(document.getElementById('time-limit').value.trim());
 
     // Read test cases
@@ -97,7 +100,8 @@ function problemSubmitted(event) {
 }
 
 
-
-document.addEventListener('DOMContentLoaded', addMoreTests);
-document.addEventListener('DOMContentLoaded', problemSubmitted);
-document.addEventListener('DOMContentLoaded', addDifficulties);
+document.addEventListener('DOMContentLoaded', () => {
+    addMoreTests();
+    addDifficulties();
+    document.getElementById('problem-form').addEventListener('submit', problemSubmitted);
+});
