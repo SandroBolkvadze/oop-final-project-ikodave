@@ -78,7 +78,7 @@ class UserStatsDAOTest {
         user.setId(1);
         SubmissionVerdict verdict = new SubmissionVerdict(2, "ACCEPTED");
 
-        int count = dao.getVerdictProblemsCount(user, verdict);
+        int count = dao.getSubmittedProblemCountByVerdict(user, verdict);
         assertEquals(2, count); // 101 and 102 are unique problems with status 2
     }
 
@@ -88,7 +88,7 @@ class UserStatsDAOTest {
         user.setId(1);
         SubmissionVerdict verdict = new SubmissionVerdict(999, "NON_EXISTENT");
 
-        int count = dao.getVerdictProblemsCount(user, verdict);
+        int count = dao.getSubmittedProblemCountByVerdict(user, verdict);
         assertEquals(0, count);
     }
 }
