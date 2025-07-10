@@ -49,8 +49,21 @@ async function loadStats(username) {
         document.getElementById('hard-ratio').textContent = `${hardSolved} / ${hardTotal}`;
         document.getElementById('bar-hard').style.width = `${hardPercent}%`;
 
+        const accepted = easySolved + mediumSolved + hardSolved;
+        const total = stats.submissionsTotalCount;
+
+        console.log('accepted', accepted);
+        console.log('total', total);
+
+        const accuracyElem = document.getElementById('accuracy');
+        if (total === 0) {
+            accuracyElem.textContent = 'N/A';
+        } else {
+            const accuracy = (accepted / total) * 100;
+            accuracyElem.textContent = accuracy.toFixed(2) + '%';
+        }
+
         document.getElementById('total-submissions').textContent = stats.submissionsTotalCount;
-        document.getElementById('failed-submissions').textContent = stats.notAcceptedSubmissionsCount;
         document.getElementById('accepted-today').textContent = stats.acceptedProblemsCountToday;
         document.getElementById('your-rank').textContent = `#${stats.userRank}`;
 
