@@ -12,7 +12,7 @@ public class AttributeConstants {
     public static final String DIFFICULTY_DAO_KEY = "difficultyDAO";
     public static final String LEADERBOARD_DAO_KEY = "leaderboardDAO";
     public static final String STATUS_DAO_KEY = "statusDAO";
-    public static final String USER_DETAILES_DAO = "userDetailesDao";
+    public static final String USER_STATS_DAO = "userStatsDao";
     public static final String DOCKER_CODE_RUNNER_KEY = "dockerCodeRunner";
     public static final String GSON_KEY = "gson";
 
