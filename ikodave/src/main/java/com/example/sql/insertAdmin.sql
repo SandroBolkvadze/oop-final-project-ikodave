@@ -1,5 +1,5 @@
 USE Ikodave;
-INSERT INTO user (role_id, username, password, register_date) VALUES
+INSERT INTO users (role_id, username, password, register_date) VALUES
 (
     1,
     'admin',

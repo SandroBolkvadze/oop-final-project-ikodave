@@ -56,10 +56,10 @@ public class AddProblemServlet extends HttpServlet {
 
 
 
-        // Convert TestCaseDTO to TestCase entity (for DB)
-        List<TestCase> testCases = problemWithTests.getTestCases().stream()
-                .map(dto -> new TestCase(dto.getInput(), dto.getOutput()))
-                .collect(Collectors.toList());
+//        // Convert TestCaseDTO to TestCase entity (for DB)
+//        List<TestCase> testCases = problemWithTests.getTestCases().stream()
+//                .map(dto -> new TestCase(dto.getInput(), dto.getOutput()))
+//                .collect(Collectors.toList());
 
     }
 }

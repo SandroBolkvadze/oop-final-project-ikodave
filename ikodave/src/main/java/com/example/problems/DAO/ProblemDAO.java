@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface ProblemDAO {
 
+    void insertProblem(Problem problem);
     List<Problem> getProblemsByFilter(Filter filter);
 
     List<ProblemListResponse> getProblemResponsesByFilterLoggedOut(Filter filter);

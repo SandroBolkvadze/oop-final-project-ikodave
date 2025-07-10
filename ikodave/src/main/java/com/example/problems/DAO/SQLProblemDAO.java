@@ -26,6 +26,29 @@ public class SQLProblemDAO implements ProblemDAO {
     }
 
     @Override
+    public void insertProblem(Problem problem) {
+        String sqlStatement = toInsertProblemSQL();
+        try (Connection connection = basicDataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, problem.getTitle());
+            preparedStatement.setString(2, problem.getDescription());
+            preparedStatement.setInt(3, problem.getDifficultyId());
+            preparedStatement.setLong(4, problem.getTimeLimit());
+            preparedStatement.setLong(5, problem.getMemoryLimit());
+            preparedStatement.setString(6, problem.getInputSpec());
+            preparedStatement.setString(7, );
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                return null;
+            }
+            return toDifficulty(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public List<ProblemListResponse> getProblemResponsesByFilterLoggedIn(Filter filter) {
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection);
@@ -46,7 +69,7 @@ public class SQLProblemDAO implements ProblemDAO {
     @Override
     public List<Problem> getProblemsByFilter(Filter filter) {
         try (Connection connection = basicDataSource.getConnection();
-            PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
+             PreparedStatement preparedStatement = filter.toSQLPreparedStatement(connection)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             List<Problem> problems = new ArrayList<>();
@@ -169,7 +192,7 @@ public class SQLProblemDAO implements ProblemDAO {
     @Override
     public int getProblemId(String problemTitle) {
         String sqlStatement = toProblemIdSQL();
-        try (Connection connection = basicDataSource.getConnection()){
+        try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, problemTitle);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -184,7 +207,7 @@ public class SQLProblemDAO implements ProblemDAO {
     @Override
     public int getDifficultyId(String difficulty) {
         String sqlStatement = toProblemDifficultySQL();
-        try (Connection connection = basicDataSource.getConnection()){
+        try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, difficulty);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -198,7 +221,7 @@ public class SQLProblemDAO implements ProblemDAO {
     @Override
     public int getStatusId(String status) {
         String sqlStatement = toProblemStatusCountsSQL();
-        try (Connection connection = basicDataSource.getConnection()){
+        try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, status);
             ResultSet resultSet = preparedStatement.executeQuery();
