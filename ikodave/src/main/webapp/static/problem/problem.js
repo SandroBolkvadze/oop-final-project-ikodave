@@ -1,101 +1,89 @@
-document.addEventListener('DOMContentLoaded', (e) => {
-    addListeners(e);
-
-    loadProblem(e)
-        .catch(error => console.log(error));
+document.addEventListener('DOMContentLoaded', () => {
+    addListeners();
+    loadProblem().catch(console.error);
 });
 
-function addListeners(e) {
+function addListeners() {
     document.getElementById('submissionsButton').onclick = mySubmissionsProblem;
     document.getElementById('submitSolutionButton').onclick = submitSolutionButton;
 }
 
 function mySubmissionsProblem() {
-    const parts = window.location.pathname.split('/').filter(Boolean);
-    const title = parts[parts.length - 1];
+    const title = getProblemTitleFromPath();
     window.location.href = `/problems/submissions/${encodeURIComponent(title)}`;
 }
 
 function submitSolutionButton() {
-    const parts = window.location.pathname.split('/').filter(Boolean);
-    const title = parts[parts.length - 1];
+    const title = getProblemTitleFromPath();
     window.location.href = `/problems/submit/${encodeURIComponent(title)}`;
 }
 
-async function loadProblem(e){
-    const parts = window.location.pathname.split('/');
-    const problemTitle = parts[parts.length - 1];
-
-    const sendData = {
-        problemTitle : problemTitle
-    }
-
-    await fetch(`/api/problems/problem`, {
+async function loadProblem() {
+    const title = getProblemTitleFromPath();
+    const data = await fetch(`/api/problems/problem`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(sendData)
-    })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('problemTitle').textContent = problemTitle;
+        body: JSON.stringify({ problemTitle: title })
+    }).then(r => r.json());
 
-            document.title = `Problem ${problemTitle} | Ikodave`;
+    // Title
+    document.getElementById('problemTitle').textContent = title;
 
-            const problemDescription = data.problemDescription;
-            document.getElementById('descriptionText').textContent = problemDescription;
+    // Description
+    document.getElementById('descriptionText').textContent = data.problemDescription;
 
-            const problemStatus = data.problemStatus;
-            document.getElementById('statusText').textContent = problemStatus;
+    // Status badge
+    const statusTextElem = document.getElementById('statusText');
+    const statusValue = data.problemStatus.toLowerCase();
+    statusTextElem.textContent = data.problemStatus;
+    const statusClass = ['attempted', 'accepted', 'todo', 'solved'].includes(statusValue)
+        ? statusValue
+        : 'todo';
+    statusTextElem.className = 'status ' + statusClass;
 
-            const problemDifficulty = data.problemDifficulty;
-            document.getElementById('difficultyText').textContent = problemDifficulty;
+    // Difficulty badge
+    const diffTextElem = document.getElementById('difficultyText');
+    const diffValue = data.problemDifficulty.toLowerCase();
+    diffTextElem.textContent = data.problemDifficulty;
+    const diffClass = ['easy', 'medium', 'hard'].includes(diffValue)
+        ? diffValue
+        : 'easy';
+    diffTextElem.className = 'difficulty ' + diffClass;
 
+    // Input/Output
+    document.getElementById('inputText').textContent  = data.problemInputSpec;
+    document.getElementById('outputText').textContent = data.problemOutputSpec;
 
-            const problemInputSpec = data.problemInputSpec;
-            document.getElementById('inputText').textContent = problemInputSpec;
+    // Limits (remove memory limit)
+    document.getElementById('problemLimits').innerHTML =
+        `Time limit per test: <strong>${data.problemTime} ms</strong>.`;
 
-            const problemOutputSpec = data.problemOutputSpec;
-            document.getElementById('outputText').textContent = problemOutputSpec;
+    // Test cases
+    const testCasesContainer = document.getElementById('testCases');
+    testCasesContainer.innerHTML = '';
+    (data.problemTestCases || []).forEach(tc => {
+        const ex = document.createElement('div');
+        ex.className = 'example';
+        ex.innerHTML = `
+            <div><strong>Input:</strong></div>
+            <pre>${tc.problemInput}</pre>
+            <div><strong>Output:</strong></div>
+            <pre>${tc.problemOutput}</pre>
+        `;
+        testCasesContainer.appendChild(ex);
+    });
 
+    // Topics
+    const topicsContainer = document.getElementById('problemTopics');
+    topicsContainer.innerHTML = '';
+    (data.problemTopics || []).forEach(topic => {
+        const tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.textContent = topic;
+        topicsContainer.appendChild(tag);
+    });
+}
 
-            const timeLimit = data.problemTime;
-            const memoryLimit = data.problemMemory;
-            document.getElementById('problemLimits').innerHTML =
-                `Time limit per test: <strong>${timeLimit} ms</strong>;<br>
-                 Memory limit per test: <strong>${memoryLimit} mb</strong>.`;
-
-
-            const problemTestCases = data.problemTestCases;
-            const testCasesContainer = document.getElementById('testCases');
-            if (problemTestCases && problemTestCases.length > 0) {
-                problemTestCases.forEach((testCase, index) => {
-                    const exampleDiv = document.createElement('div');
-                    exampleDiv.className = 'example';
-                    exampleDiv.innerHTML = `
-                        <div><strong>Input:</strong></div>
-                        <pre>${testCase.problemInput}</pre>
-                        <div><strong>Output:</strong></div>
-                        <pre>${testCase.problemOutput}</pre>
-                    `;
-                    testCasesContainer.appendChild(exampleDiv);
-                });
-            }
-
-            const problemTopics = data.problemTopics;
-            const topicsContainer = document.getElementById('problemTopics');
-            if (problemTopics && problemTopics.length > 0) {
-                problemTopics.forEach(topic => {
-                    const tagSpan = document.createElement('span');
-                    tagSpan.className = 'tag';
-                    tagSpan.textContent = topic;
-                    topicsContainer.appendChild(tagSpan);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error loading problem:', error);
-
-            document.getElementById('problemTitle').textContent = 'Error loading problem';
-            document.getElementById('descriptionText').textContent = 'Failed to load problem data. Please try again.';
-        });
+function getProblemTitleFromPath() {
+    return window.location.pathname.split('/').filter(Boolean).pop();
 }
