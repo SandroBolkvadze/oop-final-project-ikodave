@@ -108,8 +108,6 @@ function problemSubmitted(event) {
         topics: selectedTopics
     };
 
-    console.log('Submitting problem:', problemData);
-
     fetch('/api/AddProblemServlet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
