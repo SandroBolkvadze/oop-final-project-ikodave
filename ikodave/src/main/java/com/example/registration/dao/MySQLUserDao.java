@@ -1,6 +1,7 @@
 package com.example.registration.dao;
 
 import com.example.registration.model.User;
+import com.example.user_profile.dao.UserStatsDAO;
 import com.example.util.DatabaseConstants.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -41,7 +42,9 @@ public class MySQLUserDao implements UserDAO {
     @Override
     public void addUser(User user) {
         try (Connection con = dataSource.getConnection()){
-            String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+            //TODO
+            String sql = format("INSERT INTO users (%s, %s, %s, %s) VALUES (1, ?, ?, NOW())",
+                    Users.COL_ROLE_ID, Users.COL_USERNAME, Users.COL_PASSWORD, Users.COL_REGISTER_DATE);
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getPassword());

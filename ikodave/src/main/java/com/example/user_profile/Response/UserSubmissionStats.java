@@ -1,9 +1,6 @@
 package com.example.user_profile.Response;
 
-import java.sql.Timestamp;
-import java.util.List;
-
-public class UserStats {
+public class UserSubmissionStats {
 
     private int easySolvedProblemsCount;
     private int easyNotSolvedProblemsCount;
@@ -22,13 +19,13 @@ public class UserStats {
 
     private int userRank;
 
-    private List<Timestamp> submissionDates;
 
-    public UserStats() {
+    public UserSubmissionStats() {
 
     }
 
-    public UserStats(int easySolvedProblemsCount, int easyNotSolvedProblemsCount, int mediumSolvedProblemsCount, int mediumNotSolvedProblemsCount, int hardSolvedProblemsCount, int hardNotSolvedProblemsCount, int submissionsTotalCount, int notAcceptedSubmissionsCount, int acceptedProblemsCountToday, int userRank, List<Timestamp> submissionDates) {
+
+    public UserSubmissionStats(int easySolvedProblemsCount, int easyNotSolvedProblemsCount, int mediumSolvedProblemsCount, int mediumNotSolvedProblemsCount, int hardSolvedProblemsCount, int hardNotSolvedProblemsCount, int submissionsTotalCount, int notAcceptedSubmissionsCount, int acceptedProblemsCountToday, int userRank) {
         this.easySolvedProblemsCount = easySolvedProblemsCount;
         this.easyNotSolvedProblemsCount = easyNotSolvedProblemsCount;
         this.mediumSolvedProblemsCount = mediumSolvedProblemsCount;
@@ -39,15 +36,6 @@ public class UserStats {
         this.notAcceptedSubmissionsCount = notAcceptedSubmissionsCount;
         this.acceptedProblemsCountToday = acceptedProblemsCountToday;
         this.userRank = userRank;
-        this.submissionDates = submissionDates;
-    }
-
-    public List<Timestamp> getSubmissionDates() {
-        return submissionDates;
-    }
-
-    public void setSubmissionDates(List<Timestamp> submissionDates) {
-        this.submissionDates = submissionDates;
     }
 
     public int getEasySolvedProblemsCount() {

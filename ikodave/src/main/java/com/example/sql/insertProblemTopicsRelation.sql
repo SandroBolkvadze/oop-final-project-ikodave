@@ -1,4 +1,4 @@
-USE ikodave
+USE Ikodave;
 
 -- Problem 1: sum-of-two-numbers
 INSERT INTO problem_many_to_many_topic (problem_id, topic_id) VALUES (1, 1);  -- Implementation

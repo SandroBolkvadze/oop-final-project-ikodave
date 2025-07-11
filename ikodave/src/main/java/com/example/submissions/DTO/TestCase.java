@@ -16,6 +16,17 @@ public class TestCase {
         this.problemInput = problemInput;
     }
 
+    public TestCase(int problemId, int testNumber, String problemOutput, String problemInput) {
+        this.problemId = problemId;
+        this.testNumber = testNumber;
+        this.problemOutput = problemOutput;
+        this.problemInput = problemInput;
+    }
+
+    public TestCase() {
+        // Default constructor
+    }
+
     public void setId(int id) {
         this.id = id;
     }

@@ -1,26 +1,31 @@
 async function loadNavbar() {
     try {
-        // Load and inject the navbar HTML
-        const navbarRes = await fetch('/static/shared_html/navbar.html');
-        const html = await navbarRes.text();
-        document.getElementById('navbar-container').innerHTML = html;
+        // Inject navbar HTML
+        const navbarHTML = await fetch('/static/shared_html/navbar.html').then(res => res.text());
+        document.getElementById('navbar-container').innerHTML = navbarHTML;
 
-        // Get user session
-        const sessionRes = await fetch('/api/user/session');
-        const { loggedIn } = await sessionRes.json();
+        // Get session info
+        const session = await fetch('/api/user/session').then(res => res.json());
+        const loggedIn = session.loggedIn === "true"; // or === true if you fix servlet
+        const role = session.role || null;
 
-        // Show/hide navbar items based on login status
-        toggleNavbarItems(loggedIn);
+        // Apply navbar visibility logic
+        toggleElement('nav-register', !loggedIn);
+        toggleElement('nav-signin', !loggedIn);
+        toggleElement('nav-profile', loggedIn);
+        toggleElement('nav-admin', role === "Admin");
+        toggleElement('nav-submissions', loggedIn);
 
-        // Set up navbar navigation links
-        setupNavLinks({
+        // Attach page navigation
+        attachNavbarLinks({
             'nav-home': '/home',
             'nav-register': '/registration',
             'nav-signin': '/signin',
             'nav-profile': '/profile',
             'nav-problems': '/problems',
             'nav-submissions' : '/submissions',
-            'nav-leaderboard': '/leaderboard'
+            'nav-leaderboard': '/leaderboard',
+            'nav-admin': '/AdminPage'
         });
 
     } catch (err) {
@@ -28,18 +33,17 @@ async function loadNavbar() {
     }
 }
 
-function toggleNavbarItems(loggedIn) {
-    document.getElementById('nav-register')?.style.setProperty('display', loggedIn ? 'none' : 'block');
-    document.getElementById('nav-signin')?.style.setProperty('display', loggedIn ? 'none' : 'block');
-    document.getElementById('nav-profile')?.style.setProperty('display', loggedIn ? 'block' : 'none');
-    document.getElementById('nav-submissions')?.style.setProperty('display', loggedIn ? 'block' : 'none');
+function toggleElement(id, show) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = show ? 'block' : 'none';
 }
 
-function setupNavLinks(linkMap) {
+function attachNavbarLinks(linkMap) {
     for (const [id, href] of Object.entries(linkMap)) {
-        const link = document.querySelector(`#${id} a`);
-        if (link) {
-            link.addEventListener('click', function (e) {
+        const wrapper = document.getElementById(id);
+        const anchor = wrapper?.querySelector('a');
+        if (anchor) {
+            anchor.addEventListener('click', e => {
                 e.preventDefault();
                 window.location.href = href;
             });

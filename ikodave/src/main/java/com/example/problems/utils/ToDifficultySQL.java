@@ -18,8 +18,7 @@ public class ToDifficultySQL {
     }
 
     public static String toProblemDifficultiesByDifficultyNameSQL() {
-        return format("SELECT * FROM %s WHERE %s.%s = ?;",
-                ProblemDifficulty.TABLE_NAME,
+        return format("SELECT * FROM %s WHERE LOWER(%s) = LOWER(?);",
                 ProblemDifficulty.TABLE_NAME,
                 ProblemDifficulty.COL_DIFFICULTY);
     }

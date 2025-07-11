@@ -1,3 +1,3 @@
 USE Ikodave;
-INSERT INTO user_role (status) VALUES ('Admin');
-INSERT INTO user_role (status) VALUES ('User');
+INSERT INTO user_role (role) VALUES ('Admin');
+INSERT INTO user_role (role) VALUES ('User');

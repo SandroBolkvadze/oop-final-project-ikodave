@@ -6,6 +6,19 @@ import static java.lang.String.format;
 
 public class ToSQL {
 
+    //INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '1 2', '3', 1);
+    public static String toInsertTestCaseSQL() {
+        return format("INSERT INTO %s " +
+                "(%s, %s, %s, %s) " +
+                "VALUES (?, ?, ?, ?);",
+                TestCases.TABLE_NAME,
+                TestCases.COL_PROBLEM_ID,
+                TestCases.COL_INPUT,
+                TestCases.COL_OUTPUT,
+                TestCases.COL_TEST_NUMBER
+        );
+    }
+
     public static String toTestCasesSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 TestCases.TABLE_NAME,
@@ -131,6 +144,21 @@ public class ToSQL {
                 CodeLanguages.TABLE_NAME);
     }
 
+    public static String toSubmissionByDateSortedSQL() {
+        return format("SELECT * FROM %s WHERE %s.%s = ? AND DAY(%s.%s) = ? AND MONTH(%s.%s) = ? AND YEAR(%s.%s) = ? ORDER BY %s.%s DESC;",
+                Submissions.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Submissions.COL_USER_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE
+        );
+    }
 
     public static String toAllSubmissionSortedSQL() {
         return format("SELECT * FROM %s ORDER BY %s.%s DESC",

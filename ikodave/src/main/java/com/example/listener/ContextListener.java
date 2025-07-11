@@ -1,5 +1,7 @@
 package com.example.listener;
 
+import com.example.admin.dao.RoleDAO;
+import com.example.admin.dao.SQLRoleDAO;
 import com.example.leaderboard.dao.LeaderboardDAO;
 import com.example.leaderboard.dao.SQLLeaderboardDAO;
 import com.example.problems.DAO.*;
@@ -70,6 +72,9 @@ public class ContextListener implements ServletContextListener {
 
         StatusDAO statusDAO = new SQLStatusDAO(dataSource);
         sce.getServletContext().setAttribute(STATUS_DAO_KEY, statusDAO);
+
+        RoleDAO roleDAO = new SQLRoleDAO(dataSource);
+        sce.getServletContext().setAttribute(ROLE_DAO_KEY, roleDAO);
 
         DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
         dockerCodeRunner.startContainers();

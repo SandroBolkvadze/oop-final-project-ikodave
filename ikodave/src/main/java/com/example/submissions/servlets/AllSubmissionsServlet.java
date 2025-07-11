@@ -7,7 +7,7 @@ import com.example.submissions.DAO.CodeLanguageDAO;
 import com.example.submissions.DAO.SubmissionDAO;
 import com.example.submissions.DAO.VerdictDAO;
 import com.example.submissions.DTO.Submission;
-import com.example.submissions.FrontResponse.SubmissionResponse;
+import com.example.submissions.Response.SubmissionResponse;
 import com.google.gson.Gson;
 
 import javax.servlet.GenericServlet;
