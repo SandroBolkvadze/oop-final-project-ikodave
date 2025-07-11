@@ -121,6 +121,7 @@ public class SQLSubmissionDAO implements SubmissionDAO {
 
     @Override
     public List<Submission> getSubmissionsByDateByOrder(int userId, int day, int month, int year) {
+
         try (Connection connection = basicDataSource.getConnection()){
             String sqlStatement = toSubmissionByDateSortedSQL();
             PreparedStatement preparedStatement= connection.prepareStatement(sqlStatement);
