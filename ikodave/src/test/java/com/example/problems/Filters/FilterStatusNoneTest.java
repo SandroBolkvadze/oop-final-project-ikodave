@@ -1,4 +1,4 @@
-package com.example.submissions.Filters;
+package com.example.problems.Filters;
 
 import com.example.problems.Filters.Filter;
 import com.example.problems.Filters.FilterStatusNone;

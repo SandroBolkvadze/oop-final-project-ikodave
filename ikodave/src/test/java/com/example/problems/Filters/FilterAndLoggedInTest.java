@@ -1,7 +1,6 @@
-package com.example.submissions.dao;
+package com.example.problems.Filters;
 
 import com.example.problems.Filters.Filter;
-import com.example.problems.Filters.FilterAndLoggedIn;
 import com.example.problems.Filters.Parameters.Parameter;
 import com.example.util.DatabaseConstants.Problems;
 import org.junit.jupiter.api.Test;
