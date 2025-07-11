@@ -1,4 +1,4 @@
-package com.example.problems.FrontResponse;
+package com.example.problems.Response;
 
 import com.example.submissions.DTO.TestCase;
 import java.util.List;

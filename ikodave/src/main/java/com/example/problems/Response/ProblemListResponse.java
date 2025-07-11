@@ -1,4 +1,4 @@
-package com.example.problems.FrontResponse;
+package com.example.problems.Response;
 
 public class ProblemListResponse {
 

@@ -78,7 +78,7 @@ public class ProfileSubmissionStatsServlet extends HttpServlet {
         System.out.println("total submissions " + submissionsTotalCount);
         System.out.println("accepted submissions " + acceptedSubmissionsCount);
 
-        int submissionsToday = userStatsDAO.getSubmissionsCountByDays(user);
+        int submissionsToday = userStatsDAO.getALlSubmissionsCountByDays(user);
         userSubmissionStats.setAcceptedProblemsCountToday(submissionsToday);
 
         System.out.println("submissions today " + submissionsToday);

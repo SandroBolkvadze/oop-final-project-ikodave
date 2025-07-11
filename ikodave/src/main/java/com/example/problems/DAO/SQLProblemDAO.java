@@ -4,7 +4,7 @@ import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.Filter;
-import com.example.problems.FrontResponse.ProblemListResponse;
+import com.example.problems.Response.ProblemListResponse;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;

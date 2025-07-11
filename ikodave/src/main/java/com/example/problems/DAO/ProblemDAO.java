@@ -2,10 +2,9 @@ package com.example.problems.DAO;
 
 import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Problem;
-import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.Filter;
-import com.example.problems.FrontResponse.ProblemListResponse;
+import com.example.problems.Response.ProblemListResponse;
 
 import java.util.List;
 

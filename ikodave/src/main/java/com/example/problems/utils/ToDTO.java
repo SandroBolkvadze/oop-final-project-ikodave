@@ -1,7 +1,7 @@
 package com.example.problems.utils;
 
 import com.example.problems.DTO.*;
-import com.example.problems.FrontResponse.ProblemListResponse;
+import com.example.problems.Response.ProblemListResponse;
 import com.example.registration.model.User;
 
 import java.sql.ResultSet;

@@ -2,7 +2,7 @@ package com.example.problems.servlets;
 
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DTO.*;
-import com.example.problems.FrontResponse.ProblemSpecificResponse;
+import com.example.problems.Response.ProblemSpecificResponse;
 import com.example.problems.utils.ProblemTitle;
 import com.example.registration.model.User;
 import com.example.submissions.DAO.TestDAO;

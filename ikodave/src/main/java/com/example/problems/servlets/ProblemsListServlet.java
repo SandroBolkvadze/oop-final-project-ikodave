@@ -6,7 +6,7 @@ import com.example.problems.DAO.TopicDAO;
 import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Topic;
 import com.example.problems.Filters.*;
-import com.example.problems.FrontResponse.ProblemListResponse;
+import com.example.problems.Response.ProblemListResponse;
 import com.example.problems.utils.FilterCriteria;
 import com.example.registration.model.User;
 import com.google.gson.Gson;

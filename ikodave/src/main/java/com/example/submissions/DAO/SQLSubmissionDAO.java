@@ -120,22 +120,6 @@ public class SQLSubmissionDAO implements SubmissionDAO {
         }
     }
 
-    public List<Submission> getAllSubmissionsByOrder() {
-        try (Connection connection = basicDataSource.getConnection()){
-            String sqlStatement = toAllSubmissionSortedSQL();
-            PreparedStatement preparedStatement= connection.prepareStatement(sqlStatement);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            List<Submission> submissions = new ArrayList<>();
-            while (resultSet.next()) {
-                submissions.add(toSubmission(resultSet));
-            }
-            return submissions;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public List<Submission> getSubmissionsByDateByOrder(int userId, int day, int month, int year) {
         try (Connection connection = basicDataSource.getConnection()){
