@@ -214,3 +214,89 @@ body {
 body {
     padding-top: 56px; /* match your navbar height */
 }
+
+/* —— sliding & rotating squares —— */
+.animation-area .squares {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.squares li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 30px; height: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    animation: slideRotate 15s linear infinite;
+    bottom: -60px;
+}
+
+/* distribute squares at different offsets */
+.squares li:nth-child(1) { left: 10%; animation-duration: 18s; animation-delay:  1s; }
+.squares li:nth-child(2) { left: 30%; animation-duration: 22s; animation-delay:  3s; }
+.squares li:nth-child(3) { left: 50%; animation-duration: 20s; animation-delay:  5s; }
+.squares li:nth-child(4) { left: 70%; animation-duration: 24s; animation-delay:  2s; }
+.squares li:nth-child(5) { left: 90%; animation-duration: 16s; animation-delay:  4s; }
+
+@keyframes slideRotate {
+    0%   { transform: translateY(0)       rotate(0deg);   opacity: 0; }
+    10%  { opacity: 0.4; }
+    50%  { opacity: 0.7; }
+    100% { transform: translateY(-1200px) rotate(720deg); opacity: 0; }
+}
+
+/* —— floating & scaling triangles —— */
+.animation-area .triangles {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.triangles li {
+    position: absolute;
+    width: 0; height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 30px solid rgba(255,255,255,0.15);
+    animation: riseScale 12s ease-in-out infinite;
+    bottom: -40px;
+}
+
+/* random horizontal positions & delays */
+.triangles li:nth-child(1) { left: 15%; animation-delay:  0s; }
+.triangles li:nth-child(2) { left: 35%; animation-delay:  2s; }
+.triangles li:nth-child(3) { left: 55%; animation-delay:  4s; }
+.triangles li:nth-child(4) { left: 75%; animation-delay:  1s; }
+.triangles li:nth-child(5) { left: 85%; animation-delay:  3s; }
+
+@keyframes riseScale {
+    0%   { transform: translateY(0) scale(0.5); opacity: 0; }
+    20%  { opacity: 0.3; }
+    60%  { opacity: 0.6; }
+    100% { transform: translateY(-1000px) scale(1.5); opacity: 0; }
+}
+
+/* ensure form & cards are always on top */
+.auth-container,
+.d-flex.justify-content-center {
+    position: relative;
+    z-index: 5;
+}
+
+.card {
+    position: relative;
+    z-index: 10;
+}
+
+/* allow clicks through all decorative layers */
+.animation-area,
+.animation-area ul,
+.animation-area li {
+    pointer-events: none;
+}
+
