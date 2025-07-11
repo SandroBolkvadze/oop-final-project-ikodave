@@ -26,9 +26,4 @@ public class AdminPageServlet extends HttpServlet {
                 .forward(request, response);
         // todo
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
 }
