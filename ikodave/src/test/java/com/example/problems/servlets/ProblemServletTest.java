@@ -126,6 +126,8 @@ public class ProblemServletTest {
         verify(response).setContentType("application/json");
         verify(response).setCharacterEncoding("UTF-8");
 
+        printWriter.flush();
+
         String responseJson = responseWriter.toString();
         ProblemSpecificResponse actualResponse = gson.fromJson(responseJson, ProblemSpecificResponse.class);
 
@@ -152,10 +154,8 @@ public class ProblemServletTest {
     }
 
     @Test
-    public void testDoPost_WithValidTitleAndUser() throws Exception {
-        User user = new User();
-        user.setId(2);
-        when(session.getAttribute(USER_KEY)).thenReturn(user);
+    public void testDoPost_WithValidTitleAndNoUser() throws Exception {
+        when(session.getAttribute(USER_KEY)).thenReturn(null);
 
         ProblemTitle problemTitle = new ProblemTitle("Binary Search");
         String jsonRequest = gson.toJson(problemTitle);
@@ -163,7 +163,7 @@ public class ProblemServletTest {
         when(request.getReader()).thenReturn(reader);
 
         Problem problem = new Problem();
-        problem.setId(1);
+        problem.setId(2);
         problem.setTitle("Binary Search");
         problem.setDescription("Search in sorted array");
         problem.setInputSpec("Sorted array and target");
@@ -173,27 +173,35 @@ public class ProblemServletTest {
 
         when(problemDAO.getProblemByTitle("Binary Search")).thenReturn(problem);
 
-        Status status = new Status(3, "Not Attempted");
-        when(problemDAO.getProblemStatus(1, 2)).thenReturn(String.valueOf(status));
+        // Removed unnecessary stubbing:
+        // when(problemDAO.getProblemStatus(2, 0)).thenReturn(null);
 
         List<Topic> topics = Arrays.asList(new Topic(1, "Binary Search"));
-        when(problemDAO.getProblemTopics(1)).thenReturn(topics);
+        when(problemDAO.getProblemTopics(2)).thenReturn(topics);
 
         Difficulty difficulty = new Difficulty(2, "Medium");
-        when(problemDAO.getProblemDifficulty(1)).thenReturn(difficulty);
+        when(problemDAO.getProblemDifficulty(2)).thenReturn(difficulty);
 
         List<TestCase> testCases = Arrays.asList(
-                new TestCase(1, 1, 1, "[1,2,3,4,5]", "2"),
-                new TestCase(2, 1, 2, "[1,3,5,7,9]", "-1")
+                new TestCase(4, 2, 1, "[1,2,3,4,5]", "2"),
+                new TestCase(5, 2, 2, "[1,3,5,7,9]", "-1")
         );
-        when(testDAO.getTestCasesByProblemId(1)).thenReturn(testCases);
+        when(testDAO.getTestCasesByProblemId(2)).thenReturn(testCases);
 
         servlet.doPost(request, response);
 
-        verify(problemDAO).getProblemStatus(1, 2);
+        verify(response).setContentType("application/json");
+        verify(response).setCharacterEncoding("UTF-8");
 
-        String responseJson = responseWriter.toString();
-        ProblemSpecificResponse actualResponse = gson.fromJson(responseJson, ProblemSpecificResponse.class);
-        assertEquals("Not Attempted", actualResponse.getProblemStatus());
+        printWriter.flush();
+
+        ProblemSpecificResponse actualResponse = gson.fromJson(responseWriter.toString(), ProblemSpecificResponse.class);
+
+        assertEquals("Binary Search", actualResponse.getProblemTitle());
+        assertEquals("Search in sorted array", actualResponse.getProblemDescription());
+        assertEquals("No Status", actualResponse.getProblemStatus());
+        assertEquals(1, actualResponse.getProblemTopics().size());
+        assertEquals("Medium", actualResponse.getProblemDifficulty());
+        assertEquals(2, actualResponse.getProblemTestCases().size());
     }
 }

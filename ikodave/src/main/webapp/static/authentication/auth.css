@@ -1,0 +1,302 @@
+/* auth.css */
+
+/* Theme colors */
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --card-bg: rgba(255, 255, 255, 0.15);
+    --card-border: rgba(255, 255, 255, 0.25);
+    --text-color: #ffffff;
+    --input-bg: rgba(255, 255, 255, 0.3);
+    --input-focus: rgba(255, 255, 255, 0.5);
+}
+
+/* Full-page gradient and flex-center */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    font-family: "Segoe UI", Roboto, sans-serif;
+    color: var(--text-color);
+}
+
+#navbar-container {
+    height: 56px; /* reserve space if your navbar is 56px tall */
+}
+
+/* Centering container */
+.auth-container,
+.d-flex.justify-content-center {
+    flex: 1;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+/* Glass card */
+.card.auth-card,
+.card.shadow {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Hover effect */
+.card.auth-card:hover,
+.card.shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* Headings */
+.card h2 {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* Form labels */
+.form-label {
+    color: var(--text-color) !important;
+    font-weight: 500;
+}
+
+/* Inputs */
+.form-control {
+    background: var(--input-bg);
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--text-color);
+    padding: 0.75rem 1rem;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.form-control:focus {
+    background: var(--input-focus);
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.4);
+    color: #000;
+}
+
+/* Primary button */
+.btn-primary {
+    background: var(--secondary-color);
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    padding: 0.75rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* Links */
+a {
+    color: #fff;
+    text-decoration: underline;
+}
+a:hover {
+    color: #eee;
+    text-decoration: none;
+}
+
+/* Error alerts */
+#error-msg .alert {
+    background: rgba(255, 0, 0, 0.2);
+    color: #fff;
+    border: 1px solid rgba(255, 0, 0, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .card {
+        width: 100% !important;
+        margin: 0 1rem;
+    }
+}
+
+/* —— animated gradient —— */
+
+body {
+    /* keep your existing bg */
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), #8e44ad, #3498db);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+}
+
+@keyframes gradientShift {
+    0%   { background-position:   0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position:   0% 50%; }
+}
+
+/* —— floating bubbles —— */
+
+.animation-area {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;           /* behind everything */
+    overflow: hidden;
+}
+
+.circles li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px; height: 20px;
+    background: rgba(255,255,255,0.15);
+    animation: floatBubble 25s linear infinite;
+    bottom: -150px;
+    border-radius: 50%;
+}
+
+/* vary sizes, positions, delays */
+.circles li:nth-child(1)  { left: 25%;  width: 80px; height: 80px; animation-duration: 20s; animation-delay: 0s; }
+.circles li:nth-child(2)  { left: 10%;  width: 20px; height: 20px; animation-duration: 18s; animation-delay: 2s; }
+.circles li:nth-child(3)  { left: 70%;  width: 20px; height: 20px; animation-duration: 22s; animation-delay: 4s; }
+.circles li:nth-child(4)  { left: 40%;  width: 60px; height: 60px; animation-duration: 17s; animation-delay: 0s; }
+.circles li:nth-child(5)  { left: 65%;  width: 20px; height: 20px; animation-duration: 16s; animation-delay: 3s; }
+.circles li:nth-child(6)  { left: 75%;  width: 110px; height: 110px; animation-duration: 25s; animation-delay: 5s; }
+.circles li:nth-child(7)  { left: 35%;  width: 150px; height: 150px; animation-duration: 19s; animation-delay: 2s; }
+.circles li:nth-child(8)  { left: 50%;  width: 25px; height: 25px; animation-duration: 20s; animation-delay: 7s; }
+.circles li:nth-child(9)  { left: 20%;  width: 15px; height: 15px; animation-duration: 18s; animation-delay: 5s; }
+.circles li:nth-child(10) { left: 85%;  width: 150px; height: 150px; animation-duration: 24s; animation-delay: 0s; }
+
+@keyframes floatBubble {
+    0%   { transform: translateY(0)       translateX(0)      rotate(0deg);   opacity: 0; }
+    10%  { opacity: 0.4; }
+    50%  { opacity: 0.6; }
+    100% { transform: translateY(-1200px) translateX(100px)  rotate(720deg); opacity: 0; }
+}
+
+/* ensure your card and form sit above the bubbles */
+.auth-container,
+.d-flex.justify-content-center {
+    position: relative;
+    z-index: 1;
+}
+.card {
+    position: relative;
+    z-index: 2;
+}
+
+/* —— navbar on top —— */
+#navbar-container {
+    position: fixed;   /* pin it to the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;      /* higher than bubbles (0) and cards (2) */
+}
+
+/* if your actual <nav> inside #navbar-container needs styling, e.g.: */
+#navbar-container .navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+}
+
+/* avoid content hiding under fixed navbar */
+body {
+    padding-top: 56px; /* match your navbar height */
+}
+
+/* —— sliding & rotating squares —— */
+.animation-area .squares {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.squares li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 30px; height: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    animation: slideRotate 15s linear infinite;
+    bottom: -60px;
+}
+
+/* distribute squares at different offsets */
+.squares li:nth-child(1) { left: 10%; animation-duration: 18s; animation-delay:  1s; }
+.squares li:nth-child(2) { left: 30%; animation-duration: 22s; animation-delay:  3s; }
+.squares li:nth-child(3) { left: 50%; animation-duration: 20s; animation-delay:  5s; }
+.squares li:nth-child(4) { left: 70%; animation-duration: 24s; animation-delay:  2s; }
+.squares li:nth-child(5) { left: 90%; animation-duration: 16s; animation-delay:  4s; }
+
+@keyframes slideRotate {
+    0%   { transform: translateY(0)       rotate(0deg);   opacity: 0; }
+    10%  { opacity: 0.4; }
+    50%  { opacity: 0.7; }
+    100% { transform: translateY(-1200px) rotate(720deg); opacity: 0; }
+}
+
+/* —— floating & scaling triangles —— */
+.animation-area .triangles {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.triangles li {
+    position: absolute;
+    width: 0; height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 30px solid rgba(255,255,255,0.15);
+    animation: riseScale 12s ease-in-out infinite;
+    bottom: -40px;
+}
+
+/* random horizontal positions & delays */
+.triangles li:nth-child(1) { left: 15%; animation-delay:  0s; }
+.triangles li:nth-child(2) { left: 35%; animation-delay:  2s; }
+.triangles li:nth-child(3) { left: 55%; animation-delay:  4s; }
+.triangles li:nth-child(4) { left: 75%; animation-delay:  1s; }
+.triangles li:nth-child(5) { left: 85%; animation-delay:  3s; }
+
+@keyframes riseScale {
+    0%   { transform: translateY(0) scale(0.5); opacity: 0; }
+    20%  { opacity: 0.3; }
+    60%  { opacity: 0.6; }
+    100% { transform: translateY(-1000px) scale(1.5); opacity: 0; }
+}
+
+/* ensure form & cards are always on top */
+.auth-container,
+.d-flex.justify-content-center {
+    position: relative;
+    z-index: 5;
+}
+
+.card {
+    position: relative;
+    z-index: 10;
+}
+
+/* allow clicks through all decorative layers */
+.animation-area,
+.animation-area ul,
+.animation-area li {
+    pointer-events: none;
+}
+

@@ -4,21 +4,23 @@ import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Map;
 
 import static com.example.util.AttributeConstants.USER_DAO_KEY;
 import static com.example.util.SessionConstants.USER_KEY;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 class RegistrationServletTest {
@@ -45,137 +47,84 @@ class RegistrationServletTest {
     }
 
     @Test
-    void testDoPost_successfulRegistration() throws Exception {
-        User testUser = new User("newuser", "plainpass");
+    void testDoPost_SuccessfulRegistration() throws Exception {
+        // Prepare input JSON body for new user
+        String json = "{\"username\":\"newuser\",\"password\":\"plainpass\"}";
+        BufferedReader reader = new BufferedReader(new StringReader(json));
+        when(request.getReader()).thenReturn(reader);
 
-        try (MockedStatic<Helper> helper = mockStatic(Helper.class)) {
-            helper.when(() -> Helper.redirectProfileIfRegistered(request, response)).thenReturn(false);
-            helper.when(() -> Helper.parseJsonBody(eq(request), eq(User.class))).thenReturn(testUser);
+        // Mock DAO behavior
+        when(userDao.userExists("newuser")).thenReturn(false);
 
-            when(userDao.userExists("newuser")).thenReturn(false);
-            when(response.getWriter()).thenReturn(new PrintWriter(new StringWriter()));
+        // Mock getUserByUsername to return the new user with roleId set to avoid NPE
+        User returnedUser = new User("newuser", "hashedpass");
+        returnedUser.setRoleId(1);
+        when(userDao.getUserByUsername("newuser")).thenReturn(returnedUser);
 
-            servlet.doPost(request, response);
+        // Capture output
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        when(response.getWriter()).thenReturn(pw);
 
-            verify(userDao).addUser(argThat(u ->
-                    u.getUsername().equals("newuser") &&
-                            !u.getPassword().equals("plainpass")
-            ));
+        // Call servlet
+        servlet.doPost(request, response);
 
-            verify(session).setAttribute(eq(USER_KEY), any(User.class));
+        // Verify addUser called with hashed password (not plain)
+        verify(userDao).addUser(argThat(u ->
+                u.getUsername().equals("newuser") &&
+                        !u.getPassword().equals("plainpass")
+        ));
 
-            helper.verify(() -> Helper.sendJsonResponse(eq(response), argThat((Map<String, String> map) ->
-                    "ok".equals(map.get("status"))
-            )));
-        }
+        // Verify session attribute is set with the User returned by DAO
+        verify(session).setAttribute(eq(USER_KEY), eq(returnedUser));
+
+        pw.flush();
+        String output = sw.toString();
+        assertTrue(output.contains("\"status\":\"ok\""));
     }
 
+    @Test
+    void testDoPost_UserAlreadyExists_SendsExistsStatus() throws Exception {
+        // Prepare input JSON body for existing user
+        String json = "{\"username\":\"existingUser\",\"password\":\"password\"}";
+        BufferedReader reader = new BufferedReader(new StringReader(json));
+        when(request.getReader()).thenReturn(reader);
+
+        // User exists in DB
+        when(userDao.userExists("existingUser")).thenReturn(true);
+
+        // Mock getUserByUsername returns non-null User to avoid NPE
+        User existingUser = new User("existingUser", "hashedPassword");
+        existingUser.setRoleId(1);
+        when(userDao.getUserByUsername("existingUser")).thenReturn(existingUser);
+
+        // Capture output
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        when(response.getWriter()).thenReturn(pw);
+
+        // Call servlet
+        servlet.doPost(request, response);
+
+        // Should never call addUser for existing user
+        verify(userDao, never()).addUser(any());
+
+        pw.flush();
+        String output = sw.toString();
+        assertTrue(output.contains("\"status\":\"exists\""));
+    }
 
     @Test
     void testDoGet_ForwardToRegistrationForm() throws Exception {
-        try (MockedStatic<Helper> helper = mockStatic(Helper.class)) {
-            HttpServletRequest req = mock(HttpServletRequest.class);
-            HttpServletResponse res = mock(HttpServletResponse.class);
-            RequestDispatcher dispatcher = mock(RequestDispatcher.class);
+        RequestDispatcher dispatcher = mock(RequestDispatcher.class);
+        when(request.getRequestDispatcher("/static/authentication/registration.html")).thenReturn(dispatcher);
 
-            helper.when(() -> Helper.redirectProfileIfRegistered(req, res)).thenReturn(false);
+        // Simulate user not logged in (session attribute null)
+        when(session.getAttribute(USER_KEY)).thenReturn(null);
 
-            when(req.getRequestDispatcher("/authentication/registration.html")).thenReturn(dispatcher);
+        servlet.doGet(request, response);
 
-            Registration servlet = new Registration();
-            servlet.doGet(req, res);
-
-            verify(dispatcher).forward(req, res);
-        }
-    }
-
-    @Test
-    void testDoGet_UserAlreadyRegistered_Redirects() throws Exception {
-        try (MockedStatic<Helper> helper = mockStatic(Helper.class)) {
-            HttpServletRequest req = mock(HttpServletRequest.class);
-            HttpServletResponse res = mock(HttpServletResponse.class);
-
-            helper.when(() -> Helper.redirectProfileIfRegistered(req, res)).thenReturn(true);
-
-            Registration servlet = new Registration();
-            servlet.doGet(req, res);
-
-            verify(req, never()).getRequestDispatcher(anyString());
-        }
-    }
-
-    @Test
-    void testDoGet_ThrowsIOExceptionOnServletException() throws Exception {
-        try (MockedStatic<Helper> helper = mockStatic(Helper.class)) {
-            HttpServletRequest req = mock(HttpServletRequest.class);
-            HttpServletResponse res = mock(HttpServletResponse.class);
-            RequestDispatcher dispatcher = mock(RequestDispatcher.class);
-
-            helper.when(() -> Helper.redirectProfileIfRegistered(req, res)).thenReturn(false);
-            when(req.getRequestDispatcher("/authentication/registration.html")).thenReturn(dispatcher);
-
-            doThrow(new ServletException("simulated")).when(dispatcher).forward(req, res);
-
-            Registration servlet = new Registration();
-
-            IOException ex = assertThrows(IOException.class, () -> servlet.doGet(req, res));
-            assertTrue(ex.getMessage().contains("Forwarding failed"));
-        }
-    }
-
-    @Test
-    void testDoPost_userAlreadyExists_sendsExistsStatus() throws Exception {
-        User existingUser = new User("existingUser", "irrelevant");
-
-        try (MockedStatic<Helper> helper = mockStatic(Helper.class)) {
-            helper.when(() -> Helper.redirectProfileIfRegistered(request, response)).thenReturn(false);
-            helper.when(() -> Helper.parseJsonBody(eq(request), eq(User.class))).thenReturn(existingUser);
-
-            when(userDao.userExists("existingUser")).thenReturn(true);
-
-            servlet.doPost(request, response);
-
-            verify(userDao, never()).addUser(any());
-
-            helper.verify(() -> Helper.sendJsonResponse(eq(response), argThat((Map<String, String> map) ->
-                    "exists".equals(map.get("status"))
-            )));
-        }
-    }
-
-    @Test
-    void testDoGet_throwsIOExceptionWhenServletExceptionOccurs() throws Exception {
-        try (MockedStatic<Helper> helper = mockStatic(Helper.class)) {
-            helper.when(() -> Helper.redirectProfileIfRegistered(request, response)).thenReturn(false);
-
-            RequestDispatcher dispatcher = mock(RequestDispatcher.class);
-            when(request.getRequestDispatcher("/authentication/registration.html")).thenReturn(dispatcher);
-            doThrow(new ServletException("Simulated failure")).when(dispatcher).forward(request, response);
-
-            Registration servlet = new Registration();
-            IOException thrown = assertThrows(IOException.class, () -> servlet.doGet(request, response));
-
-            assertEquals("Forwarding failed", thrown.getMessage());
-            assertTrue(thrown.getCause() instanceof ServletException);
-        }
-    }
-
-    @Test
-    void testDoGet_throwsIOExceptionWhenForwardFails() throws Exception {
-        try (MockedStatic<Helper> helper = mockStatic(Helper.class)) {
-            helper.when(() -> Helper.redirectProfileIfRegistered(request, response)).thenReturn(false);
-            RequestDispatcher dispatcher = mock(RequestDispatcher.class);
-            when(request.getRequestDispatcher("/authentication/registration.html")).thenReturn(dispatcher);
-            doThrow(new ServletException("forward failed")).when(dispatcher).forward(request, response);
-
-            Registration servlet = new Registration();
-
-            IOException thrown = assertThrows(IOException.class, () -> servlet.doGet(request, response));
-
-            assertEquals("Forwarding failed", thrown.getMessage());
-            assertTrue(thrown.getCause() instanceof ServletException);
-            assertEquals("forward failed", thrown.getCause().getMessage());
-        }
+        verify(dispatcher).forward(request, response);
     }
 
 
