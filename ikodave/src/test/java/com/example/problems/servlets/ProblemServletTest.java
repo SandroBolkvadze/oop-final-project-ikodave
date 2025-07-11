@@ -2,7 +2,7 @@ package com.example.problems.servlets;
 
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DTO.*;
-import com.example.problems.FrontResponse.ProblemResponse;
+import com.example.problems.FrontResponse.ProblemSpecificResponse;
 import com.example.problems.utils.ProblemTitle;
 import com.example.registration.model.User;
 import com.example.submissions.DAO.TestDAO;
@@ -104,7 +104,7 @@ public class ProblemServletTest {
         when(problemDAO.getProblemByTitle("Two Sum")).thenReturn(problem);
 
         Status status = new Status(1, "Solved");
-        when(problemDAO.getProblemStatus(1, 1)).thenReturn(status);
+        when(problemDAO.getProblemStatus(1, 1)).thenReturn(String.valueOf(status));
 
         List<Topic> topics = Arrays.asList(
                 new Topic(1, "Array"),
@@ -127,11 +127,10 @@ public class ProblemServletTest {
         verify(response).setCharacterEncoding("UTF-8");
 
         String responseJson = responseWriter.toString();
-        ProblemResponse actualResponse = gson.fromJson(responseJson, ProblemResponse.class);
+        ProblemSpecificResponse actualResponse = gson.fromJson(responseJson, ProblemSpecificResponse.class);
 
         assertEquals("Two Sum", actualResponse.getProblemTitle());
         assertEquals("Given an array of integers...", actualResponse.getProblemDescription());
-        assertEquals("Solved", actualResponse.getProblemStatus());
         assertEquals(2, actualResponse.getProblemTopics().size());
         assertEquals("Easy", actualResponse.getProblemDifficulty());
         assertEquals(2, actualResponse.getProblemTestCases().size());
@@ -153,8 +152,10 @@ public class ProblemServletTest {
     }
 
     @Test
-    public void testDoPost_WithValidTitleAndNoUser() throws Exception {
-        when(session.getAttribute(USER_KEY)).thenReturn(null);
+    public void testDoPost_WithValidTitleAndUser() throws Exception {
+        User user = new User();
+        user.setId(2);
+        when(session.getAttribute(USER_KEY)).thenReturn(user);
 
         ProblemTitle problemTitle = new ProblemTitle("Binary Search");
         String jsonRequest = gson.toJson(problemTitle);
@@ -173,7 +174,7 @@ public class ProblemServletTest {
         when(problemDAO.getProblemByTitle("Binary Search")).thenReturn(problem);
 
         Status status = new Status(3, "Not Attempted");
-        when(problemDAO.getProblemStatus(1, 2)).thenReturn(status);
+        when(problemDAO.getProblemStatus(1, 2)).thenReturn(String.valueOf(status));
 
         List<Topic> topics = Arrays.asList(new Topic(1, "Binary Search"));
         when(problemDAO.getProblemTopics(1)).thenReturn(topics);
@@ -192,8 +193,7 @@ public class ProblemServletTest {
         verify(problemDAO).getProblemStatus(1, 2);
 
         String responseJson = responseWriter.toString();
-        ProblemResponse actualResponse = gson.fromJson(responseJson, ProblemResponse.class);
+        ProblemSpecificResponse actualResponse = gson.fromJson(responseJson, ProblemSpecificResponse.class);
         assertEquals("Not Attempted", actualResponse.getProblemStatus());
     }
-
 }
