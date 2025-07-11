@@ -1,10 +1,13 @@
 package com.example.admin.servlets;
 
+import com.example.admin.dao.ProblemTopicRelationDAO;
 import com.example.admin.dto.ProblemWithTests;
 import com.example.problems.DAO.DifficultyDAO;
 import com.example.problems.DAO.ProblemDAO;
+import com.example.problems.DAO.TopicDAO;
 import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Problem;
+import com.example.problems.DTO.Topic;
 import com.example.submissions.DAO.TestDAO;
 import com.example.submissions.DTO.Submission;
 import com.example.submissions.DTO.TestCase;
@@ -33,6 +36,8 @@ public class AddProblemServlet extends HttpServlet {
         ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
         TestDAO testDAO = (TestDAO) getServletContext().getAttribute(TEST_DAO_KEY);
         DifficultyDAO difficultyDAO = (DifficultyDAO) getServletContext().getAttribute(DIFFICULTY_DAO_KEY);
+        ProblemTopicRelationDAO problemTopicRelationDAO = (ProblemTopicRelationDAO) getServletContext().getAttribute(PROBLEM_TOPIC_RELATION_DAO_KEY);
+        TopicDAO topicDAO = (TopicDAO) getServletContext().getAttribute(TOPIC_DAO_KEY);
 
         ProblemWithTests problemWithTests = gson.fromJson(request.getReader(), ProblemWithTests.class);
 
@@ -42,6 +47,7 @@ public class AddProblemServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid difficulty: " + problemWithTests.getDifficulty());
             return;
         }
+
 
         // Build and insert problem
         Problem problem = new Problem();
@@ -56,6 +62,18 @@ public class AddProblemServlet extends HttpServlet {
 
         problemDAO.insertProblem(problem);
         int problemId = problemDAO.getProblemId(problem.getTitle());
+
+        // insert topic relations
+        for (String topicName : problemWithTests.getTopics()) {
+            Topic topic = topicDAO.getTopicByName(topicName);
+            if (topic == null) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid topic: " + topicName);
+                return;
+            }
+            problemTopicRelationDAO.insertProblemTopicRelation(problemId, topic.getId());
+        } // TODO be carefull with this code
+
+
 
         // Build and insert test cases
         List<TestCase> testCases = new ArrayList<>();

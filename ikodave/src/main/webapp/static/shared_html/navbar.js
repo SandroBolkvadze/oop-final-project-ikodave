@@ -9,6 +9,7 @@ async function loadNavbar() {
         const loggedIn = session.loggedIn === "true"; // or === true if you fix servlet
         const role = session.role || null;
 
+
         // Apply navbar visibility logic
         toggleElement('nav-register', !loggedIn);
         toggleElement('nav-signin', !loggedIn);
