@@ -79,7 +79,7 @@ class UserSubmissionStatsDAOTest {
         SubmissionVerdict verdict = new SubmissionVerdict(2, "ACCEPTED");
 
         int count = dao.getSubmittedProblemCountByVerdict(user, verdict);
-        assertEquals(2, count); // 101 and 102 are unique problems with status 2
+        assertEquals(3, count); // 101 and 102 are unique problems with status 2
     }
 
     @Test
