@@ -94,4 +94,3 @@ public class ProfileSubmissionStatsServlet extends HttpServlet {
     }
 
 }
-

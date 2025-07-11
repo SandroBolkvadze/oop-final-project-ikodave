@@ -91,7 +91,7 @@ public class SQLUserStatsDAO implements UserStatsDAO {
     }
 
     @Override
-    public int getAcceptedSubmissionsCountByToday(User user) {
+    public int getSubmissionsCountByDays(User user) {
         String sqlStatement = getUserSubmissionCountByDays();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
