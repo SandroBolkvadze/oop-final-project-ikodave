@@ -49,7 +49,7 @@ public class Registration extends HttpServlet {
                 String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
                 User newUser = new User(username, hashedPassword);
                 userDao.addUser(newUser);
-                request.getSession().setAttribute(USER_KEY, newUser);
+                request.getSession().setAttribute(USER_KEY, userDao.getUserByUsername(newUser.getUsername()));
                 result.put("status", "ok");
             }
             System.out.println(userDao.getUserByUsername(username).getRoleId());
