@@ -41,6 +41,7 @@ public class SubmitCodeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User user = (User) request.getSession().getAttribute(USER_KEY);
 
+
         if (user == null) {
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
@@ -76,8 +77,8 @@ public class SubmitCodeServlet extends HttpServlet {
         submission.setMemory(0);
         submission.setSubmitDate(new Timestamp(System.currentTimeMillis()));
 
+        System.out.println("user submitting: " + user.getId());
         final int submissionId = submissionDAO.insertSubmission(submission);
-
 
 //        System.out.println(solutionCode);
 //        System.out.println(testCases);
