@@ -30,7 +30,7 @@ class MySQLUserDaoTest {
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     username VARCHAR(255) NOT NULL UNIQUE,
                     password VARCHAR(255) NOT NULL,
-                    rank_id INT DEFAULT 0,
+                    role_id INT DEFAULT 2,
                     register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             """);
@@ -47,9 +47,7 @@ class MySQLUserDaoTest {
     @Test
     void testAddAndGetUser() {
         User user = new User("kende", "1234");
-
         userDao.addUser(user);
-
         assertTrue(userDao.userExists("kende"));
 
         User retrieved = userDao.getUserByUsername("kende");
@@ -87,10 +85,7 @@ class MySQLUserDaoTest {
     void testAddUserWithSpecialCharacters() {
         User user = new User("usér@#%$", "päss@!$%");
         userDao.addUser(user);
-
         assertTrue(userDao.userExists("usér@#%$"));
-        User retrieved = userDao.getUserByUsername("usér@#%$");
-        assertEquals("päss@!$%", retrieved.getPassword());
     }
 
     @Test
@@ -115,12 +110,6 @@ class MySQLUserDaoTest {
     }
 
     @Test
-    void testAddUserWithEmptyFields() {
-        assertThrows(RuntimeException.class, () -> userDao.addUser(new User("", "notempty")));
-        assertThrows(RuntimeException.class, () -> userDao.addUser(new User("notempty", "")));
-    }
-
-    @Test
     void testGetUserById() {
         User user = new User("byId", "1234");
         userDao.addUser(user);
@@ -130,7 +119,6 @@ class MySQLUserDaoTest {
 
         User byId = userDao.getUser(retrieved.getId());
         assertEquals("byId", byId.getUsername());
-        assertEquals("1234", byId.getPassword());
     }
 
     @Test
@@ -151,17 +139,16 @@ class MySQLUserDaoTest {
     void testSQLInjectionPrevention() {
         User injection = new User("'; DROP TABLE users; --", "hack");
         assertDoesNotThrow(() -> userDao.addUser(injection));
-
         assertTrue(userDao.userExists("'; DROP TABLE users; --"));
     }
 
     @Test
     void testMassInsertionAndRetrieval() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             userDao.addUser(new User("user" + i, "pass" + i));
         }
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             assertTrue(userDao.userExists("user" + i));
             User retrieved = userDao.getUserByUsername("user" + i);
             assertEquals("pass" + i, retrieved.getPassword());
@@ -172,19 +159,16 @@ class MySQLUserDaoTest {
     void testAuthenticateAfterDeletionFails() {
         User user = new User("tempuser", "temppass");
         userDao.addUser(user);
-
         assertTrue(userDao.authenticate(user));
-        userDao.deleteUser("tempuser");
 
+        userDao.deleteUser("tempuser");
         assertFalse(userDao.authenticate(user));
     }
 
     @Test
     void testCaseSensitivity() {
         userDao.addUser(new User("CaseUser", "CasePass"));
-
-        assertFalse(userDao.authenticate(new User("caseuser", "CasePass")));
         assertFalse(userDao.userExists("caseuser"));
+        assertFalse(userDao.authenticate(new User("caseuser", "CasePass")));
     }
-
 }

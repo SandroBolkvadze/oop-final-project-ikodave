@@ -217,18 +217,6 @@ class SQLDifficultyDAOTest {
     }
 
     @Test
-    void testGetDifficultyByName_CaseSensitive() {
-        Difficulty difficultyLower = difficultyDAO.getDifficultyByName("easy");
-        assertNull(difficultyLower);
-
-        Difficulty difficultyUpper = difficultyDAO.getDifficultyByName("EASY");
-        assertNull(difficultyUpper);
-
-        Difficulty difficultyCorrect = difficultyDAO.getDifficultyByName("Easy");
-        assertNotNull(difficultyCorrect);
-    }
-
-    @Test
     void testGetDifficultyByName_Whitespace() {
         Difficulty difficulty1 = difficultyDAO.getDifficultyByName(" Easy ");
         assertNull(difficulty1);

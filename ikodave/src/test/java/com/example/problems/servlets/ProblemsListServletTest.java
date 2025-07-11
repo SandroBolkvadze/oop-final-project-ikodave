@@ -1,28 +1,24 @@
 package com.example.problems.servlets;
 
+import com.example.problems.DAO.DifficultyDAO;
 import com.example.problems.DAO.ProblemDAO;
+import com.example.problems.DAO.TopicDAO;
 import com.example.problems.DTO.Difficulty;
-import com.example.problems.DTO.Problem;
-import com.example.problems.DTO.Status;
 import com.example.problems.DTO.Topic;
-import com.example.problems.Filters.*;
+import com.example.problems.FrontResponse.ProblemListResponse;
 import com.example.problems.utils.FilterCriteria;
 import com.example.registration.model.User;
 import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.example.util.AttributeConstants.*;
 import static com.example.util.SessionConstants.USER_KEY;
@@ -35,17 +31,13 @@ public class ProblemsListServletTest {
 
     private ProblemsListServlet servlet;
 
-    @Mock
-    private HttpServletRequest request;
-
-    @Mock
-    private HttpServletResponse response;
-
-    @Mock
-    private ServletContext servletContext;
-
-    @Mock
-    private ProblemDAO problemDAO;
+    @Mock private HttpServletRequest request;
+    @Mock private HttpServletResponse response;
+    @Mock private ServletContext servletContext;
+    @Mock private ProblemDAO problemDAO;
+    @Mock private DifficultyDAO difficultyDAO;
+    @Mock private TopicDAO topicDAO;
+    @Mock private HttpSession session;
 
     private User user;
     private Gson gson;
@@ -55,10 +47,7 @@ public class ProblemsListServletTest {
     @Before
     public void setUp() throws Exception {
         servlet = new ProblemsListServlet() {
-            @Override
-            public ServletContext getServletContext() {
-                return servletContext;
-            }
+            @Override public ServletContext getServletContext() { return servletContext; }
         };
 
         gson = new Gson();
@@ -69,260 +58,103 @@ public class ProblemsListServletTest {
         user.setId(1);
         user.setUsername("testuser");
 
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute(USER_KEY)).thenReturn(user);
+
         when(servletContext.getAttribute(GSON_KEY)).thenReturn(gson);
         when(servletContext.getAttribute(PROBLEM_DAO_KEY)).thenReturn(problemDAO);
+        when(servletContext.getAttribute(DIFFICULTY_DAO_KEY)).thenReturn(difficultyDAO);
+        when(servletContext.getAttribute(TOPIC_DAO_KEY)).thenReturn(topicDAO);
         when(response.getWriter()).thenReturn(printWriter);
     }
 
     @Test
-    public void testDoPost_WithAllFilters() throws Exception {
-        when(servletContext.getAttribute(USER_KEY)).thenReturn(user);
-
-        FilterCriteria criteria = new FilterCriteria("Two Sum", "Solved",
-                "Easy", Arrays.asList("Array", "Hash Table"));
-        String jsonRequest = gson.toJson(criteria);
-        BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
-        when(request.getReader()).thenReturn(reader);
-
-        when(problemDAO.getDifficultyId("Easy")).thenReturn(1);
-        when(problemDAO.getStatusId("Solved")).thenReturn(1);
-        when(problemDAO.getTopicId("Array")).thenReturn(1);
-        when(problemDAO.getTopicId("Hash Table")).thenReturn(2);
-
-        Problem problem1 = new Problem();
-        problem1.setId(1);
-        problem1.setTitle("Two Sum");
-
-        List<Problem> expectedProblems = Arrays.asList(problem1);
-        when(problemDAO.getProblemsByFilter(any(FilterAnd.class))).thenReturn(expectedProblems);
-
-        servlet.doPost(request, response);
-
-        verify(response).setContentType("application/json");
-        verify(response).setCharacterEncoding("UTF-8");
-
-        ArgumentCaptor<FilterAnd> filterCaptor = ArgumentCaptor.forClass(FilterAnd.class);
-        verify(problemDAO).getProblemsByFilter(filterCaptor.capture());
-
-        FilterAnd capturedFilter = filterCaptor.getValue();
-        assertNotNull(capturedFilter);
-
-        String responseJson = responseWriter.toString();
-        List<Problem> actualProblems = Arrays.asList(gson.fromJson(responseJson, Problem[].class));
-        assertEquals(expectedProblems.size(), actualProblems.size());
-        assertEquals(expectedProblems.getFirst().getId(), actualProblems.getFirst().getId());
-    }
-
-    @Test
-    public void testDoPost_WithNoFilters() throws Exception {
-        when(servletContext.getAttribute(USER_KEY)).thenReturn(null);
-
-        FilterCriteria criteria = new FilterCriteria("", "",
-                "", Collections.emptyList());
-        String jsonRequest = gson.toJson(criteria);
-        BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
-        when(request.getReader()).thenReturn(reader);
-
-        List<Problem> expectedProblems = Collections.emptyList();
-        when(problemDAO.getProblemsByFilter(any(FilterAnd.class))).thenReturn(expectedProblems);
-
-        servlet.doPost(request, response);
-
-        verify(problemDAO).getProblemsByFilter(any(FilterAnd.class));
-        verify(problemDAO, never()).getDifficultyId(anyString());
-        verify(problemDAO, never()).getStatusId(anyString());
-        verify(problemDAO, never()).getTopicId(anyString());
-
-        String responseJson = responseWriter.toString();
-        assertEquals("[]", responseJson);
-    }
-
-    @Test
     public void testDoPost_WithTitleFilterOnly() throws Exception {
-        when(servletContext.getAttribute(USER_KEY)).thenReturn(null);
+        FilterCriteria criteria = new FilterCriteria("Ants", "", null, Collections.emptyList());
 
-        FilterCriteria criteria = new FilterCriteria("Binary Search", "",
-                "", Collections.emptyList());
+        ProblemListResponse problem = new ProblemListResponse();
+        problem.setTitle("Ants");
 
-        String jsonRequest = gson.toJson(criteria);
-        BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
-        when(request.getReader()).thenReturn(reader);
+        when(problemDAO.getProblemResponsesByFilterLoggedIn(any())).thenReturn(List.of(problem));
 
-        Problem problem = new Problem();
-        problem.setId(2);
-        problem.setTitle("Binary Search");
-
-        List<Problem> expectedProblems = Arrays.asList(problem);
-        when(problemDAO.getProblemsByFilter(any(FilterAnd.class))).thenReturn(expectedProblems);
-
+        mockJsonRequest(criteria);
         servlet.doPost(request, response);
 
-        ArgumentCaptor<FilterAnd> filterCaptor = ArgumentCaptor.forClass(FilterAnd.class);
-        verify(problemDAO).getProblemsByFilter(filterCaptor.capture());
+        ProblemListResponse[] result = gson.fromJson(responseWriter.toString(), ProblemListResponse[].class);
+        assertEquals(1, result.length);
+        assertEquals("Ants", result[0].getTitle());
 
-        String responseJson = responseWriter.toString();
-        assertTrue(responseJson.contains("Binary Search"));
+        verify(difficultyDAO, never()).getDifficultyByName(any());
+        verify(topicDAO, never()).getTopicByName(any());
     }
 
     @Test
     public void testDoPost_WithDifficultyFilterOnly() throws Exception {
-        when(servletContext.getAttribute(USER_KEY)).thenReturn(null);
+        FilterCriteria criteria = new FilterCriteria("", "", "Medium", Collections.emptyList());
 
-        FilterCriteria criteria = new FilterCriteria("", "",
-                "Medium", Collections.emptyList());
+        Difficulty difficulty = new Difficulty();
+        difficulty.setId(2);
+        difficulty.setDifficulty("Medium");
 
-        String jsonRequest = gson.toJson(criteria);
-        BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
-        when(request.getReader()).thenReturn(reader);
+        when(difficultyDAO.getDifficultyByName("Medium")).thenReturn(difficulty);
 
-        when(problemDAO.getDifficultyId("Medium")).thenReturn(2);
+        ProblemListResponse p1 = new ProblemListResponse();
+        ProblemListResponse p2 = new ProblemListResponse();
+        when(problemDAO.getProblemResponsesByFilterLoggedIn(any())).thenReturn(List.of(p1, p2));
 
-        List<Problem> expectedProblems = Arrays.asList(new Problem(), new Problem());
-        when(problemDAO.getProblemsByFilter(any(FilterAnd.class))).thenReturn(expectedProblems);
-
+        mockJsonRequest(criteria);
         servlet.doPost(request, response);
 
-        verify(problemDAO).getDifficultyId("Medium");
-        verify(problemDAO).getProblemsByFilter(any(FilterAnd.class));
-
-        String responseJson = responseWriter.toString();
-        List<Problem> actualProblems = Arrays.asList(gson.fromJson(responseJson, Problem[].class));
-        assertEquals(2, actualProblems.size());
-    }
-
-    @Test
-    public void testDoPost_StatusFilterWithoutUser() throws Exception {
-        when(servletContext.getAttribute(USER_KEY)).thenReturn(null);
-
-        FilterCriteria criteria = new FilterCriteria("", "Solved",
-                "", Collections.emptyList());
-
-        String jsonRequest = gson.toJson(criteria);
-        BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
-        when(request.getReader()).thenReturn(reader);
-
-        List<Problem> expectedProblems = Collections.emptyList();
-        when(problemDAO.getProblemsByFilter(any(FilterAnd.class))).thenReturn(expectedProblems);
-
-        servlet.doPost(request, response);
-
-        verify(problemDAO, never()).getStatusId(anyString());
-        verify(problemDAO).getProblemsByFilter(any(FilterAnd.class));
-    }
-
-    @Test
-    public void testDoPost_StatusFilterWithUser() throws Exception {
-        when(servletContext.getAttribute(USER_KEY)).thenReturn(user);
-
-        FilterCriteria criteria = new FilterCriteria("", "Attempted",
-                "", Collections.emptyList());
-
-        String jsonRequest = gson.toJson(criteria);
-        BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
-        when(request.getReader()).thenReturn(reader);
-
-        when(problemDAO.getStatusId("Attempted")).thenReturn(2);
-
-        List<Problem> expectedProblems = Arrays.asList(new Problem());
-        when(problemDAO.getProblemsByFilter(any(FilterAnd.class))).thenReturn(expectedProblems);
-
-        servlet.doPost(request, response);
-
-        verify(problemDAO).getStatusId("Attempted");
-        verify(problemDAO).getProblemsByFilter(any(FilterAnd.class));
+        ProblemListResponse[] result = gson.fromJson(responseWriter.toString(), ProblemListResponse[].class);
+        assertEquals(2, result.length);
     }
 
     @Test
     public void testDoPost_WithMultipleTopics() throws Exception {
-        when(servletContext.getAttribute(USER_KEY)).thenReturn(null);
+        FilterCriteria criteria = new FilterCriteria("", "", "", List.of("DP", "Graph"));
 
-        FilterCriteria criteria = new FilterCriteria("", "",
-                "", Arrays.asList("Dynamic Programming", "Graph", "Tree"));
+        when(topicDAO.getTopicByName("DP")).thenReturn(new Topic(1, "DP"));
+        when(topicDAO.getTopicByName("Graph")).thenReturn(new Topic(2, "Graph"));
 
-        String jsonRequest = gson.toJson(criteria);
-        BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
-        when(request.getReader()).thenReturn(reader);
+        ProblemListResponse p1 = new ProblemListResponse();
+        ProblemListResponse p2 = new ProblemListResponse();
+        ProblemListResponse p3 = new ProblemListResponse();
+        when(problemDAO.getProblemResponsesByFilterLoggedIn(any())).thenReturn(List.of(p1, p2, p3));
 
-        when(problemDAO.getTopicId("Dynamic Programming")).thenReturn(1);
-        when(problemDAO.getTopicId("Graph")).thenReturn(2);
-        when(problemDAO.getTopicId("Tree")).thenReturn(3);
-
-        List<Problem> expectedProblems = Arrays.asList(new Problem(), new Problem(), new Problem());
-        when(problemDAO.getProblemsByFilter(any(FilterAnd.class))).thenReturn(expectedProblems);
-
+        mockJsonRequest(criteria);
         servlet.doPost(request, response);
 
-        verify(problemDAO).getTopicId("Dynamic Programming");
-        verify(problemDAO).getTopicId("Graph");
-        verify(problemDAO).getTopicId("Tree");
-        verify(problemDAO).getProblemsByFilter(any(FilterAnd.class));
+        ProblemListResponse[] result = gson.fromJson(responseWriter.toString(), ProblemListResponse[].class);
+        assertEquals(3, result.length);
+    }
 
-        String responseJson = responseWriter.toString();
-        List<Problem> actualProblems = Arrays.asList(gson.fromJson(responseJson, Problem[].class));
-        assertEquals(3, actualProblems.size());
+    @Test
+    public void testDoPost_WithNoFilters() throws Exception {
+        FilterCriteria criteria = new FilterCriteria("", "", "", Collections.emptyList());
+        when(problemDAO.getProblemResponsesByFilterLoggedIn(any())).thenReturn(Collections.emptyList());
+
+        mockJsonRequest(criteria);
+        servlet.doPost(request, response);
+
+        assertEquals("[]", responseWriter.toString());
     }
 
     @Test
     public void testDoPost_WithIOException() throws Exception {
         when(request.getReader()).thenThrow(new IOException("Read error"));
-
         assertThrows(IOException.class, () -> servlet.doPost(request, response));
     }
 
     @Test
-    public void testDoPost_WithNullFilterCriteria() throws Exception {
-        when(servletContext.getAttribute(USER_KEY)).thenReturn(user);
-
-        String jsonRequest = "invalid json";
-        BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
+    public void testDoPost_WithInvalidJson() throws Exception {
+        BufferedReader reader = new BufferedReader(new StringReader("invalid json"));
         when(request.getReader()).thenReturn(reader);
-
         assertThrows(Exception.class, () -> servlet.doPost(request, response));
     }
 
-    @Test
-    public void testDoPost_VerifyResponseHeaders() throws Exception {
-        when(servletContext.getAttribute(USER_KEY)).thenReturn(null);
-
-        FilterCriteria criteria = new FilterCriteria("", "",
-                "", Collections.emptyList());
-
-        String jsonRequest = gson.toJson(criteria);
-        BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
+    private void mockJsonRequest(FilterCriteria criteria) throws IOException {
+        String json = gson.toJson(criteria);
+        BufferedReader reader = new BufferedReader(new StringReader(json));
         when(request.getReader()).thenReturn(reader);
-
-        when(problemDAO.getProblemsByFilter(any(FilterAnd.class))).thenReturn(Collections.emptyList());
-
-        servlet.doPost(request, response);
-
-        verify(response).setContentType("application/json");
-        verify(response).setCharacterEncoding("UTF-8");
-    }
-
-    @Test
-    public void testDoPost_WithDifferentUser() throws Exception {
-        User anotherUser = new User();
-        anotherUser.setId(2);
-        anotherUser.setUsername("anotheruser");
-
-        when(servletContext.getAttribute(USER_KEY)).thenReturn(anotherUser);
-
-        FilterCriteria criteria = new FilterCriteria("", "Solved",
-                "", Collections.emptyList());
-
-        String jsonRequest = gson.toJson(criteria);
-        BufferedReader reader = new BufferedReader(new StringReader(jsonRequest));
-        when(request.getReader()).thenReturn(reader);
-
-        when(problemDAO.getStatusId("Solved")).thenReturn(1);
-
-        List<Problem> expectedProblems = Arrays.asList(new Problem());
-        when(problemDAO.getProblemsByFilter(any(FilterAnd.class))).thenReturn(expectedProblems);
-
-        //sadgac tosqlstatementshi ari areuli %d da %s
-        servlet.doPost(request, response);
-
-        verify(problemDAO).getStatusId("Solved");
-        verify(problemDAO).getProblemsByFilter(any(FilterAnd.class));
     }
 }

@@ -5,7 +5,7 @@ public class CodeLanguage {
     private String language;
 
     public CodeLanguage() {}
-    CodeLanguage(int id, String language) {
+    public CodeLanguage(int id, String language) {
         this.id = id;
         this.language = language;
     }

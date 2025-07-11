@@ -48,14 +48,15 @@ public class HelperServletTest {
         User mockUser = new User();
         mockUser.setUsername("testuser");
 
+        // Important: path matches exactly the one used in Helper class
         when(session.getAttribute(USER_KEY)).thenReturn(mockUser);
-        when(request.getRequestDispatcher("/profile/profile_page.html")).thenReturn(requestDispatcher);
+        when(request.getRequestDispatcher("/static/profile/profile_page.html")).thenReturn(requestDispatcher);
+        doNothing().when(requestDispatcher).forward(request, response);
 
         boolean result = Helper.redirectProfileIfRegistered(request, response);
 
-
         assertTrue(result);
-        verify(request).getRequestDispatcher("/profile/profile_page.html");
+        verify(request).getRequestDispatcher("/static/profile/profile_page.html");
         verify(requestDispatcher).forward(request, response);
     }
 
@@ -163,7 +164,6 @@ public class HelperServletTest {
 
     @Test
     public void testSendJsonResponse_Map() throws Exception {
-
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(writer);
@@ -176,9 +176,7 @@ public class HelperServletTest {
                 HttpServletResponse.class, Object.class);
         sendJsonResponseMethod.setAccessible(true);
 
-
         sendJsonResponseMethod.invoke(null, response, map);
-
 
         verify(response).setContentType("application/json");
         verify(response).setCharacterEncoding("UTF-8");
@@ -187,12 +185,13 @@ public class HelperServletTest {
         assertTrue(jsonOutput.contains("\"key2\":\"value2\""));
     }
 
-    // Helper classes for testing
+    // Helper classes for testing JSON parsing
     static class TestUserInput {
         String username;
         String password;
     }
 
+    // Helper class for JSON response testing
     static class TestResponse {
         String status;
         String message;
