@@ -695,3 +695,13 @@ INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) 
                                                                                     (15, 'abcabcbbabc', '3', 13),
                                                                                     (15, 'a', '1', 14),
                                                                                     (15, 'abccba', '3', 15);
+USE Ikodave;
+INSERT INTO users (role_id, username, password, register_date) VALUES
+    (
+        1,
+        'admin',
+        '$2a$10$GZcnnxdMw8MYt4.cgqUkiuN3cWFkTLL.kYpB7o7sA.1V2Q5BYhj0e',
+        NOW()
+    );
+
+-- password = 'admin'
