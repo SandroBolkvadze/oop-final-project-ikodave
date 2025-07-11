@@ -1,4 +1,4 @@
-package com.example.problems.tests;
+package com.example.problems.Filters;
 
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.SQLProblemDAO;
