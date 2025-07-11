@@ -1,0 +1,98 @@
+/* ======================================
+   GLOBAL
+   ====================================== */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    color: #eee; /* soft off-white for general text */
+    background: #0f2027; /* keep your dark backdrop */
+}
+
+/* ======================================
+   CANVAS & LAYERING
+   ====================================== */
+
+#background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.container.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* ======================================
+   HERO SECTION
+   ====================================== */
+
+.site-title {
+    font-size: 4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    /* brighter cyan accent */
+    text-shadow: 0 0 20px #00e5ff;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.tagline {
+    font-size: 1.25rem;
+    max-width: 500px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: #d0f0ff;  /* pale cyan for readability */
+    animation: fadeInUp 1.2s ease forwards;
+}
+
+/* ======================================
+   AUTHORS CARD
+   ====================================== */
+
+.authors {
+    background: rgba(255, 255, 255, 0.12); /* more opaque for contrast */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+    max-width: 300px;
+    animation: fadeInUp 1.8s ease forwards;
+}
+
+.authors h2 {
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #fff;
+}
+
+.authors p {
+    margin: 0.3rem 0;
+    font-size: 1rem;
+    color: #f0f8ff; /* very light cyan-white */
+}
+
+.authors .initial {
+    font-weight: bold;
+    color: #00e5ff; /* match your site-title glow */
+}
+
+/* ======================================
+   ANIMATIONS
+   ====================================== */
+
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
