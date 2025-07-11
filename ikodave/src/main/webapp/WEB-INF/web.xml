@@ -131,13 +131,41 @@
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>ProfileStatsServlet</servlet-name>
-    <servlet-class>com.example.user_profile.servlets.ProfileStatsServlet</servlet-class>
+    <servlet-name>AllSubmissionsPageServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.AllSubmissionsPageServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ProfileStatsServlet</servlet-name>
-    <url-pattern>/api/user/profile</url-pattern>
+    <servlet-name>AllSubmissionsPageServlet</servlet-name>
+    <url-pattern>/submissions</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AllSubmissionsServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.AllSubmissionsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AllSubmissionsServlet</servlet-name>
+    <url-pattern>/api/submissions</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProfileSubmissionStatsServlet</servlet-name>
+    <servlet-class>com.example.user_profile.servlets.ProfileSubmissionStatsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProfileSubmissionStatsServlet</servlet-name>
+    <url-pattern>/api/user/profile/submission-stats</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ProfileSubmissionCalendarServlet</servlet-name>
+    <servlet-class>com.example.user_profile.servlets.ProfileSubmissionCalendarServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProfileSubmissionCalendarServlet</servlet-name>
+    <url-pattern>/api/user/profile/calendar-stats</url-pattern>
+  </servlet-mapping>
+
 
   <servlet>
     <servlet-name>UserSessionServlet</servlet-name>
@@ -212,21 +240,12 @@
   </servlet-mapping>
 
   <servlet>
-    <servlet-name>AllSubmissionsPageServlet</servlet-name>
-    <servlet-class>com.example.submissions.servlets.AllSubmissionsPageServlet</servlet-class>
+    <servlet-name>SubmissionsListDateServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.SubmissionsListDateServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>AllSubmissionsPageServlet</servlet-name>
-    <url-pattern>/submissions</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>AllSubmissionsServlet</servlet-name>
-    <servlet-class>com.example.submissions.servlets.AllSubmissionsServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>AllSubmissionsServlet</servlet-name>
-    <url-pattern>/api/submissions</url-pattern>
+    <servlet-name>SubmissionsListDateServlet</servlet-name>
+    <url-pattern>/api/user/profile/submissions-by-date</url-pattern>
   </servlet-mapping>
 
   <servlet>

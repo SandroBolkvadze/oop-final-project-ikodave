@@ -1,10 +1,48 @@
 package com.example.problems.utils;
 
+import com.example.problems.DAO.ProblemDAO;
+import com.example.problems.DTO.Problem;
 import com.example.util.DatabaseConstants.*;
 
 import static java.lang.String.format;
 
 public class ToSQL {
+
+    /**
+     * INSERT INTO problems (
+     * problem_title,
+     * problem_description,
+     * difficulty_id,
+     * time_limit,
+     * memory_limit,
+     * input_spec,
+     * output_spec,
+     * create_date
+     * ) VALUES
+     * ('sum-of-two-numbers',
+     * 'Given two integers a and b, output their sum.',
+     * 1,
+     * 1000,
+     * 128,
+     * 'Two integers a and b separated by a space. Bounds: -2,000,000,000 ≤ a, b ≤ 2,000,000,000.',
+     * 'A single integer, the sum of a and b.',
+     * NOW()),
+     */
+
+    public static String toInsertProblemSQL() {
+        return format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) VALUES " +
+                        "(?, ?, ?, ?, ?, ?, ?, NOW());",
+                Problems.TABLE_NAME,
+                Problems.COL_TITLE,
+                Problems.COL_DESCRIPTION,
+                Problems.COL_DIFFICULTY_ID,
+                Problems.COL_TIME_LIMIT,
+                Problems.COL_MEMORY_LIMIT,
+                Problems.COL_INPUT_SPEC,
+                Problems.COL_OUTPUT_SPEC,
+                Problems.COL_CREATE_DATE
+        );
+    }
 
     public static String toProblemTopicsSQL() {
         return format("SELECT %s.* FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s.%s = ?;",
@@ -80,7 +118,7 @@ public class ToSQL {
         );
     }
 
-    public static String toProblemByTitleSQL(){
+    public static String toProblemByTitleSQL() {
         return format("SELECT * FROM %s WHERE %s.%s = ?;",
                 Problems.TABLE_NAME,
                 Problems.TABLE_NAME,

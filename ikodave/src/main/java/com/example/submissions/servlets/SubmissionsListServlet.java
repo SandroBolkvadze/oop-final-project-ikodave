@@ -7,7 +7,7 @@ import com.example.submissions.DAO.CodeLanguageDAO;
 import com.example.submissions.DAO.SubmissionDAO;
 import com.example.submissions.DAO.VerdictDAO;
 import com.example.submissions.DTO.Submission;
-import com.example.submissions.FrontResponse.SubmissionResponse;
+import com.example.submissions.Response.SubmissionResponse;
 import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServlet;
@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

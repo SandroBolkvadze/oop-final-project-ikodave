@@ -7,12 +7,14 @@ import com.example.problems.FrontResponse.ProblemSpecificResponse;
 import com.example.problems.utils.ProblemTitle;
 import com.example.registration.model.User;
 import com.example.submissions.DAO.TestDAO;
+import com.example.submissions.DTO.TestCase;
 import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import static com.example.util.AttributeConstants.*;
 import static com.example.util.SessionConstants.USER_KEY;
@@ -38,13 +40,15 @@ public class ProblemServlet extends HttpServlet {
 
         Problem problem = problemDAO.getProblemByTitle(title);
 
+        List<TestCase> testCases = testDAO.getTestCasesByProblemId(problem.getId());
+
         ProblemSpecificResponse problemSpecificResponse = new ProblemSpecificResponse(
                 problem.getTitle(),
                 problem.getDescription(),
                 user != null? problemDAO.getProblemStatus(problem.getId(), user.getId()) : "No Status",
                 problemDAO.getProblemTopics(problem.getId()).stream().map(Topic::getTopic).toList(),
                 problemDAO.getProblemDifficulty(problem.getId()).getDifficulty(),
-                testDAO.getTestCasesByProblemId(problem.getId()).subList(0, 2),
+                testCases.subList(0, Math.min(2, testCases.size())),
                 problem.getInputSpec(),
                 problem.getOutputSpec(),
                 problem.getTimeLimit(),
