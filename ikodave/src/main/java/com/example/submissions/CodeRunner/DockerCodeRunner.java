@@ -133,11 +133,6 @@ public class DockerCodeRunner implements CodeRunner {
         if (!finished) {
             System.out.println("time limit exceeded");
             process.destroy();
-            try {
-                if (!process.waitFor(500, TimeUnit.MILLISECONDS)) {
-                      process.destroyForcibly();
-                }
-            } catch (InterruptedException ignored) { }
             return new TestCaseTimeLimitExceeded(executeTimeoutMillis, 0, format("Time Limit Exceeded On Test %d", testCase.getTestNumber()));
         }
 

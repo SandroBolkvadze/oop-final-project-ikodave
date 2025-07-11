@@ -84,6 +84,10 @@ public class Container {
             throw new RuntimeException(e);
         }
 
+/*
+    Comment: backup Code for killing and cleaning containers, do not touch.
+*/
+
 
 //        try {
 //            new ProcessBuilder("docker", "restart", containerName)
@@ -119,8 +123,6 @@ public class Container {
 //                "bash", "-lc",
 //                "kill -9 -1 || true"
 //        );
-
-
 //        try {
 //            new ProcessBuilder(killUser).start().waitFor(5, TimeUnit.SECONDS);
 //            new ProcessBuilder(killAll).start().waitFor(5, TimeUnit.SECONDS);
