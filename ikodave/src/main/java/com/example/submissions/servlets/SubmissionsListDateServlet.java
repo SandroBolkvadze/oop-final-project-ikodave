@@ -54,8 +54,6 @@ public class SubmissionsListDateServlet extends HttpServlet {
         List<SubmissionResponse> submissionResponses =
                 submissions.stream().map((submission) -> {
 
-                            System.out.println(codeLanguageDAO.getCodeLanguageById(submission.getCodeLanguageId()).getLanguage());
-                            System.out.println(submission.getSubmitDate());
 
                             return new SubmissionResponse(
                                     submission.getSubmitDate(),
