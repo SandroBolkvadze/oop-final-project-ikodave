@@ -64,12 +64,34 @@ public class Container {
 
     public void cleanContainer() {
         try {
-            new ProcessBuilder("docker", "restart", containerName)
-                    .start()
-                    .waitFor(10, TimeUnit.SECONDS);
+            new ProcessBuilder(
+                    "docker", "exec", containerName,
+                    "bash", "-lc", "rm -rf /app/* /app/.* 2>/dev/null || true"
+            )
+            .start()
+            .waitFor(5, TimeUnit.SECONDS);
+
+
+            new ProcessBuilder(
+                    "docker", "exec", containerName,
+                    "bash", "-lc", "kill -9 -1 || true"
+            )
+            .start()
+            .waitFor(5, TimeUnit.SECONDS);
+
+
         } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
+
+
+//        try {
+//            new ProcessBuilder("docker", "restart", containerName)
+//                    .start()
+//                    .waitFor(10, TimeUnit.SECONDS);
+//        } catch (InterruptedException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
 //        List<String> cleanDirCommand = List.of(
 //                "docker", "exec", containerName,
