@@ -82,24 +82,34 @@ public class ToSQL {
 
     public static String getUserRankSQL() {
         return format("""
-                        WITH scores AS (
-                             SELECT 
-                             %s.%s AS username, COUNT(DISTINCT %s.%s) as score 
-                             FROM %s 
-                             LEFT JOIN %s on %s.%s = %s.%s 
-                             LEFT JOIN %s on %s.%s = %s.%s and %s.%s = 'Accepted' 
-                             GROUP BY %s.%s, %s.%s 
-                        ), 
-                        ranks as ( 
-                             SELECT 
-                             username, 
-                             ROW_NUMBER() OVER (ORDER BY score DESC, username ASC) AS user_rank 
-                             FROM scores 
-                        )
-                        SELECT user_rank FROM ranks WHERE username = ?; 
+                    WITH scores AS (
+                        SELECT
+                            %s.%s  AS username,
+                            COUNT(DISTINCT
+                            IF (%s.%s = 'Accepted',
+                                 %s.%s, NULL)
+                            )  AS score
+                        FROM %s
+                        LEFT JOIN %s
+                          ON %s.%s = %s.%s
+                        LEFT JOIN %s
+                          ON %s.%s = %s.%s
+                        GROUP BY %s.%s
+                    ),
+                    ranks AS (
+                        SELECT
+                            username,
+                            ROW_NUMBER() OVER (ORDER BY score DESC) AS user_rank
+                        FROM scores
+                    )
+                    SELECT user_rank
+                      FROM ranks
+                     WHERE username = ?;
                 """,
                 Users.TABLE_NAME,
                 Users.COL_USERNAME,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_VERDICT,
                 Submissions.TABLE_NAME,
                 Submissions.COL_PROBLEM_ID,
                 Users.TABLE_NAME,
@@ -113,15 +123,12 @@ public class ToSQL {
                 SubmissionVerdict.COL_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_VERDICT_ID,
-                SubmissionVerdict.TABLE_NAME,
-                SubmissionVerdict.COL_VERDICT,
-                Users.TABLE_NAME,
-                Users.COL_ID,
                 Users.TABLE_NAME,
                 Users.COL_USERNAME
         );
-
     }
+
+
 
 
 
