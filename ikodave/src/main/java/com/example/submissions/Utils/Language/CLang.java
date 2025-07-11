@@ -23,7 +23,7 @@ public class CLang implements CodeLang {
     @Override
     public List<String> compileCommand(String containerName) {
         return List.of(
-                "docker", "exec", "-u", SANDBOX_USER, containerName,
+                "docker", "exec", containerName,
                 "gcc", C_FILE_NAME + ".c",
                 "-std=c17", "-O2",
                 "-o", C_FILE_NAME
@@ -33,7 +33,7 @@ public class CLang implements CodeLang {
     @Override
     public List<String> executeCommand(String containerName) {
         return List.of(
-                "docker", "exec", "-u", SANDBOX_USER, "-i", containerName,
+                "docker", "exec", "-i", containerName,
                 "/app/" + C_FILE_NAME
         );
     }

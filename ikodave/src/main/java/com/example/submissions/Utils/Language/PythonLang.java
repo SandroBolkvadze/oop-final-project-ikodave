@@ -28,7 +28,7 @@ public class PythonLang implements CodeLang {
     @Override
     public List<String> executeCommand(String containerName) {
         return List.of(
-                "docker", "exec", "-u", SANDBOX_USER, "-i", containerName,
+                "docker", "exec", "-i", containerName,
                 "python3", "-u", "/app/" + PYTHON_FILE_NAME + ".py"
         );
     }
