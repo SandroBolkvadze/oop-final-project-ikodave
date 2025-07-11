@@ -25,7 +25,7 @@ public class JavaLang implements CodeLang {
     @Override
     public List<String> compileCommand(String containerName) {
         return List.of(
-                "docker", "exec", "-u", SANDBOX_USER, containerName,
+                "docker", "exec", containerName,
                 "javac", JAVA_FILE_NAME + ".java"
         );
     }
@@ -33,7 +33,7 @@ public class JavaLang implements CodeLang {
     @Override
     public List<String> executeCommand(String containerName) {
         return List.of(
-                "docker", "exec", "-u", SANDBOX_USER, "-i", containerName,
+                "docker", "exec", "-i", containerName,
                 "java", "-cp", "/app", JAVA_FILE_NAME
         );
     }

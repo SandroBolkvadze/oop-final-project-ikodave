@@ -29,8 +29,6 @@ public class ProfileSubmissionCalendarServlet extends HttpServlet {
 
         List<Timestamp> submissionDates = userStatsDAO.getUserActivityByMonth(userDAO.getUserByUsername(userCalendarBody.getUsername()), userCalendarBody.getMonth(), userCalendarBody.getYear());
 
-        System.out.println("calendar: " + submissionDates.size());
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(gson.toJson(Map.of("submissionDates", submissionDates)));

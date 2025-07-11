@@ -36,19 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function filter() {
     const title = document.getElementById('filter-title').value.trim();
-    console.log(title);
 
     const difficultyInput = document.querySelector('#difficulty-toggle input[type="checkbox"]:checked');
     const difficulty = difficultyInput ? difficultyInput.value : null;
-    console.log(difficulty);
 
     const statusInput = document.querySelector('#status-toggle input[type="checkbox"]:checked');
     const status = statusInput ? statusInput.value : null;
-    console.log(status);
 
     const topicCheckboxes = document.querySelectorAll('#topics-checkboxes input[type="checkbox"]:checked');
     const topics = Array.from(topicCheckboxes).map(cb => cb.value);
-    console.log(topics);
 
     let filterCriteria = {
         title: title,

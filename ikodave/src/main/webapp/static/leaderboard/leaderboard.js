@@ -38,10 +38,8 @@ function renderLeaderboard(data) {
 // Main entry point: fetch and render leaderboard
 async function loadLeaderboard() {
     try {
-        console.log('Loading leaderboard...');
         const data = await fetchLeaderboardData();
         renderLeaderboard(data);
-        console.log('Leaderboard loaded.');
     } catch (error) {
         console.error('Error loading leaderboard:', error);
     }

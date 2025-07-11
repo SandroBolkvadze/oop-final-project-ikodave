@@ -24,7 +24,7 @@ public class CPPLang implements CodeLang {
     @Override
     public List<String> compileCommand(String containerName) {
         return List.of(
-                "docker", "exec", "-u", SANDBOX_USER, containerName,
+                "docker", "exec", containerName,
                 "g++", CPP_FILE_NAME + ".cpp",
                 "-std=c++17", "-O2",
                 "-o", CPP_FILE_NAME
@@ -34,7 +34,7 @@ public class CPPLang implements CodeLang {
     @Override
     public List<String> executeCommand(String containerName) {
         return List.of(
-                "docker", "exec", "-u", SANDBOX_USER, "-i", containerName,
+                "docker", "exec", "-i", containerName,
                 "/app/" + CPP_FILE_NAME
         );
     }
