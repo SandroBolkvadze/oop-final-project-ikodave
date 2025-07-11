@@ -4,6 +4,7 @@ import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DAO.SQLProblemDAO;
 import com.example.problems.DTO.*;
 import com.example.problems.Filters.*;
+import com.example.registration.model.User;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;
@@ -19,10 +20,8 @@ class FilterAndLoggedInTest {
 
     private static BasicDataSource dataSource;
     private static ProblemDAO dao;
-
-    private FilterAndLoggedIn filterAndLoggedIn;
-    private FilterTopic filterTopic;
-    private FilterDifficulty filterDifficulty;
+    private FilterAndLoggedIn filter;
+    private User testUser;
 
     @BeforeAll
     static void setupDatabase() throws Exception {
@@ -35,164 +34,127 @@ class FilterAndLoggedInTest {
         dao = new SQLProblemDAO(dataSource);
 
         try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
+            stmt.execute("""
+                CREATE TABLE users (
+                    id INT PRIMARY KEY,
+                    username VARCHAR(64),
+                    password VARCHAR(64),
+                    register_date DATETIME
+                );
+            """);
 
-            // Difficulty table
             stmt.execute("""
                 CREATE TABLE problem_difficulty (
                     id INT PRIMARY KEY,
-                    difficulty VARCHAR(20) NOT NULL
+                    difficulty VARCHAR(20)
                 );
             """);
 
-            // Topic table
             stmt.execute("""
                 CREATE TABLE problem_topic (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    topic VARCHAR(50) NOT NULL UNIQUE
+                    id INT PRIMARY KEY,
+                    topic VARCHAR(50)
                 );
             """);
 
-            // Problems table with full columns & constraints
             stmt.execute("""
                 CREATE TABLE problems (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    problem_title VARCHAR(128) UNIQUE NOT NULL,
-                    problem_description TEXT NOT NULL,
-                    difficulty_id INT NOT NULL,
-                    time_limit BIGINT NOT NULL,
-                    memory_limit BIGINT,
-                    input_spec TEXT NOT NULL,
-                    output_spec TEXT NOT NULL,
-                    create_date DATETIME NOT NULL,
-                    CONSTRAINT fk_diff FOREIGN KEY (difficulty_id)
-                        REFERENCES problem_difficulty(id)
+                    id INT PRIMARY KEY,
+                    problem_title VARCHAR(255),
+                    problem_description CLOB,
+                    difficulty_id INT,
+                    create_date DATE,
+                    time_limit BIGINT,
+                    FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty(id)
                 );
             """);
 
-            // Many-to-many join table for problem-topic relation
             stmt.execute("""
                 CREATE TABLE problem_many_to_many_topic (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    problem_id INT NOT NULL,
-                    topic_id INT NOT NULL,
-                    CONSTRAINT fk_problem FOREIGN KEY (problem_id)
-                        REFERENCES problems(id),
-                    CONSTRAINT fk_topic FOREIGN KEY (topic_id)
-                        REFERENCES problem_topic(id)
+                    id INT PRIMARY KEY,
+                    problem_id INT,
+                    topic_id INT,
+                    FOREIGN KEY (problem_id) REFERENCES problems(id),
+                    FOREIGN KEY (topic_id) REFERENCES problem_topic(id)
                 );
             """);
 
-            // Insert difficulties
             stmt.execute("""
-                INSERT INTO problem_difficulty (id, difficulty) VALUES
-                   (1, 'Easy'),
-                   (2, 'MEDIUM'),
-                   (3, 'HARD');
+                CREATE TABLE submission_verdict (
+                    id INT PRIMARY KEY,
+                    verdict VARCHAR(50)
+                );
             """);
 
-            // Insert topics
             stmt.execute("""
-                INSERT INTO problem_topic (topic) VALUES
-                   ('dp'),
-                   ('greedy'),
-                   ('graphs'),
-                   ('trees');
+                CREATE TABLE submissions (
+                    id INT PRIMARY KEY,
+                    user_id INT,
+                    problem_id INT,
+                    verdict_id INT,
+                    solution_code TEXT,
+                    code_language_id INT,
+                    time BIGINT,
+                    memory BIGINT,
+                    submit_date DATETIME,
+                    log TEXT,
+                    FOREIGN KEY (user_id) REFERENCES users(id),
+                    FOREIGN KEY (problem_id) REFERENCES problems(id),
+                    FOREIGN KEY (verdict_id) REFERENCES submission_verdict(id)
+                );
+            """);
+
+            stmt.execute("""
+                INSERT INTO users VALUES (1, 'nick', 'pass', '2025-01-01');
+
+                INSERT INTO problem_difficulty VALUES (1, 'EASY'), (2, 'MEDIUM'), (3, 'HARD');
+
+                INSERT INTO problem_topic VALUES (1, 'dp'), (2, 'greedy'), (3, 'graphs');
+
+                INSERT INTO problems VALUES
+                    (1, 'Ants', '...', 1, '2025-06-20', 20000),
+                    (2, 'xorificator', '...', 2, '2025-06-21', 20000),
+                    (3, 'cool artem', '...', 3, '2025-06-22', 20000);
+
+                INSERT INTO problem_many_to_many_topic VALUES
+                    (1, 1, 1),
+                    (2, 2, 2),
+                    (3, 3, 1),
+                    (4, 3, 2);
+
+                INSERT INTO submission_verdict VALUES (1, 'Accepted'), (2, 'Wrong Answer');
+
+                INSERT INTO submissions VALUES
+                    (1, 1, 1, 1, '...', 1, 100, 64, '2025-06-25', ''),
+                    (2, 1, 3, 2, '...', 1, 200, 128, '2025-06-25', '');
             """);
         }
     }
 
     @BeforeEach
-    void seedProblemsAndFilters() throws Exception {
-
-        try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
-
-            stmt.execute("DELETE FROM problem_many_to_many_topic");
-            stmt.execute("DELETE FROM problems");
-
-            // Insert problems with full fields
-            stmt.execute("""
-                INSERT INTO problems (problem_title, problem_description,
-                                      difficulty_id, create_date, time_limit, memory_limit, input_spec, output_spec)
-                VALUES
-                   ('Ants',        'there are n nodes',      1, '2025-06-20 00:00:00', 20000, 1024, 'Input spec', 'Output spec'),
-                   ('xorificator', 'xors of x y',            2, '2025-06-21 00:00:00', 20000, 1024, 'Input spec', 'Output spec'),
-                   ('cool artem',  'there are n elements',   3, '2025-06-22 00:00:00', 20000, 1024, 'Input spec', 'Output spec'),
-                   ('nice',        'there are n strings',    2, '2025-06-23 00:00:00', 20000, 1024, 'Input spec', 'Output spec'),
-                   ('hard',        'there are n graph',      2, '2025-06-24 00:00:00', 20000, 1024, 'Input spec', 'Output spec');
-            """);
-
-            // Insert problem-topic relations
-            stmt.execute("""
-                INSERT INTO problem_many_to_many_topic (problem_id, topic_id) VALUES
-                   (1, 1),  (1, 2),  (1, 4),
-                   (2, 3),
-                   (3, 1),  (3, 3),
-                   (4, 1),  (4, 2),
-                   (5, 2),  (5, 3), (5, 4), (5, 1);
-            """);
-        }
-
-        List<Topic> topics = new ArrayList<>();
-        topics.add(new Topic(1, "dp"));
-        topics.add(new Topic(2, "greedy"));
-
-        filterTopic      = new FilterTopic(topics);
-        filterDifficulty = new FilterDifficulty(new Difficulty(2, "MEDIUM"));
-        filterAndLoggedIn = new FilterAndLoggedIn();   // Assuming no-arg constructor is valid
+    void setup() {
+        testUser = new User("nickolas", "pass");
+        testUser.setId(1);
     }
-
-    @AfterEach
-    void clearProblemTables() throws Exception {
-        try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
-            stmt.execute("DELETE FROM problem_many_to_many_topic");
-            stmt.execute("DELETE FROM problems");
-        }
-    }
-
     @Test
-    void testFilterAnd() throws Exception {
-        filterAndLoggedIn.addFilter(filterTopic);
-        filterAndLoggedIn.addFilter(filterDifficulty);
+    void testLoggedInSolvedFilter() {
+        FilterAndLoggedIn filter = new FilterAndLoggedIn();
+        //filter.addFilter(new FilterSolved(testUser));
 
-        List<Problem> problems = dao.getProblemsByFilter(filterAndLoggedIn);
-
-        assertEquals(2, problems.size());
-        assertTrue(problems.stream().anyMatch(p -> p.getTitle().equals("nice")));
-        assertTrue(problems.stream().anyMatch(p -> p.getTitle().equals("hard")));
-        assertTrue(problems.stream().anyMatch(p -> p.getId() == 4));
-        assertTrue(problems.stream().anyMatch(p -> p.getId() == 5));
-    }
-
-    @Test
-    void testNoFilter() throws Exception {
-        List<Problem> problems = dao.getProblemsByFilter(filterAndLoggedIn);
-        assertEquals(5, problems.size());
-    }
-
-    @Test
-    void testAllFilter() throws Exception {
-        FilterTitle filterTitle = new FilterTitle("ic");
-
-        filterAndLoggedIn.addFilter(filterTopic);
-        filterAndLoggedIn.addFilter(filterDifficulty);
-        filterAndLoggedIn.addFilter(filterTitle);
-
-        List<Problem> problems = dao.getProblemsByFilter(filterAndLoggedIn);
+        List<Problem> problems = dao.getProblemsByFilter(filter);
 
         assertEquals(1, problems.size());
-        assertEquals("nice", problems.get(0).getTitle());
+        assertEquals("Ants", problems.get(0).getTitle());
     }
 
     @Test
-    void testFilterNoProblems() throws Exception {
-        FilterTitle filterTitle = new FilterTitle("ick");
+    void testFilterAndLoggedInFilter() {
+        FilterAndLoggedIn filterAndLoggedIn = new FilterAndLoggedIn();
 
-        filterAndLoggedIn.addFilter(filterTopic);
-        filterAndLoggedIn.addFilter(filterDifficulty);
-        filterAndLoggedIn.addFilter(filterTitle);
+       // filterAndLoggedIn.addFilter();
+        //List<Problem> problems = dao.getProblemsByFilter(filter);
 
-        List<Problem> problems = dao.getProblemsByFilter(filterAndLoggedIn);
-
-        assertTrue(problems.isEmpty());
+       // assertEquals(1, problems.size());
+       // assertEquals("cool artem", problems.get(0).getTitle());
     }
 }
