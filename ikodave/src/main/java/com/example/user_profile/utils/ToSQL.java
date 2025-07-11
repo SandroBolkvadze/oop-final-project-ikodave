@@ -69,11 +69,18 @@ public class ToSQL {
 
 
     public static String getUserSubmissionCountByDays() {
-        return format("SELECT COUNT(*) FROM %s " +
-                        "WHERE DAY(%s.%s) = DAY(NOW()) AND %s.%s = ?;",
+        return format("SELECT COUNT(*) FROM %s JOIN %s on %s.%s = %s.%s " +
+                        "WHERE DAY(%s.%s) = DAY(NOW()) AND %s.%s = 'Accepted' AND %s.%s = ?;",
                 Submissions.TABLE_NAME,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_VERDICT_ID,
                 Submissions.TABLE_NAME,
                 Submissions.COL_SUBMIT_DATE,
+                SubmissionVerdict.TABLE_NAME,
+                SubmissionVerdict.COL_VERDICT,
                 Submissions.TABLE_NAME,
                 Submissions.COL_USER_ID
         );

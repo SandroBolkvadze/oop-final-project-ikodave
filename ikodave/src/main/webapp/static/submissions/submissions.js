@@ -46,7 +46,8 @@ function loadUserSubmissions() {
 
                 const details = document.createElement('p');
                 details.innerHTML = `
-                    <strong>User:</strong> ${sub.username} &nbsp;|&nbsp;
+                    <strong>User:</strong> 
+                      <a href="/profile/${encodeURIComponent(sub.username)}">${sub.username}</a> &nbsp;|&nbsp;
                     <strong>Language:</strong> ${sub.codeLanguage} &nbsp;|&nbsp;
                     <strong>Time:</strong> ${sub.time} ms &nbsp;|&nbsp;
                     <strong>Memory:</strong> ${Math.round(sub.memory / 1024)} KB &nbsp;|&nbsp;
