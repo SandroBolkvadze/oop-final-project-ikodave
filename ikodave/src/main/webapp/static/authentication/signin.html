@@ -10,6 +10,7 @@
     />
     <!-- Your consolidated auth styles -->
     <link href="/static/authentication/auth.css" rel="stylesheet"/>
+    <link href="/static/shared_html/navbar.css" rel="stylesheet">
 </head>
 <body>
 <div id="navbar-container"></div>
@@ -52,40 +53,24 @@
     </div>
 </div>
 
-<!-- BEGIN floating-bubbles background -->
+<!-- BEGIN floating-bubbles + shapes background -->
 <div class="animation-area">
     <ul class="circles">
         <li></li><li></li><li></li><li></li><li></li>
         <li></li><li></li><li></li><li></li><li></li>
     </ul>
+    <ul class="squares">
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
+    <ul class="triangles">
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
 </div>
-<!-- END floating-bubbles background -->
+<!-- END floating-bubbles + shapes background -->
 
 
 <!-- signin.js inline script -->
-<script>
-    document
-        .getElementById("signin-form")
-        .addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const username = document.getElementById("username").value.trim();
-            const password = document.getElementById("password").value.trim();
-            const res = await fetch("/signin", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password }),
-            });
-            const data = await res.json();
-            if (data.status === "invalid") {
-                document.getElementById(
-                    "error-msg"
-                ).innerHTML = `<div class="alert alert-danger text-center">Username or password is incorrect.</div>`;
-            } else if (data.status === "ok") {
-                window.location.href = "/profile";
-            }
-        });
-</script>
-
+<script src="/static/authentication/signin.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
