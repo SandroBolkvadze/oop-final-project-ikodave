@@ -49,44 +49,26 @@ public class ProfileSubmissionStatsServlet extends HttpServlet {
         userSubmissionStats.setEasySolvedProblemsCount(easySolvedCount);
         userSubmissionStats.setEasyNotSolvedProblemsCount(easyTotalCount - easySolvedCount);
 
-        System.out.println("easy solved: " + easySolvedCount);
-        System.out.println("east total count " + easyTotalCount);
-
         int mediumSolvedCount = userStatsDAO.getSolvedProblemCountByDifficulty(user, difficultyMedium);
         int mediumTotalCount = problemStatsDAO.getProblemCountByDifficulty(difficultyMedium);
         userSubmissionStats.setMediumSolvedProblemsCount(mediumSolvedCount);
         userSubmissionStats.setMediumNotSolvedProblemsCount(mediumTotalCount - mediumSolvedCount);
-
-        System.out.println("medium solved: " + mediumSolvedCount);
-        System.out.println("medium total count " + mediumTotalCount);
-
 
         int hardSolvedCount = userStatsDAO.getSolvedProblemCountByDifficulty(user, difficultyHard);
         int hardTotalCount = problemStatsDAO.getProblemCountByDifficulty(difficultyHard);
         userSubmissionStats.setHardSolvedProblemsCount(hardSolvedCount);
         userSubmissionStats.setHardNotSolvedProblemsCount(hardTotalCount - hardSolvedCount);
 
-        System.out.println("hard solved: " + hardSolvedCount);
-        System.out.println("hard total count " + hardTotalCount);
-
-
         int submissionsTotalCount = userStatsDAO.getSubmissionsCount(user);
         int acceptedSubmissionsCount = userStatsDAO.getSubmittedProblemCountByVerdict(user, verdictAccepted);
         userSubmissionStats.setSubmissionsTotalCount(submissionsTotalCount);
         userSubmissionStats.setNotAcceptedSubmissionsCount(submissionsTotalCount - acceptedSubmissionsCount);
 
-        System.out.println("total submissions " + submissionsTotalCount);
-        System.out.println("accepted submissions " + acceptedSubmissionsCount);
-
         int submissionsToday = userStatsDAO.getSubmissionsCountByDays(user);
         userSubmissionStats.setAcceptedProblemsCountToday(submissionsToday);
 
-        System.out.println("submissions today " + submissionsToday);
-
         int userRank = userStatsDAO.getUserRank(user);
         userSubmissionStats.setUserRank(userRank);
-        System.out.println("rank " + userRank);
-
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
