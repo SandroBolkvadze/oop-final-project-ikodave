@@ -12,4 +12,12 @@ public class ToSQL {
                 DatabaseConstants.UserRole.COL_ID
         );
     }
+
+    public static String toInsertProblemTopicRelationSQL() {
+        return format("INSERT INTO %s (%s, %s) VALUES (?, ?)",
+                DatabaseConstants.ProblemManyToManyTopic.TABLE_NAME,
+                DatabaseConstants.ProblemManyToManyTopic.COL_PROBLEM_ID,
+                DatabaseConstants.ProblemManyToManyTopic.COL_TOPIC_ID
+        );
+    }
 }
