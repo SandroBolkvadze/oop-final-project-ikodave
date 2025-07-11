@@ -61,7 +61,6 @@ public class SubmitCodeServlet extends HttpServlet {
 
         Problem problem = problemDAO.getProblemByTitle(userSubmission.getProblemTitle());
         CodeLang codeLang = toCodeLang(userSubmission.getCodeLanguage());
-        System.out.println(codeLang);
         String solutionCode = userSubmission.getSolutionCode();
         List<TestCase> testCases = testDAO.getTestCasesByProblemId(problem.getId());
 
@@ -79,21 +78,13 @@ public class SubmitCodeServlet extends HttpServlet {
         submission.setMemory(0);
         submission.setSubmitDate(new Timestamp(System.currentTimeMillis()));
 
-        System.out.println("user submitting: " + user.getId());
         final int submissionId = submissionDAO.insertSubmission(submission);
-
-//        System.out.println(solutionCode);
-//        System.out.println(testCases);
-//        System.out.println(codeLang);
-//        System.out.println(problem.getTitle());
 
         executor.submit(() -> {
             try {
-                System.out.println("start testing");
                 SubmissionResult submissionResult =
                         dockerCodeRunner.testCodeMultipleTests(codeLang, solutionCode, problem.getTimeLimit(), testCases);
 
-                System.out.println("log: " + submissionResult.getLog());
 
                 Submission updatedSubmission =
                         new Submission(submissionId,
@@ -108,7 +99,6 @@ public class SubmitCodeServlet extends HttpServlet {
                                 submissionResult.getLog()
                         );
 
-                System.out.println("Done: " + submissionResult.getLog());
                 submissionDAO.updateSubmission(updatedSubmission);
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);

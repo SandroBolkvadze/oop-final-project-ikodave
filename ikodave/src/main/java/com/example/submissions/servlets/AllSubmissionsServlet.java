@@ -31,7 +31,6 @@ public class AllSubmissionsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = (User) request.getSession().getAttribute(USER_KEY);
 
-        System.out.println(user);
 
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -40,7 +39,6 @@ public class AllSubmissionsServlet extends HttpServlet {
             return;
         }
 
-        System.out.println("here submissions all");
 
         UserDAO userDAO = (UserDAO) getServletContext().getAttribute(USER_DAO_KEY);
         ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
@@ -68,7 +66,6 @@ public class AllSubmissionsServlet extends HttpServlet {
                         }
                 ).toList();
 
-        System.out.println("all submissions: " + submissionResponses.size());
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

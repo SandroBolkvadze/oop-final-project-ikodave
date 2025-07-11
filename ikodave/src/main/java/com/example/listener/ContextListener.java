@@ -29,7 +29,6 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("here");
         dataSource = new BasicDataSource();
         dataSource.setUrl(URL);
         dataSource.setDriverClassName(DRIVER);

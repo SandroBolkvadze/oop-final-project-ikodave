@@ -44,13 +44,11 @@ public class ProblemsListServlet extends HttpServlet {
 
 
         String titleString = filterCriteria.getTitle();
-        System.out.println("title: " + titleString);
         if (!titleString.isEmpty()) {
             filterAnd.addFilter(new FilterTitle(titleString));
         }
 
         String difficultyName = filterCriteria.getDifficulty();
-        System.out.println("difficulty: " + difficultyName);
         if (difficultyName != null) {
             Difficulty difficulty = difficultyDAO.getDifficultyByName(difficultyName);
             FilterDifficulty filterDifficulty = new FilterDifficulty(difficulty);
@@ -58,8 +56,6 @@ public class ProblemsListServlet extends HttpServlet {
         }
 
         String statusName = filterCriteria.getStatus();
-        System.out.println("status: " + statusName);
-        System.out.println("user " + user);
 
 
         if (statusName == null && user != null) {
@@ -90,7 +86,6 @@ public class ProblemsListServlet extends HttpServlet {
 
 
         List<String> topicNames = filterCriteria.getTopics();
-        System.out.println("topics: " + topicNames);
         List<Topic> topics = new ArrayList<>();
         for (String topicName : topicNames) {
             Topic topic = topicDAO.getTopicByName(topicName);
@@ -102,7 +97,6 @@ public class ProblemsListServlet extends HttpServlet {
             filterAnd.addFilter(filterTopic);
         }
 
-        System.out.println(filterAnd.toSQLStatement());
 
         List<ProblemListResponse> problems;
 
@@ -113,10 +107,6 @@ public class ProblemsListServlet extends HttpServlet {
             problems = problemDAO.getProblemResponsesByFilterLoggedOut(filterAnd);
         }
 
-        for (ProblemListResponse problem : problems) {
-            System.out.println(problem.getTitle() + " " + problem.getDifficultyId() + " " + problem.getStatus());
-        }
-        System.out.println();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(gson.toJson(problems));

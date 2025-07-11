@@ -31,7 +31,6 @@ public class ProblemServlet extends HttpServlet {
 
         String title = problemTitle.getProblemTitle();
 
-        System.out.println(title);
 
         if (title == null || title.trim().isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing or empty 'title' field.");
