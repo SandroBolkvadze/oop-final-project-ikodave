@@ -394,7 +394,7 @@ INSERT INTO problem_many_to_many_topic (problem_id, topic_id) VALUES (15, 1);  -
 INSERT INTO problem_many_to_many_topic (problem_id, topic_id) VALUES (15, 6);  -- String
 INSERT INTO problem_many_to_many_topic (problem_id, topic_id) VALUES (15, 17); -- Sliding Window
 
-USE ikodave_test;
+USE Ikodave;
 
 INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '1 2', '3', 1);
 INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-1000 1000', '0', 2);

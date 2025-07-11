@@ -51,7 +51,6 @@ public class SubmissionsListServlet extends HttpServlet  {
             return;
         }
 
-        System.out.println(problemTitle);
 
         Problem problem = problemDAO.getProblemByTitle(problemTitle);
         List<Submission> submissions = submissionDAO.getSubmissionsByOrder(user.getId(), problem.getId());
@@ -59,8 +58,6 @@ public class SubmissionsListServlet extends HttpServlet  {
         List<SubmissionResponse> submissionResponses =
                 submissions.stream().map((submission) -> {
 
-                    System.out.println(codeLanguageDAO.getCodeLanguageById(submission.getCodeLanguageId()).getLanguage());
-                    System.out.println(submission.getSubmitDate());
 
                     return new SubmissionResponse(
                             submission.getSubmitDate(),

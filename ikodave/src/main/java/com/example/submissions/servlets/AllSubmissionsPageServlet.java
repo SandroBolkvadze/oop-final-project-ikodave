@@ -16,7 +16,6 @@ public class AllSubmissionsPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute(USER_KEY);
 
-        System.out.println("user: " + user);
         if (user == null) {
             response.sendRedirect("/signin");
         }

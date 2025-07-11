@@ -35,9 +35,6 @@ public class SQLLeaderboardDAO implements LeaderboardDAO {
                 userWithScores.add(userWithScore);  // Add to list
             }
 
-            for(int i = 0; i < userWithScores.size(); i++){
-                System.out.println(userWithScores.get(i).getScore());
-            }
             return userWithScores;
         } catch (SQLException e) {
             throw new RuntimeException("Error querying users by score", e);

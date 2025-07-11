@@ -14,5 +14,6 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertSubmissionVerdicts.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertTestCases.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/insertUserRole.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/example/sql/total.sql" dialect="MySQL" />
   </component>
 </project>
