@@ -131,6 +131,24 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>AllSubmissionsPageServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.AllSubmissionsPageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AllSubmissionsPageServlet</servlet-name>
+    <url-pattern>/submissions</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AllSubmissionsServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.AllSubmissionsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AllSubmissionsServlet</servlet-name>
+    <url-pattern>/api/submissions</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>ProfileSubmissionStatsServlet</servlet-name>
     <servlet-class>com.example.user_profile.servlets.ProfileSubmissionStatsServlet</servlet-class>
   </servlet>

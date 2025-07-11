@@ -55,7 +55,7 @@ async function loadStats(username) {
 
 
         const accepted = easySolved + mediumSolved + hardSolved;
-        const total = stats.submissionsTotalCount;
+        const total = accepted + stats.notAcceptedSubmissionsCount;
 
         const accuracyElem = document.getElementById('accuracy');
         if (total === 0) {

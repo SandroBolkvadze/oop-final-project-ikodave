@@ -159,4 +159,12 @@ public class ToSQL {
                 Submissions.COL_SUBMIT_DATE
         );
     }
+
+    public static String toAllSubmissionSortedSQL() {
+        return format("SELECT * FROM %s ORDER BY %s.%s DESC",
+                Submissions.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE
+        );
+    }
 }
