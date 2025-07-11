@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public interface UserStatsDAO {
-    
+
     int getSubmittedProblemCountByVerdict(User user, SubmissionVerdict verdict);
 
     int getSolvedProblemCount(User user);
@@ -17,7 +17,7 @@ public interface UserStatsDAO {
 
     int getSubmissionsCount(User user);
 
-    int getAcceptedSubmissionsCountByToday(User user);
+    int getSubmissionsCountByDays(User user);
 
     int getUserRank(User user);
 
