@@ -226,7 +226,6 @@ class SQLVerdictDAOTest {
     }
 
     @Test
-    @DisplayName("Test getVerdictById - should handle SQLException")
     void testGetVerdictByIdSQLException() throws SQLException {
         BasicDataSource closedDataSource = new BasicDataSource();
         closedDataSource.close();
