@@ -16,8 +16,7 @@ function createLeaderboardRow(entry, index) {
         <td>
             <a href="/profile/${entry.username}"
                class="btn btn-outline-primary btn-sm"
-               role="button"
-               target="_blank">
+               role="button">
                 View Profile
             </a>
         </td>
