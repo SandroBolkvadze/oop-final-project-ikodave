@@ -75,7 +75,7 @@ function loadUserSubmissions() {
 
                 const toggleLog = document.createElement('button');
                 toggleLog.textContent = 'Show Logs';
-                toggleLog.className = 'btn btn-sm btn-outline-secondary mb-2';
+                toggleLog.className = 'btn btn-sm btn-outline-info mb-2';
                 card.appendChild(toggleLog);
 
                 const log = sub.log;

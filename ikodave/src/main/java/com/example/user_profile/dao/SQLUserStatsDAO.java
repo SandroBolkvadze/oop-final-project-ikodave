@@ -123,13 +123,16 @@ public class SQLUserStatsDAO implements UserStatsDAO {
     }
 
     @Override
-    public List<Timestamp> getUserActivityByMonth(User user) {
+    public List<Timestamp> getUserActivityByMonth(User user, int month, int year) {
         String sqlStatement = getUserActivityByMonthSQL();
         try (Connection connection = basicDataSource.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1, user.getId());
-            preparedStatement.setString(2, "Accepted");
+            preparedStatement.setInt(1, month);
+            preparedStatement.setInt(2, year);
+            preparedStatement.setInt(3, user.getId());
+            preparedStatement.setString(4, "Accepted");
             ResultSet resultSet = preparedStatement.executeQuery();
+
             List<Timestamp> activityTimestamps = new ArrayList<>();
             while(resultSet.next()) {
                 Timestamp timestamp = resultSet.getTimestamp(1);

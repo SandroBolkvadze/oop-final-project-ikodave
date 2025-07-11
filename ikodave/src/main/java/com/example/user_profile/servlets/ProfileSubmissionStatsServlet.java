@@ -1,13 +1,12 @@
 package com.example.user_profile.servlets;
 
-import com.example.leaderboard.dao.LeaderboardDAO;
 import com.example.problems.DAO.DifficultyDAO;
 import com.example.problems.DTO.Difficulty;
 import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
 import com.example.submissions.DAO.VerdictDAO;
 import com.example.submissions.DTO.SubmissionVerdict;
-import com.example.user_profile.Response.UserStats;
+import com.example.user_profile.Response.UserSubmissionStats;
 import com.example.user_profile.Response.UsernameBody;
 import com.example.user_profile.dao.ProblemStatsDAO;
 import com.example.user_profile.dao.UserStatsDAO;
@@ -17,14 +16,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.List;
 
 import static com.example.util.AttributeConstants.*;
 import static com.example.util.DatabaseConstants.DifficultyElements.*;
 import static com.example.util.DatabaseConstants.ProblemVerdictElements.VERDICT_ACCEPTED;
 
-public class ProfileStatsServlet extends HttpServlet {
+public class ProfileSubmissionStatsServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -33,7 +30,6 @@ public class ProfileStatsServlet extends HttpServlet {
         ProblemStatsDAO problemStatsDAO = (ProblemStatsDAO) getServletContext().getAttribute(PROBLEM_STATS_DAO);
         DifficultyDAO difficultyDAO = (DifficultyDAO) getServletContext().getAttribute(DIFFICULTY_DAO_KEY);
         VerdictDAO verdictDAO = (VerdictDAO) getServletContext().getAttribute(VERDICT_DAO_KEY);
-        LeaderboardDAO leaderboardDAO = (LeaderboardDAO) getServletContext().getAttribute(LEADERBOARD_DAO_KEY);
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
         UsernameBody usernameBody = gson.fromJson(request.getReader(), UsernameBody.class);
@@ -41,7 +37,7 @@ public class ProfileStatsServlet extends HttpServlet {
         User user = userDAO.getUserByUsername(username);
 
 
-        UserStats userStats = new UserStats();
+        UserSubmissionStats userSubmissionStats = new UserSubmissionStats();
 
         Difficulty difficultyEasy = difficultyDAO.getDifficultyByName(DIFFICULTY_EASY);
         Difficulty difficultyMedium = difficultyDAO.getDifficultyByName(DIFFICULTY_MEDIUM);
@@ -50,16 +46,16 @@ public class ProfileStatsServlet extends HttpServlet {
 
         int easySolvedCount = userStatsDAO.getSolvedProblemCountByDifficulty(user, difficultyEasy);
         int easyTotalCount = problemStatsDAO.getProblemCountByDifficulty(difficultyEasy);
-        userStats.setEasySolvedProblemsCount(easySolvedCount);
-        userStats.setEasyNotSolvedProblemsCount(easyTotalCount - easySolvedCount);
+        userSubmissionStats.setEasySolvedProblemsCount(easySolvedCount);
+        userSubmissionStats.setEasyNotSolvedProblemsCount(easyTotalCount - easySolvedCount);
 
         System.out.println("easy solved: " + easySolvedCount);
         System.out.println("east total count " + easyTotalCount);
 
         int mediumSolvedCount = userStatsDAO.getSolvedProblemCountByDifficulty(user, difficultyMedium);
         int mediumTotalCount = problemStatsDAO.getProblemCountByDifficulty(difficultyMedium);
-        userStats.setMediumSolvedProblemsCount(mediumSolvedCount);
-        userStats.setMediumNotSolvedProblemsCount(mediumTotalCount - mediumSolvedCount);
+        userSubmissionStats.setMediumSolvedProblemsCount(mediumSolvedCount);
+        userSubmissionStats.setMediumNotSolvedProblemsCount(mediumTotalCount - mediumSolvedCount);
 
         System.out.println("medium solved: " + mediumSolvedCount);
         System.out.println("medium total count " + mediumTotalCount);
@@ -67,8 +63,8 @@ public class ProfileStatsServlet extends HttpServlet {
 
         int hardSolvedCount = userStatsDAO.getSolvedProblemCountByDifficulty(user, difficultyHard);
         int hardTotalCount = problemStatsDAO.getProblemCountByDifficulty(difficultyHard);
-        userStats.setHardSolvedProblemsCount(hardSolvedCount);
-        userStats.setHardNotSolvedProblemsCount(hardTotalCount - hardSolvedCount);
+        userSubmissionStats.setHardSolvedProblemsCount(hardSolvedCount);
+        userSubmissionStats.setHardNotSolvedProblemsCount(hardTotalCount - hardSolvedCount);
 
         System.out.println("hard solved: " + hardSolvedCount);
         System.out.println("hard total count " + hardTotalCount);
@@ -76,29 +72,25 @@ public class ProfileStatsServlet extends HttpServlet {
 
         int submissionsTotalCount = userStatsDAO.getSubmissionsCount(user);
         int acceptedSubmissionsCount = userStatsDAO.getSubmittedProblemCountByVerdict(user, verdictAccepted);
-        userStats.setSubmissionsTotalCount(submissionsTotalCount);
-        userStats.setNotAcceptedSubmissionsCount(submissionsTotalCount - acceptedSubmissionsCount);
+        userSubmissionStats.setSubmissionsTotalCount(submissionsTotalCount);
+        userSubmissionStats.setNotAcceptedSubmissionsCount(submissionsTotalCount - acceptedSubmissionsCount);
 
         System.out.println("total submissions " + submissionsTotalCount);
         System.out.println("accepted submissions " + acceptedSubmissionsCount);
 
-        int submissionsToday = userStatsDAO.getAcceptedSubmissionsCountByToday(user);
-        userStats.setAcceptedProblemsCountToday(submissionsToday);
+        int submissionsToday = userStatsDAO.getSubmissionsCountByDays(user);
+        userSubmissionStats.setAcceptedProblemsCountToday(submissionsToday);
 
         System.out.println("submissions today " + submissionsToday);
 
         int userRank = userStatsDAO.getUserRank(user);
-        userStats.setUserRank(userRank);
+        userSubmissionStats.setUserRank(userRank);
         System.out.println("rank " + userRank);
 
-        List<Timestamp> submissionDates = userStatsDAO.getUserActivityByMonth(user);
-        userStats.setSubmissionDates(submissionDates);
-
-        System.out.println(submissionDates.size());
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(gson.toJson(userStats));
+        response.getWriter().write(gson.toJson(userSubmissionStats));
     }
 
 }

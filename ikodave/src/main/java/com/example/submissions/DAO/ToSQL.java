@@ -143,8 +143,21 @@ public class ToSQL {
         return format("SELECT * FROM %s;",
                 CodeLanguages.TABLE_NAME);
     }
-
-
+    public static String toSubmissionByDateSortedSQL() {
+        return format("SELECT * FROM %s WHERE %s.%s = ? AND DAY(%s.%s) = ? AND MONTH(%s.%s) = ? AND YEAR(%s.%s) = ? ORDER BY %s.%s DESC;",
+                Submissions.TABLE_NAME,
+                Submissions.TABLE_NAME,
+                Submissions.COL_USER_ID,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE,
+                Submissions.TABLE_NAME,
+                Submissions.COL_SUBMIT_DATE
+        );
+    }
     public static String toAllSubmissionSortedSQL() {
         return format("SELECT * FROM %s ORDER BY %s.%s DESC",
                 Submissions.TABLE_NAME,
@@ -152,4 +165,5 @@ public class ToSQL {
                 Submissions.COL_SUBMIT_DATE
         );
     }
+
 }
