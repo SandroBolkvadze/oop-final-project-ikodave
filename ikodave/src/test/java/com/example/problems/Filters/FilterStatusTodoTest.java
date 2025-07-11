@@ -1,4 +1,4 @@
-package com.example.problems.tests;
+package com.example.problems.Filters;
 
 import com.example.problems.Filters.FilterStatusTodo;
 import com.example.registration.model.User;
