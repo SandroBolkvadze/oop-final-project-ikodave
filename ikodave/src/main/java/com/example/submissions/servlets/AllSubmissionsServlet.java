@@ -29,7 +29,18 @@ public class AllSubmissionsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("here2");
+        User user = (User) request.getSession().getAttribute(USER_KEY);
+
+        System.out.println(user);
+
+        if (user == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"Unauthorized access\"}");
+            return;
+        }
+
+        System.out.println("here submissions all");
 
         UserDAO userDAO = (UserDAO) getServletContext().getAttribute(USER_DAO_KEY);
         ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);

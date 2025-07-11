@@ -32,6 +32,11 @@ public class AddProblemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!AdminAuthHelper.isAdmin(request, getServletContext())) {
+            response.sendRedirect("/home");
+            return;
+        }
+
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
         ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
         TestDAO testDAO = (TestDAO) getServletContext().getAttribute(TEST_DAO_KEY);

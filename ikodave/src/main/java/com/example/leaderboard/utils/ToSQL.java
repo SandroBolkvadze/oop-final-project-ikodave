@@ -6,7 +6,7 @@ import static java.lang.String.format;
 
 public class ToSQL {
     public static String getUsersScored() {
-        return format("SELECT USERS.%s AS USER, " +
+        return format("SELECT USERS.%s AS \"USER\", " +
                         "(SELECT COUNT(DISTINCT SUBMISSIONS.%s) " +
                         "FROM %s USERCOUNTER " +
                         "LEFT JOIN %s SUBMISSIONS ON SUBMISSIONS.%s = USERCOUNTER.%s " +

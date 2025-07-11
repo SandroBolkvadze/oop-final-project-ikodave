@@ -2,6 +2,7 @@ package com.example.submissions.servlets;
 
 import com.example.problems.DAO.ProblemDAO;
 import com.example.registration.dao.UserDAO;
+import com.example.registration.model.User;
 import com.example.submissions.DAO.CodeLanguageDAO;
 import com.example.submissions.DAO.SubmissionDAO;
 import com.example.submissions.DAO.VerdictDAO;
@@ -20,11 +21,20 @@ import java.util.List;
 import java.util.Map;
 
 import static com.example.util.AttributeConstants.*;
+import static com.example.util.SessionConstants.USER_KEY;
 
 public class SubmissionsListDateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute(USER_KEY);
+        if (user == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"Unauthorized access\"}");
+            return;
+        }
+
         UserDAO userDAO = (UserDAO) getServletContext().getAttribute(USER_DAO_KEY);
         ProblemDAO problemDAO = (ProblemDAO) getServletContext().getAttribute(PROBLEM_DAO_KEY);
         SubmissionDAO submissionDAO = (SubmissionDAO) getServletContext().getAttribute(SUBMISSION_DAO_KEY);

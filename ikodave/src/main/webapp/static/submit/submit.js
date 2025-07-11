@@ -1,7 +1,7 @@
 let editor;
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadLanguages().catch(console.error);
+document.addEventListener('DOMContentLoaded', (e) => {
+    loadLanguages(e).catch(console.error);
 
     require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.47.0/min/vs' }});
     require(['vs/editor/editor.main'], () => {
@@ -27,6 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('submitForm').addEventListener('submit', e => {
+        if (!e.target.checkValidity()) {
+            e.preventDefault();
+            e.target.reportValidity();
+            return;
+        }
+
         e.preventDefault();
         const title    = document.getElementById('problemTitle').value.trim();
         const language = document.getElementById('language').value;

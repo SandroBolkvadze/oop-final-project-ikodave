@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static com.example.submissions.CodeRunner.DockerCodeRunner.SANDBOX_USER;
+
 public class JavaLang implements CodeLang {
 
     private static final String JAVA_FILE_NAME = "Solution";
@@ -23,7 +25,7 @@ public class JavaLang implements CodeLang {
     @Override
     public List<String> compileCommand(String containerName) {
         return List.of(
-                "docker", "exec", containerName,
+                "docker", "exec", "-u", SANDBOX_USER, containerName,
                 "javac", JAVA_FILE_NAME + ".java"
         );
     }
@@ -31,7 +33,7 @@ public class JavaLang implements CodeLang {
     @Override
     public List<String> executeCommand(String containerName) {
         return List.of(
-                "docker", "exec", "-i", containerName,
+                "docker", "exec", "-u", SANDBOX_USER, "-i", containerName,
                 "java", "-cp", "/app", JAVA_FILE_NAME
         );
     }

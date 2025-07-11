@@ -24,7 +24,6 @@ public class AddProblemPageServlet extends HttpServlet {
 
         request.getRequestDispatcher("/static/admin/add_problem.html")
                 .forward(request, response);
-        // todo
     }
 
     @Override
