@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static com.example.submissions.CodeRunner.DockerCodeRunner.SANDBOX_USER;
+
 public class CPPLang implements CodeLang {
 
     private static final String CPP_FILE_NAME = "Solution";
@@ -22,7 +24,7 @@ public class CPPLang implements CodeLang {
     @Override
     public List<String> compileCommand(String containerName) {
         return List.of(
-                "docker", "exec", containerName,
+                "docker", "exec", "-u", SANDBOX_USER, containerName,
                 "g++", CPP_FILE_NAME + ".cpp",
                 "-std=c++17", "-O2",
                 "-o", CPP_FILE_NAME
@@ -32,7 +34,7 @@ public class CPPLang implements CodeLang {
     @Override
     public List<String> executeCommand(String containerName) {
         return List.of(
-                "docker", "exec", "-i", containerName,
+                "docker", "exec", "-u", SANDBOX_USER, "-i", containerName,
                 "/app/" + CPP_FILE_NAME
         );
     }

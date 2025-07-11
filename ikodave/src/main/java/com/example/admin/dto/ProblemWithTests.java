@@ -11,6 +11,7 @@ public class ProblemWithTests {
     private int timeLimit;
     private List<TestCaseDTO> testCases;
 
+    private List<String> topics;  // ← NEW FIELD
     // Getters and setters
     public String getTitle() {
         return title;
@@ -66,5 +67,14 @@ public class ProblemWithTests {
 
     public void setTestCases(List<TestCaseDTO> testCases) {
         this.testCases = testCases;
+    }
+
+
+    public List<String> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<String> topics) {
+        this.topics = topics;
     }
 }

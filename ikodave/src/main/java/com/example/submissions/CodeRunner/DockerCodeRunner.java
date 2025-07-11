@@ -23,6 +23,8 @@ import static java.lang.String.format;
 
 public class DockerCodeRunner implements CodeRunner {
 
+    public static final String SANDBOX_USER = "sandboxuser";
+
     private static final int NUM_CONTAINERS = 5;
 
     private static final long PROCESS_TIMEOUT_MILLIS = 5000;
@@ -130,8 +132,10 @@ public class DockerCodeRunner implements CodeRunner {
 
         if (!finished) {
             System.out.println("time limit exceeded");
+            process.destroy();
             return new TestCaseTimeLimitExceeded(executeTimeoutMillis, 0, format("Time Limit Exceeded On Test %d", testCase.getTestNumber()));
         }
+
         if (process.exitValue() != 0) {
             System.out.println("runtime error");
             return new TestCaseRuntimeError(0, 0, readInputStream(process.getErrorStream()));

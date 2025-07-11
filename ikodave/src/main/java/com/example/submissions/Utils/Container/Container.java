@@ -29,8 +29,8 @@ public class Container {
                 "--network=none",
                 "--memory=256m",
                 "--cpus=4.0",
-                "--cap-drop=ALL",
-                "--cap-add=DAC_READ_SEARCH",
+//                "--cap-drop=ALL",
+//                "--cap-add=DAC_READ_SEARCH",
                 "--security-opt", "no-new-privileges",
                 "-v", workDir + ":/app:rw",
                 "-w", "/app",
@@ -63,21 +63,72 @@ public class Container {
     }
 
     public void cleanContainer() {
-        List<String> command = List.of(
-                "docker", "exec", containerName,
-                "bash", "-lc",
-                "rm -rf /app/* /app/.* 2>/dev/null || true"
-        );
-
         try {
-            Process process = new ProcessBuilder(command).start();
-            if (!process.waitFor(5, TimeUnit.SECONDS) || process.exitValue() != 0) {
-                throw new RuntimeException("Failed to clean /app in container " + containerName);
-            }
-        } catch (IOException | InterruptedException e) {
+            new ProcessBuilder(
+                    "docker", "exec", containerName,
+                    "bash", "-lc", "rm -rf /app/* /app/.* 2>/dev/null || true"
+            )
+            .start()
+            .waitFor(5, TimeUnit.SECONDS);
+
+
+            new ProcessBuilder(
+                    "docker", "exec", containerName,
+                    "bash", "-lc", "kill -9 -1 || true"
+            )
+            .start()
+            .waitFor(5, TimeUnit.SECONDS);
+
+
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
 
+/*
+    Comment: backup Code for killing and cleaning containers, do not touch.
+*/
+
+
+//        try {
+//            new ProcessBuilder("docker", "restart", containerName)
+//                    .start()
+//                    .waitFor(10, TimeUnit.SECONDS);
+//        } catch (InterruptedException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
+//        List<String> cleanDirCommand = List.of(
+//                "docker", "exec", containerName,
+//                "bash", "-lc",
+//                "rm -rf /app/* /app/.* 2>/dev/null || true"
+//        );
+//
+//        try {
+//            Process process = new ProcessBuilder(cleanDirCommand).start();
+//            if (!process.waitFor(5, TimeUnit.SECONDS) || process.exitValue() != 0) {
+//                throw new RuntimeException("Failed to clean /app in container " + containerName);
+//            }
+//        } catch (IOException | InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        List<String> killUser = List.of(
+//                "docker", "exec", containerName,
+//                "bash", "-lc",
+//                "pkill -u sandboxuser || true; pkill -9 -u sandboxuser || true"
+//        );
+//
+//        List<String> killAll = List.of(
+//                "docker", "exec", containerName,
+//                "bash", "-lc",
+//                "kill -9 -1 || true"
+//        );
+//        try {
+//            new ProcessBuilder(killUser).start().waitFor(5, TimeUnit.SECONDS);
+//            new ProcessBuilder(killAll).start().waitFor(5, TimeUnit.SECONDS);
+//        } catch (IOException | InterruptedException e) {
+//            throw new RuntimeException("Failed to kill processes in container " + containerName, e);
+//        }
     }
 
     public String getContainerName() {

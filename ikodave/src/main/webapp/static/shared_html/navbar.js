@@ -11,7 +11,12 @@ async function loadNavbar() {
         const loggedIn = session.loggedIn === "true" || session.loggedIn === true;
         const role = session.role || null;
 
+
         // Show/hide based on session
+
+
+        // Apply navbar visibility logic
+
         toggleElement('nav-register', !loggedIn);
         toggleElement('nav-signin', !loggedIn);
         toggleElement('nav-profile', loggedIn);

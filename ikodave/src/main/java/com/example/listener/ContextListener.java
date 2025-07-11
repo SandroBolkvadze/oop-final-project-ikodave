@@ -1,6 +1,8 @@
 package com.example.listener;
 
+import com.example.admin.dao.ProblemTopicRelationDAO;
 import com.example.admin.dao.RoleDAO;
+import com.example.admin.dao.SQLProblemTopicRelationDAO;
 import com.example.admin.dao.SQLRoleDAO;
 import com.example.leaderboard.dao.LeaderboardDAO;
 import com.example.leaderboard.dao.SQLLeaderboardDAO;
@@ -33,6 +35,9 @@ public class ContextListener implements ServletContextListener {
         dataSource.setDriverClassName(DRIVER);
         dataSource.setUsername(DATABASE_USER);
         dataSource.setPassword(DATABASE_PASSWORD);
+
+        ProblemTopicRelationDAO problemTopicRelationDAO = new SQLProblemTopicRelationDAO(dataSource);
+        sce.getServletContext().setAttribute(PROBLEM_TOPIC_RELATION_DAO_KEY, problemTopicRelationDAO);
 
         UserDAO userDao = new MySQLUserDao(dataSource);
         sce.getServletContext().setAttribute(USER_DAO_KEY, userDao);

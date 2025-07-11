@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static com.example.submissions.CodeRunner.DockerCodeRunner.SANDBOX_USER;
+
 public class PythonLang implements CodeLang {
 
     private static final String PYTHON_FILE_NAME = "Solution";
@@ -26,7 +28,7 @@ public class PythonLang implements CodeLang {
     @Override
     public List<String> executeCommand(String containerName) {
         return List.of(
-                "docker", "exec", "-i", containerName,
+                "docker", "exec", "-u", SANDBOX_USER, "-i", containerName,
                 "python3", "-u", "/app/" + PYTHON_FILE_NAME + ".py"
         );
     }

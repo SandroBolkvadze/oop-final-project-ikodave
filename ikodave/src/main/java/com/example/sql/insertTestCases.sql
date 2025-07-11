@@ -1,4 +1,4 @@
-USE Ikodave;
+USE ikodave_test;
 
 INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '1 2', '3', 1);
 INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-1000 1000', '0', 2);
@@ -126,7 +126,7 @@ INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) 
 INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'OpenAI GPT', 'TPG IAnepO', 9);
 INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'reverse this sentence', 'ecnetnes siht esrever', 10);
 INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'a b c d', 'd c b a', 11);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'longinputtexttest', 'tsettetxtupnignol', 12);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'longinputtexttest', 'tsettxettupnignol', 12);
 INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'zzzzzzzzzz', 'zzzzzzzzzz', 13);
 INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'ABCDE', 'EDCBA', 14);
 INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, '9876543210abcdef', 'fedcba0123456789', 15);

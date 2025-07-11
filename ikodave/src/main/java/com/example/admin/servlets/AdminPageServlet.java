@@ -24,6 +24,5 @@ public class AdminPageServlet extends HttpServlet {
 
         request.getRequestDispatcher("/static/admin/admin_page.html")
                 .forward(request, response);
-        // todo
     }
 }

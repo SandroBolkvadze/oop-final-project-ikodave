@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
         groupName: 'difficulty',
         valueKey: 'difficulty',
         labelKey: 'difficulty',
-        btnClass: 'btn-outline-primary'
+        btnClass: 'btn-outline-primary',
+        order: ['easy','medium','hard']
     });
 
     populateToggleGroup({
@@ -112,7 +113,7 @@ async function filter() {
     });
 }
 
-async function populateToggleGroup({ url, containerId, groupName, valueKey, labelKey, btnClass = 'btn-outline-primary' }) {
+async function populateToggleGroup({ url, containerId, groupName, valueKey, labelKey, btnClass = 'btn-outline-primary', order }) {
     try {
         const res = await fetch(url);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -120,6 +121,18 @@ async function populateToggleGroup({ url, containerId, groupName, valueKey, labe
         const items = await res.json();
         const container = document.getElementById(containerId);
         if (!container) return;
+
+        if (order && Array.isArray(order)) {
+            const orderMap = order.reduce((map, val, idx) => {
+                map[val.toLowerCase()] = idx;
+                return map;
+            }, {});
+            items.sort((a, b) => {
+                const aIdx = orderMap[a[valueKey].toLowerCase()] ?? Infinity;
+                const bIdx = orderMap[b[valueKey].toLowerCase()] ?? Infinity;
+                return aIdx - bIdx;
+            });
+        }
 
         const groupDiv = document.createElement('div');
         groupDiv.className = 'btn-group w-100';

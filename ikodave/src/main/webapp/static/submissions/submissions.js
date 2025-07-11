@@ -28,7 +28,7 @@ function loadUserSubmissions() {
                 return;
             }
 
-            let submissions = data.submissions;
+            const submissions = data.submissions;
 
             if (!submissions.length) {
                 container.innerHTML = '<p>No submissions yet.</p>';
@@ -40,18 +40,45 @@ function loadUserSubmissions() {
                 card.className = 'card mb-3';
                 card.style.padding = '10px';
 
+                // Verdict header with color coding
                 const header = document.createElement('h5');
                 header.textContent = `#${index + 1} — ${sub.verdict}`;
+                const status = sub.verdict.toLowerCase();
+                header.classList.add('mb-2');
+                if (status === 'accepted') {
+                    header.classList.add('text-success');
+                } else if (status === 'running') {
+                    header.classList.add('text-primary');
+                } else {
+                    header.classList.add('text-danger');
+                }
                 card.appendChild(header);
+
+                // Format submission date and time
+                let formattedDateTime = sub.submitDate;
+                try {
+                    const dt = new Date(sub.submitDate);
+                    const pad = n => String(n).padStart(2, '0');
+                    const yyyy = dt.getFullYear();
+                    const mm = pad(dt.getMonth() + 1);
+                    const dd = pad(dt.getDate());
+                    const hh = pad(dt.getHours());
+                    const min = pad(dt.getMinutes());
+                    const ss = pad(dt.getSeconds());
+                    formattedDateTime = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+                } catch (e) {
+                }
 
                 const details = document.createElement('p');
                 details.innerHTML = `
-                    <strong>User:</strong> 
-                      <a href="/profile/${encodeURIComponent(sub.username)}">${sub.username}</a> &nbsp;|&nbsp;
-                    <strong>Language:</strong> ${sub.codeLanguage} &nbsp;|&nbsp;
-                    <strong>Time:</strong> ${sub.time} ms &nbsp;|&nbsp;
-                    <strong>Memory:</strong> ${Math.round(sub.memory / 1024)} KB &nbsp;|&nbsp;
-                    <strong>Date:</strong> ${sub.submitDate}
+                    <strong>User:</strong>
+                    <a href="/profile/${encodeURIComponent(sub.username)}">${sub.username}</a>
+                    &nbsp;|&nbsp;
+                    <strong>Language:</strong> ${sub.codeLanguage}
+                    &nbsp;|&nbsp;
+                    <strong>Time:</strong> ${sub.time} ms
+                    &nbsp;|&nbsp;
+                    <strong>Date:</strong> ${formattedDateTime}
                 `;
                 card.appendChild(details);
 
@@ -73,18 +100,18 @@ function loadUserSubmissions() {
                     toggleCode.textContent = isHidden ? 'Hide Code' : 'Show Code';
                 });
 
+                // Show Logs toggle
                 const toggleLog = document.createElement('button');
                 toggleLog.textContent = 'Show Logs';
-                toggleLog.className = 'btn btn-sm btn-outline-info mb-2';
+                toggleLog.className = 'btn btn-sm btn-outline-secondary mb-2';
                 card.appendChild(toggleLog);
 
-                const log = sub.log;
                 const logPre = document.createElement('pre');
                 logPre.style.display = 'none';
                 logPre.style.background = '#f9f9f9';
                 logPre.style.padding = '10px';
                 logPre.style.marginTop = '5px';
-                logPre.textContent = log || 'No logs available.';
+                logPre.textContent = sub.log || 'No logs available.';
                 card.appendChild(logPre);
 
                 toggleLog.addEventListener('click', () => {
@@ -98,7 +125,6 @@ function loadUserSubmissions() {
         })
         .catch((error) => {
             console.error(error);
-            document.getElementById('submissions')
-                .textContent = 'Error loading submissions.';
+            document.getElementById('submissions').textContent = 'Error loading submissions.';
         });
 }
