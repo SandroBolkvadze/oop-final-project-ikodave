@@ -21,5 +21,5 @@ public interface UserStatsDAO {
 
     int getUserRank(User user);
 
-    List<Timestamp> getUserActivityByMonth(User user);
+    List<Timestamp> getUserActivityByMonth(User user, int month, int year);
 }

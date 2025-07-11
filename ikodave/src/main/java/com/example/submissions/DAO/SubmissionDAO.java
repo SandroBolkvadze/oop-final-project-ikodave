@@ -14,4 +14,6 @@ public interface SubmissionDAO {
 
     List<Submission> getSubmissionsByOrder(int userId, int problemId);
 
+    List<Submission> getSubmissionsByDateByOrder(int userId, int day, int month, int year);
+
 }

@@ -11,7 +11,7 @@ import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserStatsDAOTest {
+class UserSubmissionStatsDAOTest {
 
     private static BasicDataSource dataSource;
     private static UserStatsDAO dao;

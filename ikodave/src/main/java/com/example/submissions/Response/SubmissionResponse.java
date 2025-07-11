@@ -1,4 +1,4 @@
-package com.example.submissions.FrontResponse;
+package com.example.submissions.Response;
 
 import java.sql.Timestamp;
 
