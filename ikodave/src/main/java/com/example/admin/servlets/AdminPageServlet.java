@@ -24,11 +24,6 @@ public class AdminPageServlet extends HttpServlet {
 
         request.getRequestDispatcher("/static/admin/admin_page.html")
                 .forward(request, response);
-        // todo
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
 }

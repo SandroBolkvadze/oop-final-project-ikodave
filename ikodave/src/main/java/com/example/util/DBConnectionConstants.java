@@ -2,7 +2,7 @@ package com.example.util;
 
 public class DBConnectionConstants {
 
-    public static final String URL = "jdbc:mysql://localhost:3306/test_ikodave";
+    public static final String URL = "jdbc:mysql://localhost:3306/ikodave_test";
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     public static final String DATABASE_USER = "root";
     public static final String DATABASE_PASSWORD = "root";

@@ -122,5 +122,5 @@ function renderCalendar(submissionDates, month, year) {
         calendarGrid.appendChild(cell);
     }
 
-    attachCalendarDayClickHandlers(username);
+    attachCalendarDayClickHandlers(username).catch(console.error);
 }
