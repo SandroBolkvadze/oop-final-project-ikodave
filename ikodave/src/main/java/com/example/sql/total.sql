@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS user_role
 (
     id        INT AUTO_INCREMENT PRIMARY KEY,
     role VARCHAR(32)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -17,37 +17,37 @@ CREATE TABLE IF NOT EXISTS users
     password                VARCHAR(256) NOT NULL,
     register_date           DATETIME NOT NULL,
     FOREIGN KEY (role_id)   REFERENCES user_role (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS problem_status
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     status      VARCHAR(32) UNIQUE NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS problem_difficulty
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     difficulty VARCHAR(32) UNIQUE NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS problem_topic
 (
     id    INT AUTO_INCREMENT PRIMARY KEY,
     topic VARCHAR(32) UNIQUE NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS submission_verdict
 (
     id     INT AUTO_INCREMENT PRIMARY KEY,
     verdict VARCHAR(32) UNIQUE NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS code_language
 (
     id   INT AUTO_INCREMENT PRIMARY KEY,
     language VARCHAR(32) UNIQUE NOT NULL
-    );
+);
 
 -- problems
 CREATE TABLE IF NOT EXISTS problems
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS problems
     output_spec         TEXT NOT NULL,
     create_date         DATETIME NOT NULL,
     FOREIGN KEY (difficulty_id) REFERENCES problem_difficulty (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS problem_many_to_many_topic
 (
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS problem_many_to_many_topic
     topic_id   INT,
     FOREIGN KEY (problem_id) REFERENCES problems (id),
     FOREIGN KEY (topic_id) REFERENCES problem_topic (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS submissions
 (
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS submissions
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (verdict_id) REFERENCES submission_verdict (id),
     FOREIGN KEY (code_language_id) REFERENCES code_language (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS test_cases
 (
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS test_cases
     problem_output      MEDIUMTEXT,
     test_number         INT,
     FOREIGN KEY (problem_id) REFERENCES problems (id)
-    );
+);
 
 
 
@@ -396,305 +396,256 @@ INSERT INTO problem_many_to_many_topic (problem_id, topic_id) VALUES (15, 17); -
 
 USE Ikodave;
 
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '1 2', '3', 1);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-1000 1000', '0', 2);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-2000000000 2000000000', '0', 3);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '123456789 987654321', '1111111110', 4);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '999999999 1', '1000000000', 5);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-999999999 -1', '-1000000000', 6);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '0 0', '0', 7);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '1000000 1000000', '2000000', 8);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '42 -17', '25', 9);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-2000000000 -1', '-2000000001', 10);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '0 1234567890', '1234567890', 11);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '123 456', '579', 12);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-1 -1', '-2', 13);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '999999999 999999999', '1999999998', 14);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-123456789 -987654321', '-1111111110', 15);
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '1 2', '2', 1);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '1000 1000', '1000', 2);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '-100 -200', '-100', 3);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '-1 0', '0', 4);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '2000000000 -2000000000', '2000000000', 5);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '-2000000000 2000000000', '2000000000', 6);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '0 0', '0', 7);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '999 1000', '1000', 8);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '1000 999', '1000', 9);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '123456789 987654321', '987654321', 10);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '-999999999 -1', '-1', 11);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '-1 -1', '-1', 12);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '0 999999999', '999999999', 13);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '42 42', '42', 14);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '2147483647 -2147483648', '2147483647', 15);
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '0', '1', 1);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '1', '1', 2);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '2', '2', 3);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '3', '6', 4);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '4', '24', 5);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '5', '120', 6);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '6', '720', 7);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '7', '5040', 8);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '8', '40320', 9);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '9', '362880', 10);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '10', '3628800', 11);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '11', '39916800', 12);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '12', '479001600', 13);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '11', '39916800', 14);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '10', '3628800', 15);
-
-
-
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '1\n1', '1', 1);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '3\n1 2 3', '6', 2);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '3\n0 0 0', '0', 3);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '3\n10 -5 -5', '0', 4);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '100\n1 2 3 ... 100', '5050', 5);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '4\n-1 -2 -3 -4', '-10', 6);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '100\n10000 10000 ...', '1000000', 7);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '100\n0 1 0 1 ...', '50', 8);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '4\n100 200 300 400', '1000', 9);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '100\n1 1 1 ...', '100', 10);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '100\n-10000 ...', '-1000000', 11);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '100\n100 99 98 ... 1', '5050', 12);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '20\n5 5 5 ...', '100', 13);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '100\n0 0 ... 9999', '9999', 14);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '100\n1 -1 1 -1 ...', '0', 15);
-
-
-
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '1\n1', '1', 1);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '3\n1 2 3', '3', 2);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '3\n0 -1 -2', '0', 3);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '100\n10000 10000 ...', '10000', 4);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '100\n-50 -49 ... 49', '49', 5);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '100\n10 ... 9999', '9999', 6);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '100\n1 1 ...', '1', 7);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '3\n-10000 -9999 -8888', '-8888', 8);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '51\n-10 ... 0', '0', 9);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '100\n100 99 ... 1', '100', 10);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '100\n5 5 5 ...', '5', 11);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '4\n10 9 8 11', '11', 12);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '4\n7 8 9 10', '10', 13);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '4\n-1 -1 -1 -1', '-1', 14);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '100\n0 0 ... 1', '1', 15);
-
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '1', '1', 1);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '2', '2', 2);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '3', '3', 3);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '4', '5', 4);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '5', '8', 5);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '6', '13', 6);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '10', '89', 7);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '15', '987', 8);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '20', '10946', 9);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '25', '121393', 10);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '30', '1346269', 11);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '35', '14930352', 12);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '40', '165580141', 13);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '44', '1134903170', 14);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '45', '1836311903', 15);
-
-
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'a', 'a', 1);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'ab', 'ba', 2);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'abc', 'cba', 3);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'abcd', 'dcba', 4);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'palindrome', 'emordnilap', 5);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'racecar', 'racecar', 6);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'hello world', 'dlrow olleh', 7);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, '1234567890', '0987654321', 8);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'OpenAI GPT', 'TPG IAnepO', 9);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'reverse this sentence', 'ecnetnes siht esrever', 10);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'a b c d', 'd c b a', 11);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'longinputtexttest', 'tsettxettupnignol', 12);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'zzzzzzzzzz', 'zzzzzzzzzz', 13);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'ABCDE', 'EDCBA', 14);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, '9876543210abcdef', 'fedcba0123456789', 15);
-
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abc\ncba', 'true', 1);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'rat\ntar', 'true', 2);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'listen\nsilent', 'true', 3);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'triangle\nintegral', 'true', 4);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'apple\nppale', 'true', 5);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'anagram\nnagaram', 'true', 6);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abcd\nabce', 'false', 7);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'aabbcc\nabcabc', 'true', 8);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abcd\ndcba', 'true', 9);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'zzzz\zzzz', 'true', 10);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'hello\olelh', 'true', 11);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'aaa\aaa', 'true', 12);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'aaa\aab', 'false', 13);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abc\abc', 'true', 14);
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abcd\abdc', 'true', 15);
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES
-                                                                                    (9, '1 2 3 4 5', '4', 1),
-                                                                                    (9, '7 1 5 3 6 4', '5', 2),
-                                                                                    (9, '7 6 4 3 1', '0', 3),
-                                                                                    (9, '2 4 1', '2', 4),
-                                                                                    (9, '3 3 3 3 3', '0', 5),
-                                                                                    (9, '1 2', '1', 6),
-                                                                                    (9, '2 1', '0', 7),
-                                                                                    (9, '1 100', '99', 8),
-                                                                                    (9, '100 1', '0', 9),
-                                                                                    (9, '1 2 3 0 2', '3', 10),
-                                                                                    (9, '5 4 3 2 1 2 3 4 5', '4', 11),
-                                                                                    (9, '1', '0', 12),
-                                                                                    (9, '10 22 5 75 65 80', '75', 13),
-                                                                                    (9, '2 1 2 1 2 1 2', '1', 14),
-                                                                                    (9, '1 2 4 2 5 7 2 4 9 0', '9', 15);
-
-
-
-
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES
-                                                                                    (10, 'racecar', 'true', 1),
-                                                                                    (10, 'A man a plan a canal Panama', 'true', 2),
-                                                                                    (10, 'No lemon, no melon', 'true', 3),
-                                                                                    (10, 'hello', 'false', 4),
-                                                                                    (10, 'Was it a car or a cat I saw', 'true', 5),
-                                                                                    (10, '12321', 'true', 6),
-                                                                                    (10, '123456', 'false', 7),
-                                                                                    (10, 'a', 'true', 8),
-                                                                                    (10, 'ab', 'false', 9),
-                                                                                    (10, 'Able was I ere I saw Elba', 'true', 10),
-                                                                                    (10, ' ', 'true', 11),
-                                                                                    (10, '0P', 'false', 12),
-                                                                                    (10, 'Madam, in Eden, I’m Adam', 'true', 13),
-                                                                                    (10, 'step on no pets', 'true', 14),
-                                                                                    (10, 'Eva, can I see bees in a cave?', 'true', 15);
-
-
-
-
-
-
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES
-                                                                                    (11, '4\n2 7 11 15\n9', '0 1', 1),
-                                                                                    (11, '3\n3 2 4\n6', '1 2', 2),
-                                                                                    (11, '2\n3 3\n6', '0 1', 3),
-                                                                                    (11, '5\n1 2 3 4 5\n9', '3 4', 4),
-                                                                                    (11, '6\n-1 -2 -3 -4 -5 -6\n-8', '2 5', 5),
-                                                                                    (11, '3\n0 4 3\n3', '0 2', 6),
-                                                                                    (11, '5\n2 5 5 11 15\n10', '1 2', 7),
-                                                                                    (11, '2\n1000 1000\n2000', '0 1', 8),
-                                                                                    (11, '4\n-3 4 3 90\n0', '0 2', 9),
-                                                                                    (11, '5\n1 2 3 4 4\n8', '3 4', 10),
-                                                                                    (11, '3\n1 2 3\n4', '0 2', 11),
-                                                                                    (11, '2\n-1000 1000\n0', '0 1', 12),
-                                                                                    (11, '3\n1 1 2\n3', '1 2', 13),
-                                                                                    (11, '4\n2 7 11 15\n18', '1 2', 14),
-                                                                                    (11, '2\n-1 1\n0', '0 1', 15);
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES
-                                                                                    (12, '()', 'true', 1),
-                                                                                    (12, '()[]{}', 'true', 2),
-                                                                                    (12, '(]', 'false', 3),
-                                                                                    (12, '([)]', 'false', 4),
-                                                                                    (12, '{[]}', 'true', 5),
-                                                                                    (12, '(', 'false', 6),
-                                                                                    (12, ')', 'false', 7),
-                                                                                    (12, '', 'true', 8),
-                                                                                    (12, '((({{{[[[]]]}}})))', 'true', 9),
-                                                                                    (12, '([{}])', 'true', 10),
-                                                                                    (12, '([)', 'false', 11),
-                                                                                    (12, '([]{})', 'true', 12),
-                                                                                    (12, '(((', 'false', 13),
-                                                                                    (12, '[]]', 'false', 14),
-                                                                                    (12, '{}[]()', 'true', 15);
-
-
-
-
-
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES
-                                                                                    (13, '3 3\n1 2 3\n2 5 6', '1 2 2 3 5 6', 1),
-                                                                                    (13, '2 3\n1 2\n3 4 5', '1 2 3 4 5', 2),
-                                                                                    (13, '1 1\n0\n0', '0 0', 3),
-                                                                                    (13, '2 2\n2 4\n1 3', '1 2 3 4', 4),
-                                                                                    (13, '3 2\n1 4 7\n2 6', '1 2 4 6 7', 5),
-                                                                                    (13, '0 3\n\n1 2 3', '1 2 3', 6),
-                                                                                    (13, '3 0\n1 2 3\n', '1 2 3', 7),
-                                                                                    (13, '5 5\n1 3 5 7 9\n2 4 6 8 10', '1 2 3 4 5 6 7 8 9 10', 8),
-                                                                                    (13, '1 2\n-1\n0 1', '-1 0 1', 9),
-                                                                                    (13, '2 2\n0 0\n0 0', '0 0 0 0', 10),
-                                                                                    (13, '2 2\n1 2\n1 2', '1 1 2 2', 11),
-                                                                                    (13, '3 3\n-3 -2 -1\n1 2 3', '-3 -2 -1 1 2 3', 12),
-                                                                                    (13, '1 1\n1000\n-1000', '-1000 1000', 13),
-                                                                                    (13, '2 2\n-2 2\n-1 1', '-2 -1 1 2', 14),
-                                                                                    (13, '4 4\n1 3 5 7\n2 4 6 8', '1 2 3 4 5 6 7 8', 15);
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES
-                                                                                    (14, '1,2,3', '2 1 3', 1),
-                                                                                    (14, '1,null,2,3', '1 3 2', 2),
-                                                                                    (14, '', '', 3),
-                                                                                    (14, '1', '1', 4),
-                                                                                    (14, '1,2', '2 1', 5),
-                                                                                    (14, '1,null,2', '1 2', 6),
-                                                                                    (14, '3,1,4,null,2', '1 2 3 4', 7),
-                                                                                    (14, '5,3,6,2,4,null,null,1', '1 2 3 4 5 6', 8),
-                                                                                    (14, '1,2,3,4,5,6,7', '4 2 5 1 6 3 7', 9),
-                                                                                    (14, '1,null,2,null,3', '1 2 3', 10),
-                                                                                    (14, '2,1,3', '1 2 3', 11),
-                                                                                    (14, '1,2,null,3', '3 2 1', 12),
-                                                                                    (14, '1,null,2,3,4', '1 3 4 2', 13),
-                                                                                    (14, '1,2,3,null,null,4,5', '2 1 4 3 5', 14),
-                                                                                    (14, '1,2,3,4,null,null,5', '4 2 1 3 5', 15);
-
-
-
-
-
-INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES
-                                                                                    (15, 'abcabcbb', '3', 1),
-                                                                                    (15, 'bbbbb', '1', 2),
-                                                                                    (15, 'pwwkew', '3', 3),
-                                                                                    (15, '', '0', 4),
-                                                                                    (15, ' ', '1', 5),
-                                                                                    (15, 'au', '2', 6),
-                                                                                    (15, 'dvdf', '3', 7),
-                                                                                    (15, 'anviaj', '5', 8),
-                                                                                    (15, 'tmmzuxt', '5', 9),
-                                                                                    (15, 'abba', '2', 10),
-                                                                                    (15, 'abcdefg', '7', 11),
-                                                                                    (15, 'aab', '2', 12),
-                                                                                    (15, 'abcabcbbabc', '3', 13),
-                                                                                    (15, 'a', '1', 14),
-                                                                                    (15, 'abccba', '3', 15);
+USE Ikodave;
+
+-- Additional test cases for Problem 1: sum-of-two-numbers
+-- Edge cases and boundary conditions
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '0 0', '0', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '2147483647 1', '2147483648', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-2147483648 -1', '-2147483649', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '2147483647 2147483647', '4294967294', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-2147483648 -2147483648', '-4294967296', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '1000000000 1000000000', '2000000000', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-1000000000 -1000000000', '-2000000000', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '999999999 1', '1000000000', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '-999999999 -1', '-1000000000', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (1, '0 2147483647', '2147483647', 25);
+
+-- Additional test cases for Problem 2: maximum-of-two-numbers
+-- Edge cases and boundary conditions
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '2147483647 2147483646', '2147483647', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '-2147483648 -2147483647', '-2147483647', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '2147483647 -2147483648', '2147483647', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '-2147483648 2147483647', '2147483647', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '0 2147483647', '2147483647', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '0 -2147483648', '0', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '2147483647 0', '2147483647', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '-2147483648 0', '0', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '1000000000 999999999', '1000000000', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (2, '-1000000000 -999999999', '-999999999', 25);
+
+-- Additional test cases for Problem 3: factorial-calculation
+-- Edge cases and boundary conditions
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '0', '1', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '1', '1', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '2', '2', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '3', '6', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '4', '24', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '5', '120', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '6', '720', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '7', '5040', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '8', '40320', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '9', '362880', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '10', '3628800', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '11', '39916800', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (3, '12', '479001600', 28);
+
+-- Additional test cases for Problem 4: array-sum
+-- Edge cases with various array sizes and values
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '1\n0', '0', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '1\n10000', '10000', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '1\n-10000', '-10000', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '2\n5000 -5000', '0', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '2\n-5000 5000', '0', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '5\n1 2 3 4 5', '15', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '5\n-1 -2 -3 -4 -5', '-15', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '10\n1 1 1 1 1 1 1 1 1 1', '10', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '10\n-1 -1 -1 -1 -1 -1 -1 -1 -1 -1', '-10', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (4, '50\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50', '1275', 25);
+
+-- Additional test cases for Problem 5: find-maximum-in-array
+-- Edge cases with various array sizes and values
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '1\n0', '0', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '1\n10000', '10000', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '1\n-10000', '-10000', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '2\n-10000 10000', '10000', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '2\n10000 -10000', '10000', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '5\n1 2 3 4 5', '5', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '5\n5 4 3 2 1', '5', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '5\n-5 -4 -3 -2 -1', '-1', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '10\n1 2 3 4 5 6 7 8 9 10', '10', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '10\n10 9 8 7 6 5 4 3 2 1', '10', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (5, '50\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50', '50', 26);
+
+-- Additional test cases for Problem 6: climbing-stairs
+-- Edge cases and boundary conditions
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '1', '1', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '2', '2', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '3', '3', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '4', '5', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '5', '8', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '6', '13', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '7', '21', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '8', '34', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '9', '55', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '10', '89', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '11', '144', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '12', '233', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '13', '377', 28);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '14', '610', 29);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (6, '15', '987', 30);
+
+-- Additional test cases for Problem 7: reverse-string
+-- Edge cases with various string types and lengths
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, '', '', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'x', 'x', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'xx', 'xx', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'xyz', 'zyx', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, '12345', '54321', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'abcdefghij', 'jihgfedcba', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, '!@#$%^&*()', ')(*&^%$#@!', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'a b c d e', 'e d c b a', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'test case', 'esac tset', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'A1B2C3D4E5', '5E4D3C2B1A', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'racecar', 'racecar', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'deed', 'deed', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'noon', 'noon', 28);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'level', 'level', 29);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (7, 'civic', 'civic', 30);
+
+-- Additional test cases for Problem 8: valid-anagram
+-- Edge cases with various string combinations
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, '\n', 'true', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'a\na', 'true', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'ab\nba', 'true', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abc\ncba', 'true', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abcd\ndcba', 'true', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'a\nb', 'false', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'ab\nac', 'false', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abc\nabd', 'false', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'aab\naba', 'true', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'aab\nabb', 'false', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'aaa\naaa', 'true', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'aaa\naab', 'false', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abab\nbaba', 'true', 28);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abab\nabac', 'false', 29);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (8, 'abcdef\nfedcba', 'true', 30);
+
+-- Additional test cases for Problem 9: best-time-to-buy-and-sell-stock
+-- Edge cases with various price patterns
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '1', '0', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '1 2', '1', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '2 1', '0', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '1 1 1 1 1', '0', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '1 2 3 4 5', '4', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '5 4 3 2 1', '0', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '1 5 2 8 3', '7', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '3 2 6 5 0 3', '4', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '2 4 1', '2', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '7 6 4 3 1', '0', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '1 2 3 0 2', '3', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '5 4 3 2 1 2 3 4 5', '4', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '1 100', '99', 28);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '100 1', '0', 29);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (9, '1 2 4 2 5 7 2 4 9 0', '9', 30);
+
+-- Additional test cases for Problem 10: palindrome-check
+-- Edge cases with various string types and formats
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, '', 'true', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'a', 'true', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'ab', 'false', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'aa', 'true', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'aba', 'true', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'abc', 'false', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'Aba', 'true', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'aBa', 'true', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'a b a', 'true', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'a,b,a', 'true', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'a1a', 'true', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, '1a1', 'true', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, '12321', 'true', 28);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, '12345', 'false', 29);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (10, 'a1b2c3c2b1a', 'true', 30);
+
+-- Additional test cases for Problem 11: two-sum
+-- Edge cases with various array sizes and target values
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '2\n1 1\n2', '0 1', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '2\n0 0\n0', '0 1', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '3\n1 2 3\n4', '0 2', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '3\n1 2 3\n5', '1 2', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '4\n1 2 3 4\n7', '2 3', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '4\n1 2 3 4\n6', '1 3', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '5\n1 2 3 4 5\n9', '3 4', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '5\n1 2 3 4 5\n8', '2 4', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '6\n-1 -2 -3 -4 -5 -6\n-8', '2 5', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '6\n-1 -2 -3 -4 -5 -6\n-10', '1 5', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '3\n0 4 3\n3', '0 2', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '3\n0 4 3\n7', '1 2', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '5\n2 5 5 11 15\n10', '1 2', 28);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '5\n2 5 5 11 15\n16', '3 4', 29);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (11, '2\n1000 1000\n2000', '0 1', 30);
+
+-- Additional test cases for Problem 12: valid-parentheses
+-- Edge cases with various bracket combinations
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '', 'true', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '(', 'false', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, ')', 'false', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '()', 'true', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '[]', 'true', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '{}', 'true', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '()[]{}', 'true', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '(]', 'false', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '([)]', 'false', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '{[]}', 'true', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '(((', 'false', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, ')))', 'false', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '[[[', 'false', 28);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, ']]]', 'false', 29);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (12, '{{{', 'false', 30);
+
+-- Additional test cases for Problem 13: merge-sorted-arrays
+-- Edge cases with various array sizes and combinations
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '0 0\n\n', '', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '1 0\n1\n', '1', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '0 1\n\n1', '1', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '1 1\n1\n1', '1 1', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '2 1\n1 2\n3', '1 2 3', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '1 2\n1\n2 3', '1 2 3', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '3 2\n1 3 5\n2 4', '1 2 3 4 5', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '2 3\n1 3\n2 4 6', '1 2 3 4 6', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '4 4\n1 3 5 7\n2 4 6 8', '1 2 3 4 5 6 7 8', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '3 3\n-3 -2 -1\n1 2 3', '-3 -2 -1 1 2 3', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '2 2\n0 0\n0 0', '0 0 0 0', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '2 2\n1 2\n1 2', '1 1 2 2', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '1 1\n1000\n-1000', '-1000 1000', 28);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '2 2\n-2 2\n-1 1', '-2 -1 1 2', 29);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (13, '4 4\n1 3 5 7\n2 4 6 8', '1 2 3 4 5 6 7 8', 30);
+
+-- Additional test cases for Problem 14: binary-tree-inorder-traversal
+-- Edge cases with various tree structures
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '', '', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1', '1', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,2', '2 1', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,null,2', '1 2', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,2,3', '2 1 3', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,null,2,null,3', '1 2 3', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,2,null,3', '3 2 1', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,2,3,4,5', '4 2 5 1 3', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,2,3,4,5,6,7', '4 2 5 1 6 3 7', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,2,3,4,5,6,7,8,9', '8 4 9 2 5 1 6 3 7', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,null,2,null,3,null,4', '1 2 3 4', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,2,null,3,null,4', '4 3 2 1', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,2,3,4,null,null,5', '4 2 1 3 5', 28);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,2,3,null,4,5,6', '2 4 1 5 3 6', 29);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (14, '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15', '8 4 9 2 10 5 11 1 12 6 13 3 14 7 15', 30);
+
+-- Additional test cases for Problem 15: longest-substring-without-repeating-characters
+-- Edge cases with various string patterns
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, '', '0', 16);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'a', '1', 17);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'aa', '1', 18);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'ab', '2', 19);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'abc', '3', 20);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'abca', '3', 21);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'abcabc', '3', 22);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'pwwkew', '3', 23);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'bbbbb', '1', 24);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'abcabcbb', '3', 25);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'abcdef', '6', 26);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'abcdefa', '6', 27);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'abcdefg', '7', 28);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'aab', '2', 29);
+INSERT INTO test_cases (problem_id, problem_input, problem_output, test_number) VALUES (15, 'abccba', '3', 30);
 USE Ikodave;
 INSERT INTO users (role_id, username, password, register_date) VALUES
     (
