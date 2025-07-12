@@ -124,10 +124,9 @@ public class DockerCodeRunner implements CodeRunner {
             os.flush();
         }
 
-        boolean finished = process.waitFor(executeTimeoutMillis + 1000, TimeUnit.MILLISECONDS);
+        boolean finished = process.waitFor(executeTimeoutMillis + 10000, TimeUnit.MILLISECONDS);
 
         if (!finished) {
-            process.destroy();
             return new TestCaseTimeLimitExceeded(executeTimeoutMillis, 0, format("Time Limit Exceeded On Test %d", testCase.getTestNumber()));
         }
 

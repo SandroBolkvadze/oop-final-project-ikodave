@@ -35,7 +35,7 @@ import static com.example.util.SessionConstants.USER_KEY;
 public class SubmitCodeServlet extends HttpServlet {
 
     private static final ExecutorService executor =
-            Executors.newFixedThreadPool(5);
+            Executors.newFixedThreadPool(3);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
