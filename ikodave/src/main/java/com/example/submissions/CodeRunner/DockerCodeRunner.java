@@ -74,6 +74,11 @@ public class DockerCodeRunner implements CodeRunner {
             long maxMemory = 0;
             for (TestCase testCase : testCases) {
                 TestCaseResult testCaseResult = executeUserCode(codeLang, container.getContainerName(), executionTimeoutMillis, testCase);
+             // print result of test case
+                System.out.println(testCaseResult.getLog());
+                System.out.println("Test Case " + testCase.getTestNumber() + " Result: " + testCaseResult.getVerdict() +
+                                   ", Time: " + testCaseResult.getTime() + " ms, Memory: " + testCaseResult.getMemory() + " KB");
+
                 maxTime = Math.max(maxTime, testCaseResult.getTime());
                 maxMemory = Math.max(maxMemory, testCaseResult.getMemory());
                 if (!testCaseResult.isAccept()) {
@@ -136,6 +141,8 @@ public class DockerCodeRunner implements CodeRunner {
 
         ProcessHandle.Info info = processHandle.info();
         Optional<Duration> cpuDuration = info.totalCpuDuration();
+
+
         long cpuTimeMillis = cpuDuration.orElse(Duration.ZERO).toMillis();
 
         if (cpuTimeMillis > executeTimeoutMillis) {
