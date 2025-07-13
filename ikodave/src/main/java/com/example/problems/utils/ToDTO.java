@@ -89,8 +89,6 @@ public class ToDTO {
             }
             int acceptedCount = rs.getInt("accepts");
             int notAcceptedCount = rs.getInt("notAccepts");
-            System.out.println(acceptedCount);
-            System.out.println(notAcceptedCount);
             if (acceptedCount > 0) {
                 return "Solved";
             }

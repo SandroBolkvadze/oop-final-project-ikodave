@@ -30,7 +30,7 @@ async function loadNavbar() {
             'nav-signin': '/signin',
             'nav-profile': '/profile',
             'nav-problems': '/problems',
-            'nav-submissions': '/submissions',
+            'nav-submissions': '/submissions-async',
             'nav-leaderboard': '/leaderboard',
             'nav-admin': '/AdminPage'
         });

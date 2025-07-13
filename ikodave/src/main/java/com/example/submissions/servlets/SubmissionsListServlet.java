@@ -59,19 +59,20 @@ public class SubmissionsListServlet extends HttpServlet  {
                 submissions.stream().map((submission) -> {
 
 
-                    return new SubmissionResponse(
-                            submission.getSubmitDate(),
-                            user.getUsername(),
-                            submission.getSolutionCode(),
-                            problemTitle,
-                            codeLanguageDAO.getCodeLanguageById(submission.getCodeLanguageId()).getLanguage(),
-                            verdictDAO.getVerdictById(submission.getVerdictId()).getVerdict(),
-                            submission.getTime(),
-                            submission.getMemory(),
-                            submission.getLog()
-                    );
-                }
-        ).toList();
+                            return new SubmissionResponse(
+                                    submission.getId(),
+                                    submission.getSubmitDate(),
+                                    user.getUsername(),
+                                    submission.getSolutionCode(),
+                                    problemTitle,
+                                    codeLanguageDAO.getCodeLanguageById(submission.getCodeLanguageId()).getLanguage(),
+                                    verdictDAO.getVerdictById(submission.getVerdictId()).getVerdict(),
+                                    submission.getTime(),
+                                    submission.getMemory(),
+                                    submission.getLog()
+                            );
+                        }
+                ).toList();
 
 
 

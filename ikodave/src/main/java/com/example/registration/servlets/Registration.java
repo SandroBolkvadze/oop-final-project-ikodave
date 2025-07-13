@@ -52,7 +52,6 @@ public class Registration extends HttpServlet {
                 request.getSession().setAttribute(USER_KEY, userDao.getUserByUsername(newUser.getUsername()));
                 result.put("status", "ok");
             }
-            System.out.println(userDao.getUserByUsername(username).getRoleId());
             sendJsonResponse(response, result);
 
         } catch (ServletException e) {

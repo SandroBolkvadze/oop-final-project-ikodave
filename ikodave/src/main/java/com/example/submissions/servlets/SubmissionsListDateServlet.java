@@ -56,6 +56,7 @@ public class SubmissionsListDateServlet extends HttpServlet {
 
 
                             return new SubmissionResponse(
+                                    submission.getId(),
                                     submission.getSubmitDate(),
                                     submissionDateFilterBody.getUsername(),
                                     submission.getSolutionCode(),

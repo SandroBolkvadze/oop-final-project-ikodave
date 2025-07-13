@@ -53,6 +53,7 @@ public class AllSubmissionsServlet extends HttpServlet {
                 submissions.stream().map((submission) -> {
 
                             return new SubmissionResponse(
+                                    submission.getId(),
                                     submission.getSubmitDate(),
                                     userDAO.getUser(submission.getUserId()).getUsername(),
                                     submission.getSolutionCode(),

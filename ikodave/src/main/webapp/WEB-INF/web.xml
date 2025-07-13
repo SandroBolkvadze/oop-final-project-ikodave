@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app
-    version="4.0"
-    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-    xmlns:javaee="http://xmlns.jcp.org/xml/ns/javaee"
-    xmlns:xml="http://www.w3.org/XML/1998/namespace"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+        version="4.0"
+        xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+        xmlns:javaee="http://xmlns.jcp.org/xml/ns/javaee"
+        xmlns:xml="http://www.w3.org/XML/1998/namespace"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
   <display-name>Archetype Created Web Application</display-name>
 
   <listener>
@@ -129,6 +129,46 @@
     <servlet-name>SubmissionsListPageServlet</servlet-name>
     <url-pattern>/problems/submissions/*</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AllSubmissionsListAsyncPageServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.AllSubmissionsListAsyncPageServlet</servlet-class>
+    <async-supported>true</async-supported>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AllSubmissionsListAsyncPageServlet</servlet-name>
+    <url-pattern>/submissions-async</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AllSubmissionsListAsyncServlet</servlet-name>
+    <servlet-class>com.example.submissions.servlets.AllSubmissionsListAsyncServlet</servlet-class>
+    <async-supported>true</async-supported>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AllSubmissionsListAsyncServlet</servlet-name>
+    <url-pattern>/api/submissions-async</url-pattern>
+  </servlet-mapping>
+
+  <!--  <servlet>-->
+  <!--    <servlet-name>SubmissionsListAsyncPageServlet</servlet-name>-->
+  <!--    <servlet-class>com.example.submissions.servlets.SubmissionsListAsyncPageServlet</servlet-class>-->
+  <!--    <async-supported>true</async-supported>-->
+  <!--  </servlet>-->
+  <!--  <servlet-mapping>-->
+  <!--    <servlet-name>SubmissionsListAsyncPageServlet</servlet-name>-->
+  <!--    <url-pattern>/problems/submissions-async/*</url-pattern>-->
+  <!--  </servlet-mapping>-->
+
+  <!--  <servlet>-->
+  <!--    <servlet-name>SubmissionsListAsyncServlet</servlet-name>-->
+  <!--    <servlet-class>com.example.submissions.servlets.SubmissionsListAsyncServlet</servlet-class>-->
+  <!--    <async-supported>true</async-supported>-->
+  <!--  </servlet>-->
+  <!--  <servlet-mapping>-->
+  <!--    <servlet-name>SubmissionsListAsyncServlet</servlet-name>-->
+  <!--    <url-pattern>/api/problems/submissions-async/*</url-pattern>-->
+  <!--  </servlet-mapping>-->
 
   <servlet>
     <servlet-name>AllSubmissionsPageServlet</servlet-name>
