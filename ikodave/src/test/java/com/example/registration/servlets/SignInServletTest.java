@@ -1,7 +1,7 @@
 package com.example.registration.servlets;
 
 import com.example.registration.dao.UserDAO;
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
@@ -116,7 +116,7 @@ public class SignInServletTest {
 
         User mockUser = new User();
         mockUser.setUsername("testuser");
-        mockUser.setPassword(BCrypt.hashpw("testpass", BCrypt.gensalt()));
+        mockUser.setPasswordHash(BCrypt.hashpw("testpass", BCrypt.gensalt()));
 
         when(userDAO.getUserByUsername("testuser")).thenReturn(mockUser);
 
@@ -143,7 +143,7 @@ public class SignInServletTest {
 
         User mockUser = new User();
         mockUser.setUsername("testuser");
-        mockUser.setPassword(BCrypt.hashpw("testpass", BCrypt.gensalt()));
+        mockUser.setPasswordHash(BCrypt.hashpw("testpass", BCrypt.gensalt()));
 
         when(userDAO.getUserByUsername("testuser")).thenReturn(mockUser);
 

@@ -7,8 +7,9 @@ import com.example.admin.dao.SQLRoleDAO;
 import com.example.leaderboard.dao.LeaderboardDAO;
 import com.example.leaderboard.dao.SQLLeaderboardDAO;
 import com.example.problems.DAO.*;
-import com.example.registration.dao.MySQLUserDao;
+import com.example.registration.dao.SQLUserDAO;
 import com.example.registration.dao.UserDAO;
+import com.example.registration.mail.MailSender;
 import com.example.submissions.CodeRunner.DockerCodeRunner;
 import com.example.submissions.DAO.*;
 import com.example.user_profile.dao.ProblemStatsDAO;
@@ -20,6 +21,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 import static com.example.util.AttributeConstants.*;
 import static com.example.util.DBConnectionConstants.*;
+import static com.example.util.MailConstants.*;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -38,13 +40,13 @@ public class ContextListener implements ServletContextListener {
         ProblemTopicRelationDAO problemTopicRelationDAO = new SQLProblemTopicRelationDAO(dataSource);
         sce.getServletContext().setAttribute(PROBLEM_TOPIC_RELATION_DAO_KEY, problemTopicRelationDAO);
 
-        UserDAO userDao = new MySQLUserDao(dataSource);
+        UserDAO userDao = new SQLUserDAO(dataSource);
         sce.getServletContext().setAttribute(USER_DAO_KEY, userDao);
 
         ProblemDAO problemDAO = new SQLProblemDAO(dataSource);
         sce.getServletContext().setAttribute(PROBLEM_DAO_KEY, problemDAO);
 
-        UserDAO userDAO = new MySQLUserDao(dataSource);
+        UserDAO userDAO = new SQLUserDAO(dataSource);
         sce.getServletContext().setAttribute(USER_DAO_KEY, userDAO);
 
         TestDAO testDAO = new SQLTestDAO(dataSource);
@@ -81,11 +83,14 @@ public class ContextListener implements ServletContextListener {
         sce.getServletContext().setAttribute(ROLE_DAO_KEY, roleDAO);
 
         DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
-        dockerCodeRunner.startContainers();
+//        dockerCodeRunner.startContainers();
         sce.getServletContext().setAttribute(DOCKER_CODE_RUNNER_KEY, dockerCodeRunner);
 
         Gson gson = new Gson();
         sce.getServletContext().setAttribute(GSON_KEY, gson);
+
+        MailSender mailSender = new MailSender(smtpHost, smtpPort, username, appPassword, fromAddress);
+        sce.getServletContext().setAttribute(MAIL_SENDER_KEY, mailSender);
 
         sce.getServletContext().setAttribute(BASIC_DATASOURCE_KEY, dataSource);
     }

@@ -1,8 +1,8 @@
 package com.example.registration.servlets;
 
 import com.example.registration.dao.UserDAO;
-import com.example.registration.model.User;
-import com.example.registration.utils.UserSignInInput;
+import com.example.registration.DTO.User;
+import com.example.registration.Responce.UserSignInInput;
 import com.google.gson.Gson;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -55,7 +55,7 @@ public class SignInServlet extends HttpServlet {
             return;
         }
 
-        boolean authSuccess = BCrypt.checkpw(password, user.getPassword());
+        boolean authSuccess = BCrypt.checkpw(password, user.getPasswordHash());
 
         if (authSuccess) {
             request.getSession().setAttribute(USER_KEY, user);

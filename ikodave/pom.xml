@@ -23,14 +23,9 @@
     <dependencies>
         <dependency>
             <groupId>com.sun.mail</groupId>
-            <artifactId>jakarta.mail</artifactId>
-            <version>2.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>jakarta.activation</artifactId>
-            <version>2.0.1</version>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -198,6 +193,14 @@
                     <path>/</path>
                     <port>8081</port>
                 </configuration>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>com.sun.mail</groupId>
+                        <artifactId>javax.mail</artifactId>
+                        <version>1.6.2</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
         </plugins>

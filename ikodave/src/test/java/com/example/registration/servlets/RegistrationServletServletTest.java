@@ -1,21 +1,18 @@
 package com.example.registration.servlets;
 
 import com.example.registration.dao.UserDAO;
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Map;
 
 import static com.example.util.AttributeConstants.USER_DAO_KEY;
 import static com.example.util.SessionConstants.USER_KEY;
@@ -23,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-class RegistrationServletTest {
+class RegistrationServletServletTest {
 
-    private Registration servlet;
+    private RegistrationServlet servlet;
     private HttpServletRequest request;
     private HttpServletResponse response;
     private HttpSession session;
@@ -34,7 +31,7 @@ class RegistrationServletTest {
 
     @BeforeEach
     void setUp() {
-        servlet = new Registration();
+        servlet = new RegistrationServlet();
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session = mock(HttpSession.class);
@@ -54,7 +51,7 @@ class RegistrationServletTest {
         when(request.getReader()).thenReturn(reader);
 
         // Mock DAO behavior
-        when(userDao.userExists("newuser")).thenReturn(false);
+        when(userDao.usernameExists("newuser")).thenReturn(false);
 
         // Mock getUserByUsername to return the new user with roleId set to avoid NPE
         User returnedUser = new User("newuser", "hashedpass");
@@ -72,7 +69,7 @@ class RegistrationServletTest {
         // Verify addUser called with hashed password (not plain)
         verify(userDao).addUser(argThat(u ->
                 u.getUsername().equals("newuser") &&
-                        !u.getPassword().equals("plainpass")
+                        !u.getPasswordHash().equals("plainpass")
         ));
 
         // Verify session attribute is set with the User returned by DAO
@@ -91,7 +88,7 @@ class RegistrationServletTest {
         when(request.getReader()).thenReturn(reader);
 
         // User exists in DB
-        when(userDao.userExists("existingUser")).thenReturn(true);
+        when(userDao.usernameExists("existingUser")).thenReturn(true);
 
         // Mock getUserByUsername returns non-null User to avoid NPE
         User existingUser = new User("existingUser", "hashedPassword");

@@ -1,6 +1,6 @@
 package com.example.submissions.servlets;
 
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

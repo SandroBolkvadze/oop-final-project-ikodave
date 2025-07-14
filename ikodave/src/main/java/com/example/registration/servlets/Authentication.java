@@ -1,6 +1,6 @@
 package com.example.registration.servlets;
 
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;

@@ -3,12 +3,16 @@ package com.example.util;
 public class DatabaseConstants {
 
     public static final class Users {
-        public static final String TABLE_NAME        = "users";
-        public static final String COL_ID            = "id";
-        public static final String COL_ROLE_ID = "role_id";
-        public static final String COL_USERNAME      = "username";
-        public static final String COL_PASSWORD      = "password";
-        public static final String COL_REGISTER_DATE = "register_date";
+        public static final String TABLE_NAME                       = "users";
+        public static final String COL_ID                           = "id";
+        public static final String COL_ROLE_ID                      = "role_id";
+        public static final String COL_MAIL                         = "mail";
+        public static final String COL_USERNAME                     = "username";
+        public static final String COL_PASSWORD_HASH                = "password_hash";
+        public static final String COL_IS_VERIFIED                  = "is_verified";
+        public static final String COL_VERIFICATION_TOKEN           = "verification_token";
+        public static final String COL_VERIFICATION_TOKEN_EXPIRY    = "verification_token_expiry";
+        public static final String COL_REGISTER_DATE                = "register_date";
     }
 
     public static final class UserRole {

@@ -1,6 +1,6 @@
 package com.example.registration.dao;
 
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 
 public interface UserDAO {
 
@@ -12,7 +12,14 @@ public interface UserDAO {
 
     void deleteUser(String username);
 
-    boolean userExists(String username);
+    boolean usernameExists(String username);
+
+    boolean verifiedMailExists(String mail);
+
+    User getUserByVerificationCode(String verificationCode);
 
     User getUserByUsername(String username);
+
+    User updateUserByVerificationCode(String verificationCode);
+
 }

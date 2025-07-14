@@ -1,7 +1,6 @@
 package com.example.registration.dao;
 
-import com.example.registration.model.User;
-import com.example.user_profile.dao.UserStatsDAO;
+import com.example.registration.DTO.User;
 import com.example.util.DatabaseConstants.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -11,12 +10,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static com.example.problems.utils.ToDTO.toUser;
+import static com.example.registration.Utils.ToSQL.*;
 import static java.lang.String.format;
 
-public class MySQLUserDao implements UserDAO {
+public class SQLUserDAO implements UserDAO {
     private final BasicDataSource dataSource;
 
-    public MySQLUserDao(BasicDataSource dataSource) {
+    public SQLUserDAO(BasicDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -42,12 +42,23 @@ public class MySQLUserDao implements UserDAO {
     @Override
     public void addUser(User user) {
         try (Connection con = dataSource.getConnection()){
-            //TODO
-            String sql = format("INSERT INTO users (%s, %s, %s, %s) VALUES (2, ?, ?, NOW())",
-                    Users.COL_ROLE_ID, Users.COL_USERNAME, Users.COL_PASSWORD, Users.COL_REGISTER_DATE);
+            String sql = format("INSERT INTO users " +
+                            "(%s, %s, %s, %s, %s, %s, %s) " +
+                            "VALUES (2, ?, ?, ?, ?, ?, NOW())",
+                    Users.COL_ROLE_ID,
+                    Users.COL_MAIL,
+                    Users.COL_USERNAME,
+                    Users.COL_PASSWORD_HASH,
+                    Users.COL_VERIFICATION_TOKEN,
+                    Users.COL_VERIFICATION_TOKEN_EXPIRY,
+                    Users.COL_REGISTER_DATE);
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(1, user.getMail());
+            preparedStatement.setString(2, user.getUsername());
+            preparedStatement.setString(3, user.getPasswordHash());
+            preparedStatement.setString(4, user.getVerificationCode());
+            preparedStatement.setObject(5, user.getVerificationCodeExpiry());
+
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             throw new RuntimeException("Error adding user", e);
@@ -56,12 +67,11 @@ public class MySQLUserDao implements UserDAO {
 
     @Override
     public boolean authenticate(User user) {
-        // Implementation to authenticate user
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
+            ps.setString(2, user.getPasswordHash());
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -85,7 +95,7 @@ public class MySQLUserDao implements UserDAO {
         }
     }
     @Override
-    public boolean userExists(String username) {
+    public boolean usernameExists(String username) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -98,6 +108,21 @@ public class MySQLUserDao implements UserDAO {
             return false;
         } catch (Exception e) {
             throw new RuntimeException("Error checking if user exists", e);
+        }
+    }
+
+    @Override
+    public boolean verifiedMailExists(String mail) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sqlStatement = toVerifiedMailExists();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, mail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1) > 0;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -115,11 +140,49 @@ public class MySQLUserDao implements UserDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return toUser(resultSet);
-            } else {
-                return null; // User not found
             }
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public User getUserByVerificationCode(String verificationCode) {
+        String sqlStatement = toGetUserByVerificationCode();
+        try (Connection connection = dataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, verificationCode);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return toUser(resultSet);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public User updateUserByVerificationCode(String verificationCode) {
+        try (Connection connection = dataSource.getConnection()) {
+            User user = getUserByVerificationCode(verificationCode);
+            if (user == null) {
+                return null;
+            }
+            String updateSQL = toUpdateUserByVerificationCode();
+            PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
+            preparedStatement.setString(1, verificationCode);
+            int update = preparedStatement.executeUpdate();
+            if (update == 0) {
+                return null;
+            }
+            return user;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

@@ -1,6 +1,6 @@
 package com.example.registration.servlets;
 
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

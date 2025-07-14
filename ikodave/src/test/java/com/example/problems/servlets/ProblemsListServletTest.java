@@ -7,7 +7,7 @@ import com.example.problems.DTO.Difficulty;
 import com.example.problems.DTO.Topic;
 import com.example.problems.FrontResponse.ProblemListResponse;
 import com.example.problems.utils.FilterCriteria;
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;

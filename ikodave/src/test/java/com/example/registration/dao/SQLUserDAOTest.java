@@ -1,6 +1,6 @@
 package com.example.registration.dao;
 
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.*;
 
@@ -9,10 +9,10 @@ import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MySQLUserDaoTest {
+class SQLUserDAOTest {
 
     private static BasicDataSource dataSource;
-    private static MySQLUserDao userDao;
+    private static SQLUserDAO userDao;
 
     @BeforeAll
     static void setupDatabase() throws Exception {
@@ -22,7 +22,7 @@ class MySQLUserDaoTest {
         dataSource.setPassword("");
         dataSource.setDriverClassName("org.h2.Driver");
 
-        userDao = new MySQLUserDao(dataSource);
+        userDao = new SQLUserDAO(dataSource);
 
         try (Connection conn = dataSource.getConnection(); Statement stmt = conn.createStatement()) {
             stmt.execute("""
@@ -48,12 +48,12 @@ class MySQLUserDaoTest {
     void testAddAndGetUser() {
         User user = new User("kende", "1234");
         userDao.addUser(user);
-        assertTrue(userDao.userExists("kende"));
+        assertTrue(userDao.usernameExists("kende"));
 
         User retrieved = userDao.getUserByUsername("kende");
         assertNotNull(retrieved);
         assertEquals("kende", retrieved.getUsername());
-        assertEquals("1234", retrieved.getPassword());
+        assertEquals("1234", retrieved.getPasswordHash());
     }
 
     @Test
@@ -70,10 +70,10 @@ class MySQLUserDaoTest {
     void testDeleteUser() {
         User user = new User("slosa", "pwd");
         userDao.addUser(user);
-        assertTrue(userDao.userExists("slosa"));
+        assertTrue(userDao.usernameExists("slosa"));
 
         userDao.deleteUser("slosa");
-        assertFalse(userDao.userExists("slosa"));
+        assertFalse(userDao.usernameExists("slosa"));
     }
 
     @Test
@@ -85,7 +85,7 @@ class MySQLUserDaoTest {
     void testAddUserWithSpecialCharacters() {
         User user = new User("usér@#%$", "päss@!$%");
         userDao.addUser(user);
-        assertTrue(userDao.userExists("usér@#%$"));
+        assertTrue(userDao.usernameExists("usér@#%$"));
     }
 
     @Test
@@ -95,9 +95,9 @@ class MySQLUserDaoTest {
         User user = new User(longUsername, longPassword);
         userDao.addUser(user);
 
-        assertTrue(userDao.userExists(longUsername));
+        assertTrue(userDao.usernameExists(longUsername));
         User retrieved = userDao.getUserByUsername(longUsername);
-        assertEquals(longPassword, retrieved.getPassword());
+        assertEquals(longPassword, retrieved.getPasswordHash());
     }
 
     @Test
@@ -139,7 +139,7 @@ class MySQLUserDaoTest {
     void testSQLInjectionPrevention() {
         User injection = new User("'; DROP TABLE users; --", "hack");
         assertDoesNotThrow(() -> userDao.addUser(injection));
-        assertTrue(userDao.userExists("'; DROP TABLE users; --"));
+        assertTrue(userDao.usernameExists("'; DROP TABLE users; --"));
     }
 
     @Test
@@ -149,9 +149,9 @@ class MySQLUserDaoTest {
         }
 
         for (int i = 0; i < 50; i++) {
-            assertTrue(userDao.userExists("user" + i));
+            assertTrue(userDao.usernameExists("user" + i));
             User retrieved = userDao.getUserByUsername("user" + i);
-            assertEquals("pass" + i, retrieved.getPassword());
+            assertEquals("pass" + i, retrieved.getPasswordHash());
         }
     }
 
@@ -168,7 +168,7 @@ class MySQLUserDaoTest {
     @Test
     void testCaseSensitivity() {
         userDao.addUser(new User("CaseUser", "CasePass"));
-        assertFalse(userDao.userExists("caseuser"));
+        assertFalse(userDao.usernameExists("caseuser"));
         assertFalse(userDao.authenticate(new User("caseuser", "CasePass")));
     }
 }

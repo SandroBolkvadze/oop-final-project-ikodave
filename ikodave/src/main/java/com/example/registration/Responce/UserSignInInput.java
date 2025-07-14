@@ -1,19 +1,14 @@
-package com.example.registration.utils;
+package com.example.registration.Responce;
 
-public class UserRegistrationInput {
+public class UserSignInInput {
 
-    private final String mail;
     private final String username;
+
     private final String password;
 
-    public UserRegistrationInput(String mail, String username, String password) {
-        this.mail = mail;
+    public UserSignInInput(String username, String password) {
         this.username = username;
         this.password = password;
-    }
-
-    public String getMail() {
-        return mail;
     }
 
     public String getUsername() {

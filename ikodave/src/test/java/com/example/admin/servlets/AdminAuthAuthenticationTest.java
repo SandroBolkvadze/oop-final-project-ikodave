@@ -2,7 +2,7 @@ package com.example.admin.servlets;
 
 import com.example.admin.dao.RoleDAO;
 import com.example.admin.dto.Role;
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;

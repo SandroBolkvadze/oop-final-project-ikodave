@@ -3,7 +3,7 @@ package com.example.user_profile.servlets;
 import com.example.problems.DAO.DifficultyDAO;
 import com.example.problems.DTO.Difficulty;
 import com.example.registration.dao.UserDAO;
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import com.example.submissions.DAO.VerdictDAO;
 import com.example.submissions.DTO.SubmissionVerdict;
 import com.example.user_profile.Response.UserSubmissionStats;

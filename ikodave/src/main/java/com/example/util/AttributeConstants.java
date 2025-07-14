@@ -18,5 +18,5 @@ public class AttributeConstants {
     public static final String PROBLEM_STATS_DAO = "problemStatsDao";
     public static final String DOCKER_CODE_RUNNER_KEY = "dockerCodeRunner";
     public static final String GSON_KEY = "gson";
-
+    public static final String MAIL_SENDER_KEY = "mailSender";
 }

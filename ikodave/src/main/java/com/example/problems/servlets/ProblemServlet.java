@@ -5,7 +5,7 @@ import com.example.problems.DTO.Problem;
 import com.example.problems.DTO.Topic;
 import com.example.problems.FrontResponse.ProblemSpecificResponse;
 import com.example.problems.utils.ProblemTitle;
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import com.example.submissions.DAO.TestDAO;
 import com.example.submissions.DTO.TestCase;
 import com.google.gson.Gson;
