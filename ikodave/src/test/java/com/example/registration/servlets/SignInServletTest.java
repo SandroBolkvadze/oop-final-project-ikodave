@@ -2,7 +2,6 @@ package com.example.registration.servlets;
 
 import com.example.registration.dao.UserDAO;
 import com.example.registration.model.User;
-import com.example.registration.utils.UserInput;
 import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;

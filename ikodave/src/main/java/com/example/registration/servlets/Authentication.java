@@ -12,15 +12,13 @@ import java.io.IOException;
 import static com.example.util.SessionConstants.USER_KEY;
 
 
-public class Helper {
-    public static boolean redirectProfileIfRegistered(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
+public class Authentication {
+    public static boolean redirectProfileIfSignedIn(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User user = (User) request.getSession().getAttribute(USER_KEY);
         if (user == null) {
             return false;
         }
-        request.getRequestDispatcher("/static/profile/profile_page.html")
-                .forward(request, response);
+        request.getRequestDispatcher("/static/profile/profile_page.html").forward(request, response);
         return true;
     }
 

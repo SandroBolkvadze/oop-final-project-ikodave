@@ -15,7 +15,7 @@ import static com.example.util.SessionConstants.USER_KEY;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class AdminAuthHelperTest {
+class AdminAuthAuthenticationTest {
 
     @Test
     void isAdmin_returnsFalse_whenUserIsNull() {

@@ -1,12 +1,12 @@
 package com.example.registration.utils;
 
-public class UserInput {
+public class UserSignInInput {
 
     private final String username;
 
     private final String password;
 
-    public UserInput(String username, String password) {
+    public UserSignInInput(String username, String password) {
         this.username = username;
         this.password = password;
     }

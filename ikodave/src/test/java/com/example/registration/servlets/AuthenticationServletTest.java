@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HelperServletTest {
+public class AuthenticationServletTest {
 
     @Mock
     private HttpServletRequest request;
@@ -44,16 +44,16 @@ public class HelperServletTest {
     }
 
     @Test
-    public void testRedirectProfileIfRegistered_UserExists() throws IOException, ServletException {
+    public void testRedirectProfileIfSignedIn_UserExists() throws IOException, ServletException {
         User mockUser = new User();
         mockUser.setUsername("testuser");
 
-        // Important: path matches exactly the one used in Helper class
+        // Important: path matches exactly the one used in Authentication class
         when(session.getAttribute(USER_KEY)).thenReturn(mockUser);
         when(request.getRequestDispatcher("/static/profile/profile_page.html")).thenReturn(requestDispatcher);
         doNothing().when(requestDispatcher).forward(request, response);
 
-        boolean result = Helper.redirectProfileIfRegistered(request, response);
+        boolean result = Authentication.redirectProfileIfSignedIn(request, response);
 
         assertTrue(result);
         verify(request).getRequestDispatcher("/static/profile/profile_page.html");
@@ -61,10 +61,10 @@ public class HelperServletTest {
     }
 
     @Test
-    public void testRedirectProfileIfRegistered_UserNull() throws IOException, ServletException {
+    public void testRedirectProfileIfSignedIn_UserNull() throws IOException, ServletException {
         when(session.getAttribute(USER_KEY)).thenReturn(null);
 
-        boolean result = Helper.redirectProfileIfRegistered(request, response);
+        boolean result = Authentication.redirectProfileIfSignedIn(request, response);
 
         assertFalse(result);
         verify(request, never()).getRequestDispatcher(anyString());
@@ -76,11 +76,11 @@ public class HelperServletTest {
         BufferedReader reader = new BufferedReader(new StringReader(jsonInput));
         when(request.getReader()).thenReturn(reader);
 
-        Method parseJsonBodyMethod = Helper.class.getDeclaredMethod("parseJsonBody",
+        Method parseJsonBodyMethod = Authentication.class.getDeclaredMethod("parseJsonBody",
                 HttpServletRequest.class, Class.class);
         parseJsonBodyMethod.setAccessible(true);
 
-        TestUserInput result = (TestUserInput) parseJsonBodyMethod.invoke(null, request, TestUserInput.class);
+        TestUserSignInInput result = (TestUserSignInInput) parseJsonBodyMethod.invoke(null, request, TestUserSignInInput.class);
 
         assertNotNull(result);
         assertEquals("testuser", result.username);
@@ -93,11 +93,11 @@ public class HelperServletTest {
         BufferedReader reader = new BufferedReader(new StringReader(jsonInput));
         when(request.getReader()).thenReturn(reader);
 
-        Method parseJsonBodyMethod = Helper.class.getDeclaredMethod("parseJsonBody",
+        Method parseJsonBodyMethod = Authentication.class.getDeclaredMethod("parseJsonBody",
                 HttpServletRequest.class, Class.class);
         parseJsonBodyMethod.setAccessible(true);
 
-        TestUserInput result = (TestUserInput) parseJsonBodyMethod.invoke(null, request, TestUserInput.class);
+        TestUserSignInInput result = (TestUserSignInInput) parseJsonBodyMethod.invoke(null, request, TestUserSignInInput.class);
 
         assertNotNull(result);
         assertNull(result.username);
@@ -110,11 +110,11 @@ public class HelperServletTest {
         BufferedReader reader = new BufferedReader(new StringReader(jsonInput));
         when(request.getReader()).thenReturn(reader);
 
-        Method parseJsonBodyMethod = Helper.class.getDeclaredMethod("parseJsonBody",
+        Method parseJsonBodyMethod = Authentication.class.getDeclaredMethod("parseJsonBody",
                 HttpServletRequest.class, Class.class);
         parseJsonBodyMethod.setAccessible(true);
 
-        TestUserInput result = (TestUserInput) parseJsonBodyMethod.invoke(null, request, TestUserInput.class);
+        TestUserSignInInput result = (TestUserSignInInput) parseJsonBodyMethod.invoke(null, request, TestUserSignInInput.class);
 
         assertNotNull(result);
         assertEquals("testuser", result.username);
@@ -131,7 +131,7 @@ public class HelperServletTest {
         testResponse.status = "ok";
         testResponse.message = "Success";
 
-        Method sendJsonResponseMethod = Helper.class.getDeclaredMethod("sendJsonResponse",
+        Method sendJsonResponseMethod = Authentication.class.getDeclaredMethod("sendJsonResponse",
                 HttpServletResponse.class, Object.class);
         sendJsonResponseMethod.setAccessible(true);
 
@@ -150,7 +150,7 @@ public class HelperServletTest {
         PrintWriter writer = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(writer);
 
-        Method sendJsonResponseMethod = Helper.class.getDeclaredMethod("sendJsonResponse",
+        Method sendJsonResponseMethod = Authentication.class.getDeclaredMethod("sendJsonResponse",
                 HttpServletResponse.class, Object.class);
         sendJsonResponseMethod.setAccessible(true);
 
@@ -172,7 +172,7 @@ public class HelperServletTest {
         map.put("key1", "value1");
         map.put("key2", "value2");
 
-        Method sendJsonResponseMethod = Helper.class.getDeclaredMethod("sendJsonResponse",
+        Method sendJsonResponseMethod = Authentication.class.getDeclaredMethod("sendJsonResponse",
                 HttpServletResponse.class, Object.class);
         sendJsonResponseMethod.setAccessible(true);
 
@@ -185,13 +185,13 @@ public class HelperServletTest {
         assertTrue(jsonOutput.contains("\"key2\":\"value2\""));
     }
 
-    // Helper classes for testing JSON parsing
-    static class TestUserInput {
+    // Authentication classes for testing JSON parsing
+    static class TestUserSignInInput {
         String username;
         String password;
     }
 
-    // Helper class for JSON response testing
+    // Authentication class for JSON response testing
     static class TestResponse {
         String status;
         String message;

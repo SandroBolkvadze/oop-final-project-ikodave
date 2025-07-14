@@ -1,5 +1,3 @@
-// signin.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById("signin-form");
     const errorMsg = document.getElementById("error-msg");
@@ -18,8 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
 
             if (data.status === "invalid") {
-                errorMsg.innerHTML =
-                    '<div class="alert alert-danger text-center">Username or password is incorrect.</div>';
+                errorMsg.innerHTML = '<div class="alert alert-danger text-center">Username or password is incorrect.</div>';
             } else if (data.status === "ok") {
                 window.location.href = "/profile";
             }
