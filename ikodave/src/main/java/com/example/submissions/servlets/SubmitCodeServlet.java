@@ -44,7 +44,7 @@ public class SubmitCodeServlet extends HttpServlet {
 
         if (user == null) {
             response.setContentType("application/json");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("{\"redirect\": \"/problems\"}");
             return;
         }

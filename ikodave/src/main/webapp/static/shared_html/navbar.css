@@ -52,3 +52,58 @@
 .classy-navbar .navbar-toggler-icon {
     filter: invert(1);
 }
+
+.classy-navbar {
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    position: relative;
+}
+
+.classy-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 0.8px;
+    color: #fff;
+}
+
+.classy-nav .nav-link {
+    position: relative;
+    color: #ddd;
+    margin: 0 0.8rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.classy-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    transition: width 0.3s ease;
+}
+
+.classy-nav .nav-link:hover {
+    color: #fff;
+}
+
+.classy-nav .nav-link:hover::after {
+    width: 100%;
+}
+
+.classy-nav .nav-link:focus {
+    outline: none;
+    color: #fff;
+}
+
+.classy-navbar .navbar-toggler {
+    border: none;
+}
+
+.classy-navbar .navbar-toggler-icon {
+    filter: invert(1);
+}

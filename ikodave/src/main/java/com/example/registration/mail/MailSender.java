@@ -22,6 +22,9 @@ public class MailSender {
         props.put("mail.smtp.port", "" + smtpPort);
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.pool", "true");
+        props.put("mail.smtp.pool.size", "3");
+        props.put("mail.smtp.pool.ttl", "300000");
 
         Authenticator auth = new Authenticator() {
             @Override

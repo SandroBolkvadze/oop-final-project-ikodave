@@ -48,6 +48,10 @@ public class RegistrationServlet extends HttpServlet {
         String username = userRegistrationInput.getUsername();
         String password = userRegistrationInput.getPassword();
 
+        System.out.println(userDAO.usernameExists(username));
+        System.out.println(userDAO.verifiedMailExists(mail));
+
+
         Map<String, String> signInResult = new HashMap<>();
         if (userDAO.usernameExists(username) || userDAO.verifiedMailExists(mail)) {
             signInResult.put("status", "exists");
@@ -63,7 +67,7 @@ public class RegistrationServlet extends HttpServlet {
         newUser.setUsername(username);
         newUser.setPasswordHash(passwordHash);
         newUser.setVerificationCode(String.valueOf(UUID.randomUUID()));
-        newUser.setVerificationCodeExpiry(LocalDateTime.now().plusMinutes(3));
+        newUser.setVerificationCodeExpiry(LocalDateTime.now().plusMinutes(1));
 
         userDAO.addUser(newUser);
         request.getSession().setAttribute(USER_KEY, userDAO.getUserByUsername(newUser.getUsername()));

@@ -1,9 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
-    addListeners();
+    loadHeaders().catch(console.error);
     loadProblem().catch(console.error);
 });
 
-function addListeners() {
+
+async function loadHeaders() {
+    const data = await fetch('/api/user/session');
+    const session = await data.json();
+
+    if (session.loggedIn || !session.verified) {
+        return;
+    }
+
+    document.getElementById('header').innerHTML = `
+        <button type="button" id="submissionsButton" class="btn btn-link mb-3">
+            My Submissions
+        </button>
+
+        <button type="button" id="submitSolutionButton" class="btn btn-link mb-3">
+            Submit Solution
+        </button>
+    `;
+
+}
+
+function addHeaderListeners() {
     document.getElementById('submissionsButton').onclick = mySubmissionsProblem;
     document.getElementById('submitSolutionButton').onclick = submitSolutionButton;
 }
@@ -17,6 +38,9 @@ function submitSolutionButton() {
     const title = getProblemTitleFromPath();
     window.location.href = `/problems/submit/${encodeURIComponent(title)}`;
 }
+
+
+
 
 async function loadProblem() {
     const title = getProblemTitleFromPath();
