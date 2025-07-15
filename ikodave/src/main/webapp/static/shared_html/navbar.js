@@ -19,7 +19,7 @@ async function addNavs() {
     const session = await data.json();
 
     if (!session.loggedIn) {
-        addNotLoggedInNavs();
+        addLoggedOutNavs();
     }
     else if (!session.verified) {
         addLoggedInNotVerifiedNavs();
@@ -33,71 +33,104 @@ async function addNavs() {
 
 }
 
-function addNotLoggedInNavs() {
-    const navbar = document.getElementById('navbar-container');
+function addLoggedOutNavs() {
+    const navbarList = document.getElementById('navbar-list');
 
-    let homeNav = `<li class="nav-item" id="nav-home"><a class="nav-link" href="/home">Home</a></li>`;
-    let verifyNav = `<li class="nav-item" id="nav-verify"><a class="nav-link" href="/verify">Verify</a></li>`;
-    let profileNav = `<li class="nav-item" id="nav-profile"><a class="nav-link" href="/profile">Profile</a></li>`
-    let problemsNav = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`
-    let leaderboardNav = `<li class="nav-item" id="nav-leaderboard"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>`
+    let homeElem = document.createElement('li');
+    homeElem.innerHTML = `<li class="nav-item" id="nav-home"><a class="nav-link" href="/home">Home</a></li>`;
 
-    navbar.append(homeNav);
-    navbar.append(verifyNav);
-    navbar.append(profileNav);
-    navbar.append(problemsNav);
-    navbar.append(leaderboardNav);
+
+
+    let profileElem = document.createElement('li');
+    profileElem.innerHTML = `<li class="nav-item" id="nav-profile"><a class="nav-link" href="/profile">Profile</a></li>`
+
+    let problemsElem = document.createElement('li');
+    problemsElem.innerHTML = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`
+
+    let leaderboardElem = document.createElement('li');
+    leaderboardElem.innerHTML = `<li class="nav-item" id="nav-leaderboard"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>`
+
+    navbarList.appendChild(homeElem);
+    navbarList.appendChild(verifyElem);
+    navbarList.appendChild(profileElem);
+    navbarList.appendChild(problemsElem);
+    navbarList.appendChild(leaderboardElem);
 }
 
 function addLoggedInUserNavs() {
-    const navbar = document.getElementById('navbar-container');
+    const navbarList = document.getElementById('navbar-list');
 
-    let homeNav = `<li class="nav-item" id="nav-home"><a class="nav-link" href="/home">Home</a></li>`;
-    let profileNav = `<li class="nav-item" id="nav-profile"><a class="nav-link" href="/profile">Profile</a></li>`
-    let problemsNav = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`
-    let submissionsNav = `<li class="nav-item" id="nav-submissions"><a class="nav-link" href="/submissions-async">Submissions</a></li>`
-    let leaderboardNav = `<li class="nav-item" id="nav-leaderboard"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>`
+    let homeElem = document.createElement('li');
+    homeElem.innerHTML = `<li class="nav-item" id="nav-home"><a class="nav-link" href="/home">Home</a></li>`;
 
-    navbar.append(homeNav);
-    navbar.append(profileNav);
-    navbar.append(problemsNav);
-    navbar.append(submissionsNav);
-    navbar.append(leaderboardNav);
+    let profileElem = document.createElement('li');
+    profileElem.innerHTML = `<li class="nav-item" id="nav-profile"><a class="nav-link" href="/profile">Profile</a></li>`;
+
+    let problemsElem = document.createElement('li');
+    problemsElem.innerHTML = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`;
+
+    let submissionsElem = document.createElement('li');
+    submissionsElem.innerHTML = `<li class="nav-item" id="nav-submissions"><a class="nav-link" href="/submissions-async">Submissions</a></li>`;
+
+    let leaderboardElem = document.createElement('li');
+    leaderboardElem.innerHTML = `<li class="nav-item" id="nav-leaderboard"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>`;
+
+    navbarList.append(homeElem);
+    navbarList.append(profileElem);
+    navbarList.append(problemsElem);
+    navbarList.append(submissionsElem);
+    navbarList.append(leaderboardElem);
 }
 
 function addLoggedInAdminNavs() {
-    const navbar = document.getElementById('navbar-container');
+    const navbarList = document.getElementById('navbar-list');
 
-    let homeNav = `<li class="nav-item" id="nav-home"><a class="nav-link" href="/home">Home</a></li>`;
-    let profileNav = `<li class="nav-item" id="nav-profile"><a class="nav-link" href="/profile">Profile</a></li>`
-    let adminNav = `<li class="nav-item" id="nav-admin"><a class="nav-link" href="/admin">Admin</a></li>`;
-    let problemsNav = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`
-    let submissionsNav = `<li class="nav-item" id="nav-submissions"><a class="nav-link" href="/submissions-async">Submissions</a></li>`
-    let leaderboardNav = `<li class="nav-item" id="nav-leaderboard"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>`
+    let homeElem = document.createElement('li');
+    homeElem.innerHTML = `<li class="nav-item" id="nav-home"><a class="nav-link" href="/home">Home</a></li>`;
 
-    navbar.append(homeNav);
-    navbar.append(profileNav);
-    navbar.append(adminNav);
-    navbar.append(problemsNav);
-    navbar.append(submissionsNav);
-    navbar.append(leaderboardNav);
+    let profileElem = document.createElement('li');
+    profileElem.innerHTML = `<li class="nav-item" id="nav-profile"><a class="nav-link" href="/profile">Profile</a></li>`;
+
+    let adminElem = document.createElement('li');
+    adminElem.innerHTML = `<li class="nav-item" id="nav-admin"><a class="nav-link" href="/admin">Admin</a></li>`;
+
+    let problemsElem = document.createElement('li');
+    problemsElem.innerHTML = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`;
+
+    let submissionsElem = document.createElement('li');
+    submissionsElem.innerHTML = `<li class="nav-item" id="nav-submissions"><a class="nav-link" href="/submissions-async">Submissions</a></li>`;
+
+    let leaderboardElem = document.createElement('li');
+    leaderboardElem.innerHTML = `<li class="nav-item" id="nav-leaderboard"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>`;
+
+    navbarList.appendChild(homeElem);
+    navbarList.appendChild(profileElem);
+    navbarList.appendChild(adminElem);
+    navbarList.appendChild(problemsElem);
+    navbarList.appendChild(submissionsElem);
+    navbarList.appendChild(leaderboardElem);
 }
 
 
 function addLoggedInNotVerifiedNavs() {
-    const navbar = document.getElementById('navbar-container');
+    const navbarList = document.getElementById('navbar-list');
 
-    let homeNav = `<li class="nav-item" id="nav-home"><a class="nav-link" href="/home">Home</a></li>`;
-    let registerNav = `<li class="nav-item" id="nav-register"><a class="nav-link" href="/registration">Register</a></li>`
-    let signInNav = `<li class="nav-item" id="nav-signin"><a class="nav-link" href="/signin">Sign In</a></li>`
-    let problemsNav = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`
-    let leaderboardNav = `<li class="nav-item" id="nav-leaderboard"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>`
+    let homeElem = document.createElement('li');
+    homeElem.innerHTML = `<li class="nav-item" id="nav-home"><a class="nav-link" href="/home">Home</a></li>`;
 
-    navbar.append(homeNav);
-    navbar.append(registerNav);
-    navbar.append(signInNav);
-    navbar.append(problemsNav);
-    navbar.append(leaderboardNav);
+    let verifyElem = document.createElement('li');
+    verifyElem.innerHTML = `<li class="nav-item" id="nav-verify"><a class="nav-link" href="/verify">Verify</a></li>`;
+
+    let problemsElem = document.createElement('li');
+    problemsElem.innerHTML = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`;
+
+    let leaderboardElem = document.createElement('li');
+    leaderboardElem.innerHTML = `<li class="nav-item" id="nav-leaderboard"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>`;
+
+    navbarList.appendChild(homeElem);
+    navbarList.appendChild(verifyElem);
+    navbarList.appendChild(problemsElem);
+    navbarList.appendChild(leaderboardElem);
 }
 
 
