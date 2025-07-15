@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.user_profile.utils.ToSQL.*;
-import static com.example.util.DatabaseConstants.ProblemVerdictElements.VERDICT_ACCEPTED;
+import static com.example.constants.DatabaseConstants.ProblemVerdictElements.VERDICT_ACCEPTED;
 import static java.lang.String.format;
 
 public class SQLUserStatsDAO implements UserStatsDAO {

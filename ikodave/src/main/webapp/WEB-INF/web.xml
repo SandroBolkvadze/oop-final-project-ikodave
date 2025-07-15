@@ -19,6 +19,15 @@
     <listener-class>com.example.listener.ContextListener</listener-class>
   </listener>
 
+  <servlet>
+    <servlet-name>VerificationServlet</servlet-name>
+    <servlet-class>com.example.verification.servlets.VerificationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VerificationServlet</servlet-name>
+    <url-pattern>/verify</url-pattern>
+  </servlet-mapping>
+
   <!-- Pages -->
   <servlet>
     <servlet-name>LeaderboardServlet</servlet-name>

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 
 public class Authentication {

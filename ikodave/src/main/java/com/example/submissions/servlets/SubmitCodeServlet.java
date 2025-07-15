@@ -30,8 +30,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static com.example.submissions.Utils.Language.ToCodeLang.toCodeLang;
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 public class SubmitCodeServlet extends HttpServlet {
 

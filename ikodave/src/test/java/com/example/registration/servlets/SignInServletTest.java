@@ -23,8 +23,8 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.SessionConstants.USER_KEY;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 

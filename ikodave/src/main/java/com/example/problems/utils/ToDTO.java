@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import static com.example.util.DatabaseConstants.*;
+import static com.example.constants.DatabaseConstants.*;
 
 public class ToDTO {
 

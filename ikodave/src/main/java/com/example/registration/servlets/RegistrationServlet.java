@@ -16,12 +16,13 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 
 import static com.example.registration.servlets.Authentication.*;
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.MailConstants.*;
-import static com.example.util.SessionConstants.USER_KEY;
-import static com.example.util.WebConstants.HOST;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.MailConstants.*;
+import static com.example.constants.SessionConstants.USER_KEY;
+import static com.example.constants.WebConstants.HOST;
 import static java.lang.String.format;
 
 public class RegistrationServlet extends HttpServlet {
@@ -37,6 +38,8 @@ public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (redirectProfileIfSignedIn(request, response)) return;
 
+        Executor mailExec = (Executor) getServletContext().getAttribute(MAIL_EXEC_KEY);
+        MailSender mailSender = (MailSender) getServletContext().getAttribute(MAIL_SENDER_KEY);
         UserDAO userDAO = (UserDAO) getServletContext().getAttribute(USER_DAO_KEY);
         Gson gson = (Gson) getServletContext().getAttribute(GSON_KEY);
 
@@ -65,14 +68,12 @@ public class RegistrationServlet extends HttpServlet {
         userDAO.addUser(newUser);
         request.getSession().setAttribute(USER_KEY, userDAO.getUserByUsername(newUser.getUsername()));
 
-        MailSender mailSender = (MailSender) getServletContext().getAttribute(MAIL_SENDER_KEY);
-
-        String verifyUrl = format("%s/verify?code=%s", HOST, newUser.getVerificationCode());
-        String subject = SUBJECT;
-        String text = TEXT.formatted(verifyUrl);
-        String html = HTML.formatted(newUser.getUsername(), verifyUrl, verifyUrl, verifyUrl);
-
-        mailSender.send(newUser.getMail(), subject, text, html);
+        mailExec.execute(() -> {
+            String verifyUrl = format("%s/verify?code=%s", HOST, newUser.getVerificationCode());
+            String text = TEXT.formatted(verifyUrl);
+            String html = HTML.formatted(newUser.getUsername(), verifyUrl, verifyUrl, verifyUrl);
+            mailSender.send(newUser.getMail(), SUBJECT, text, html);
+        });
 
         signInResult.put("status", "ok");
         response.setContentType("application/json");

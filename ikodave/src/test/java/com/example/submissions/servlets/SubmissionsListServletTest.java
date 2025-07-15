@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import static com.example.util.AttributeConstants.*;
+import static com.example.constants.AttributeConstants.*;
 import static org.mockito.Mockito.*;
 
 public class SubmissionsListServletTest {

@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.constants;
 
 public class AttributeConstants {
     public static final String PROBLEM_TOPIC_RELATION_DAO_KEY = "problemTopicRelationDAO";
@@ -14,9 +14,12 @@ public class AttributeConstants {
     public static final String DIFFICULTY_DAO_KEY = "difficultyDAO";
     public static final String LEADERBOARD_DAO_KEY = "leaderboardDAO";
     public static final String STATUS_DAO_KEY = "statusDAO";
+    public static final String VERIFICATION_DAO_KEY = "verificationDAO";
     public static final String USER_STATS_DAO = "userStatsDao";
     public static final String PROBLEM_STATS_DAO = "problemStatsDao";
     public static final String DOCKER_CODE_RUNNER_KEY = "dockerCodeRunner";
     public static final String GSON_KEY = "gson";
     public static final String MAIL_SENDER_KEY = "mailSender";
+    public static final String MAIL_EXEC_KEY = "mailExec";
+
 }

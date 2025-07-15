@@ -1,9 +1,8 @@
 package com.example.registration.mail;
 
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.Message;
+import com.example.registration.servlets.Authentication;
+
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -13,17 +12,9 @@ import java.util.Properties;
 public class MailSender {
 
     private final Session mailSession;
-    private final String smtpHost;
-    private final int    smtpPort;
-    private final String username;
-    private final String password;
     private final String fromAddress;
 
     public MailSender(String smtpHost, int smtpPort, String username, String password, String fromAddress) {
-        this.smtpHost = smtpHost;
-        this.smtpPort = smtpPort;
-        this.username = username;
-        this.password = password;
         this.fromAddress = fromAddress;
 
         Properties props = new Properties();
@@ -31,7 +22,18 @@ public class MailSender {
         props.put("mail.smtp.port", "" + smtpPort);
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        this.mailSession = Session.getInstance(props);
+
+        Authenticator auth = new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(
+                    username,
+                    password
+                );
+            }
+        };
+
+        this.mailSession = Session.getInstance(props, auth);
     }
 
 
@@ -54,10 +56,7 @@ public class MailSender {
 
             msg.setContent(multipart);
 
-            Transport transport = mailSession.getTransport("smtp");
-            transport.connect(smtpHost, smtpPort, username, password);
-            transport.sendMessage(msg, msg.getAllRecipients());
-            transport.close();
+            Transport.send(msg);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }

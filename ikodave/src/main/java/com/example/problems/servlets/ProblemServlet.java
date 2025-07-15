@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 public class ProblemServlet extends HttpServlet {
 

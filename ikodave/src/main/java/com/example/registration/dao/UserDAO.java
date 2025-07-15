@@ -16,10 +16,6 @@ public interface UserDAO {
 
     boolean verifiedMailExists(String mail);
 
-    User getUserByVerificationCode(String verificationCode);
-
     User getUserByUsername(String username);
-
-    User updateUserByVerificationCode(String verificationCode);
 
 }

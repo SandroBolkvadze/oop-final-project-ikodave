@@ -19,8 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 
 public class SubmissionsListServlet extends HttpServlet  {

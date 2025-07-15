@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
-import static com.example.util.AttributeConstants.GSON_KEY;
-import static com.example.util.AttributeConstants.ROLE_DAO_KEY;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.GSON_KEY;
+import static com.example.constants.AttributeConstants.ROLE_DAO_KEY;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 public class UserSessionServlet extends HttpServlet {
     @Override

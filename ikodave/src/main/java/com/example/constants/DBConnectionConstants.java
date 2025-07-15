@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.constants;
 
 public class DBConnectionConstants {
 

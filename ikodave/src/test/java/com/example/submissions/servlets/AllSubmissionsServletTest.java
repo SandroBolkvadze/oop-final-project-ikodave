@@ -26,7 +26,7 @@ import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static com.example.util.AttributeConstants.*;
+import static com.example.constants.AttributeConstants.*;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 

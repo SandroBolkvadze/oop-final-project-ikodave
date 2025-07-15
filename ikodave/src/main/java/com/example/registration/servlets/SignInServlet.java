@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.registration.servlets.Authentication.*;
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 public class SignInServlet extends HttpServlet {
     @Override

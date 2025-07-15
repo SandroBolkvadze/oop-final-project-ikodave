@@ -17,9 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.DatabaseConstants.DifficultyElements.*;
-import static com.example.util.DatabaseConstants.ProblemVerdictElements.VERDICT_ACCEPTED;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.DatabaseConstants.DifficultyElements.*;
+import static com.example.constants.DatabaseConstants.ProblemVerdictElements.VERDICT_ACCEPTED;
 
 public class ProfileSubmissionStatsServlet extends HttpServlet {
 

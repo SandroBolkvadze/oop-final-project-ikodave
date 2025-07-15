@@ -1,7 +1,7 @@
 package com.example.registration.dao;
 
 import com.example.registration.DTO.User;
-import com.example.util.DatabaseConstants.*;
+import com.example.constants.DatabaseConstants.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
@@ -143,43 +143,6 @@ public class SQLUserDAO implements UserDAO {
             }
             return null;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public User getUserByVerificationCode(String verificationCode) {
-        String sqlStatement = toGetUserByVerificationCode();
-        try (Connection connection = dataSource.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, verificationCode);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return toUser(resultSet);
-            }
-            return null;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public User updateUserByVerificationCode(String verificationCode) {
-        try (Connection connection = dataSource.getConnection()) {
-            User user = getUserByVerificationCode(verificationCode);
-            if (user == null) {
-                return null;
-            }
-            String updateSQL = toUpdateUserByVerificationCode();
-            PreparedStatement preparedStatement = connection.prepareStatement(updateSQL);
-            preparedStatement.setString(1, verificationCode);
-            int update = preparedStatement.executeUpdate();
-            if (update == 0) {
-                return null;
-            }
-            return user;
-        }
-        catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

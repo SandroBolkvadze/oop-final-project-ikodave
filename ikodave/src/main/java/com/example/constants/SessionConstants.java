@@ -1,8 +1,7 @@
-package com.example.util;
+package com.example.constants;
 
 public class SessionConstants {
 
     public static String USER_KEY = "user";
-//    public static String USER_ID_KEY = "userId";
 
 }

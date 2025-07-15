@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.AttributeConstants.CODE_LANGUAGE_DAO_KEY;
-import static com.example.util.AttributeConstants.VERDICT_DAO_KEY;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.AttributeConstants.CODE_LANGUAGE_DAO_KEY;
+import static com.example.constants.AttributeConstants.VERDICT_DAO_KEY;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 public class AllSubmissionsServlet extends HttpServlet {
 

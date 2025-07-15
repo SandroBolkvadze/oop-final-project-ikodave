@@ -16,18 +16,25 @@ import com.example.user_profile.dao.ProblemStatsDAO;
 import com.example.user_profile.dao.SQLProblemStatsDAO;
 import com.example.user_profile.dao.SQLUserStatsDAO;
 import com.example.user_profile.dao.UserStatsDAO;
+import com.example.verification.DAO.SQLVerificationDAO;
+import com.example.verification.DAO.VerificationDAO;
+import com.example.verification.TaskManagers.VerificationTaskManager;
 import com.google.gson.Gson;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.DBConnectionConstants.*;
-import static com.example.util.MailConstants.*;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.DBConnectionConstants.*;
+import static com.example.constants.MailConstants.*;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ContextListener implements ServletContextListener {
+
     private BasicDataSource dataSource;
+    private VerificationTaskManager taskManager;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -92,19 +99,32 @@ public class ContextListener implements ServletContextListener {
         MailSender mailSender = new MailSender(smtpHost, smtpPort, username, appPassword, fromAddress);
         sce.getServletContext().setAttribute(MAIL_SENDER_KEY, mailSender);
 
+        ExecutorService mailExec = Executors.newFixedThreadPool(5);
+        sce.getServletContext().setAttribute(MAIL_EXEC_KEY, mailExec);
+
+        VerificationDAO verificationDAO = new SQLVerificationDAO(dataSource);
+        sce.getServletContext().setAttribute(VERIFICATION_DAO_KEY, verificationDAO);
+
+        taskManager = new VerificationTaskManager(verificationDAO);
+        taskManager.start();
+
         sce.getServletContext().setAttribute(BASIC_DATASOURCE_KEY, dataSource);
     }
 
     @Override
     public void contextDestroyed(javax.servlet.ServletContextEvent sce) {
+        DockerCodeRunner dockerCodeRunner = (DockerCodeRunner) sce.getServletContext().getAttribute(DOCKER_CODE_RUNNER_KEY);
         try {
-            DockerCodeRunner dockerCodeRunner = (DockerCodeRunner) sce.getServletContext().getAttribute(DOCKER_CODE_RUNNER_KEY);
             if (dockerCodeRunner != null) {
                 dockerCodeRunner.destroyContainers();
             }
 
             if (dataSource != null) {
                 dataSource.close();
+            }
+
+            if (taskManager != null) {
+                taskManager.stop();
             }
         } catch (Exception e) {
             throw new RuntimeException("Error closing the database connection pool", e);

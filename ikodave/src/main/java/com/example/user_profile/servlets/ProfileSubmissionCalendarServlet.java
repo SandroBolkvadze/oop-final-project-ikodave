@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.util.AttributeConstants.*;
+import static com.example.constants.AttributeConstants.*;
 
 public class ProfileSubmissionCalendarServlet extends HttpServlet {
 

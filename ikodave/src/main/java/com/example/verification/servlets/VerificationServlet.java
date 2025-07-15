@@ -1,9 +1,8 @@
-package com.example.verification.servlet;
+package com.example.verification.servlets;
 
 import com.example.registration.DTO.User;
 import com.example.registration.dao.UserDAO;
-import com.example.verification.Response.Verification;
-import com.google.gson.Gson;
+import com.example.verification.DAO.VerificationDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,17 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.example.util.AttributeConstants.GSON_KEY;
-import static com.example.util.AttributeConstants.USER_DAO_KEY;
+import static com.example.constants.AttributeConstants.USER_DAO_KEY;
+import static com.example.constants.AttributeConstants.VERIFICATION_DAO_KEY;
 
 public class VerificationServlet extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserDAO userDAO = (UserDAO) getServletContext().getAttribute(USER_DAO_KEY);
+        VerificationDAO verificationDAO = (VerificationDAO) getServletContext().getAttribute(VERIFICATION_DAO_KEY);
         String verificationCode = request.getParameter("code");
-        User user = userDAO.updateUserByVerificationCode(verificationCode);
+        User user = verificationDAO.updateUserByVerificationCode(verificationCode);
 
         if (user == null) {
             request.getRequestDispatcher("/static/verification/verification_error.html").forward(request, response);

@@ -10,8 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.jupiter.api.Test;
 
-import static com.example.util.AttributeConstants.ROLE_DAO_KEY;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.ROLE_DAO_KEY;
+import static com.example.constants.SessionConstants.USER_KEY;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
