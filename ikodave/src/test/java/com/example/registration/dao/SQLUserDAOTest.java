@@ -45,7 +45,7 @@ class SQLUserDAOTest {
     }
 
     @Test
-    void testAddAndGetUser() {
+    void testAddAndGetUserById() {
         User user = new User("kende", "1234");
         userDao.addUser(user);
         assertTrue(userDao.usernameExists("kende"));
@@ -77,7 +77,7 @@ class SQLUserDAOTest {
     }
 
     @Test
-    void testGetUserByUsernameReturnsNullIfNotFound() {
+    void testGetUserByIdByUsernameReturnsNullIfNotFound() {
         assertNull(userDao.getUserByUsername("notfound"));
     }
 
@@ -110,14 +110,14 @@ class SQLUserDAOTest {
     }
 
     @Test
-    void testGetUserById() {
+    void testGetUserByIdById() {
         User user = new User("byId", "1234");
         userDao.addUser(user);
 
         User retrieved = userDao.getUserByUsername("byId");
         assertNotNull(retrieved);
 
-        User byId = userDao.getUser(retrieved.getId());
+        User byId = userDao.getUserById(retrieved.getId());
         assertEquals("byId", byId.getUsername());
     }
 

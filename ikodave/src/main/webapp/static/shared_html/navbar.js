@@ -6,7 +6,7 @@ async function loadNavbar() {
 }
 
 async function initNavBar() {
-    const navbar = document.getElementById('navbar-container')
+    const navbar = document.getElementById('navbar-container');
 
     navbar.innerHTML = await fetch('/static/shared_html/navbar.html')
             .then(res => res.text())
@@ -24,11 +24,11 @@ async function addNavs() {
     else if (!session.verified) {
         addLoggedInNotVerifiedNavs();
     }
-    else if (session.role === 'admin') {
-        addLoggedInUserNavs();
+    else if (session.role.toLowerCase() === 'admin') {
+        addLoggedInAdminNavs();
     }
     else {
-        addLoggedInAdminNavs();
+        addLoggedInUserNavs();
     }
 
 }
@@ -39,10 +39,11 @@ function addLoggedOutNavs() {
     let homeElem = document.createElement('li');
     homeElem.innerHTML = `<li class="nav-item" id="nav-home"><a class="nav-link" href="/home">Home</a></li>`;
 
+    let registerElem = document.createElement('li');
+    registerElem.innerHTML = `<li class="nav-item" id="register"><a class="nav-link" href="/registration">Register</a></li>`;
 
-
-    let profileElem = document.createElement('li');
-    profileElem.innerHTML = `<li class="nav-item" id="nav-profile"><a class="nav-link" href="/profile">Profile</a></li>`
+    let signInElem = document.createElement('li');
+    signInElem.innerHTML = `<li class="nav-item" id="signin"><a class="nav-link" href="/signin">Sign in</a></li>`;
 
     let problemsElem = document.createElement('li');
     problemsElem.innerHTML = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`
@@ -51,8 +52,8 @@ function addLoggedOutNavs() {
     leaderboardElem.innerHTML = `<li class="nav-item" id="nav-leaderboard"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>`
 
     navbarList.appendChild(homeElem);
-    navbarList.appendChild(verifyElem);
-    navbarList.appendChild(profileElem);
+    navbarList.appendChild(registerElem);
+    navbarList.appendChild(signInElem);
     navbarList.appendChild(problemsElem);
     navbarList.appendChild(leaderboardElem);
 }
@@ -92,7 +93,7 @@ function addLoggedInAdminNavs() {
     profileElem.innerHTML = `<li class="nav-item" id="nav-profile"><a class="nav-link" href="/profile">Profile</a></li>`;
 
     let adminElem = document.createElement('li');
-    adminElem.innerHTML = `<li class="nav-item" id="nav-admin"><a class="nav-link" href="/admin">Admin</a></li>`;
+    adminElem.innerHTML = `<li class="nav-item" id="nav-admin"><a class="nav-link" href="/AdminPage">Admin Page</a></li>`;
 
     let problemsElem = document.createElement('li');
     problemsElem.innerHTML = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`;
@@ -119,7 +120,7 @@ function addLoggedInNotVerifiedNavs() {
     homeElem.innerHTML = `<li class="nav-item" id="nav-home"><a class="nav-link" href="/home">Home</a></li>`;
 
     let verifyElem = document.createElement('li');
-    verifyElem.innerHTML = `<li class="nav-item" id="nav-verify"><a class="nav-link" href="/verify">Verify</a></li>`;
+    verifyElem.innerHTML = `<li class="nav-item" id="nav-verify"><a class="nav-link" href="/verification/time">Account Verification</a></li>`;
 
     let problemsElem = document.createElement('li');
     problemsElem.innerHTML = `<li class="nav-item" id="nav-problems"><a class="nav-link" href="/problems">Problems</a></li>`;

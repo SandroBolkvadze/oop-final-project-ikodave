@@ -21,7 +21,7 @@ public class SQLUserDAO implements UserDAO {
     }
 
     @Override
-    public User getUser(int userId) {
+    public User getUserById(int userId) {
         String sqlStatement = format("SELECT * FROM %s WHERE %s.%s = ?;",
                     Users.TABLE_NAME,
                     Users.TABLE_NAME,
@@ -32,19 +32,22 @@ public class SQLUserDAO implements UserDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return toUser(resultSet);
+            if (resultSet.next()) {
+                return toUser(resultSet);
+
+            }
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void addUser(User user) {
+    public User addUser(User user) {
         try (Connection con = dataSource.getConnection()){
             String sql = format("INSERT INTO users " +
                             "(%s, %s, %s, %s, %s, %s, %s) " +
-                            "VALUES (2, ?, ?, ?, ?, ?, NOW())",
+                            "VALUES (2, ?, ?, ?, ?, NOW() + INTERVAL 2 MINUTE, NOW())",
                     Users.COL_ROLE_ID,
                     Users.COL_MAIL,
                     Users.COL_USERNAME,
@@ -57,9 +60,12 @@ public class SQLUserDAO implements UserDAO {
             preparedStatement.setString(2, user.getUsername());
             preparedStatement.setString(3, user.getPasswordHash());
             preparedStatement.setString(4, user.getVerificationCode());
-            preparedStatement.setObject(5, user.getVerificationCodeExpiry());
 
-            preparedStatement.executeUpdate();
+            int updates = preparedStatement.executeUpdate();
+            if (updates == 0) {
+                return null;
+            }
+            return getUserByUsername(user.getUsername());
         } catch (Exception e) {
             throw new RuntimeException("Error adding user", e);
         }

@@ -4,9 +4,9 @@ import com.example.registration.DTO.User;
 
 public interface UserDAO {
 
-    User getUser(int userId);
+    User getUserById(int userId);
 
-    void addUser(User user);
+    User addUser(User user);
 
     boolean authenticate(User user);
 

@@ -12,6 +12,7 @@ import static com.example.problems.utils.ToDTO.toUser;
 import static com.example.registration.Utils.ToSQL.toGetUserByVerificationCode;
 import static com.example.registration.Utils.ToSQL.toUpdateUserByVerificationCode;
 import static com.example.verification.utils.ToSQL.toRemoveTimedOutVerifications;
+import static com.example.verification.utils.ToSQL.toUpdateUserVerificationCode;
 
 public class SQLVerificationDAO implements VerificationDAO {
 
@@ -50,6 +51,23 @@ public class SQLVerificationDAO implements VerificationDAO {
     }
 
     @Override
+    public User updateUserVerificationCode(User user, String verificationCode) {
+        try (Connection connection = basicDataSource.getConnection()) {
+            String sqlStatement = toUpdateUserVerificationCode();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, verificationCode);
+            preparedStatement.setInt(2, user.getId());
+            int updates = preparedStatement.executeUpdate();
+            if (updates == 0) {
+                return null;
+            }
+            return getUserByVerificationCode(verificationCode);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public User updateUserByVerificationCode(String verificationCode) {
         try (Connection connection = basicDataSource.getConnection()) {
             User user = getUserByVerificationCode(verificationCode);
@@ -63,6 +81,7 @@ public class SQLVerificationDAO implements VerificationDAO {
             if (update == 0) {
                 return null;
             }
+            user.setIsVerified(true);
             return user;
         }
         catch (SQLException e) {

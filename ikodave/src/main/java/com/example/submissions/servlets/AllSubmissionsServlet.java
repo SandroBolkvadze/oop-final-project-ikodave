@@ -54,7 +54,7 @@ public class AllSubmissionsServlet extends HttpServlet {
                             return new SubmissionResponse(
                                     submission.getId(),
                                     submission.getSubmitDate(),
-                                    userDAO.getUser(submission.getUserId()).getUsername(),
+                                    userDAO.getUserById(submission.getUserId()).getUsername(),
                                     submission.getSolutionCode(),
                                     problemDAO.getProblemTitle(submission.getProblemId()),
                                     codeLanguageDAO.getCodeLanguageById(submission.getCodeLanguageId()).getLanguage(),

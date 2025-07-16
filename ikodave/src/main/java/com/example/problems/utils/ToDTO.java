@@ -20,7 +20,7 @@ public class ToDTO {
             user.setMail(rs.getString(Users.COL_MAIL));
             user.setUsername(rs.getString(Users.COL_USERNAME));
             user.setPasswordHash(rs.getString(Users.COL_PASSWORD_HASH));
-            user.setIsActive(rs.getBoolean(Users.COL_IS_VERIFIED));
+            user.setIsVerified(rs.getBoolean(Users.COL_IS_VERIFIED));
             user.setVerificationCode(rs.getString(Users.COL_VERIFICATION_TOKEN));
             user.setVerificationCodeExpiry(rs.getObject(Users.COL_VERIFICATION_TOKEN_EXPIRY, LocalDateTime.class));
             user.setRegisterDate(rs.getTimestamp(Users.COL_REGISTER_DATE));

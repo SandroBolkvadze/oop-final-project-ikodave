@@ -16,5 +16,17 @@ public class ToSQL {
         );
     }
 
+    public static String toUpdateUserVerificationCode() {
+        return format("UPDATE %s SET %s.%s = ?, %s.%s = NOW() + INTERVAL 2 MINUTE WHERE %s.%s = ?",
+                Users.TABLE_NAME,
+                Users.TABLE_NAME,
+                Users.COL_VERIFICATION_TOKEN,
+                Users.TABLE_NAME,
+                Users.COL_VERIFICATION_TOKEN_EXPIRY,
+                Users.TABLE_NAME,
+                Users.COL_ID
+        );
+    }
+
 
 }

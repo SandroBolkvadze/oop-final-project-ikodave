@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import static com.example.constants.AttributeConstants.USER_DAO_KEY;
 import static com.example.constants.AttributeConstants.VERIFICATION_DAO_KEY;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 public class VerificationServlet extends HttpServlet {
 
@@ -20,6 +21,8 @@ public class VerificationServlet extends HttpServlet {
         VerificationDAO verificationDAO = (VerificationDAO) getServletContext().getAttribute(VERIFICATION_DAO_KEY);
         String verificationCode = request.getParameter("code");
         User user = verificationDAO.updateUserByVerificationCode(verificationCode);
+
+        request.getSession().invalidate();
 
         if (user == null) {
             request.getRequestDispatcher("/static/verification/verification_error.html").forward(request, response);

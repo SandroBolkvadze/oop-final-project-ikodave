@@ -10,4 +10,5 @@ public interface VerificationDAO {
 
     User getUserByVerificationCode(String verificationCode);
 
+    User updateUserVerificationCode(User user, String verificationCode);
 }

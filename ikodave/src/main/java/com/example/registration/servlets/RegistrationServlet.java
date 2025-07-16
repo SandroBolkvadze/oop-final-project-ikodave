@@ -67,16 +67,15 @@ public class RegistrationServlet extends HttpServlet {
         newUser.setUsername(username);
         newUser.setPasswordHash(passwordHash);
         newUser.setVerificationCode(String.valueOf(UUID.randomUUID()));
-        newUser.setVerificationCodeExpiry(LocalDateTime.now().plusMinutes(1));
 
-        userDAO.addUser(newUser);
-        request.getSession().setAttribute(USER_KEY, userDAO.getUserByUsername(newUser.getUsername()));
+        User updateUser = userDAO.addUser(newUser);
+        request.getSession().setAttribute(USER_KEY, updateUser);
 
         mailExec.execute(() -> {
-            String verifyUrl = format("%s/verify?code=%s", HOST, newUser.getVerificationCode());
+            String verifyUrl = format("%s/verify?code=%s", HOST, updateUser.getVerificationCode());
             String text = TEXT.formatted(verifyUrl);
-            String html = HTML.formatted(newUser.getUsername(), verifyUrl, verifyUrl, verifyUrl);
-            mailSender.send(newUser.getMail(), SUBJECT, text, html);
+            String html = HTML.formatted(updateUser.getUsername(), verifyUrl, verifyUrl, verifyUrl);
+            mailSender.send(updateUser.getMail(), SUBJECT, text, html);
         });
 
         signInResult.put("status", "ok");

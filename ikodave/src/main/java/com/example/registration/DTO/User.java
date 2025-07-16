@@ -77,7 +77,7 @@ public class User {
         return isVerified;
     }
 
-    public void setIsActive(boolean active) {
+    public void setIsVerified(boolean active) {
         isVerified = active;
     }
 
