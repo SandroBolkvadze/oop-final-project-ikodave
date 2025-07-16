@@ -20,6 +20,15 @@
   </listener>
 
   <servlet>
+    <servlet-name>VerificationResendServlet</servlet-name>
+    <servlet-class>com.example.verification.servlets.VerificationResendServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VerificationResendServlet</servlet-name>
+    <url-pattern>/verification/resend</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>VerificationExpiryPageServlet</servlet-name>
     <servlet-class>com.example.verification.servlets.VerificationExpiryPageServlet</servlet-class>
   </servlet>

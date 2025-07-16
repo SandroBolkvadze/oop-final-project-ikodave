@@ -13,7 +13,7 @@ public class ToSQL {
                         "JOIN %s VERDICTS ON VERDICTS.%s = SUBMISSIONS.%s " +
                         "WHERE VERDICTS.%s = 'Accepted' AND USERCOUNTER.%s = USERS.%s) AS SCORE " +
                         "FROM %s USERS " +
-                        "ORDER BY SCORE DESC;",
+                        "WHERE %s.%s = TRUE ORDER BY SCORE DESC;",
                 Users.COL_USERNAME,
                 Submissions.COL_PROBLEM_ID,
                 Users.TABLE_NAME,
@@ -26,7 +26,9 @@ public class ToSQL {
                 SubmissionVerdict.COL_VERDICT,
                 Users.COL_ID,
                 Users.COL_ID,
-                Users.TABLE_NAME
+                Users.TABLE_NAME,
+                Users.TABLE_NAME,
+                Users.COL_IS_VERIFIED
         );
     }
 }

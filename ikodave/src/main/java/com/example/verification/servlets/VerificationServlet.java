@@ -22,12 +22,12 @@ public class VerificationServlet extends HttpServlet {
         String verificationCode = request.getParameter("code");
         User user = verificationDAO.updateUserByVerificationCode(verificationCode);
 
-        request.getSession().invalidate();
 
         if (user == null) {
             request.getRequestDispatcher("/static/verification/verification_error.html").forward(request, response);
         }
         else {
+            request.getSession().invalidate();
             request.getRequestDispatcher("/static/verification/verification_success.html").forward(request, response);
         }
 

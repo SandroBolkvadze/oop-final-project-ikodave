@@ -22,8 +22,7 @@ function fetchTimeLeft() {
 
 function updateTimer() {
     if (secondsLeft <= 0) {
-        document.getElementById('timer').textContent = "Verification expired. Please register again.";
-        document.getElementById('resend-btn').disabled = true;
+        document.getElementById('timer').textContent = "Verification expired. Please resend verification code again.";
         clearInterval(timerInterval);
         return;
     }

@@ -12,7 +12,7 @@ import java.io.IOException;
 import static com.example.constants.AttributeConstants.USER_DAO_KEY;
 import static com.example.constants.SessionConstants.USER_KEY;
 
-@WebFilter("*")
+@WebFilter(value = "*", asyncSupported = true)
 public class VerificationFilter implements Filter {
 
     @Override
@@ -26,6 +26,7 @@ public class VerificationFilter implements Filter {
         }
 
         User user = (User) session.getAttribute(USER_KEY);
+        System.out.println(user);
         if (user == null || (!user.isVerified() && userDAO.getUserById(user.getId()) == null)) {
             session.invalidate();
         }

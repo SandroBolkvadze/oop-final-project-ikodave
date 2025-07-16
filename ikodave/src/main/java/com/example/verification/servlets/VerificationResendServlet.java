@@ -27,16 +27,20 @@ public class VerificationResendServlet extends HttpServlet {
         VerificationDAO verificationDAO = (VerificationDAO) getServletContext().getAttribute(VERIFICATION_DAO_KEY);
         MailSender mailSender = (MailSender) getServletContext().getAttribute(MAIL_SENDER_KEY);
         Executor mailExec = (Executor) getServletContext().getAttribute(MAIL_EXEC_KEY);
+
+        System.out.println("resending " + user);
         if (user == null || user.isVerified() || user.getVerificationCodeExpiry().isAfter(LocalDateTime.now())) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
+        System.out.println("resending...");
         String newVerificationCode = UUID.randomUUID().toString();
         user.setVerificationCode(newVerificationCode);
         User updateUser = verificationDAO.updateUserVerificationCode(user, newVerificationCode);
         request.getSession().setAttribute(USER_KEY, updateUser);
 
+        System.out.println("update user " + updateUser);
         if (updateUser == null) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;

@@ -21,8 +21,8 @@ public class VerificationTaskManager {
     public void start() {
         schedular.scheduleAtFixedRate(
                 verificationDAO::removeTimedOutVerifications,
-                5,
-                5,
+                10,
+                10,
                 TimeUnit.MINUTES
         );
     }
