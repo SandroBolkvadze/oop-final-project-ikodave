@@ -3,12 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadProblem().catch(console.error);
 });
 
-
 async function loadHeaders() {
     const data = await fetch('/api/user/session');
     const session = await data.json();
 
-    if (session.loggedIn || !session.verified) {
+    if (!session.loggedIn || !session.verified) {
         return;
     }
 
@@ -22,24 +21,15 @@ async function loadHeaders() {
         </button>
     `;
 
+    document.getElementById('submissionsButton').onclick = () => {
+        const title = getProblemTitleFromPath();
+        window.location.href = `/problems/submissions/${encodeURIComponent(title)}`;
+    };
+    document.getElementById('submitSolutionButton').onclick = () => {
+        const title = getProblemTitleFromPath();
+        window.location.href = `/problems/submit/${encodeURIComponent(title)}`;
+    };
 }
-
-function addHeaderListeners() {
-    document.getElementById('submissionsButton').onclick = mySubmissionsProblem;
-    document.getElementById('submitSolutionButton').onclick = submitSolutionButton;
-}
-
-function mySubmissionsProblem() {
-    const title = getProblemTitleFromPath();
-    window.location.href = `/problems/submissions/${encodeURIComponent(title)}`;
-}
-
-function submitSolutionButton() {
-    const title = getProblemTitleFromPath();
-    window.location.href = `/problems/submit/${encodeURIComponent(title)}`;
-}
-
-
 
 
 async function loadProblem() {
@@ -50,13 +40,10 @@ async function loadProblem() {
         body: JSON.stringify({ problemTitle: title })
     }).then(r => r.json());
 
-    // Title
     document.getElementById('problemTitle').textContent = title;
 
-    // Description
     document.getElementById('descriptionText').textContent = data.problemDescription;
 
-    // Status badge
     const statusTextElem = document.getElementById('statusText');
     const statusValue = data.problemStatus.toLowerCase();
     statusTextElem.textContent = data.problemStatus;
@@ -65,7 +52,6 @@ async function loadProblem() {
         : 'todo';
     statusTextElem.className = 'status ' + statusClass;
 
-    // Difficulty badge
     const diffTextElem = document.getElementById('difficultyText');
     const diffValue = data.problemDifficulty.toLowerCase();
     diffTextElem.textContent = data.problemDifficulty;
@@ -74,15 +60,12 @@ async function loadProblem() {
         : 'easy';
     diffTextElem.className = 'difficulty ' + diffClass;
 
-    // Input/Output
     document.getElementById('inputText').textContent  = data.problemInputSpec;
     document.getElementById('outputText').textContent = data.problemOutputSpec;
 
-    // Limits (remove memory limit)
     document.getElementById('problemLimits').innerHTML =
         `Time limit per test: <strong>${data.problemTime} ms</strong>.`;
 
-    // Test cases
     const testCasesContainer = document.getElementById('testCases');
     testCasesContainer.innerHTML = '';
     (data.problemTestCases || []).forEach(tc => {
@@ -97,7 +80,6 @@ async function loadProblem() {
         testCasesContainer.appendChild(ex);
     });
 
-    // Topics
     const topicsContainer = document.getElementById('problemTopics');
     topicsContainer.innerHTML = '';
     (data.problemTopics || []).forEach(topic => {

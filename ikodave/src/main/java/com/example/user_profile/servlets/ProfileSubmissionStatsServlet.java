@@ -36,6 +36,10 @@ public class ProfileSubmissionStatsServlet extends HttpServlet {
         String username = usernameBody.getUsername();
         User user = userDAO.getUserByUsername(username);
 
+        if (user == null || !user.isVerified()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         UserSubmissionStats userSubmissionStats = new UserSubmissionStats();
 

@@ -90,7 +90,7 @@ public class ContextListener implements ServletContextListener {
         sce.getServletContext().setAttribute(ROLE_DAO_KEY, roleDAO);
 
         DockerCodeRunner dockerCodeRunner = new DockerCodeRunner();
-//        dockerCodeRunner.startContainers();
+        dockerCodeRunner.startContainers();
         sce.getServletContext().setAttribute(DOCKER_CODE_RUNNER_KEY, dockerCodeRunner);
 
         Gson gson = new Gson();

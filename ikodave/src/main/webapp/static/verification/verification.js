@@ -2,9 +2,19 @@ let secondsLeft = 0;
 let timerInterval = null;
 
 function fetchTimeLeft() {
+    fetch('/api/user/session')
+        .then(res => res.json())
+        .then(data => {
+            if (data.loggedIn && data.verified) {
+                window.location = '/verify'
+            }
+        })
+        .catch(err => console.log(err));
+
+
     fetch('/api/verification/time')
         .then(response => {
-            if (!response.ok) throw new Error("Failed to fetch time left");
+            if (!response.ok) throw new Error('Failed to fetch time left');
             return response.json();
         })
         .then(data => {
@@ -16,19 +26,8 @@ function fetchTimeLeft() {
             timerInterval = setInterval(tick, 1000);
         })
         .catch(err => {
-            document.getElementById('timer').textContent = "Could not load timer.";
+            document.getElementById('timer').textContent = '';
         });
-}
-
-function updateTimer() {
-    if (secondsLeft <= 0) {
-        document.getElementById('timer').textContent = "Verification expired. Please resend verification code again.";
-        clearInterval(timerInterval);
-        return;
-    }
-    const minutes = Math.floor(secondsLeft / 60);
-    const seconds = secondsLeft % 60;
-    document.getElementById('timer').textContent = `Time left: ${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
 function tick() {
@@ -39,20 +38,29 @@ function tick() {
     }
 }
 
+function updateTimer() {
+    if (secondsLeft <= 0) {
+        document.getElementById('timer').textContent = 'Verification expired. Please resend verification code again.';
+        clearInterval(timerInterval);
+        return;
+    }
+    const minutes = Math.floor(secondsLeft / 60);
+    const seconds = secondsLeft % 60;
+    document.getElementById('timer').textContent = `Time left: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
 document.getElementById('resend-btn').addEventListener('click', function() {
     fetch('/verification/resend', { method: 'POST' })
         .then(response => {
-            if (!response.ok) throw new Error("Failed to resend email");
+            if (!response.ok) throw new Error('Failed to resend email');
             return response.json();
         })
         .then(data => {
-            document.getElementById('message').textContent = "Verification email resent!";
-            document.getElementById('error').textContent = "";
+            alert('Verification email resent')
             fetchTimeLeft();
         })
         .catch(err => {
-            document.getElementById('error').textContent = "Could not resend email. Try again later.";
-            document.getElementById('message').textContent = "";
+            alert('Failed to resend verification email');
         });
 });
 

@@ -1,9 +1,6 @@
 function addMonthPickerListener() {
     const monthPicker = document.getElementById('calendar-month-picker');
-
-    monthPicker.addEventListener('change', () => {
-        populateCalendar();
-    });
+    monthPicker.addEventListener('change', () => populateCalendar);
 }
 
 function addCalendarNavListeners() {

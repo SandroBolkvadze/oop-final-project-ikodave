@@ -1,4 +1,4 @@
-package com.example.security;
+package com.example.security.filters;
 
 import com.example.registration.DTO.User;
 import com.example.registration.dao.UserDAO;
@@ -26,8 +26,11 @@ public class VerificationFilter implements Filter {
         }
 
         User user = (User) session.getAttribute(USER_KEY);
+
         System.out.println(user);
-        if (user == null || (!user.isVerified() && userDAO.getUserById(user.getId()) == null)) {
+
+        if (user == null || userDAO.getUserById(user.getId()) == null) {
+            System.out.println(session);
             session.invalidate();
         }
         chain.doFilter(request, response);

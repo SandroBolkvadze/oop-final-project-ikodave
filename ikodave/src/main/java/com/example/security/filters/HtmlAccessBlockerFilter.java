@@ -1,4 +1,4 @@
-package com.example.security;
+package com.example.security.filters;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

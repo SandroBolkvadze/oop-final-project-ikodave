@@ -16,7 +16,7 @@ public class UserProfilePageServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute(USER_KEY);
 
         if (user == null) {
-            response.sendRedirect("/registration");
+            response.sendRedirect("/signin");
         }
         else {
             response.sendRedirect("/profile/" + user.getUsername());

@@ -28,20 +28,19 @@ public class VerificationResendServlet extends HttpServlet {
         MailSender mailSender = (MailSender) getServletContext().getAttribute(MAIL_SENDER_KEY);
         Executor mailExec = (Executor) getServletContext().getAttribute(MAIL_EXEC_KEY);
 
-        System.out.println("resending " + user);
         if (user == null || user.isVerified() || user.getVerificationCodeExpiry().isAfter(LocalDateTime.now())) {
+            System.out.println("verification error1");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
-        System.out.println("resending...");
         String newVerificationCode = UUID.randomUUID().toString();
         user.setVerificationCode(newVerificationCode);
         User updateUser = verificationDAO.updateUserVerificationCode(user, newVerificationCode);
         request.getSession().setAttribute(USER_KEY, updateUser);
 
-        System.out.println("update user " + updateUser);
         if (updateUser == null) {
+            System.out.println("verification error2");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -53,6 +52,9 @@ public class VerificationResendServlet extends HttpServlet {
             mailSender.send(user.getMail(), SUBJECT, text, html);
         });
 
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"success\":true}");
     }
 
 }

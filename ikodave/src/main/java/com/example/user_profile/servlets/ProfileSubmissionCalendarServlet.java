@@ -29,9 +29,8 @@ public class ProfileSubmissionCalendarServlet extends HttpServlet {
         UserCalendarBody userCalendarBody = gson.fromJson(request.getReader(), UserCalendarBody.class);
         User user = userDAO.getUserByUsername(userCalendarBody.getUsername());
 
-        if (user == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
+        if (user == null || !user.isVerified()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
