@@ -128,50 +128,9 @@ function addLoggedInNotVerifiedNavs() {
     let leaderboardElem = document.createElement('li');
     leaderboardElem.innerHTML = `<li class="nav-item" id="nav-leaderboard"><a class="nav-link" href="/leaderboard">Leaderboard</a></li>`;
 
-    navbarList.appendChild(homeElem);
     navbarList.appendChild(verifyElem);
+    navbarList.appendChild(homeElem);
     navbarList.appendChild(problemsElem);
     navbarList.appendChild(leaderboardElem);
 }
 
-
-
-// toggleElement('nav-register', !loggedIn);
-// toggleElement('nav-signin', !loggedIn);
-// toggleElement('nav-profile', loggedIn);
-// toggleElement('nav-admin', role === "Admin");
-// toggleElement('nav-submissions', loggedIn);
-//
-// // Attach links
-// attachNavbarLinks({
-//     'nav-home': '/home',
-//     'nav-register': '/registration',
-//     'nav-signin': '/signin',
-//     'nav-profile': '/profile',
-//     'nav-problems': '/problems',
-//     'nav-submissions': '/submissions-async',
-//     'nav-leaderboard': '/leaderboard',
-//     'nav-admin': '/AdminPage'
-// });
-
-// function toggleElement(id, show) {
-//     const el = document.getElementById(id);
-//     if (el) {
-//         el.style.display = show ? '' : 'none';
-//     }
-// }
-//
-// function attachNavbarLinks(linkMap) {
-//     for (const [id, href] of Object.entries(linkMap)) {
-//         const li = document.getElementById(id);
-//         if (li) {
-//             const anchor = li.querySelector('a');
-//             if (anchor) {
-//                 anchor.addEventListener('click', (e) => {
-//                     e.preventDefault();
-//                     window.location.href = href;
-//                 });
-//             }
-//         }
-//     }
-// }

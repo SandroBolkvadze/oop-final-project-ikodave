@@ -49,9 +49,9 @@ public class AllSubmissionsServlet extends HttpServlet {
         List<Submission> submissions = submissionDAO.getAllSubmissionsByOrder();
 
         List<SubmissionResponse> submissionResponses =
-                submissions.stream().map((submission) -> {
+                submissions.stream().map((submission) ->
 
-                            return new SubmissionResponse(
+                             new SubmissionResponse(
                                     submission.getId(),
                                     submission.getSubmitDate(),
                                     userDAO.getUserById(submission.getUserId()).getUsername(),
@@ -62,8 +62,8 @@ public class AllSubmissionsServlet extends HttpServlet {
                                     submission.getTime(),
                                     submission.getMemory(),
                                     submission.getLog()
-                            );
-                        }
+                            )
+
                 ).toList();
 
 
