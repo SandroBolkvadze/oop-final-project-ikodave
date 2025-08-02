@@ -72,6 +72,7 @@ public class RegistrationServlet extends HttpServlet {
             return;
         }
 
+
         String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
         User newUser = new User();
         newUser.setMail(mail);
