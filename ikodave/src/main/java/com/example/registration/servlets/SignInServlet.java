@@ -1,8 +1,8 @@
 package com.example.registration.servlets;
 
 import com.example.registration.dao.UserDAO;
-import com.example.registration.model.User;
-import com.example.registration.utils.UserSignInInput;
+import com.example.registration.DTO.User;
+import com.example.registration.Responce.UserSignInInput;
 import com.google.gson.Gson;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.registration.servlets.Authentication.*;
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 public class SignInServlet extends HttpServlet {
     @Override
@@ -55,7 +55,7 @@ public class SignInServlet extends HttpServlet {
             return;
         }
 
-        boolean authSuccess = BCrypt.checkpw(password, user.getPassword());
+        boolean authSuccess = BCrypt.checkpw(password, user.getPasswordHash());
 
         if (authSuccess) {
             request.getSession().setAttribute(USER_KEY, user);

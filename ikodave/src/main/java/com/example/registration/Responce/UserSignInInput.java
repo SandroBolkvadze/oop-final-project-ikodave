@@ -1,4 +1,4 @@
-package com.example.registration.utils;
+package com.example.registration.Responce;
 
 public class UserSignInInput {
 

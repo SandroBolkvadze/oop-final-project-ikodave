@@ -1,8 +1,7 @@
 package com.example.registration.dao;
 
-import com.example.registration.model.User;
-import com.example.user_profile.dao.UserStatsDAO;
-import com.example.util.DatabaseConstants.*;
+import com.example.registration.DTO.User;
+import com.example.constants.DatabaseConstants.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
@@ -11,17 +10,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static com.example.problems.utils.ToDTO.toUser;
+import static com.example.registration.Utils.ToSQL.*;
 import static java.lang.String.format;
 
-public class MySQLUserDao implements UserDAO {
+public class SQLUserDAO implements UserDAO {
     private final BasicDataSource dataSource;
 
-    public MySQLUserDao(BasicDataSource dataSource) {
+    public SQLUserDAO(BasicDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public User getUser(int userId) {
+    public User getUserById(int userId) {
         String sqlStatement = format("SELECT * FROM %s WHERE %s.%s = ?;",
                     Users.TABLE_NAME,
                     Users.TABLE_NAME,
@@ -32,23 +32,40 @@ public class MySQLUserDao implements UserDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            return toUser(resultSet);
+            if (resultSet.next()) {
+                return toUser(resultSet);
+
+            }
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void addUser(User user) {
+    public User addUser(User user) {
         try (Connection con = dataSource.getConnection()){
-            //TODO
-            String sql = format("INSERT INTO users (%s, %s, %s, %s) VALUES (2, ?, ?, NOW())",
-                    Users.COL_ROLE_ID, Users.COL_USERNAME, Users.COL_PASSWORD, Users.COL_REGISTER_DATE);
+            String sql = format("INSERT INTO users " +
+                            "(%s, %s, %s, %s, %s, %s, %s) " +
+                            "VALUES (2, ?, ?, ?, ?, NOW() + INTERVAL 2 MINUTE, NOW())",
+                    Users.COL_ROLE_ID,
+                    Users.COL_MAIL,
+                    Users.COL_USERNAME,
+                    Users.COL_PASSWORD_HASH,
+                    Users.COL_VERIFICATION_TOKEN,
+                    Users.COL_VERIFICATION_TOKEN_EXPIRY,
+                    Users.COL_REGISTER_DATE);
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.executeUpdate();
+            preparedStatement.setString(1, user.getMail());
+            preparedStatement.setString(2, user.getUsername());
+            preparedStatement.setString(3, user.getPasswordHash());
+            preparedStatement.setString(4, user.getVerificationCode());
+
+            int updates = preparedStatement.executeUpdate();
+            if (updates == 0) {
+                return null;
+            }
+            return getUserByUsername(user.getUsername());
         } catch (Exception e) {
             throw new RuntimeException("Error adding user", e);
         }
@@ -56,12 +73,11 @@ public class MySQLUserDao implements UserDAO {
 
     @Override
     public boolean authenticate(User user) {
-        // Implementation to authenticate user
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
+            ps.setString(2, user.getPasswordHash());
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -85,7 +101,7 @@ public class MySQLUserDao implements UserDAO {
         }
     }
     @Override
-    public boolean userExists(String username) {
+    public boolean usernameExists(String username) {
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -98,6 +114,21 @@ public class MySQLUserDao implements UserDAO {
             return false;
         } catch (Exception e) {
             throw new RuntimeException("Error checking if user exists", e);
+        }
+    }
+
+    @Override
+    public boolean verifiedMailExists(String mail) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sqlStatement = toVerifiedMailExists();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, mail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1) > 0;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -115,9 +146,29 @@ public class MySQLUserDao implements UserDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return toUser(resultSet);
-            } else {
-                return null; // User not found
             }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public User getUserByMail(String mail) {
+        String sqlStatement = format("SELECT * FROM %s WHERE %s.%s = ?;",
+                Users.TABLE_NAME,
+                Users.TABLE_NAME,
+                Users.COL_MAIL
+        );
+
+        try (Connection connection = dataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, mail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return toUser(resultSet);
+            }
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

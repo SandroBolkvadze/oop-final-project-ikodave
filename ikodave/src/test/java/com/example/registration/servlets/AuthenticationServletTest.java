@@ -1,6 +1,6 @@
 package com.example.registration.servlets;
 
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.Method;
 
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.SessionConstants.USER_KEY;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 

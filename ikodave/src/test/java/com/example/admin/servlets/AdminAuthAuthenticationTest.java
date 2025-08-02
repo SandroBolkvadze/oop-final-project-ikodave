@@ -2,7 +2,7 @@ package com.example.admin.servlets;
 
 import com.example.admin.dao.RoleDAO;
 import com.example.admin.dto.Role;
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.jupiter.api.Test;
 
-import static com.example.util.AttributeConstants.ROLE_DAO_KEY;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.ROLE_DAO_KEY;
+import static com.example.constants.SessionConstants.USER_KEY;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

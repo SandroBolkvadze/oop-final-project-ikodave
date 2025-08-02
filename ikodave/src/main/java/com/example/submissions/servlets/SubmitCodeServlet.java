@@ -2,7 +2,7 @@ package com.example.submissions.servlets;
 
 import com.example.problems.DAO.ProblemDAO;
 import com.example.problems.DTO.Problem;
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import com.example.submissions.DAO.CodeLanguageDAO;
 import com.example.submissions.DAO.SubmissionDAO;
 import com.example.submissions.DAO.TestDAO;
@@ -30,8 +30,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static com.example.submissions.Utils.Language.ToCodeLang.toCodeLang;
-import static com.example.util.AttributeConstants.*;
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.AttributeConstants.*;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 public class SubmitCodeServlet extends HttpServlet {
 
@@ -44,7 +44,7 @@ public class SubmitCodeServlet extends HttpServlet {
 
         if (user == null) {
             response.setContentType("application/json");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("{\"redirect\": \"/problems\"}");
             return;
         }

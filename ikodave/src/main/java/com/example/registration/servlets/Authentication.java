@@ -1,6 +1,6 @@
 package com.example.registration.servlets;
 
-import com.example.registration.model.User;
+import com.example.registration.DTO.User;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import static com.example.util.SessionConstants.USER_KEY;
+import static com.example.constants.SessionConstants.USER_KEY;
 
 
 public class Authentication {
     public static boolean redirectProfileIfSignedIn(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User user = (User) request.getSession().getAttribute(USER_KEY);
-        if (user == null) {
+        if (user == null || !user.isVerified()) {
             return false;
         }
         request.getRequestDispatcher("/static/profile/profile_page.html").forward(request, response);
