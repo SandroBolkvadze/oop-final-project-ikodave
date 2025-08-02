@@ -22,7 +22,6 @@ public class VerificationServlet extends HttpServlet {
         String verificationCode = request.getParameter("code");
         User user = verificationDAO.updateUserByVerificationCode(verificationCode);
 
-
         if (user == null) {
             request.getRequestDispatcher("/static/verification/verification_error.html").forward(request, response);
         }

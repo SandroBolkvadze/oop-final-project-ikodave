@@ -120,6 +120,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>Outh2Servlet</servlet-name>
+    <servlet-class>com.example.registration.servlets.Outh2Servlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Outh2Servlet</servlet-name>
+    <url-pattern>/api/outh2</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>ProfilePageServlet</servlet-name>
     <servlet-class>com.example.user_profile.servlets.ProfilePageServlet</servlet-class>
   </servlet>

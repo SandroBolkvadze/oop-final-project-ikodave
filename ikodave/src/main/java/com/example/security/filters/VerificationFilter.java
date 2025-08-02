@@ -27,10 +27,7 @@ public class VerificationFilter implements Filter {
 
         User user = (User) session.getAttribute(USER_KEY);
 
-        System.out.println(user);
-
         if (user == null || userDAO.getUserById(user.getId()) == null) {
-            System.out.println(session);
             session.invalidate();
         }
         chain.doFilter(request, response);

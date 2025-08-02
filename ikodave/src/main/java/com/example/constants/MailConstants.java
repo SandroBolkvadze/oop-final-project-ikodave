@@ -7,7 +7,7 @@ public class MailConstants {
             """;
 
     public static final String TEXT = """
-                Welcome to MyApp!
+                Welcome to Ikodave!
                 
                 Please verify your email by visiting the link below: 
                 %s

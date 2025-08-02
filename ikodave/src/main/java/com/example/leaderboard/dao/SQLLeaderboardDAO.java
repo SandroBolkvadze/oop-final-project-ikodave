@@ -30,7 +30,7 @@ public class SQLLeaderboardDAO implements LeaderboardDAO {
             List<UserWithScore> userWithScores = new ArrayList<>();
             while (resultSet.next()) {
                 UserWithScore userWithScore = toUserWithScore(resultSet);
-                userWithScores.add(userWithScore);  // Add to list
+                userWithScores.add(userWithScore);
             }
 
             return userWithScores;

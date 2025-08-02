@@ -2,16 +2,6 @@ let secondsLeft = 0;
 let timerInterval = null;
 
 function fetchTimeLeft() {
-    fetch('/api/user/session')
-        .then(res => res.json())
-        .then(data => {
-            if (data.loggedIn && data.verified) {
-                window.location = '/verify'
-            }
-        })
-        .catch(err => console.log(err));
-
-
     fetch('/api/verification/time')
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch time left');

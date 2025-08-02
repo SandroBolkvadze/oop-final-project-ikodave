@@ -16,7 +16,6 @@ import java.util.concurrent.Executor;
 import static com.example.constants.AttributeConstants.*;
 import static com.example.constants.MailConstants.*;
 import static com.example.constants.SessionConstants.USER_KEY;
-import static com.example.constants.WebConstants.HOST;
 import static java.lang.String.format;
 
 public class VerificationResendServlet extends HttpServlet {
@@ -46,7 +45,7 @@ public class VerificationResendServlet extends HttpServlet {
         }
 
         mailExec.execute(() -> {
-            String verifyUrl = format("%s/verify?code=%s", HOST, user.getVerificationCode());
+            String verifyUrl = format("%s/verify?code=%s", System.getenv("DOMAIN"), user.getVerificationCode());
             String text = TEXT.formatted(verifyUrl);
             String html = HTML.formatted(user.getUsername(), verifyUrl, verifyUrl, verifyUrl);
             mailSender.send(user.getMail(), SUBJECT, text, html);

@@ -153,5 +153,24 @@ public class SQLUserDAO implements UserDAO {
         }
     }
 
+    @Override
+    public User getUserByMail(String mail) {
+        String sqlStatement = format("SELECT * FROM %s WHERE %s.%s = ?;",
+                Users.TABLE_NAME,
+                Users.TABLE_NAME,
+                Users.COL_MAIL
+        );
 
+        try (Connection connection = dataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, mail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return toUser(resultSet);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -18,4 +18,6 @@ public interface UserDAO {
 
     User getUserByUsername(String username);
 
+    User getUserByMail(String username);
+
 }
